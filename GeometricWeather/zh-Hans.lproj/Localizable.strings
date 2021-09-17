@@ -1,0 +1,449 @@
+/* 
+  Localizable.strings
+  GeometricWeather
+
+  Created by 王大爷 on 2021/7/29.
+  
+*/
+
+"GeometricWeather" = "几何天气";
+
+"current_location" = "当前位置";
+"resident_location" = "常驻位置";
+"default_location" = "默认位置";
+"live" = "实时";
+"today" = "今日";
+"refresh_at" = "更新于";
+"local_time" = "当地时间";
+"precipitation" = "降水量";
+"precipitation_probability" = "降水概率";
+"precipitation_duration" = "降水时长";
+"maxi_temp" = "白天";
+"mini_temp" = "夜间";
+"time" = "时间";
+"day" = "白天";
+"night" = "夜间";
+"temperature" = "温度";
+"wind" = "风况";
+"wind_direction" = "风向";
+"wind_speed" = "风速";
+"wind_level" = "风力";
+"sensible_temp" = "体感温度";
+"humidity" = "相对湿度";
+"uv_index" = "紫外线指数";
+"hours_of_sun" = "日晒时长";
+"forecast" = "预报";
+"briefings" = "简报";
+"daytime" = "白天";
+"nighttime" = "夜间";
+"publish_at" = "发布于";
+"feels_like" = "体感";
+"follow_system" = "跟随系统";
+"background_information" = "后台信息";
+"pressure" = "大气压强";
+"visibility" = "能见度";
+"dew_point" = "露点";
+"cloud_cover" = "云量";
+"ceiling" = "云高";
+"get_more" = "获取更多";
+"get_more_store" = "从应用商店获取更多";
+"get_more_github" = "从GitHub获取更多";
+"refresh" = "刷新数据";
+"restart" = "重新启动";
+"edit" = "编辑";
+
+// This part of strings should as short as possible.
+"of_clock" = "时";
+"yesterday" = "昨日";
+"tomorrow" = "明日";
+"week" = "周";
+"week_1" = "周一";
+"week_2" = "周二";
+"week_3" = "周三";
+"week_4" = "周四";
+"week_5" = "周五";
+"week_6" = "周六";
+"week_7" = "周日";
+
+"real_feel_temperature" = "体感温度";
+"real_feel_shade_temperature" = "阴面体感";
+"apparent_temperature" = "地表温度";
+"wind_chill_temperature" = "风寒温度";
+"wet_bulb_temperature" = "湿球温度";
+"degree_day_temperature" = "度日温度";
+
+"total" = "总计";
+"thunderstorm" = "暴风雨";
+"rain" = "雨";
+"snow" = "雪";
+"ice" = "冰";
+
+"wind_0" = "无风";
+"wind_1" = "一级";
+"wind_2" = "二级";
+"wind_3" = "三级";
+"wind_4" = "四级";
+"wind_5" = "五级";
+"wind_6" = "六级";
+"wind_7" = "七级";
+"wind_8" = "八级";
+"wind_9" = "九级";
+"wind_10" = "十级";
+"wind_11" = "十一级";
+"wind_12" = "灾害级";
+
+"precipitation_light" = "小雨";
+"precipitation_middle" = "中雨";
+"precipitation_heavy" = "大雨";
+"precipitation_rainstorm" = "暴雨";
+
+"aqi_1" = "优";
+"aqi_2" = "良";
+"aqi_3" = "轻度污染";
+"aqi_4" = "中度污染";
+"aqi_5" = "重度污染";
+"aqi_6" = "严重污染";
+
+"phase_new" = "新月";
+"phase_waxing_crescent" = "蛾眉月";
+"phase_first" = "上弦月";
+"phase_waxing_gibbous" = "盈凸月";
+"phase_full" = "满月";
+"phase_waning_gibbous" = "亏凸月";
+"phase_third" = "下弦月";
+"phase_waning_crescent" = "残月";
+
+"grass" = "草地花粉";
+"mold" = "霉菌";
+"ragweed" = "豚草花粉";
+"tree" = "树木花粉";
+
+"daily_overview" = "每日概览";
+"hourly_overview" = "小时概览";
+"minutely_overview" = "分钟概览";
+"precipitation_overview" = "降水预报";
+"air_quality" = "空气质量";
+"allergen" = "过敏原";
+"life_details" = "详情数据";
+"sunrise_sunset" = "日月升落";
+
+"next" = "下一步";
+"done" = "完成";
+"cancel" = "取消";
+"on" = "开启";
+"off" = "关闭";
+"go_to_set" = "设置";
+"help" = "帮助";
+"learn_more" = "了解更多";
+
+"filter_weather_sources" = "筛选";
+
+"about_app" = "概览";
+"introduce" = "介绍";
+"email" = "E-mail";
+"donate" = "捐助";
+"gitHub" = "GitHub";
+"translator" = "译者";
+"thanks" = "致谢";
+
+"alipay" = "支付宝";
+"wechat" = "微信支付";
+
+// "Month  = MMM(long) / M(short). Day = dd(long) / d(short). Week = EEEE(long) / EEE(short)."
+"date_format_short" = "M-d";
+"date_format_long" = "M月d日";
+"date_format_widget_short" = "MM-dd EEE";
+"date_format_widget_long" = "M月d日 EEEE";
+"date_format_widget_oreo_style" = "M月d日EEEE │ ";
+
+"feedback_request_permission" = "授权";
+"feedback_request_location" = "位置信息";
+"feedback_request_location_in_background" = "正在后台进行定位";
+"feedback_request_location_permission_success" = "获取位置权限成功";
+"feedback_request_location_permission_failed" = "获取位置权限失败d";
+
+"feedback_location_permissions_title" = "获取位置信息";
+"feedback_location_permissions_statement" = "几何天气需要在前台和后台获取您的位置信息以提供您所在位置的天气数据。为此，我们需要请求一些权限。您的位置信息将仅被用于获取天气数据。如果您不希望我们获取您的位置信息，可以拒绝这些权限请求并手动在管理页面中设置您的位置。";
+"feedback_background_location_title" = "在后台访问位置";
+"feedback_background_location_summary" = "为了让app可以在后台访问您的位置信息,以便我们能够即使感知您的位置变化并为您提供有效的天气数据，请将位置权限设置为“始终允许”。";
+
+"feedback_location_failed" = "定位失败";
+"feedback_get_weather_failed" = "获取天气数据失败";
+"feedback_location_help_title" = "无法正常进行定位?";
+"feedback_check_location_permission" = "检查位置权限";
+"feedback_enable_location_information" = "开启位置信息";
+"feedback_select_location_provider" = "选择位置信息提供商";
+"feedback_add_location_manually" = "手动添加城市并删除“$”";
+
+"feedback_live_wallpaper_weather_kind" = "天气";
+"feedback_live_wallpaper_day_night_type" = "时间";
+
+"feedback_click_toggle" = "点击趋势图可切换数据";
+"feedback_no_data" = "暂无数据";
+
+"feedback_collect_failed" = "地址已存在";
+"feedback_collect_succeed" = "收藏成功";
+"feedback_delete_succeed" = "删除成功";
+"feedback_location_list_cannot_be_null" = "收藏地址不能为空";
+
+"feedback_search_location" = "输入一个地址…";
+"feedback_not_yet_location" = "尚未进行定位…";
+"feedback_search_nothing" = "搜索结果为空…";
+"feedback_initializing" = "初始化中…";
+
+"feedback_refresh_notification_after_back" = "返回主页后刷新通知";
+"feedback_refresh_notification_now" = "立即刷新通知";
+"feedback_refresh_ui_after_refresh" = "下次刷新后生效";
+"feedback_restart" = "重启后生效";
+"feedback_readd_location" = "请重新添加地址";
+"feedback_readd_location_after_changing_source" = "更换数据源后需重新添加地址";
+
+"feedback_running_in_background" = "正在后台运行以保持更新数据";
+"feedback_updating_weather_data" = "正在更新天气数据";
+"feedback_updated_in_background" = "已在后台完成更新";
+
+"feedback_interpret_background_notification_content" = "关闭后台纯净后，部分设备的通知栏中可能会出现一个无法清除的通知";
+"feedback_interpret_notification_group_title" = "关闭相应通知频道";
+"feedback_interpret_notification_group_content" = "关闭后台纯净后，会出现一个标示后台服务正在运行的通知，你可以在app相关信息页面中找到通知设置，在其中关闭“后台信息”这个频道来隐藏这个通知";
+
+"feedback_ignore_battery_optimizations_title" = "忽略电池优化";
+"feedback_ignore_battery_optimizations_content" = "为了保证后台服务能够持续工作，请为几何天气选择忽略电池优化";
+
+"feedback_cannot_start_live_wallpaper_activity" = "无法启动动态壁纸预览程序";
+
+"feedback_unusable_geocoder" = "本设备不包含有效的地址解析服务，已将位置提供商更改为百度定位";
+"feedback_about_geocoder" = "地址解析服务，是一种将Android原生定位结果从经纬度格式转换至XX省XX市XX区格式的服务组件。若缺少这项服务，在使用原生API作为位置提供商时，只能通过AccuWeather获取数据";
+
+"feedback_today_precipitation_alert" = "今日可能出现降水";
+"feedback_short_term_precipitation_alert" = "未来几小时内可能出现降水";
+
+"feedback_resident_location" = "设置为常驻城市";
+"feedback_resident_location_description" = "常驻城市的天气将会根据您当前的位置来进行显示和隐藏。\n例如将家乡设置为常驻城市后，可以在旅途中查看家乡天气，而在回家后，家乡的天气数据将被当前位置替代并进行隐藏";
+
+"feedback_click_to_get_more" = "点击可获取更多…";
+"feedback_click_again_to_exit" = "Click again to exit";
+
+"content_desc_back" = "返回";
+"content_desc_check_details" = "查看详情";
+"content_desc_weather_alert_button" = "$条天气预警";
+"content_des_pm25" = "PM二点五";
+"content_des_pm10" = "PM十";
+"content_des_so2" = "二氧化硫";
+"content_des_no2" = "二氧化氮";
+"content_des_o3" = "臭氧";
+"content_des_co" = "一氧化碳";
+"content_des_sunrise" = "$日出";
+"content_des_sunset" = "$日落";
+"content_des_moonrise" = "$月出";
+"content_des_moonset" = "$月落";
+"content_des_no_precipitation" = "无降水";
+"content_des_minutely_precipitation" = "$1至$2间存在降水";
+"content_des_add_current_location" = "添加当前位置";
+"content_des_drag_flag" = "轻触以对列表项进行拖拽排序";
+"content_des_delete_flag" = "删除此项";
+"content_des_swipe_left_to_delete" = "你可以向左滑动以删除该项";
+"content_des_swipe_right_to_delete" = "你可以向右滑动以删除该项";
+"content_desc_search_filter_on" = "仅显示默认天气源的地址";
+"content_desc_search_filter_off" = "显示所有天气源的地址";
+"content_desc_powered_by" = "由$提供";
+"content_desc_wechat_payment_code" = "微信付款二维码";
+"content_desc_weather_icon" = "天气图标";
+"content_desc_weather_icon_light" = "亮色图标";
+"content_desc_weather_icon_grey" = "灰色图标";
+"content_desc_weather_icon_dark" = "暗色图标";
+"content_desc_filter_weather_sources" = "筛选天气源";
+
+"action_home" = "主页";
+"action_alert" = "预警";
+"action_manage" = "管理";
+"action_search" = "搜索";
+"action_settings" = "设置";
+"action_preview" = "预览";
+"action_about" = "关于";
+"action_appStore" = "App Store";
+
+"widget_day" = "今日";
+"widget_week" = "一周";
+"widget_day_week" = "今日 + 一周";
+"widget_clock_day_horizontal" = "时钟 + 今日 (水平排列)";
+"widget_clock_day_details" = "时钟 + 今日 (详情)";
+"widget_clock_day_vertical" = "时钟 + 今日 (垂直排列)";
+"widget_clock_day_week" = "时钟 + 今日 + 一周";
+"widget_text" = "纯文字";
+"widget_trend_daily" = "每日趋势";
+"widget_trend_hourly" = "小时趋势";
+"widget_multi_city" = "多个城市";
+"wait_refresh" = "等待更新";
+"ellipsis" = "…";
+
+"settings_category_basic" = "基础";
+"settings_title_background_free" = "后台纯净";
+"settings_summary_background_free_on" = "开启\n若小部件和天气通知无法自动更新，请关闭该选项";
+"settings_summary_background_free_off" = "关闭\n若不希望任何服务在后台进行常驻，请开启该选项";
+"settings_title_live_wallpaper" = "动态壁纸";
+"settings_summary_live_wallpaper" = "将Material天气动画设置为动态壁纸";
+"settings_title_service_provider" = "数据提供商";
+"settings_summary_service_provider" = "选择天气数据及位置信息的数据提供商";
+"settings_title_weather_source" = "天气源";
+"settings_title_location_service" = "位置服务";
+"settings_title_service_provider_advanced" = "设置服务商API KEY";
+"settings_summary_service_provider_advanced" = "请谨慎行事";
+"settings_title_dark_mode" = "暗色模式";
+"settings_title_appearance" = "外观";
+"settings_summary_appearance" = "UI风格，卡片顺序，语言等…";
+"settings_title_ui_style" = "界面风格";
+"settings_title_icon_provider" = "图标风格";
+"settings_title_card_display" = "卡片显示";
+"settings_title_card_order" = "卡片顺序";
+"settings_title_daily_trend_display" = "每日趋势顺序";
+"settings_title_trend_horizontal_line_switch" = "趋势图横线";
+"settings_title_exchange_day_night_temp_switch" = "交换日间夜间温度";
+"settings_title_gravity_sensor_switch" = "重力感应";
+"settings_title_list_animation_switch" = "列表动画";
+"settings_title_item_animation_switch" = "组件动画";
+"settings_language" = "语言";
+"settings_title_unit" = "单位";
+"settings_summary_unit" = "设置天气数据的单位";
+"settings_title_temperature_unit" = "温度单位";
+"settings_title_distance_unit" = "距离单位";
+"settings_title_precipitation_unit" = "降水单位";
+"settings_title_pressure_unit" = "压力单位";
+"settings_title_speed_unit" = "速度单位";
+"settings_title_refresh_rate" = "自动刷新频率";
+"settings_title_alert_notification_switch" = "推送预警通知";
+"settings_title_precipitation_notification_switch" = "推送降水预报";
+"settings_title_permanent_service" = "后台服务常驻";
+"settings_category_forecast" = "预报";
+"settings_title_forecast_today" = "定时预报(今日天气)";
+"settings_title_forecast_today_time" = "设定预报时间(今日天气)";
+"settings_title_forecast_tomorrow" = "定时预报(明日天气)";
+"settings_title_forecast_tomorrow_time" = "设定预报时间(明日天气)";
+"settings_category_widget" = "小部件";
+"settings_title_week_icon_mode" = "一周天气图标样式";
+"settings_title_minimal_icon" = "Minimal图标";
+"settings_title_click_widget_to_refresh" = "点击小部件时进行刷新";
+"settings_title_widget_config" = "配置小部件";
+"settings_category_notification" = "通知";
+"settings_title_notification" = "开启天气通知";
+"settings_title_notification_style" = "通知风格";
+"settings_title_notification_temp_icon" = "将温度作为通知小图标";
+"settings_title_notification_color" = "通知颜色";
+"settings_title_notification_custom_color" = "自定义通知颜色";
+"settings_title_notification_text_color" = "天气通知字体颜色";
+"settings_title_notification_background" = "天气通知背景颜色";
+"settings_notification_background_off" = "跟随系统默认";
+"settings_title_notification_can_be_cleared" = "天气通知可被清除";
+"settings_notification_can_be_cleared_on" = "可被清除";
+"settings_notification_can_be_cleared_off" = "常驻通知栏";
+"settings_title_notification_hide_icon" = "隐藏通知图标";
+"settings_notification_hide_icon_on" = "隐藏通知图标";
+"settings_notification_hide_icon_off" = "显示通知图标";
+"settings_title_notification_hide_in_lockScreen" = "隐藏锁屏通知";
+"settings_notification_hide_in_lockScreen_on" = "在锁屏界面隐藏(需在系统设置中隐藏敏感通知)";
+"settings_notification_hide_in_lockScreen_off" = "在锁屏界面显示通知";
+"settings_title_notification_hide_big_view" = "隐藏大视图";
+"settings_notification_hide_big_view_on" = "隐藏";
+"settings_notification_hide_big_view_off" = "显示";
+
+"weather_source_cn" = "weather.com.cn (仅中国有效)";
+"weather_source_caiyun" = "caiyunapp.com (仅中国有效)";
+"weather_source_accu" = "accuweather.com";
+"weather_source_owm" = "OpenWeather";
+"weather_source_mf" = "Météo France";
+
+"weather_source_voice_cn" = "weather.com.CN";
+"weather_source_voice_caiyun" = "CaiYun App.com";
+"weather_source_voice_accu" = "ACCU weather.com";
+"weather_source_voice_owm" = "Open Weather";
+"weather_source_voice_mf" = "Météo France";
+
+"dark_mode_auto" = "自动";
+"dark_mode_system" = "跟随系统";
+"dark_mode_light" = "亮色";
+"dark_mode_dark" = "暗色";
+
+"ui_style_circular" = "圆环天空";
+"ui_style_material" = "材料质感";
+
+"speed_unit_kph" = "千米/时";
+"speed_unit_mps" = "米/秒";
+"speed_unit_kn" = "节";
+"speed_unit_mph" = "英里/时";
+"speed_unit_ftps" = "英尺/秒";
+
+"speed_unit_voice_kph" = "千米每小时";
+"speed_unit_voice_mps" = "米每秒";
+"speed_unit_voice_kn" = "节";
+"speed_unit_voice_mph" = "英里每小时";
+"speed_unit_voice_ftps" = "英尺每秒d";
+
+"precipitation_unit_mm" = "毫米";
+"precipitation_unit_cm" = "厘米";
+"precipitation_unit_in" = "英寸";
+"precipitation_unit_lpsqm" = "升/米²";
+
+"precipitation_unit_voice_mm" = "毫米";
+"precipitation_unit_voice_cm" = "厘米";
+"precipitation_unit_voice_in" = "英寸";
+"precipitation_unit_voice_lpsqm" = "升每平方米";
+
+"temperature_unit_c" = "℃";
+"temperature_unit_f" = "℉";
+"temperature_unit_k" = "K";
+
+"temperature_unit_voice_c" = "℃";
+"temperature_unit_voice_f" = "℉";
+"temperature_unit_voice_k" = "K";
+
+"temperature_unit_short_c" = "°";
+"temperature_unit_short_f" = "°";
+"temperature_unit_short_k" = "K";
+
+"distance_unit_km" = "千米";
+"distance_unit_m" = "米";
+"distance_unit_mi" = "英里";
+"distance_unit_nmi" = "海里";
+"distance_unit_ft" = "英尺";
+
+"distance_unit_voice_km" = "千米";
+"distance_unit_voice_m" = "米";
+"distance_unit_voice_mi" = "英里";
+"distance_unit_voice_nmi" = "海里";
+"distance_unit_voice_ft" = "英尺";
+
+"pressure_unit_mb" = "毫巴";
+"pressure_unit_kpa" = "千帕";
+"pressure_unit_hpa" = "百帕";
+"pressure_unit_atm" = "标准大气压";
+"pressure_unit_mmhg" = "毫米汞柱";
+"pressure_unit_inhg" = "英寸汞柱";
+"pressure_unit_kgfpsqcm" = "千克力/米²";
+
+"pressure_unit_voice_mb" = "毫巴";
+"pressure_unit_voice_kpa" = "千帕";
+"pressure_unit_voice_hpa" = "百帕";
+"pressure_unit_voice_atm" = "标准大气压";
+"pressure_unit_voice_mmhg" = "毫米汞柱";
+"pressure_unit_voice_inhg" = "英寸汞柱";
+"pressure_unit_voice_kgfpsqcm" = "千克力每平方米";
+
+"air_quality_unit_mugpcum" = "微克/米³";
+"air_quality_unit_voice_mugpcum" = "微克每立方米";
+
+"air_quality_co_unit_mgpcum" = "毫克/米³";
+"air_quality_co_unit_voice_mgpcum" = "毫克每立方米";
+
+"duration_unit_h" = "小时";
+"duration_unit_voice_h" = "小时";
+
+"pollen_unit_ppcm" = "/米³";
+"pollen_unit_voice_ppcm" = "每立方米";
+
+"update_interval_1" = "每1小时";
+"update_interval_2" = "每2小时";
+"update_interval_3" = "每3小时";
+"update_interval_4" = "每4小时";
+
+"widget_week_icon_mode_auto" = "自动";
+"widget_week_icon_mode_daytime" = "白天";
+"widget_week_icon_mode_nighttime" = "夜间";

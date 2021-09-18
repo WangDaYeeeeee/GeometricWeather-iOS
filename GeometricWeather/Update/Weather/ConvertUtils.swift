@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 func toInt(_ value: Double) -> Int {
   return Int(value + 0.5)

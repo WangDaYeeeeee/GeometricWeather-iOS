@@ -7,6 +7,7 @@
 
 import Foundation
 import BackgroundTasks
+import GeometricWeatherBasic
 
 private let identifier = "com.wangdaye.geometricweather.polling"
 

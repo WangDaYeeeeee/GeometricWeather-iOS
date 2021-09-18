@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let cellReuseId = "AlertTableViewCell"
 
@@ -29,7 +30,7 @@ class AlertViewController: GeoViewController,
     
     // data & controllers.
     
-    var alertList = [Alert]() {
+    var alertList = [WeatherAlert]() {
         didSet {
             self.tableView.reloadData()
         }

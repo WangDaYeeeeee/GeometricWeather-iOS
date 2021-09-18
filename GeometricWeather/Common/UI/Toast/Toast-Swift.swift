@@ -7,6 +7,7 @@
 
 import UIKit
 import ObjectiveC
+import GeometricWeatherBasic
 
 private let showDuration = 1.0
 private let hideDuration = 0.3

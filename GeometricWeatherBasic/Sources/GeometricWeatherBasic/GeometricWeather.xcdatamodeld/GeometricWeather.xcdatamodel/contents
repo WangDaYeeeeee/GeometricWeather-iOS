@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19141.11" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="LocationEntity" representedClassName="LocationEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="cityId" optional="YES" attributeType="String"/>
+        <attribute name="country" optional="YES" attributeType="String"/>
+        <attribute name="createTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="currentPosition" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="district" optional="YES" attributeType="String"/>
+        <attribute name="formattedId" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="province" optional="YES" attributeType="String"/>
+        <attribute name="residentPosition" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="timezone" optional="YES" attributeType="String"/>
+        <attribute name="weatherSource" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="WeatherEntity" representedClassName="WeatherEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="formattedId" optional="YES" attributeType="String"/>
+        <attribute name="json" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="LocationEntity" positionX="-63" positionY="-18" width="128" height="224"/>
+        <element name="WeatherEntity" positionX="-54" positionY="72" width="128" height="59"/>
+    </elements>
+</model>

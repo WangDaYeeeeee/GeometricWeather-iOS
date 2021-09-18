@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import GeometricWeatherBasic
 
 func generateLocations(
     _ from: Array<AccuLocationResult>,
@@ -426,12 +427,12 @@ private func getHourlies(
 private func getAlerts(
     results: [AccuAlertResult],
     timezone: TimeZone
-) -> [Alert] {
-    var alerts = [Alert]()
+) -> [WeatherAlert] {
+    var alerts = [WeatherAlert]()
     
     for result in results {
         alerts.append(
-            Alert(
+            WeatherAlert(
                 alertId: Int64(result.alertID),
                 time: Double(
                     result.area[0].epochStartTime + (
@@ -447,8 +448,8 @@ private func getAlerts(
         )
     }
         
-    alerts = Alert.deduplicate(alertArray: alerts)
-    alerts = Alert.descByTime(alertArray: alerts)
+    alerts = WeatherAlert.deduplicate(alertArray: alerts)
+    alerts = WeatherAlert.descByTime(alertArray: alerts)
     
     return alerts
 }

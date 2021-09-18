@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 let locationCellHeight = 96.0
 private let iconSize = 24.0

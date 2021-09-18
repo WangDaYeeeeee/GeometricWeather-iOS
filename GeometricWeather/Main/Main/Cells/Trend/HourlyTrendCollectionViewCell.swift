@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 // MARK: - cell.
 

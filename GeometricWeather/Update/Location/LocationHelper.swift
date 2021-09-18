@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import GeometricWeatherBasic
 
 private let timeOut = 10.0
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let progressAnimationKey = "progress_animation"
 

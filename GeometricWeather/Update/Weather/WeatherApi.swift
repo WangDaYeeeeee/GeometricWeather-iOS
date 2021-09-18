@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import RxSwift
+import GeometricWeatherBasic
 
 func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
     return AccuApi()

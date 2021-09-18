@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 private let touchDownAnimDuration = 0.1
 private let touchUpAnimDuration = 0.5

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let trendReuseIdentifier = "daily_trend_cell"
 private let dailyTrendViewHeight = 324

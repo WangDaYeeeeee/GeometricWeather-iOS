@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 struct Indicator: Equatable {
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let circularProgressSize = 156.0
 private let linearProgressHeight = 36.0

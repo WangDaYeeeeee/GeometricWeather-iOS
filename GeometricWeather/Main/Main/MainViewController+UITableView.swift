@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 let cellKeyHeader = "header"
 let cellKeyDaily = "daily"

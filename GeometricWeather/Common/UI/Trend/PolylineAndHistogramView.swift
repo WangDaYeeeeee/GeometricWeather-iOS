@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 class PolylineAndHistogramView: UIView {
     

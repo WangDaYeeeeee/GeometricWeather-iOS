@@ -7,6 +7,7 @@
 
 import UIKit
 import AudioToolbox
+import GeometricWeatherBasic
 
 private let cellReuseId = "ManagementTableViewCell"
 

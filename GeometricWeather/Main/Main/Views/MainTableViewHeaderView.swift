@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import GeometricWeatherBasic
 
 class MainTableViewHeaderView: UIView, AbstractMainItem {
     

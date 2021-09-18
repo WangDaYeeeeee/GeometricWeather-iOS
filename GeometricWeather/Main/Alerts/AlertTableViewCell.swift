@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 class AlertTableViewCell: UITableViewCell {
     
@@ -60,7 +61,7 @@ class AlertTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(_ alert: Alert) {
+    func bindData(_ alert: WeatherAlert) {
         self.titleLabel.text = alert.description
         
         let format = DateFormatter()

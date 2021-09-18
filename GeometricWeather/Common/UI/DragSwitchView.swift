@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let dragRatio = 0.4
 private let triggerRatio = 1.0 / 3.0 * dragRatio

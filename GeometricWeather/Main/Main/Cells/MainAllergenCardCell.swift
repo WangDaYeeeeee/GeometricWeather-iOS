@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 private let allergenReuseIdentifier = "allergen_trend_cell"
 private let allergenCollectionViewHeight = 198

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 let mainTrendInnerMargin = littleMargin / 2
 let mainTrendIconSize = 32.0

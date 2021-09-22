@@ -75,9 +75,14 @@
 		37A35F6D26F4B45400431565 /* WeatherWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F6926F4B45300431565 /* WeatherWidget.intentdefinition */; };
 		37A35F6E26F4B45400431565 /* WeatherWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F6926F4B45300431565 /* WeatherWidget.intentdefinition */; };
 		37A35F7126F4B45400431565 /* WeatherWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 37A35F6026F4B45300431565 /* WeatherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		37A35F7826F4B6F100431565 /* WeatherWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F7726F4B6F100431565 /* WeatherWidgetData.swift */; };
 		37A35F7B26F5962900431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F7A26F5962900431565 /* GeometricWeatherBasic */; };
 		37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */; };
+		37A35F8526F758AA00431565 /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F8426F758AA00431565 /* WeatherWidgetSmallView.swift */; };
+		37A35F8826F7641B00431565 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37A35F8A26F7641B00431565 /* Localizable.strings */; };
+		37A35F8D26F7662100431565 /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F8C26F7662100431565 /* WeatherWidgetMediumView.swift */; };
+		37A35F8F26F8958D00431565 /* WeatherWidgetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F8E26F8958D00431565 /* WeatherWidgetConstants.swift */; };
+		37A35F9126F89A1900431565 /* WeatherWidgetLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F9026F89A1900431565 /* WeatherWidgetLargeView.swift */; };
+		37A35F9426F89A7B00431565 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35F9326F89A7B00431565 /* ItemView.swift */; };
 		37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */; };
 		37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7626DA3C4900DBA181 /* SearchViewController.swift */; };
 		37AA5E8026DB744E00DBA181 /* JXMovableCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7F26DB744E00DBA181 /* JXMovableCellTableView.m */; };
@@ -202,8 +207,14 @@
 		37A35F6A26F4B45400431565 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37A35F6C26F4B45400431565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37A35F7226F4B45400431565 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
-		37A35F7726F4B6F100431565 /* WeatherWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetData.swift; sourceTree = "<group>"; };
 		37A35F7926F5957B00431565 /* GeometricWeatherBasic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GeometricWeatherBasic; sourceTree = "<group>"; };
+		37A35F8426F758AA00431565 /* WeatherWidgetSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetSmallView.swift; sourceTree = "<group>"; };
+		37A35F8926F7641B00431565 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		37A35F8B26F7641E00431565 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		37A35F8C26F7662100431565 /* WeatherWidgetMediumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetMediumView.swift; sourceTree = "<group>"; };
+		37A35F8E26F8958D00431565 /* WeatherWidgetConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetConstants.swift; sourceTree = "<group>"; };
+		37A35F9026F89A1900431565 /* WeatherWidgetLargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetLargeView.swift; sourceTree = "<group>"; };
+		37A35F9326F89A7B00431565 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewEffect.swift; sourceTree = "<group>"; };
 		37AA5E7626DA3C4900DBA181 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		37AA5E7E26DB744E00DBA181 /* JXMovableCellTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXMovableCellTableView.h; sourceTree = "<group>"; };
@@ -532,13 +543,26 @@
 		37A35F6626F4B45300431565 /* WeatherWidget */ = {
 			isa = PBXGroup;
 			children = (
-				37A35F7726F4B6F100431565 /* WeatherWidgetData.swift */,
+				37A35F9226F89A6500431565 /* Views */,
+				37A35F8E26F8958D00431565 /* WeatherWidgetConstants.swift */,
 				37A35F6726F4B45300431565 /* WeatherWidget.swift */,
 				37A35F6926F4B45300431565 /* WeatherWidget.intentdefinition */,
 				37A35F6A26F4B45400431565 /* Assets.xcassets */,
 				37A35F6C26F4B45400431565 /* Info.plist */,
+				37A35F8A26F7641B00431565 /* Localizable.strings */,
 			);
 			path = WeatherWidget;
+			sourceTree = "<group>";
+		};
+		37A35F9226F89A6500431565 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				37A35F8426F758AA00431565 /* WeatherWidgetSmallView.swift */,
+				37A35F8C26F7662100431565 /* WeatherWidgetMediumView.swift */,
+				37A35F9026F89A1900431565 /* WeatherWidgetLargeView.swift */,
+				37A35F9326F89A7B00431565 /* ItemView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		37AA5E7126DA39C500DBA181 /* Main */ = {
@@ -752,6 +776,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37A35F6B26F4B45400431565 /* Assets.xcassets in Resources */,
+				37A35F8826F7641B00431565 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,7 +824,6 @@
 				3749A0FF26E25B0500EEA6A3 /* PollingBackgroundTask.swift in Sources */,
 				3742CBEC26C8DB76001CDCED /* PolylineAndHistogramView.swift in Sources */,
 				3761DEB626A9B9AD00B0612E /* LocationHelper.swift in Sources */,
-				37A35F7826F4B6F100431565 /* WeatherWidgetData.swift in Sources */,
 				3789E20626AAEEA4005C3C06 /* WeatherApi.swift in Sources */,
 				3799F50626D0EACE00B49D20 /* LinearProgressView.swift in Sources */,
 				3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */,
@@ -845,8 +869,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37A35F8F26F8958D00431565 /* WeatherWidgetConstants.swift in Sources */,
 				37A35F6826F4B45300431565 /* WeatherWidget.swift in Sources */,
 				37A35F6D26F4B45400431565 /* WeatherWidget.intentdefinition in Sources */,
+				37A35F9426F89A7B00431565 /* ItemView.swift in Sources */,
+				37A35F8D26F7662100431565 /* WeatherWidgetMediumView.swift in Sources */,
+				37A35F8526F758AA00431565 /* WeatherWidgetSmallView.swift in Sources */,
+				37A35F9126F89A1900431565 /* WeatherWidgetLargeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,6 +907,15 @@
 				370BA5C9269C609B006BB1CE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		37A35F8A26F7641B00431565 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				37A35F8926F7641B00431565 /* en */,
+				37A35F8B26F7641E00431565 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		37D7AA8A26B2AEB70028F67E /* Localizable.strings */ = {

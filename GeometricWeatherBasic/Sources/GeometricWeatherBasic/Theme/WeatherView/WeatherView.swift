@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - weather kind.
+
 public enum WeatherKind: CaseIterable {
     case null
     case clear
@@ -70,6 +72,8 @@ public func weatherCodeToWeatherKind(code: WeatherCode) -> WeatherKind {
         return .thunderstorm
     }
 }
+
+// MARK: - state.
 
 public class WeatherViewState: ObservableObject {
     
@@ -139,15 +143,19 @@ public class WeatherViewState: ObservableObject {
     }
 }
 
+// MARK: - weather view.
+
 // an abstract for different weather view impl.
 public protocol WeatherView {
     
     var state: WeatherViewState { get }
 }
 
+// MARK: - theme delegate.
+
 // inject colors and ui properties depend on weather.
 public protocol WeatherThemeDelegate {
-    
+        
     // @return (
     //     main theme color,
     //     color of daytime chart line,

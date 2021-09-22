@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ForegroundMapperView: View {
+struct MtrlForegroundMapperView: View {
     
     private let weatherKind: WeatherKind
     private let daylight: Bool
@@ -228,7 +228,7 @@ struct ForegroundMapperView: View {
     }
 }
 
-struct BackgroundMapperView: View {
+struct MtrlBackgroundMapperView: View {
     
     private let weatherKind: WeatherKind
     private let daylight: Bool
@@ -242,7 +242,7 @@ struct BackgroundMapperView: View {
     }
     
     @ViewBuilder
-    var body: some View {
+    public var body: some View {
         if weatherKind == .clear && daylight {
             ClearBackgroundView()
         } else if weatherKind == .clear {
@@ -287,10 +287,28 @@ struct BackgroundMapperView: View {
     }
 }
 
-struct ImplementaionMapperView_Previews: PreviewProvider {
+struct MtrlWidgetBackgroundView: View {
+    
+    let weatherKind: WeatherKind
+    let daylight: Bool
+    
+    @ViewBuilder
+    public var body: some View {
+        if weatherKind == .clear && daylight {
+            ClearWidgetBackgroundView()
+        } else {
+            MtrlBackgroundMapperView(
+                weatherKind: self.weatherKind,
+                daylight: self.daylight
+            )
+        }
+    }
+}
+
+struct MtrlMapperViews_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
-            ForegroundMapperView(
+            MtrlForegroundMapperView(
                 weatherKind: .clear,
                 daylight: true,
                 width: proxy.size.width,
@@ -300,7 +318,7 @@ struct ImplementaionMapperView_Previews: PreviewProvider {
                 paddingTop: 0.0
             )
         }.background(
-            BackgroundMapperView(
+            MtrlBackgroundMapperView(
                 weatherKind: .clear,
                 daylight: true
             )

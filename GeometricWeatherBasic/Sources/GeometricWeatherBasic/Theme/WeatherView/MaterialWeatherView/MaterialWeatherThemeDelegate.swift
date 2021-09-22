@@ -9,9 +9,9 @@ import SwiftUI
 
 private let headerHeightRatio: CGFloat = 0.66
 
-class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
+public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
     
-    func getThemeColors(
+    public func getThemeColors(
         weatherKind: WeatherKind,
         daylight: Bool,
         lightTheme: Bool
@@ -123,7 +123,17 @@ class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         }
     }
     
-    func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat {
+    public func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat {
         return viewHeight * headerHeightRatio
+    }
+    
+    public func getWidgetBackground(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> some View {
+        return MtrlWidgetBackgroundView(
+            weatherKind: weatherKind,
+            daylight: daylight
+        )
     }
 }

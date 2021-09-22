@@ -131,15 +131,17 @@ public func getTrenItemDisplayCount() -> Int {
 public func getLocationText(location: Location) -> String {
     if !location.district.isEmpty {
         return location.district
-    } else if !location.city.isEmpty {
-        return location.city
-    } else if !location.province.isEmpty {
-        return location.province
-    } else if location.currentPosition {
-        return NSLocalizedString("current_location", comment: "")
-    } else {
-        return ""
     }
+    if !location.city.isEmpty {
+        return location.city
+    }
+    if !location.province.isEmpty {
+        return location.province
+    }
+    if location.currentPosition {
+        return NSLocalizedString("current_location", comment: "")
+    }
+    return ""
 }
 
 public func getWeekText(week: Int) -> String {

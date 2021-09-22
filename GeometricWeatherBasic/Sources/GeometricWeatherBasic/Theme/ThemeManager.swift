@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 // MARK: - constants.
 
@@ -56,9 +57,7 @@ public class ThemeManager {
             )
         )
         self.daylight = EqualtableLiveData(isDaylight())
-        
-        self.weatherThemeDelegate = MaterialWeatherThemeDelegate()
-        
+                
         self.darkMode = darkMode
     }
     
@@ -68,7 +67,7 @@ public class ThemeManager {
     public let globalOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
     public let daylight: EqualtableLiveData<Bool>
     
-    public var weatherThemeDelegate: WeatherThemeDelegate
+    public let weatherThemeDelegate = MaterialWeatherThemeDelegate()
     
     private var darkMode: DarkMode
     

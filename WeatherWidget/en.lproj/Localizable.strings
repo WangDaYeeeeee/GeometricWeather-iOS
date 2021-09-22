@@ -1,0 +1,449 @@
+/*
+  Localizable.strings
+  GeometricWeather
+
+  Created by 王大爷 on 2021/7/29.
+  
+*/
+
+"GeometricWeather" = "Geometric Weather";
+
+"current_location" = "Current location";
+"resident_location" = "Resident location";
+"default_location" = "default location";
+"live" = "Live";
+"today" = "Today";
+"refresh_at" = "Refreshed at";
+"local_time" = "Local time";
+"precipitation" = "Precipitation";
+"precipitation_probability" = "Precipitation probability";
+"precipitation_duration" = "Precipitation duration";
+"maxi_temp" = "daytime";
+"mini_temp" = "nighttime";
+"time" = "time";
+"day" = "daytime";
+"night" = "nighttime";
+"temperature" = "Temperature";
+"wind" = "Wind";
+"wind_direction" = "Wind direction";
+"wind_speed" = "Wind speed";
+"wind_level" = "Wind gauge";
+"sensible_temp" = "Sensible temp";
+"humidity" = "Humidity";
+"uv_index" = "UV index";
+"hours_of_sun" = "Hours of sun";
+"forecast" = "Forecast";
+"briefings" = "Briefings";
+"daytime" = "Daytime";
+"nighttime" = "Nighttime";
+"publish_at" = "Publish at";
+"feels_like" = "Feels like";
+"follow_system" = "Follow system";
+"background_information" = "Background information";
+"pressure" = "Atmospheric pressure";
+"visibility" = "Visibility";
+"dew_point" = "Dew point";
+"cloud_cover" = "Cloud cover";
+"ceiling" = "Ceiling";
+"get_more" = "Get more";
+"get_more_store" = "Get more from app store";
+"get_more_github" = "Get more from GitHub";
+"refresh" = "Refresh";
+"restart" = "Restart";
+"edit" = "Edit";
+
+// This part of strings should as short as possible.
+"of_clock" = ":00";
+"yesterday" = "yday";
+"tomorrow" = "tmw";
+"week" = "week";
+"week_1" = "Mon";
+"week_2" = "Tue";
+"week_3" = "Wed";
+"week_4" = "Thu";
+"week_5" = "Fri";
+"week_6" = "Sat";
+"week_7" = "Sun";
+
+"real_feel_temperature" = "Real feel";
+"real_feel_shade_temperature" = "Real feel shade";
+"apparent_temperature" = "Apparent";
+"wind_chill_temperature" = "Wind chill";
+"wet_bulb_temperature" = "Wet bulb";
+"degree_day_temperature" = "Degree day";
+
+"total" = "Total";
+"thunderstorm" = "Thunderstorm";
+"rain" = "Rain";
+"snow" = "Snow";
+"ice" = "Ice";
+
+"wind_0" = "Calm";
+"wind_1" = "Light air";
+"wind_2" = "Light breeze";
+"wind_3" = "Gentle breeze";
+"wind_4" = "Moderate breeze";
+"wind_5" = "Fresh breeze";
+"wind_6" = "Strong breeze";
+"wind_7" = "Moderate gale";
+"wind_8" = "Gale";
+"wind_9" = "Strong gale";
+"wind_10" = "Storm";
+"wind_11" = "Violent storm";
+"wind_12" = "Hurricane";
+
+"precipitation_light" = "Drizzle";
+"precipitation_middle" = "Rain";
+"precipitation_heavy" = "Heavy rain";
+"precipitation_rainstorm" = "Rainstorm";
+
+"aqi_1" = "Fresh air";
+"aqi_2" = "Clear air";
+"aqi_3" = "Slight polluted";
+"aqi_4" = "Moderate pollution";
+"aqi_5" = "Heavy pollution";
+"aqi_6" = "Severe pollution";
+
+"phase_new" = "New moon";
+"phase_waxing_crescent" = "Waxing crescent";
+"phase_first" = "First quarter";
+"phase_waxing_gibbous" = "Waxing gibbous";
+"phase_full" = "Full moon";
+"phase_waning_gibbous" = "Waning gibbous";
+"phase_third" = "Third quarter";
+"phase_waning_crescent" = "Waning crescent";
+
+"grass" = "Grass";
+"mold" = "Mold";
+"ragweed" = "Ragweed";
+"tree" = "Tree";
+
+"daily_overview" = "Daily forecast";
+"hourly_overview" = "Hourly forecast";
+"minutely_overview" = "Minutely forecast";
+"precipitation_overview" = "Precipitation forecast";
+"air_quality" = "Air quality";
+"allergen" = "Allergen";
+"life_details" = "Details";
+"sunrise_sunset" = "Sun & moon";
+
+"next" = "NEXT";
+"done" = "DONE";
+"cancel" = "CANCEL";
+"on" = "Enabled";
+"off" = "Disabled";
+"go_to_set" = "SET";
+"help" = "HELP";
+"learn_more" = "LEARN MORE";
+
+"filter_weather_sources" = "Filter";
+
+"about_app" = "About app";
+"introduce" = "Introduce";
+"email" = "E-mail";
+"donate" = "Donate";
+"gitHub" = "GitHub";
+"translator" = "Translators";
+"thanks" = "Thanks";
+
+"alipay" = "Alipay";
+"wechat" = "Wechat";
+
+// "Month  = MMM(long) / M(short). Day = dd(long) / d(short). Week = EEEE(long) / EEE(short)."
+"date_format_short" = "M-d";
+"date_format_long" = "MMM d";
+"date_format_widget_short" = "EEEE; MMM d";
+"date_format_widget_long" = "EEEE; MMM d";
+"date_format_widget_oreo_style" = "EEEE; MMM d│";
+
+"feedback_request_permission" = "Permissions";
+"feedback_request_location" = "Location";
+"feedback_request_location_in_background" = "Locating in background";
+"feedback_request_location_permission_success" = "Location permissions request success";
+"feedback_request_location_permission_failed" = "Location permissions request failed";
+
+"feedback_location_permissions_title" = "Access location information";
+"feedback_location_permissions_statement" = "Geometric Weather needs to collect your location information in foreground or background to provide the weather data of your current location. For this, we will request some permissions. Your location information will only be used to obtain weather data at your current location. If you don't want us to obtain your location information, you can deny those requirements and manually set your location in the management page.";
+"feedback_background_location_title" = "Access location in background";
+"feedback_background_location_summary" = "In order to allow the app to access location information in background, so that we can perceive changes in location and provide you with valid weather data, please set location access as \"Allow all the time\"";
+
+"feedback_location_failed" = "Location failed";
+"feedback_get_weather_failed" = "Request weather data failed";
+"feedback_location_help_title" = "Cannot get location correctly?";
+"feedback_check_location_permission" = "Check location permissions";
+"feedback_enable_location_information" = "Enable Location Information";
+"feedback_select_location_provider" = "Select Location Provider";
+"feedback_add_location_manually" = "Add Location Manually And Delete '$'";
+
+"feedback_live_wallpaper_weather_kind" = "Weather";
+"feedback_live_wallpaper_day_night_type" = "Time";
+
+"feedback_click_toggle" = "Press chart to toggle data";
+"feedback_no_data" = "NO DATA";
+
+"feedback_collect_failed" = "This location already exists";
+"feedback_collect_succeed" = "Add location success";
+"feedback_delete_succeed" = "Delete location success";
+"feedback_location_list_cannot_be_null" = "Location list cannot be empty";
+
+"feedback_search_location" = "Search a location…";
+"feedback_not_yet_location" = "No location yet…";
+"feedback_search_nothing" = "No locations found";
+"feedback_initializing" = "Initializing…";
+
+"feedback_refresh_notification_after_back" = "Changes will take effect when you return to the home page";
+"feedback_refresh_notification_now" = "Refresh now";
+"feedback_refresh_ui_after_refresh" = "Changes will take effect when data is refreshed";
+"feedback_restart" = "Changes will take effect after restart";
+"feedback_readd_location" = "Please re-add locations";
+"feedback_readd_location_after_changing_source" = "Please re-add locations after changing data source";
+
+"feedback_running_in_background" = "Running in background to keep updating";
+"feedback_updating_weather_data" = "Updating weather data";
+"feedback_updated_in_background" = "Updated in background";
+
+"feedback_interpret_background_notification_content" = "In some devices, after turning off 'Background free', there might be a notification that cannot be cleared in the notification bar.";
+"feedback_interpret_notification_group_title" = "Block notification group";
+"feedback_interpret_notification_group_content" = "After turning off \"Free background\", a notification indicating that background service is running will appear in the notification bar. You can turn off the Background Information Channel in the app's information page to block this notifications.";
+
+"feedback_ignore_battery_optimizations_title" = "Ignore battery optimization";
+"feedback_ignore_battery_optimizations_content" = "In order to ensure that the background services can continue to work, please ignore the battery optimization for GeometricWeather.";
+
+"feedback_cannot_start_live_wallpaper_activity" = "Unable to start live wallpaper preview context";
+
+"feedback_unusable_geocoder" = "This device does not contain a valid geocoder. The location provider has been changed to Baidu Location.";
+"feedback_about_geocoder" = "Geocoder is a component that converts the location result from lat-lon format to a format like 'XX city, YY province'. In the absence of this component, you can only get weather data through AccuWeather when using the native API as location provider.";
+
+"feedback_today_precipitation_alert" = "There may be precipitation today.";
+"feedback_short_term_precipitation_alert" = "Precipitation may occur in the next few hours.";
+
+"feedback_resident_location" = "Set as a resident city";
+"feedback_resident_location_description" = "GeometricWeather will automatically show and hide resident cities based on your current location.\nFor example, you can set your hometown as a resident city. You can check the weather in your hometown while you are traveling. When you get home, the weather in your hometown will be hidden and replaced by the weather for your current location.";
+
+"feedback_click_to_get_more" = "Click to get more…";
+"feedback_click_again_to_exit" = "Click again to exit";
+
+"content_desc_back" = "Back";
+"content_desc_check_details" = "Check details";
+"content_desc_weather_alert_button" = "$ weather alerts";
+"content_des_pm25" = "PM two point five";
+"content_des_pm10" = "PM ten";
+"content_des_so2" = "Sulfur dioxide";
+"content_des_no2" = "Nitrogen dioxide";
+"content_des_o3" = "Ozone";
+"content_des_co" = "Carbon monoxide";
+"content_des_m3" = "Carbon monoxide";
+"content_des_sunrise" = "Sunrise at $";
+"content_des_sunset" = "Sunset at $";
+"content_des_moonrise" = "Moonrise at $";
+"content_des_moonset" = "Moonset at $";
+"content_des_no_precipitation" = "No precipitation";
+"content_des_minutely_precipitation" = "Precipitation between $1 and $2";
+"content_des_add_current_location" = "Add current location";
+"content_des_drag_flag" = "Tap to drag the list items to sort";
+"content_des_delete_flag" = "Delete this item";
+"content_des_swipe_left_to_delete" = "You can swipe left to delete this item";
+"content_des_swipe_right_to_delete" = "You can swipe right to delete this item";
+"content_desc_search_filter_on" = "Only show locations from default weather source";
+"content_desc_search_filter_off" = "Show locations from all weather sources";
+"content_desc_powered_by" = "Powered by $";
+"content_desc_app_store" = "@string/action_appStore";
+"content_desc_wechat_payment_code" = "Payment QR code of wechat";
+"content_desc_weather_icon" = "Weather icon";
+"content_desc_weather_icon_light" = "Light icon";
+"content_desc_weather_icon_grey" = "Grey icon";
+"content_desc_weather_icon_dark" = "Dark icon";
+"content_desc_filter_weather_sources" = "Filter weather sources";
+
+"action_home" = "Home";
+"action_alert" = "Alert";
+"action_manage" = "Manage";
+"action_search" = "Search";
+"action_settings" = "Settings";
+"action_preview" = "Preview";
+"action_about" = "About";
+"action_appStore" = "App Store";
+
+"widget_day" = "Daily";
+"widget_week" = "Weekly";
+"widget_day_week" = "Daily + Weekly";
+"widget_clock_day_horizontal" = "Clock + Daily (Horizontal style)";
+"widget_clock_day_details" = "Clock + Daily (Details)";
+"widget_clock_day_vertical" = "Clock + Daily (Vertical style)";
+"widget_clock_day_week" = "Clock + Daily + Weekly";
+"widget_text" = "Text";
+"widget_trend_daily" = "Daily Trend";
+"widget_trend_hourly" = "Hourly Trend";
+"widget_multi_city" = "Multi City";
+"wait_refresh" = "waiting";
+"ellipsis" = "…";
+
+"settings_category_basic" = "Basic";
+"settings_title_background_free" = "Background Free";
+"settings_summary_background_free_on" = "Enabled\nIf widgets and notification cannot refresh automatically, please turn off this option.";
+"settings_summary_background_free_off" = "Disabled\nIf you do not want any services to continue working in background, please turn on this option.";
+"settings_title_live_wallpaper" = "Live wallpaper";
+"settings_summary_live_wallpaper" = "Set Material weather animation as live wallpaper";
+"settings_title_service_provider" = "Service provider";
+"settings_summary_service_provider" = "Select service provider of weather data and location information";
+"settings_title_weather_source" = "Weather source";
+"settings_title_location_service" = "Location service";
+"settings_title_dark_mode" = "Dark mode";
+"settings_title_ui_style" = "Interface style";
+"settings_title_icon_provider" = "Icon pack";
+"settings_title_appearance" = "Appearance";
+"settings_summary_appearance" = "Interface style, card order, language…";
+"settings_title_card_display" = "Displayed cards";
+"settings_title_daily_trend_display" = "Display daily trend";
+"settings_title_trend_horizontal_line_switch" = "Horizontal lines in trend";
+"settings_title_exchange_day_night_temp_switch" = "Exchange day night temperature";
+"settings_title_card_order" = "Card order";
+"settings_title_gravity_sensor_switch" = "Gravity sensor";
+"settings_title_list_animation_switch" = "List animation";
+"settings_title_item_animation_switch" = "Item animation";
+"settings_language" = "Language";
+"settings_title_unit" = "Units";
+"settings_summary_unit" = "Set the unit of weather data";
+"settings_title_temperature_unit" = "Temperature unit";
+"settings_title_distance_unit" = "Distance unit";
+"settings_title_precipitation_unit" = "Precipitation unit";
+"settings_title_pressure_unit" = "Pressure unit";
+"settings_title_speed_unit" = "Speed unit";
+"settings_title_refresh_rate" = "Automatic refresh rate";
+"settings_title_alert_notification_switch" = "Send Alert Notification";
+"settings_title_precipitation_notification_switch" = "Send Precipitation Forecast";
+"settings_title_permanent_service" = "Permanent service";
+"settings_category_forecast" = "Forecast";
+"settings_title_forecast_today" = "Forecast for today";
+"settings_title_forecast_today_time" = "Forecast time for today";
+"settings_title_forecast_tomorrow" = "Forecast for tomorrow";
+"settings_title_forecast_tomorrow_time" = "Forecast time for tomorrow";
+"settings_category_widget" = "Widget";
+"settings_title_week_icon_mode" = "Weekly icons mode";
+"settings_title_minimal_icon" = "Minimalistic icons";
+"settings_title_click_widget_to_refresh" = "Refresh widget when clicked";
+"settings_title_widget_config" = "Widget config";
+"settings_category_notification" = "Notification";
+"settings_title_notification" = "Send Notification";
+"settings_title_notification_style" = "Notification style";
+"settings_title_notification_temp_icon" = "Temperature as status bar icon";
+"settings_title_notification_color" = "Notification color";
+"settings_title_notification_custom_color" = "Custom Notification Color";
+"settings_title_notification_text_color" = "Text color";
+"settings_title_notification_background" = "Background color";
+"settings_notification_background_off" = "Follow System";
+"settings_title_notification_can_be_cleared" = "Can be cleared";
+"settings_notification_can_be_cleared_on" = "Can be cleared by dragging";
+"settings_notification_can_be_cleared_off" = "Cannot be cleared";
+"settings_title_notification_hide_icon" = "Hide notification icon";
+"settings_notification_hide_icon_on" = "Hide";
+"settings_notification_hide_icon_off" = "Show";
+"settings_title_notification_hide_in_lockScreen" = "Hide in lock screen";
+"settings_notification_hide_in_lockScreen_on" = "Hide (need to open in the system settings)";
+"settings_notification_hide_in_lockScreen_off" = "Show";
+"settings_title_notification_hide_big_view" = "Extended style";
+"settings_notification_hide_big_view_on" = "Hide";
+"settings_notification_hide_big_view_off" = "Show";
+
+"weather_source_cn" = "weather.com.cn (Only For China)";
+"weather_source_caiyun" = "caiyunapp.com (Only For China)";
+"weather_source_accu" = "accuweather.com";
+"weather_source_owm" = "OpenWeather";
+"weather_source_mf" = "Météo France";
+
+"weather_source_voice_cn" = "weather.com.CN";
+"weather_source_voice_caiyun" = "CaiYun App.com";
+"weather_source_voice_accu" = "ACCU weather.com";
+"weather_source_voice_owm" = "Open Weather";
+"weather_source_voice_mf" = "Météo France";
+
+"dark_mode_auto" = "Automatic";
+"dark_mode_system" = "Follow system";
+"dark_mode_light" = "Always light";
+"dark_mode_dark" = "Always dark";
+
+"ui_style_circular" = "Circular sky";
+"ui_style_material" = "Material animation";
+
+"speed_unit_kph" = "km/h";
+"speed_unit_mps" = "m/s";
+"speed_unit_kn" = "kn";
+"speed_unit_mph" = "mph";
+"speed_unit_ftps" = "ft/s";
+
+"speed_unit_voice_kph" = "Kilometers per hour";
+"speed_unit_voice_mps" = "Meters per second";
+"speed_unit_voice_kn" = "Knots,";
+"speed_unit_voice_mph" = "Miles per hour";
+"speed_unit_voice_ftps" = "Feet per second";
+
+"precipitation_unit_mm" = "mm";
+"precipitation_unit_cm" = "cm";
+"precipitation_unit_in" = "inch";
+"precipitation_unit_lpsqm" = "L/m²";
+
+"precipitation_unit_voice_mm" = "Millimeters";
+"precipitation_unit_voice_cm" = "Centimeter";
+"precipitation_unit_voice_in" = "Inches";
+"precipitation_unit_voice_lpsqm" = "Liters per square meter";
+
+"temperature_unit_c" = "℃";
+"temperature_unit_f" = "℉";
+"temperature_unit_k" = "K";
+
+"temperature_unit_voice_c" = "℃";
+"temperature_unit_voice_f" = "℉";
+"temperature_unit_voice_k" = "K";
+
+"temperature_unit_short_c" = "°";
+"temperature_unit_short_f" = "°";
+"temperature_unit_short_k" = "K";
+
+"distance_unit_km" = "km";
+"distance_unit_m" = "m";
+"distance_unit_mi" = "mi";
+"distance_unit_nmi" = "nmi";
+"distance_unit_ft" = "ft";
+
+"distance_unit_voice_km" = "Kilometers";
+"distance_unit_voice_m" = "Meters";
+"distance_unit_voice_mi" = "Miles";
+"distance_unit_voice_nmi" = "Nautical miles";
+"distance_unit_voice_ft" = "Feet";
+
+"pressure_unit_mb" = "mb";
+"pressure_unit_kpa" = "kPa";
+"pressure_unit_hpa" = "hPa";
+"pressure_unit_atm" = "atm";
+"pressure_unit_mmhg" = "mmHg";
+"pressure_unit_inhg" = "inHg";
+"pressure_unit_kgfpsqcm" = "kgf/cm²";
+
+"pressure_unit_voice_mb" = "Millibars";
+"pressure_unit_voice_kpa" = "kilo pascals";
+"pressure_unit_voice_hpa" = "Hecto pascals";
+"pressure_unit_voice_atm" = "Atmospheres";
+"pressure_unit_voice_mmhg" = "Millimeters of mercury";
+"pressure_unit_voice_inhg" = "Inches of mercury";
+"pressure_unit_voice_kgfpsqcm" = "Kilogram force per square centimetre";
+
+"air_quality_unit_mugpcum" = "μg/m³";
+"air_quality_unit_voice_mugpcum" = "Micrograms per cubic meter";
+
+"air_quality_co_unit_mgpcum" = "mg/m³";
+"air_quality_co_unit_voice_mgpcum" = "Milligrams per cubic meter";
+
+"duration_unit_h" = "h";
+"duration_unit_voice_h" = "hours";
+
+"pollen_unit_ppcm" = "/m³";
+"pollen_unit_voice_ppcm" = "Per cubic meter";
+
+"update_interval_1" = "1 hour";
+"update_interval_2" = "2 hours";
+"update_interval_3" = "3 hours";
+"update_interval_4" = "4 hours";
+
+"widget_week_icon_mode_auto" = "Automatic";
+"widget_week_icon_mode_daytime" = "Daytime";
+"widget_week_icon_mode_nighttime" = "Nighttime";

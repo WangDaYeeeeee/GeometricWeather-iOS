@@ -65,7 +65,7 @@ public struct MaterialWeatherView: View, WeatherView {
             Group {
                 // foreground 1.
                 if show1hide2progress > 0 {
-                    ForegroundMapperView(
+                    MtrlForegroundMapperView(
                         weatherKind: weatherKind1,
                         daylight: daylight1,
                         width: width,
@@ -80,7 +80,7 @@ public struct MaterialWeatherView: View, WeatherView {
                 
                 // foreground 2.
                 if show1hide2progress < 1 {
-                    ForegroundMapperView(
+                    MtrlForegroundMapperView(
                         weatherKind: weatherKind2,
                         daylight: daylight2,
                         width: width,
@@ -103,7 +103,7 @@ public struct MaterialWeatherView: View, WeatherView {
         }.background(Group {
             // background 1.
             if show1hide2progress > 0 {
-                BackgroundMapperView(
+                MtrlBackgroundMapperView(
                     weatherKind: weatherKind1,
                     daylight: daylight1
                 ).opacity(
@@ -112,7 +112,7 @@ public struct MaterialWeatherView: View, WeatherView {
             }
             // background 2.
             if show1hide2progress < 1 {
-                BackgroundMapperView(
+                MtrlBackgroundMapperView(
                     weatherKind: weatherKind2,
                     daylight: daylight2
                 ).opacity(

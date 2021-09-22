@@ -160,6 +160,20 @@ struct ClearBackgroundView: View {
     }
 }
 
+struct ClearWidgetBackgroundView: View {
+    
+    var body: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color.ColorFromRGB(0xf6c548),
+                Color.ColorFromRGB(0xdc6300),
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+}
+
 // MARK: - preview.
 
 struct Clear_Previews: PreviewProvider {

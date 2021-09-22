@@ -10,61 +10,152 @@ import SwiftUI
 import Intents
 import GeometricWeatherBasic
 
+private func readLocationWithWeatherCache() -> Location {
+    
+    let location = DatabaseHelper.shared.readLocations().first
+    ?? Location.buildDefaultLocation(
+        weatherSource: WeatherSource[0],
+        residentPosition: false
+    )
+    
+    return location.copyOf(
+        weather: DatabaseHelper.shared.readWeather(
+            formattedId: location.formattedId
+        )
+    )
+}
+
+// MARK: - provider.
+
 struct Provider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent())
+    
+    func placeholder(in context: Context) -> WeatherWidgetEntry {
+        WeatherWidgetEntry(
+            location: readLocationWithWeatherCache(),
+            date: Date(),
+            configuration: ConfigurationIntent()
+        )
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration)
-        completion(entry)
+    func getSnapshot(
+        for configuration: ConfigurationIntent,
+        in context: Context,
+        completion: @escaping (WeatherWidgetEntry) -> ()
+    ) {
+        completion(
+            WeatherWidgetEntry(
+                location: readLocationWithWeatherCache(),
+                date: Date(),
+                configuration: ConfigurationIntent()
+            )
+        )
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+    func getTimeline(
+        for configuration: ConfigurationIntent,
+        in context: Context,
+        completion: @escaping (Timeline<Entry>) -> ()
+    ) {
+        completion(
+            Timeline(entries: [
+                WeatherWidgetEntry(
+                    location: readLocationWithWeatherCache(),
+                    date: Date(),
+                    configuration: ConfigurationIntent()
+                )
+            ], policy: .never)
+        )
     }
 }
 
-struct SimpleEntry: TimelineEntry {
+// MARK: - entry.
+
+struct WeatherWidgetEntry: TimelineEntry {
+    let location: Location
     let date: Date
     let configuration: ConfigurationIntent
+    let settings = SettingsManager.shared
 }
+
+// MARK: - view.
 
 struct WeatherWidgetEntryView : View {
+    
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family
 
     var body: some View {
-        Text(entry.date, style: .time)
+        ZStack {
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackground(
+                weatherKind: weatherCodeToWeatherKind(
+                    code: self.entry.location.weather?.current.weatherCode ?? .clear
+                ),
+                daylight: self.entry.location.daylight
+            )
+            
+            switch self.family {
+            case .systemSmall:
+                WeatherWidgetSmallView(location: self.entry.location)
+            case .systemMedium:
+                WeatherWidgetMediumView(location: self.entry.location)
+            default:
+                WeatherWidgetLargeView(location: self.entry.location)
+            }
+        }
     }
 }
+
+// MARK: - widget.
 
 @main
 struct WeatherWidget: Widget {
+    
     let kind: String = "WeatherWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+        IntentConfiguration(
+            kind: kind,
+            intent: ConfigurationIntent.self,
+            provider: Provider()
+        ) { entry in
             WeatherWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        }.configurationDisplayName(
+            "Forecast"
+        ).description(
+            "Get forecast for a selected location."
+        )
     }
 }
 
+// MARK: - preview.
+
 struct WeatherWidget_Previews: PreviewProvider {
+        
     static var previews: some View {
-        WeatherWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        let entry = WeatherWidgetEntry(
+            location: readLocationWithWeatherCache(),
+            date: Date(),
+            configuration: ConfigurationIntent()
+        )
+        
+        Group {
+            WeatherWidgetEntryView(
+                entry: entry
+            ).previewContext(
+                WidgetPreviewContext(family: .systemSmall)
+            )
+            
+            WeatherWidgetEntryView(
+                entry: entry
+            ).previewContext(
+                WidgetPreviewContext(family: .systemMedium)
+            )
+            
+            WeatherWidgetEntryView(
+                entry: entry
+            ).previewContext(
+                WidgetPreviewContext(family: .systemLarge)
+            )
+        }
     }
 }

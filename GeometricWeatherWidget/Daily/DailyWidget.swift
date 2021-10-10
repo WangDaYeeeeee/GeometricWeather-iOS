@@ -25,7 +25,16 @@ struct DailyWidgetEntryView : View {
                 daylight: self.entry.location.daylight
             )
             
-            DailyView(location: self.entry.location)
+            DailyView(
+                location: self.entry.location
+            ).padding(
+                EdgeInsets(
+                    top: littleMargin,
+                    leading: 0,
+                    bottom: littleMargin,
+                    trailing: 0
+                )
+            )
         }
     }
 }
@@ -42,11 +51,13 @@ struct DailyWidget: Widget {
             intent: ConfigurationIntent.self,
             provider: Provider()
         ) { entry in
-            WeatherWidgetEntryView(entry: entry)
+            DailyWidgetEntryView(entry: entry)
         }.configurationDisplayName(
             "Daily"
         ).description(
             "Get daily forecast for a selected location."
+        ).supportedFamilies(
+            [.systemMedium]
         )
     }
 }

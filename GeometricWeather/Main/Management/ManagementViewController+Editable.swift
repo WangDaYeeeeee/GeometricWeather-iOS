@@ -21,7 +21,7 @@ extension ManagementViewController {
         ) { [weak self] action, view, handler in
             if let location = self?.itemList.get(indexPath.row)?.location {
                 if !location.residentPosition {
-                    self?.view.showToastMessage(
+                    self?.navigationController?.view.showToastMessage(
                         NSLocalizedString("feedback_resident_location", comment: ""),
                         WithAction: NSLocalizedString("learn_more", comment: ""),
                         andCallback: {
@@ -48,7 +48,7 @@ extension ManagementViewController {
             style: .normal,
             title: nil
         ) { [weak self] action, view, handler in
-            self?.view.showToastMessage(
+            self?.navigationController?.view.showToastMessage(
                 NSLocalizedString("feedback_delete_succeed", comment: "")
             )
             

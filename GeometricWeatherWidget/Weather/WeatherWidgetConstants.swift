@@ -1,8 +1,8 @@
 //
 //  WeatherWidgetConstants.swift
-//  WeatherWidgetExtension
+//  GeometricWeather
 //
-//  Created by 王大爷 on 2021/9/20.
+//  Created by 王大爷 on 2021/9/23.
 //
 
 import Foundation

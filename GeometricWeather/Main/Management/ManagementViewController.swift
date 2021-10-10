@@ -20,7 +20,8 @@ class ManagementViewController: GeoViewController,
                                     UISearchBarDelegate,
                                     JXMovableCellTableViewDataSource,
                                     JXMovableCellTableViewDelegate,
-                                    SearchViewDelegate {
+                                SearchViewDelegate {
+    
     
     // MARK: - properties.
     
@@ -329,7 +330,7 @@ class ManagementViewController: GeoViewController,
         self.searching.value = false
         
         if self.viewModel.addLocation(location: Location.buildLocal()) {
-            self.view.showToastMessage(
+            self.navigationController?.view.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: "")
             )
         }
@@ -418,15 +419,12 @@ class ManagementViewController: GeoViewController,
     
     func selectLocation(
         _ newLocation: Location
-    ) -> (
-        parent: ManagementViewController,
-        added: Bool
-    ) {
+    ) -> Bool {
         if self.viewModel.addLocation(location: newLocation) {
             self.searching.value = false
-            return (self, true)
+            return true
         } else {
-            return (self, false)
+            return false
         }
     }
 

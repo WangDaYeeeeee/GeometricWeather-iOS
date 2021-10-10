@@ -17,10 +17,7 @@ protocol SearchViewDelegate: NSObjectProtocol {
     // return true if we can collect this location to location list.
     func selectLocation(
         _ location: Location
-    ) -> (
-        parent: ManagementViewController,
-        added: Bool
-    )
+    ) -> Bool
     func hideKeyboard(withEmptyList: Bool)
 }
 
@@ -129,7 +126,7 @@ class SearchViewController: UIViewController,
             text
         ) { [weak self] locations in
             if locations.isEmpty {
-                self?.parent?.view.showToastMessage(
+                self?.navigationController?.view.showToastMessage(
                     NSLocalizedString("feedback_search_nothing", comment: "")
                 )
             }
@@ -186,13 +183,12 @@ class SearchViewController: UIViewController,
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let delegate = self.delegate {
-            let result = delegate.selectLocation(self.locationList[indexPath.row])
-            if result.added {
-                result.parent.view.showToastMessage(
+            if delegate.selectLocation(self.locationList[indexPath.row]) {
+                self.navigationController?.view.showToastMessage(
                     NSLocalizedString("feedback_collect_succeed", comment: "")
                 )
             } else {
-                result.parent.view.showToastMessage(
+                self.navigationController?.view.showToastMessage(
                     NSLocalizedString("feedback_collect_failed", comment: "")
                 )
             }

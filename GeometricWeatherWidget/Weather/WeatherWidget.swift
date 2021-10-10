@@ -1,81 +1,14 @@
 //
 //  WeatherWidget.swift
-//  WeatherWidget
+//  GeometricWeatherWidgetExtension
 //
-//  Created by 王大爷 on 2021/9/17.
+//  Created by 王大爷 on 2021/9/23.
 //
 
 import WidgetKit
 import SwiftUI
 import Intents
 import GeometricWeatherBasic
-
-private func readLocationWithWeatherCache() -> Location {
-    
-    let location = DatabaseHelper.shared.readLocations().first
-    ?? Location.buildDefaultLocation(
-        weatherSource: WeatherSource[0],
-        residentPosition: false
-    )
-    
-    return location.copyOf(
-        weather: DatabaseHelper.shared.readWeather(
-            formattedId: location.formattedId
-        )
-    )
-}
-
-// MARK: - provider.
-
-struct Provider: IntentTimelineProvider {
-    
-    func placeholder(in context: Context) -> WeatherWidgetEntry {
-        WeatherWidgetEntry(
-            location: readLocationWithWeatherCache(),
-            date: Date(),
-            configuration: ConfigurationIntent()
-        )
-    }
-
-    func getSnapshot(
-        for configuration: ConfigurationIntent,
-        in context: Context,
-        completion: @escaping (WeatherWidgetEntry) -> ()
-    ) {
-        completion(
-            WeatherWidgetEntry(
-                location: readLocationWithWeatherCache(),
-                date: Date(),
-                configuration: ConfigurationIntent()
-            )
-        )
-    }
-
-    func getTimeline(
-        for configuration: ConfigurationIntent,
-        in context: Context,
-        completion: @escaping (Timeline<Entry>) -> ()
-    ) {
-        completion(
-            Timeline(entries: [
-                WeatherWidgetEntry(
-                    location: readLocationWithWeatherCache(),
-                    date: Date(),
-                    configuration: ConfigurationIntent()
-                )
-            ], policy: .never)
-        )
-    }
-}
-
-// MARK: - entry.
-
-struct WeatherWidgetEntry: TimelineEntry {
-    let location: Location
-    let date: Date
-    let configuration: ConfigurationIntent
-    let settings = SettingsManager.shared
-}
 
 // MARK: - view.
 
@@ -107,7 +40,6 @@ struct WeatherWidgetEntryView : View {
 
 // MARK: - widget.
 
-@main
 struct WeatherWidget: Widget {
     
     let kind: String = "WeatherWidget"
@@ -132,7 +64,7 @@ struct WeatherWidget: Widget {
 struct WeatherWidget_Previews: PreviewProvider {
         
     static var previews: some View {
-        let entry = WeatherWidgetEntry(
+        let entry = GeoWidgetEntry(
             location: readLocationWithWeatherCache(),
             date: Date(),
             configuration: ConfigurationIntent()

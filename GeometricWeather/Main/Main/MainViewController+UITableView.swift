@@ -8,17 +8,46 @@
 import UIKit
 import GeometricWeatherBasic
 
-let cellKeyHeader = "header"
-let cellKeyDaily = "daily"
-let cellKeyHourly = "hourly"
-let cellKeyAirQuality = "air_quality"
-let cellKeyAllergen = "allergen"
-let cellKeySunMoon = "sun_moon"
-let cellKeyDetails = "details"
+private let cellKeyHeader = "header"
+private let cellKeyDaily = "daily"
+private let cellKeyHourly = "hourly"
+private let cellKeyAirQuality = "air_quality"
+private let cellKeyAllergen = "allergen"
+private let cellKeySunMoon = "sun_moon"
+private let cellKeyDetails = "details"
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - interfaces.
+    
+    @objc func updateTableView() {
+        if self.tableView.numberOfSections != 0
+            && self.tableView.numberOfRows(inSection: 0) != 0 {
+            self.tableView.scrollToRow(
+                at: IndexPath(row: 0, section: 0),
+                at: .top,
+                animated: false
+            )
+        }
+        self.tableView(
+            self.tableView,
+            didEndDisplayingHeaderView: self.headerCache,
+            forSection: 0
+        )
+        
+        self.cellKeyList = self.prepareCellKeyList(
+            location: self.viewModel.currentLocation.value
+        )
+        self.cellAnimationHelper.reset()
+        self.tableView.reloadData()
+        self.bindDataForHeaderAndCells(self.viewModel.currentLocation.value)
+        
+        self.tableView(
+            self.tableView,
+            willDisplayHeaderView: self.headerCache,
+            forSection: 0
+        )
+    }
     
     func prepareCellCache() -> Dictionary<String, MainTableViewCell> {
         let dict = [
@@ -69,8 +98,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return [String]()
     }
     
+    func hideHeaderAndCells() {
+        self.headerCache.alpha = 0.0
+        
+        for cell in self.cellCache.values {
+            cell.alpha = 0.0
+        }
+    }
+    
     func bindDataForHeaderAndCells(_ location: Location) {
         self.headerCache.bindData(location: location)
+        
         for cell in self.cellCache.values {
             cell.bindData(location: location)
         }

@@ -15,8 +15,9 @@ private let resetAnimationDuration = 0.8
 
 protocol DragSwitchDelegate: AnyObject {
     
-    func onSwiped(_ progress: Double)
+    func onSwiped(_ progress: Double, isDragging: Bool)
     func onSwitched(_ indexOffset: Int)
+    func onRebounded()
 }
 
 class DragSwitchView: UIView {
@@ -29,9 +30,15 @@ class DragSwitchView: UIView {
     
     // offset controll.
     
+    var dragEnabled = true
+    private var dragging = false
+    
     private var offsetX: CGFloat = 0 {
         didSet {
-            self.delegate?.onSwiped(getProgress())
+            self.delegate?.onSwiped(
+                getProgress(),
+                isDragging: self.dragging
+            )
         }
     }
     private var offsetTrigger: CGFloat = 100
@@ -88,6 +95,10 @@ class DragSwitchView: UIView {
         guard let gesture = gestureRecognizer as? UIPanGestureRecognizer else {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
         }
+        
+        if !dragEnabled {
+            return false
+        }
 
         let translation = gesture.translation(in: self)
         return abs(translation.x) > abs(translation.y)
@@ -96,7 +107,7 @@ class DragSwitchView: UIView {
     @objc private func onDrag(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began, .changed:
-            if gesture.state == .began {
+            if gesture.state == .began && self.dragEnabled {
                 self.beginDrag()
             }
             self.dragContentView(gesture)
@@ -108,34 +119,40 @@ class DragSwitchView: UIView {
             break
             
         default:
-            // do nothing.
+            self.dragging = false
             break
         }
     }
     
     private func beginDrag() {
+        self.dragging = true
+        
         self.contentView.layer.removeAllAnimations()
         self.offsetX = self.center.x - self.initCenter.x
     }
     
     private func dragContentView(_ gesture: UIPanGestureRecognizer) {
-        self.dragContentView(
-            gesture.translation(in: self).x * dragRatio
-        )
-        gesture.setTranslation(.zero, in: self)
-    }
-    
-    private func dragContentView(_ offsetX: Double) {
-        self.offsetX += offsetX
+        if self.dragging {
+            self.offsetX += gesture.translation(in: self).x * dragRatio
+        } else {
+            self.offsetX = 0
+        }
         
         self.contentView.center = CGPoint(
             x: self.initCenter.x + self.offsetX,
             y: self.initCenter.y
         )
         self.contentView.alpha = self.getAlpha()
+        
+        gesture.setTranslation(.zero, in: self)
     }
     
     private func endDrag() {
+        if !self.dragging {
+            return
+        }
+        self.dragging = false
+        
         if abs(self.offsetX) >= self.offsetTrigger {
             self.delegate?.onSwitched(self.offsetX > 0 ? -1 : 1)
             
@@ -163,6 +180,7 @@ class DragSwitchView: UIView {
         }, completion: { [weak self] finished in
             if finished {
                 self?.offsetX = 0
+                self?.delegate?.onRebounded()
             }
         })
     }

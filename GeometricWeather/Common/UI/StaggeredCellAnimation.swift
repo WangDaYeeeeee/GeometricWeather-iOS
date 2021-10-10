@@ -64,6 +64,13 @@ class StaggeredCellAnimationHelper: NSObject,
         self.lastIndexPath = indexPath
     }
     
+    func isShownIndexPath(_ indexPath: IndexPath) -> Bool {
+        return indexPath.section < self.lastIndexPath.section || (
+            indexPath.section == self.lastIndexPath.section
+            && indexPath.row <= self.lastIndexPath.row
+        )
+    }
+    
     private func compareIndexPaths(left: IndexPath, right: IndexPath) -> Int {
         if left.section != right.section {
             return left.section - right.section

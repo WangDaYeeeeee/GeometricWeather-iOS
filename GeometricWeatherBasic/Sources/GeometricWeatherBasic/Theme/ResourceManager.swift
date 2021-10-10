@@ -151,7 +151,7 @@ class ResourceManager {
 }
 
 // MARK: - sf symbol res manager.
-
+/*
 class SFResourceManager {
     
     // singleton.
@@ -176,12 +176,16 @@ class SFResourceManager {
     }
     
     public func getMoonIcon() -> UIImage? {
-        return UIImage(
-            systemName: "moon.fill",
-            withConfiguration: UIImage.SymbolConfiguration(
-                paletteColors: [sfMoonColor, .clear, .clear]
+        if #available(iOS 15.0, *) {
+            return UIImage(
+                systemName: "moon.fill",
+                withConfiguration: UIImage.SymbolConfiguration(
+                    paletteColors: [sfMoonColor, .clear, .clear]
+                )
             )
-        )
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     private func getIcon(
@@ -279,3 +283,4 @@ class SFResourceManager {
         }
     }
 }
+*/

@@ -8,6 +8,7 @@
 import Foundation
 import BackgroundTasks
 import GeometricWeatherBasic
+import WidgetKit
 
 private let identifier = "com.wangdaye.geometricweather.polling"
 
@@ -93,6 +94,11 @@ private func polling(onTask task: BGTask) {
                         weather: weather,
                         formattedId: location.formattedId
                     )
+                    if location.formattedId == locations[0].formattedId {
+                        printLog(keyword: "widget", content: "update widget cause polling updated")
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                    
                     printLog(keyword: "polling", content: "polling to post: \(location.formattedId)")
                     NotificationCenter.default.post(
                         name: .backgroundUpdate,

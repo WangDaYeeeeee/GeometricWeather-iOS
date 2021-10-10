@@ -242,38 +242,38 @@ class SunMoonPathView: UIView {
     
     private func setProgress(
         _ progress: Double,
-        withAnimationDuration: TimeInterval,
-        forKey: String,
-        andCGPath: CGPath,
-        forShapeLayer: CAShapeLayer
+        withAnimationDuration duration: TimeInterval,
+        forKey key: String,
+        andCGPath path: CGPath,
+        forShapeLayer layer: CAShapeLayer
     ) {
-        forShapeLayer.path = andCGPath
-        forShapeLayer.strokeStart = 0.0
+        layer.path = path
+        layer.strokeStart = 0.0
         
-        if withAnimationDuration == 0 {
-            forShapeLayer.removeAllAnimations()
-            forShapeLayer.strokeEnd = progress
+        if duration == 0 {
+            layer.removeAllAnimations()
+            layer.strokeEnd = progress
             return
         }
         
-        forShapeLayer.strokeEnd = 0.0
+        layer.strokeEnd = 0.0
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.toValue = progress
-        pathAnimation.duration = withAnimationDuration
+        pathAnimation.duration = duration
         pathAnimation.fillMode = .forwards
         pathAnimation.isRemovedOnCompletion = false
         pathAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.05, 0.1, 0.95)
-        forShapeLayer.add(pathAnimation, forKey: forKey)
+        layer.add(pathAnimation, forKey: key)
     }
     
     private func setProgress(
         _ progress: Double,
-        withAnimationDuration: TimeInterval,
-        forKey: String,
-        forIcon: UIImageView
+        withAnimationDuration duration: TimeInterval,
+        forKey key: String,
+        forIcon icon: UIImageView
     ) {
-        forIcon.alpha = progress == 0 ? 0.0 : 1.0
+        icon.alpha = progress == 0 ? 0.0 : 1.0
         
         let arcPath = UIBezierPath(
             arcCenter: CGPoint(
@@ -293,12 +293,12 @@ class SunMoonPathView: UIView {
         rotationAnimation.toValue = Double(Int(progress * 7)) * 2 * .pi
         
         let animationGroup = CAAnimationGroup()
-        animationGroup.duration = max(withAnimationDuration, 0.1)
+        animationGroup.duration = max(duration, 0.1)
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
         animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.05, 0.1, 0.95)
         animationGroup.animations = [pathAnimation, rotationAnimation]
         
-        forIcon.layer.add(animationGroup, forKey: forKey)
+        icon.layer.add(animationGroup, forKey: key)
     }
 }

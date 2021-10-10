@@ -7,6 +7,7 @@
 
 import Foundation
 import GeometricWeatherBasic
+import WidgetKit
 
 class MainViewModel {
     
@@ -163,6 +164,10 @@ class MainViewModel {
         }
         
         self.updateInnerData(location: location)
+        if location.formattedId == self.selectableTotalLocations.value.locations[0].formattedId {
+            printLog(keyword: "widget", content: "update widget cause updated in main interface")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
         
         self.setLoading(loading: false)
         self.updating = false

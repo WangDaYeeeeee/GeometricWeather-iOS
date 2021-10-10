@@ -7,7 +7,6 @@
 
 import Foundation
 import GeometricWeatherBasic
-import WidgetKit
 
 class UpdateHelper {
     
@@ -86,11 +85,6 @@ class UpdateHelper {
             if let result = location {
                 DispatchQueue.global(qos: .background).async {
                     DatabaseHelper.shared.writeLocation(location: result)
-                    
-                    if result.currentPosition {
-                        printLog(keyword: "widget", content: "update widget cause location changed")
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
                 }
                 
                 self.getWeather(
@@ -138,11 +132,6 @@ class UpdateHelper {
                         weather: result,
                         formattedId: target.formattedId
                     )
-                    
-                    if target.currentPosition {
-                        printLog(keyword: "widget", content: "update widget cause weather updated")
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
                 }
                 
                 callback(

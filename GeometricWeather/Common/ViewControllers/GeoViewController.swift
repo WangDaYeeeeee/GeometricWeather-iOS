@@ -49,8 +49,8 @@ class GeoViewController: UIViewController {
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         
         ThemeManager.shared.globalOverrideUIStyle.stopObserve(
             self.description

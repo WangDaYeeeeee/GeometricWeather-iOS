@@ -10,33 +10,31 @@ import GeometricWeatherBasic
 
 class MainViewController: UIViewController,
                             DragSwitchDelegate,
-                            MainTimeBarDelegate {
-    
-    // MARK: - properties.
-    
-    // vm.
-    
+                            MainTimeBarDelegate,
+                            UIScrollViewDelegate {
+        
+    // MARK: - view models.
+
     lazy var viewModel: MainViewModel = {
         let vm = MainViewModel()
         vm.toastParentProvider = { [weak self] in
-            if let presented = self?.navigationController?.presentedViewController {
-                return presented.view
-            }
-            return self?.view
+            return self?.navigationController?.view
         }
         return vm
     }()
     
-    // inner data.
+    // MARK: - inner data.
     
-    private var previewOffset = 0 {
+    // state values.
+    
+    var previewOffset = 0 {
         didSet {
             DispatchQueue.main.async {
                 self.updatePreviewableSubviews()
             }
         }
     }
-    private var statusBarStyle = UIStatusBarStyle.lightContent {
+    var statusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             self.setNeedsStatusBarAppearanceUpdate()
             self.navigationController?.setNeedsStatusBarAppearanceUpdate()
@@ -54,28 +52,35 @@ class MainViewController: UIViewController,
             }, completion: nil)
         }
     }
+    
+    // cells.
+    
     var cellKeyList = [String]()
     var headerCache = MainTableViewHeaderView(frame: .zero)
     var cellCache = Dictionary<String, MainTableViewCell>()
     var cellHeightCache = Dictionary<String, CGFloat>()
     var cellAnimationHelper = StaggeredCellAnimationHelper()
     
-    // subviews.
+    // timers.
     
-    private let weatherViewController = WeatherViewController()
-    private lazy var managementViewController: ManagementViewController = {
+    var hideIndicatorTimer: Timer?
+    
+    // MARK: - subviews.
+    
+    let weatherViewController = WeatherViewController()
+    lazy var managementViewController: ManagementViewController = {
         return ManagementViewController(self.viewModel)
     }()
     
-    private let dragSwitchView = DragSwitchView(frame: .zero)
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    let dragSwitchView = DragSwitchView(frame: .zero)
+    let tableView = UITableView(frame: .zero, style: .grouped)
     
-    private let navigationBarBackground = UIVisualEffectView(
+    let navigationBarBackground = UIVisualEffectView(
         effect: UIBlurEffect(style: .systemUltraThinMaterial)
     )
-    private let indicator = DotPagerIndicator(frame: .zero)
+    let indicator = DotPagerIndicator(frame: .zero)
     
-    private let alertViewController = AlertViewController()
+    let alertViewController = AlertViewController()
     
     // MARK: - life cycle.
 
@@ -96,72 +101,9 @@ class MainViewController: UIViewController,
             action: #selector(self.onSettingsButtonClicked)
         )
         
-        self.weatherViewController.view.backgroundColor = .clear
-        self.addChild(self.weatherViewController)
-        self.view.addSubview(self.weatherViewController.view)
-        
-        self.dragSwitchView.delegate = self
-        self.view.addSubview(self.dragSwitchView)
-        
-        self.cellCache = self.prepareCellCache()
-        self.tableView.backgroundColor = .clear
-        self.tableView.cellLayoutMarginsFollowReadableWidth = false
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.allowsSelection = false
-        self.tableView.separatorStyle = .none
-        self.tableView.refreshControl = UIRefreshControl()
-        self.tableView.refreshControl?.tintColor = .white
-        self.tableView.refreshControl?.addTarget(
-            self,
-            action: #selector(self.onPullRefresh),
-            for: .valueChanged
-        )
-        self.dragSwitchView.contentView.addSubview(self.tableView)
-        
-        self.navigationBarBackground.alpha = 0
-        self.view.addSubview(self.navigationBarBackground)
-        
-        self.view.addSubview(self.indicator)
-        
-        self.weatherViewController.view.snp.makeConstraints { make in
-            make.size.equalToSuperview()
-        }
-        self.dragSwitchView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
-        }
-        self.tableView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
-        }
-        self.navigationBarBackground.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.topMargin)
-        }
-        self.indicator.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.height.equalTo(littleMargin * 3)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-        }
+        self.initSubviewsAndLayoutThem()
         
         // register notification observers.
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.viewWillEnterForeground),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.viewWillEnterBackground),
-            name: UIApplication.willResignActiveNotification,
-            object: nil
-        )
         
         NotificationCenter.default.addObserver(
             self,
@@ -208,14 +150,7 @@ class MainViewController: UIViewController,
         self.viewModel.loading.observeValue(
             self.description
         ) { newValue in
-            if let refreshControl = self.tableView.refreshControl {
-                
-                if newValue && !refreshControl.isRefreshing {
-                    refreshControl.beginRefreshing()
-                } else if !newValue && refreshControl.isRefreshing {
-                    refreshControl.endRefreshing()
-                }
-            }
+            self.updateTableViewRefreshControl(refreshing: newValue)
         }
         self.viewModel.indicator.observeValue(
             self.description
@@ -226,21 +161,47 @@ class MainViewController: UIViewController,
             if self.indicator.totalIndex != newValue.total {
                 self.indicator.totalIndex = newValue.total
             }
+            
+            self.dragSwitchView.dragEnabled = newValue.total > 1
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // start the indicator animation when this view enter to foreground if app is loading.
+        self.updateTableViewRefreshControl(refreshing: self.viewModel.loading.value)
+        
         self.updatePreviewableSubviews()
         self.updateNavigationBarTintColor()
+        
+        // register app enter and exit foreground listener.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.viewWillEnterBackground),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // stop the indicator animation when this view enter to background.
+        // otherwise we will find an error animation on indicator.
+        self.updateTableViewRefreshControl(refreshing: false)
+        
         self.navigationItem.title = NSLocalizedString("action_home", comment: "")
+        
+        // remove enter and exit foreground listener.
+        NotificationCenter.default.removeObserver(self)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
-        
         ThemeManager.shared.homeOverrideUIStyle.stopObserve(self.description)
         ThemeManager.shared.daylight.stopObserve(self.description)
         
@@ -257,11 +218,15 @@ class MainViewController: UIViewController,
     }
     
     @objc private func viewWillEnterForeground() {
+        // start the indicator animation when app enter to foreground if app is loading.
+        self.updateTableViewRefreshControl(refreshing: self.viewModel.loading.value)
         self.viewModel.checkToUpdate()
     }
     
     @objc private func viewWillEnterBackground() {
-        self.viewModel.cancelRequest()
+        // stop the indicator animation when app enter to background.
+        // otherwise we will find an error animation on indicator.
+        self.updateTableViewRefreshControl(refreshing: false)
     }
     
     @objc private func onBackgroundUpdate(_ notification: NSNotification) {
@@ -310,33 +275,14 @@ class MainViewController: UIViewController,
         ]
     }
     
-    @objc private func updateTableView() {
-        if self.tableView.numberOfSections != 0
-            && self.tableView.numberOfRows(inSection: 0) != 0 {
-            self.tableView.scrollToRow(
-                at: IndexPath(row: 0, section: 0),
-                at: .top,
-                animated: false
-            )
+    private func updateTableViewRefreshControl(refreshing: Bool) {
+        if let refreshControl = self.tableView.refreshControl {
+            if refreshing && !refreshControl.isRefreshing {
+                refreshControl.beginRefreshing()
+            } else if !refreshing && refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
         }
-        self.tableView(
-            self.tableView,
-            didEndDisplayingHeaderView: self.headerCache,
-            forSection: 0
-        )
-        
-        self.cellKeyList = self.prepareCellKeyList(
-            location: self.viewModel.currentLocation.value
-        )
-        self.cellAnimationHelper.reset()
-        self.tableView.reloadData()
-        self.bindDataForHeaderAndCells(self.viewModel.currentLocation.value)
-        
-        self.tableView(
-            self.tableView,
-            willDisplayHeaderView: self.headerCache,
-            forSection: 0
-        )
     }
     
     // MARK: - actions.
@@ -359,7 +305,7 @@ class MainViewController: UIViewController,
         )
     }
     
-    @objc private func onPullRefresh() {
+    @objc func onPullRefresh() {
         self.viewModel.updateWithUpdatingChecking()
     }
     
@@ -367,7 +313,7 @@ class MainViewController: UIViewController,
     
     // drag switch.
     
-    func onSwiped(_ progress: Double) {
+    func onSwiped(_ progress: Double, isDragging: Bool) {
         if self.previewOffset != 0 && fabs(progress) <= 1 {
             // cancel preview.
             self.previewOffset = 0
@@ -375,14 +321,25 @@ class MainViewController: UIViewController,
             // start preview.
             self.previewOffset = progress > 0 ? 1 : -1
         }
+        
+        if isDragging {
+            self.showPageIndicator()
+        }
     }
     
     func onSwitched(_ indexOffset: Int) {
         self.previewOffset = 0
         
+        self.hideHeaderAndCells()
         if !self.viewModel.offsetLocation(offset: indexOffset) {
             updateTableView()
         }
+        
+        self.delayHidePageIndicator()
+    }
+    
+    func onRebounded() {
+        self.delayHidePageIndicator()
     }
     
     // main time bar.
@@ -401,5 +358,18 @@ class MainViewController: UIViewController,
             animated: true,
             completion: nil
         )
+    }
+    
+    // scroll.
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.showPageIndicator()
+    }
+    
+    func scrollViewDidEndDragging(
+        _ scrollView: UIScrollView,
+        willDecelerate decelerate: Bool
+    ) {
+        self.delayHidePageIndicator()
     }
 }

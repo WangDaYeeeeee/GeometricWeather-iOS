@@ -34,6 +34,10 @@
 	<string>This app needs access to location when updating weather data.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when updating weather data in foreground.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>ConfigurationIntent</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -177,6 +177,7 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         self.trendView.highPolylineColor = themeColors.daytime
         self.trendView.lowPolylineColor = themeColors.nighttime
         self.trendView.histogramColor = themeColors.daytime
+        self.trendView.histogramLabel.textColor = precipitationProbabilityColor
         
         let tempUnit = SettingsManager.shared.temperatureUnit
         self.trendView.highPolylineDescription = tempUnit.formatValueWithUnit(

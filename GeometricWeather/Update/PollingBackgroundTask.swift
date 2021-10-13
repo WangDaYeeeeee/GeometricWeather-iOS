@@ -8,7 +8,9 @@
 import Foundation
 import BackgroundTasks
 import GeometricWeatherBasic
-import WidgetKit
+import SwiftUI
+
+let pollingIntervalInHours = 1.0
 
 private let identifier = "com.wangdaye.geometricweather.polling"
 
@@ -41,7 +43,7 @@ func schedulePollingBackgroundTask() {
     do {
         let request = BGAppRefreshTaskRequest(identifier: identifier)
         request.earliestBeginDate = Date(
-            timeIntervalSinceNow: SettingsManager.shared.updateInterval.hours * 60 * 60
+            timeIntervalSinceNow: pollingIntervalInHours * 60 * 60
         )
         try BGTaskScheduler.shared.submit(request)
         printLog(
@@ -68,6 +70,8 @@ private func polling(onTask task: BGTask) {
             updateHelper.cancel()
         }
         tokenDict.removeAll()
+        
+        updateAppExtensionsAndPrintLog()
     }
     
     var progress = 0
@@ -89,14 +93,24 @@ private func polling(onTask task: BGTask) {
                 tokenDict.removeValue(forKey: location.formattedId)
                 
                 if let weather = location.weather {
-                    printLog(keyword: "polling", content: "polling to save: \(location.formattedId)")
-                    DatabaseHelper.shared.writeWeather(
-                        weather: weather,
-                        formattedId: location.formattedId
-                    )
                     if location.formattedId == locations[0].formattedId {
-                        printLog(keyword: "widget", content: "update widget cause polling updated")
-                        WidgetCenter.shared.reloadAllTimelines()
+                        // default location.
+                        checkToPushAlertNotification(
+                            newWeather: weather,
+                            oldWeahter: locations[0].weather
+                        )
+                        checkToPushPrecipitationNotification(weather: weather)
+                        
+                        resetTodayForecastPendingNotification(weather: weather)
+                        resetTomorrowForecastPendingNotification(weather: weather)
+                    }
+                    
+                    printLog(keyword: "polling", content: "polling to save: \(location.formattedId)")
+                    DispatchQueue.global(qos: .background).async {
+                        DatabaseHelper.shared.writeWeather(
+                            weather: weather,
+                            formattedId: location.formattedId
+                        )
                     }
                     
                     printLog(keyword: "polling", content: "polling to post: \(location.formattedId)")
@@ -109,6 +123,8 @@ private func polling(onTask task: BGTask) {
                 }
                 
                 if progress == locations.count {
+                    updateAppExtensionsAndPrintLog()
+                    
                     printLog(keyword: "polling", content: "polling complete with result: \(suceed)")
                     task.setTaskCompleted(success: suceed)
                 }
@@ -121,9 +137,21 @@ private func readLocations(
     withCallback callback: @escaping (_ locations: [Location]) -> Void
 ) {
     DispatchQueue.global(qos: .background).async {
-        let locations = DatabaseHelper.shared.readLocations()
+        var locations = DatabaseHelper.shared.readLocations()
+        
+        locations[0] = locations[0].copyOf(
+            weather: DatabaseHelper.shared.readWeather(
+                formattedId: locations[0].formattedId
+            )
+        )
+        
         DispatchQueue.main.async {
             callback(locations)
         }
     }
+}
+
+private func updateAppExtensionsAndPrintLog() {
+    printLog(keyword: "widget", content: "update app extensions cause polling updated")
+    updateAppExtensions()
 }

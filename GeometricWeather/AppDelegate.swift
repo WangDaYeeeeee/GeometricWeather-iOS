@@ -11,22 +11,28 @@ import GeometricWeatherBasic
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    var window : UIWindow?
-    
+        
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        if #available(iOS 13, *) {
-            // do only pure app launch stuff, not interface stuff
-        } else {
-            window = UIWindow()
-            window?.rootViewController = GeoNavigationController(
-                rootViewController: MainViewController()
-            )
-            window?.makeKeyAndVisible()
+        // request notification authorization.
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .sound, .badge]
+        ) { _, _ in
+            // do nothing.
         }
         
+        // register background fetch task.
         registerPollingBackgroundTask()
+        
+        // register forecast pending notifications.
+        DispatchQueue.global(qos: .background).async {
+            if let weather = DatabaseHelper.shared.readWeather(
+                formattedId: DatabaseHelper.shared.readLocations()[0].formattedId
+            ) {
+                resetTodayForecastPendingNotification(weather: weather)
+                resetTomorrowForecastPendingNotification(weather: weather)
+            }
+        }
         
         return true
     }

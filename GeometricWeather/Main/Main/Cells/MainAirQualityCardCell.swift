@@ -75,14 +75,6 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let weather = location.weather {
             self.weather = weather
             
-            self.circularProgressView.setProgress(
-                0.0,
-                withAnimationDuration: 0.0,
-                value: 0,
-                andDescription: "",
-                betweenColors: (.clear, .clear)
-            )
-            
             // remove all progress view.
             for subview in self.vstack.arrangedSubviews {
                 subview.removeFromSuperview()
@@ -177,7 +169,10 @@ class MainAirQualityCardCell: MainTableViewCell {
         if atFirstTime {
             let aqiIndex = self.weather?.current.airQuality.aqiIndex ?? 0
             let aqiLevel = self.weather?.current.airQuality.aqiLevel ?? 0
-            let aqiProgress = Double(aqiIndex) / Double(AirQuality.aqiIndexLevel5)
+            let aqiProgress = min(
+                Double(aqiIndex) / Double(AirQuality.aqiIndexLevel5),
+                1.0
+            )
             self.circularProgressView.setProgress(
                 aqiProgress,
                 withAnimationDuration: 2.0 + 2.0 * aqiProgress,

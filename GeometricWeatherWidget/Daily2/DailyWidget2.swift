@@ -1,8 +1,8 @@
 //
-//  DailyWidget.swift
+//  DailyWidget2.swift
 //  GeometricWeatherWidgetExtension
 //
-//  Created by 王大爷 on 2021/10/8.
+//  Created by 王大爷 on 2021/10/11.
 //
 
 import WidgetKit
@@ -12,7 +12,7 @@ import GeometricWeatherBasic
 
 // MARK: - view.
 
-struct DailyWidgetEntryView : View {
+struct DailyWidget2EntryView : View {
     
     var entry: Provider.Entry
 
@@ -26,15 +26,18 @@ struct DailyWidgetEntryView : View {
                 currentLocation: self.entry.location.currentPosition
             )
             
-            DailyView(
-                location: self.entry.location
-            ).padding(
-                EdgeInsets(
-                    top: littleMargin,
-                    leading: 0,
-                    bottom: littleMargin,
-                    trailing: 0
+            HStack {
+                CurrentSquareView(
+                    location: self.entry.location
+                ).padding(
+                    .vertical
                 )
+                                
+                HorizontalDailyView(
+                    location: self.entry.location
+                )
+            }.padding(
+                .horizontal
             )
         }
     }
@@ -42,9 +45,9 @@ struct DailyWidgetEntryView : View {
 
 // MARK: - widget.
 
-struct DailyWidget: Widget {
+struct DailyWidget2: Widget {
     
-    let kind: String = "DailyWidget"
+    let kind: String = "DailyWidget2"
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
@@ -52,7 +55,7 @@ struct DailyWidget: Widget {
             intent: ConfigurationIntent.self,
             provider: Provider()
         ) { entry in
-            DailyWidgetEntryView(entry: entry)
+            DailyWidget2EntryView(entry: entry)
         }.configurationDisplayName(
             NSLocalizedString("daily_overview", comment: "")
         ).supportedFamilies(
@@ -63,7 +66,7 @@ struct DailyWidget: Widget {
 
 // MARK: - preview.
 
-struct DailyWidget_Previews: PreviewProvider {
+struct DailyWidget2_Previews: PreviewProvider {
         
     static var previews: some View {
         let entry = GeoWidgetEntry(
@@ -73,7 +76,7 @@ struct DailyWidget_Previews: PreviewProvider {
         )
         
         Group {
-            DailyWidgetEntryView(
+            DailyWidget2EntryView(
                 entry: entry
             ).previewContext(
                 WidgetPreviewContext(family: .systemMedium)

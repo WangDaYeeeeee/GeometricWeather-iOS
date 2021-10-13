@@ -23,7 +23,8 @@ struct WeatherWidgetEntryView : View {
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.entry.location.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.entry.location.daylight
+                daylight: self.entry.location.daylight,
+                currentLocation: self.entry.location.currentPosition
             )
             
             switch self.family {
@@ -52,9 +53,7 @@ struct WeatherWidget: Widget {
         ) { entry in
             WeatherWidgetEntryView(entry: entry)
         }.configurationDisplayName(
-            "Forecast"
-        ).description(
-            "Get forecast for a selected location."
+            NSLocalizedString("forecast", comment: "")
         )
     }
 }

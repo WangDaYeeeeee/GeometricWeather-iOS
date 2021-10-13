@@ -32,7 +32,6 @@ public class SettingsManager {
             "precipitation_alert_enabled": false,
             "update_interval": "update_interval_2",
             "dark_mode": "dark_mode_auto",
-            "exchange_day_night_temperature": false,
             "weather_source": "weather_source_accu",
             "temperature_unit": "temperature_unit_c",
             "precipitation_unit": "precipitation_unit_mm",
@@ -43,7 +42,6 @@ public class SettingsManager {
             "today_forecast_time": "08:00",
             "tomorrow_forecast_enabled": true,
             "tomorrow_forecast_time": "20:00",
-            "notification_enabled": false,
         ])
     }
     
@@ -124,24 +122,6 @@ public class SettingsManager {
             )
             NotificationCenter.default.post(
                 name: .darkModeChanged,
-                object: newValue
-            )
-        }
-    }
-    
-    public var exchangeDayNightTemperature: Bool {
-        get {
-            return UserDefaults.shared.bool(forKey: "exchange_day_night_temperature")
-        }
-        set {
-            UserDefaults.shared.set(newValue, forKey: "exchange_day_night_temperature")
-            
-            NotificationCenter.default.post(
-                name: .settingChanged,
-                object: nil
-            )
-            NotificationCenter.default.post(
-                name: .exchangeDayNightTemperatureChanged,
                 object: newValue
             )
         }
@@ -318,8 +298,6 @@ public class SettingsManager {
             return formatter.date(from: self.todayForecastTime) ?? Date()
         }
         set {
-            printLog(keyword: "testing", content: "set")
-            
             let formatter = DateFormatter()
             formatter.dateFormat = "HH:mm"
                         
@@ -375,26 +353,6 @@ public class SettingsManager {
             formatter.dateFormat = "HH:mm"
                         
             self.tomorrowForecastTime = formatter.string(from: newValue)
-        }
-    }
-    
-    // MARK: - notification.
-    
-    public var notificationEnabled: Bool {
-        get {
-            return UserDefaults.shared.bool(forKey: "notification_enabled")
-        }
-        set {
-            UserDefaults.shared.set(newValue, forKey: "notification_enabled")
-            
-            NotificationCenter.default.post(
-                name: .settingChanged,
-                object: nil
-            )
-            NotificationCenter.default.post(
-                name: .notificationEnabledChanged,
-                object: newValue
-            )
         }
     }
 }

@@ -292,14 +292,21 @@ struct MtrlWidgetBackgroundView: View {
     let weatherKind: WeatherKind
     let daylight: Bool
     
+    @Environment(\.colorScheme) var colorScheme
+    let currentLocation: Bool
+    
     @ViewBuilder
     public var body: some View {
+        let daylight = self.currentLocation ? (
+            self.colorScheme == .light
+        ) : self.daylight
+        
         if weatherKind == .clear && daylight {
             ClearWidgetBackgroundView()
         } else {
             MtrlBackgroundMapperView(
                 weatherKind: self.weatherKind,
-                daylight: self.daylight
+                daylight: daylight
             )
         }
     }

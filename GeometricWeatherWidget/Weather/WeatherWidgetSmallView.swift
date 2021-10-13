@@ -16,65 +16,9 @@ struct WeatherWidgetSmallView: View {
     let location: Location
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 0.0) {
-                Text(
-                    getLocationText(location: self.location)
-                ).font(
-                    Font(miniCaptionFont).weight(.semibold)
-                ).foregroundColor(
-                    .white
-                )
-                
-                Text(
-                    self.getTemperatureTitleText()
-                ).font(
-                    largeTemperatureFont
-                ).foregroundColor(
-                    .white
-                )
-                
-                Text(
-                    self.getBottomCaptionText()
-                ).font(
-                    Font(miniCaptionFont)
-                ).foregroundColor(
-                    .white
-                ).padding(
-                    EdgeInsets(
-                        top: 2.0,
-                        leading: 6.0,
-                        bottom: 2.0,
-                        trailing: 6.0
-                    )
-                ).background(
-                    aqiWindBackground.cornerRadius(aqiWindCornerRadius)
-                )
-                
-                Spacer()
-                
-                HStack(spacing: 4.0) {
-                    Text(
-                        self.getBottomBodyText()
-                    ).font(
-                        Font(captionFont)
-                    ).foregroundColor(
-                        .white
-                    )
-                    
-                    if let uiImage = UIImage.getWeatherIcon(
-                        weatherCode: self.location.weather?.current.weatherCode ?? .clear,
-                        daylight: self.location.daylight
-                    )?.scaleToSize(
-                        CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
-                    ) {
-                        Image(uiImage: uiImage)
-                    }
-                }
-            }
-            
-            Spacer()
-        }.padding()
+        CurrentSquareView(
+            location: self.location
+        ).padding()
     }
     
     private func getTemperatureTitleText() -> String {

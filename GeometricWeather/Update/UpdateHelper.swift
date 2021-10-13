@@ -25,6 +25,15 @@ class UpdateHelper {
         
         cancel()
         
+        if inBackground && target.weather?.isValid(
+            pollingIntervalHours: SettingsManager.shared.updateInterval.hours
+        ) ?? false {
+            DispatchQueue.main.async {
+                callback(target, target.currentPosition ? true : nil, true)
+            }
+            return
+        }
+        
         if !target.currentPosition {
             getWeather(target: target, callback: callback)
             return

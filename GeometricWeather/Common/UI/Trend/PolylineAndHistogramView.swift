@@ -125,9 +125,9 @@ class PolylineAndHistogramView: UIView {
     
     // MARK: - subviews.
     
-    private let highPolylineLabel = UILabel(frame: .zero)
-    private let lowPolylineLabel = UILabel(frame: .zero)
-    private let histogramLabel = UILabel(frame: .zero)
+    let highPolylineLabel = UILabel(frame: .zero)
+    let lowPolylineLabel = UILabel(frame: .zero)
+    let histogramLabel = UILabel(frame: .zero)
     
     // MARK: - shapes.
     

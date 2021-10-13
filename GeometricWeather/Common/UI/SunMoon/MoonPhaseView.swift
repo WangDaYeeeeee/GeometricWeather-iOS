@@ -195,45 +195,45 @@ class MoonPhaseView: UIView {
     }
     
     private func setArcLayer(
-        asColor: UIColor,
-        alignCenter: CGPoint,
-        withRadius: CGFloat,
-        showAtLeftSide: Bool
+        asColor color: UIColor,
+        alignCenter center: CGPoint,
+        withRadius radius: CGFloat,
+        showAtLeftSide atLeft: Bool
     ) {
         let path = UIBezierPath(
-            arcCenter: alignCenter,
-            radius: withRadius,
-            startAngle: (showAtLeftSide ? 0.5 : 1.5) * .pi,
-            endAngle: (showAtLeftSide ? 1.5 : 2.5) * .pi,
+            arcCenter: center,
+            radius: radius,
+            startAngle: (atLeft ? 0.5 : 1.5) * .pi,
+            endAngle: (atLeft ? 1.5 : 2.5) * .pi,
             clockwise: true
         )
         path.close()
         
         self.arcLayer.path = path.cgPath
-        self.arcLayer.fillColor = asColor.cgColor
+        self.arcLayer.fillColor = color.cgColor
         self.arcLayer.strokeColor = UIColor.clear.cgColor
         
         self.layer.addSublayer(self.arcLayer)
     }
     
     private func setOvalLayer(
-        asColor: UIColor,
-        alignCenter: CGPoint,
-        withRadius: CGFloat,
-        andRatio: Double
+        asColor color: UIColor,
+        alignCenter center: CGPoint,
+        withRadius radius: CGFloat,
+        andRatio ratio: Double
     ) {
         let path = UIBezierPath(
             ovalIn: CGRect.from(
-                center: alignCenter,
+                center: center,
                 size: CGSize(
-                    width: (withRadius + 2.75 * moonPhaseStrokeWidth) * andRatio,
-                    height: withRadius + 2.75 * moonPhaseStrokeWidth
+                    width: (2 * radius - 0.8 * moonPhaseStrokeWidth) * ratio,
+                    height: 2 * radius - 0.8 * moonPhaseStrokeWidth
                 )
             )
         )
         
         self.ovalLayer.path = path.cgPath
-        self.ovalLayer.fillColor = asColor.cgColor
+        self.ovalLayer.fillColor = color.cgColor
         self.ovalLayer.strokeColor = UIColor.clear.cgColor
         
         self.layer.addSublayer(self.ovalLayer)

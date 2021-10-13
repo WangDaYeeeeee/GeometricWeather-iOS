@@ -8,7 +8,6 @@
 import UIKit
 import GeometricWeatherBasic
 
-@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -47,8 +46,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+        // clear badge and notifications and request authorization.
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

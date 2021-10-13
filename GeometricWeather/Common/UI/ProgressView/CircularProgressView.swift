@@ -163,7 +163,7 @@ class CircularProgressView: UIView {
         self.progressValue = value
         self.progressDescription = andDescription
         
-        self.shadowShape.path = UIBezierPath(
+        let path = UIBezierPath(
             arcCenter: CGPoint(
                 x: self.frame.width / 2.0,
                 y: self.frame.height / 2.0
@@ -172,14 +172,15 @@ class CircularProgressView: UIView {
             startAngle: 0.75 * .pi,
             endAngle: 2.25 * .pi,
             clockwise: true
-        ).cgPath
+        )
+        self.shadowShape.path = path.cgPath
         self.shadowShape.strokeStart = 0.0
         self.shadowShape.strokeEnd = 1.0
         self.shadowShape.strokeColor = betweenColors.to.withAlphaComponent(
             circularProgressShadowAlpha
         ).cgColor
         
-        self.progressShape.path = self.shadowShape.path
+        self.progressShape.path = path.cgPath
         self.progressShape.strokeStart = 0.0
         
         if withAnimationDuration == 0 {

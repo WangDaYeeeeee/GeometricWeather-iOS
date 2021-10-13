@@ -129,11 +129,13 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
     
     public func getWidgetBackground(
         weatherKind: WeatherKind,
-        daylight: Bool
+        daylight: Bool,
+        currentLocation: Bool
     ) -> some View {
         return MtrlWidgetBackgroundView(
             weatherKind: weatherKind,
-            daylight: daylight
+            daylight: daylight,
+            currentLocation: currentLocation
         )
     }
 }

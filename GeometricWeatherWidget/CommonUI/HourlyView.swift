@@ -12,10 +12,11 @@ struct HourlyView: View {
     
     let location: Location
     
+    let itemCount = 6
+    
     var body: some View {
         HStack(alignment: .center) {
-            // show 6 hourly items.
-            ForEach(0 ..< 2 * 6 - 1) { i in
+            ForEach(0 ..< 2 * itemCount - 1) { i in
                 if i % 2 != 0 {
                     Spacer()
                 } else if let weather = self.location.weather {

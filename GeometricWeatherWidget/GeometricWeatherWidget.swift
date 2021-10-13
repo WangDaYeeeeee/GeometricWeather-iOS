@@ -86,5 +86,6 @@ struct GeometricWeatherWidget: WidgetBundle {
     var body: some Widget {
         WeatherWidget()
         DailyWidget()
+        DailyWidget2()
     }
 }

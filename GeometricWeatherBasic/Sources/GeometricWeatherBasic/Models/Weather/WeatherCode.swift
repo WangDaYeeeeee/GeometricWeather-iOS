@@ -28,3 +28,14 @@ public enum PrecipitationLevel: Codable {
     case middle
     case heavy
 }
+
+public func isPrecipitationWeatherCode(
+    _ weatherCode: WeatherCode
+) -> Bool {
+    switch weatherCode {
+    case .rain(_), .snow(_), .sleet(_), .hail, .thunderstorm:
+        return true
+    default:
+        return false
+    }
+}

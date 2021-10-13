@@ -22,8 +22,6 @@ struct SettingsView: View {
     
     @State private var darkMode = SettingsManager.shared.darkMode.key
     
-    @State private var exchangeDayNightTemperature = SettingsManager.shared.exchangeDayNightTemperature
-    
     // MARK: - service provider.
     
     @State private var weatherSource = SettingsManager.shared.weatherSource.key
@@ -49,10 +47,6 @@ struct SettingsView: View {
     @State private var tomorrowForecastEnabled = SettingsManager.shared.tomorrowForecastEnabled
     
     @State private var tomorrowForecastDate = SettingsManager.shared.tomorrowForecastDate
-    
-    // MARK: - notification.
-    
-    @State private var notificationEnabled = SettingsManager.shared.notificationEnabled
     
     // MARK: - life cycle.
     
@@ -97,10 +91,6 @@ struct SettingsView: View {
                         "dark_mode_dark",
                     ],
                     selectedKey: self.$darkMode
-                )
-                SettingsToggleCellView(
-                    titleKey: "settings_title_exchange_day_night_temp_switch",
-                    toggleOn: self.$exchangeDayNightTemperature
                 )
             }
             
@@ -187,17 +177,6 @@ struct SettingsView: View {
                     selectedDate: self.$tomorrowForecastDate
                 )
             }
-            
-            Section(
-                header: SettingsBodyView(
-                    key: "settings_category_notification"
-                )
-            ) {
-                SettingsToggleCellView(
-                    titleKey: "settings_title_notification",
-                    toggleOn: self.$notificationEnabled
-                )
-            }
         }.listStyle(
             GroupedListStyle()
         ).onChange(of: self.alertEnabled) { newValue in
@@ -210,8 +189,6 @@ struct SettingsView: View {
             ]
         }.onChange(of: self.darkMode) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
-        }.onChange(of: self.exchangeDayNightTemperature) { newValue in
-            SettingsManager.shared.exchangeDayNightTemperature = newValue
         }.onChange(of: self.weatherSource) { newValue in
             SettingsManager.shared.weatherSource = WeatherSource[
                 newValue
@@ -236,14 +213,36 @@ struct SettingsView: View {
             ]
         }.onChange(of: self.todayForecastEnabled) { newValue in
             SettingsManager.shared.todayForecastEnabled = newValue
+            resetTodayForecastPendingIntent()
         }.onChange(of: self.todayForecastDate) { newValue in
             SettingsManager.shared.todayForecastDate = newValue
+            resetTodayForecastPendingIntent()
         }.onChange(of: self.tomorrowForecastEnabled) { newValue in
             SettingsManager.shared.tomorrowForecastEnabled = newValue
+            resetTomorrowForecastPendingIntent()
         }.onChange(of: self.tomorrowForecastDate) { newValue in
             SettingsManager.shared.tomorrowForecastDate = newValue
-        }.onChange(of: self.notificationEnabled) { newValue in
-            SettingsManager.shared.notificationEnabled = newValue
+            resetTomorrowForecastPendingIntent()
+        }
+    }
+}
+
+private func resetTodayForecastPendingIntent() {
+    DispatchQueue.global(qos: .background).async {
+        if let weather = DatabaseHelper.shared.readWeather(
+            formattedId: DatabaseHelper.shared.readLocations()[0].formattedId
+        ) {
+            resetTodayForecastPendingNotification(weather: weather)
+        }
+    }
+}
+
+private func resetTomorrowForecastPendingIntent() {
+    DispatchQueue.global(qos: .background).async {
+        if let weather = DatabaseHelper.shared.readWeather(
+            formattedId: DatabaseHelper.shared.readLocations()[0].formattedId
+        ) {
+            resetTomorrowForecastPendingNotification(weather: weather)
         }
     }
 }

@@ -163,8 +163,8 @@ class LocationTableViewCell: UITableViewCell {
                 daytimeTemperature: weather.dailyForecasts[0].day.temperature.temperature,
                 nighttimeTemperature: weather.dailyForecasts[0].night.temperature.temperature,
                 unit: tempUnit,
-                reverseDayNightPosition: SettingsManager.shared.exchangeDayNightTemperature,
-                seperator: " / "
+                reverseDayNightPosition: false,
+                seperator: "/"
             )
             
             self.currentTemperatureLabel.alpha = 1.0

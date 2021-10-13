@@ -35,7 +35,6 @@
 		374BA60826FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 374BA60326FC78E00080B5CA /* GeometricWeatherWidget.intentdefinition */; };
 		374BA60B26FC78E10080B5CA /* GeometricWeatherWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		374BA62126FC89170080B5CA /* ItemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA61C26FC89160080B5CA /* ItemViews.swift */; };
-		374BA62226FC89170080B5CA /* WeatherWidgetConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA61D26FC89170080B5CA /* WeatherWidgetConstants.swift */; };
 		374BA62326FC89170080B5CA /* WeatherWidgetLargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA61E26FC89170080B5CA /* WeatherWidgetLargeView.swift */; };
 		374BA62426FC89170080B5CA /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA61F26FC89170080B5CA /* WeatherWidgetMediumView.swift */; };
 		374BA62526FC89170080B5CA /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62026FC89170080B5CA /* WeatherWidgetSmallView.swift */; };
@@ -98,6 +97,11 @@
 		37E5D41C271022D60052A690 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D41B271022D60052A690 /* HourlyView.swift */; };
 		37E5D41E271094A10052A690 /* MainViewController+PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D41D271094A10052A690 /* MainViewController+PageIndicator.swift */; };
 		37E5D4202712FCE20052A690 /* MainViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D41F2712FCE20052A690 /* MainViewController+Layout.swift */; };
+		37E5D42327130BA80052A690 /* AppExtensionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42227130BA80052A690 /* AppExtensionHelper.swift */; };
+		37E5D429271402710052A690 /* DailyWidget2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D428271402710052A690 /* DailyWidget2.swift */; };
+		37E5D42B2714030B0052A690 /* CurrentSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42A2714030B0052A690 /* CurrentSquareView.swift */; };
+		37E5D42D271433630052A690 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42C271433630052A690 /* Contants.swift */; };
+		37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42E27145A210052A690 /* AppNotificationHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,7 +177,6 @@
 		374BA60626FC78E10080B5CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		374BA60C26FC78E10080B5CA /* GeometricWeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeometricWeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		374BA61C26FC89160080B5CA /* ItemViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViews.swift; sourceTree = "<group>"; };
-		374BA61D26FC89170080B5CA /* WeatherWidgetConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherWidgetConstants.swift; sourceTree = "<group>"; };
 		374BA61E26FC89170080B5CA /* WeatherWidgetLargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherWidgetLargeView.swift; sourceTree = "<group>"; };
 		374BA61F26FC89170080B5CA /* WeatherWidgetMediumView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherWidgetMediumView.swift; sourceTree = "<group>"; };
 		374BA62026FC89170080B5CA /* WeatherWidgetSmallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherWidgetSmallView.swift; sourceTree = "<group>"; };
@@ -240,6 +243,11 @@
 		37E5D41B271022D60052A690 /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
 		37E5D41D271094A10052A690 /* MainViewController+PageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+PageIndicator.swift"; sourceTree = "<group>"; };
 		37E5D41F2712FCE20052A690 /* MainViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Layout.swift"; sourceTree = "<group>"; };
+		37E5D42227130BA80052A690 /* AppExtensionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensionHelper.swift; sourceTree = "<group>"; };
+		37E5D428271402710052A690 /* DailyWidget2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget2.swift; sourceTree = "<group>"; };
+		37E5D42A2714030B0052A690 /* CurrentSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSquareView.swift; sourceTree = "<group>"; };
+		37E5D42C271433630052A690 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
+		37E5D42E27145A210052A690 /* AppNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +368,7 @@
 			children = (
 				3754FFB326F33A3B00D5A097 /* ViewControllers */,
 				3786DDE7269F110600D407CE /* UI */,
+				37E5D42127130B600052A690 /* Utils */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -418,6 +427,7 @@
 			children = (
 				37E5D41A271022840052A690 /* CommonUI */,
 				37E5D415271021840052A690 /* Daily */,
+				37E5D4252714021B0052A690 /* Daily2 */,
 				374BA61B26FC88F20080B5CA /* Weather */,
 				374BA60126FC78E00080B5CA /* GeometricWeatherWidget.swift */,
 				374BA60326FC78E00080B5CA /* GeometricWeatherWidget.intentdefinition */,
@@ -431,7 +441,6 @@
 		374BA61B26FC88F20080B5CA /* Weather */ = {
 			isa = PBXGroup;
 			children = (
-				374BA61D26FC89170080B5CA /* WeatherWidgetConstants.swift */,
 				374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */,
 				374BA62026FC89170080B5CA /* WeatherWidgetSmallView.swift */,
 				374BA61F26FC89170080B5CA /* WeatherWidgetMediumView.swift */,
@@ -636,11 +645,30 @@
 		37E5D41A271022840052A690 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				37E5D42C271433630052A690 /* Contants.swift */,
+				37E5D42A2714030B0052A690 /* CurrentSquareView.swift */,
 				37E5D418271022550052A690 /* DailyView.swift */,
 				37E5D41B271022D60052A690 /* HourlyView.swift */,
 				374BA61C26FC89160080B5CA /* ItemViews.swift */,
 			);
 			path = CommonUI;
+			sourceTree = "<group>";
+		};
+		37E5D42127130B600052A690 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				37E5D42227130BA80052A690 /* AppExtensionHelper.swift */,
+				37E5D42E27145A210052A690 /* AppNotificationHelper.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		37E5D4252714021B0052A690 /* Daily2 */ = {
+			isa = PBXGroup;
+			children = (
+				37E5D428271402710052A690 /* DailyWidget2.swift */,
+			);
+			path = Daily2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -840,6 +868,7 @@
 				377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */,
 				37852BC326CA7C0F0058E353 /* MainHourlyCardCell.swift in Sources */,
 				37E5D4202712FCE20052A690 /* MainViewController+Layout.swift in Sources */,
+				37E5D42327130BA80052A690 /* AppExtensionHelper.swift in Sources */,
 				3740708126C950390067BB78 /* HorizontalLinesBackgroundView.swift in Sources */,
 				3789E27426AD9984005C3C06 /* MainViewModel.swift in Sources */,
 				3799F51126D2561C00B49D20 /* MainDetailItemView.swift in Sources */,
@@ -866,6 +895,7 @@
 				3761DEB626A9B9AD00B0612E /* LocationHelper.swift in Sources */,
 				3789E20626AAEEA4005C3C06 /* WeatherApi.swift in Sources */,
 				3799F50626D0EACE00B49D20 /* LinearProgressView.swift in Sources */,
+				37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */,
 				3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */,
 				37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */,
 				377647E526F1988800B82BB2 /* SettingsView.swift in Sources */,
@@ -912,10 +942,12 @@
 				374BA62426FC89170080B5CA /* WeatherWidgetMediumView.swift in Sources */,
 				374BA62326FC89170080B5CA /* WeatherWidgetLargeView.swift in Sources */,
 				374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */,
-				374BA62226FC89170080B5CA /* WeatherWidgetConstants.swift in Sources */,
+				37E5D42D271433630052A690 /* Contants.swift in Sources */,
 				37E5D417271021A00052A690 /* DailyWidget.swift in Sources */,
 				374BA60226FC78E00080B5CA /* GeometricWeatherWidget.swift in Sources */,
+				37E5D429271402710052A690 /* DailyWidget2.swift in Sources */,
 				374BA62526FC89170080B5CA /* WeatherWidgetSmallView.swift in Sources */,
+				37E5D42B2714030B0052A690 /* CurrentSquareView.swift in Sources */,
 				374BA62126FC89170080B5CA /* ItemViews.swift in Sources */,
 				37E5D419271022550052A690 /* DailyView.swift in Sources */,
 				37E5D41C271022D60052A690 /* HourlyView.swift in Sources */,

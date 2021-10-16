@@ -126,7 +126,7 @@ class SearchViewController: UIViewController,
             text
         ) { [weak self] locations in
             if locations.isEmpty {
-                self?.navigationController?.view.showToastMessage(
+                ToastHelper.showToastMessage(
                     NSLocalizedString("feedback_search_nothing", comment: "")
                 )
             }
@@ -184,11 +184,11 @@ class SearchViewController: UIViewController,
         
         if let delegate = self.delegate {
             if delegate.selectLocation(self.locationList[indexPath.row]) {
-                self.navigationController?.view.showToastMessage(
+                ToastHelper.showToastMessage(
                     NSLocalizedString("feedback_collect_succeed", comment: "")
                 )
             } else {
-                self.navigationController?.view.showToastMessage(
+                ToastHelper.showToastMessage(
                     NSLocalizedString("feedback_collect_failed", comment: "")
                 )
             }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GeometricWeatherBasic
 
 extension ManagementViewController {
     
@@ -21,7 +22,7 @@ extension ManagementViewController {
         ) { [weak self] action, view, handler in
             if let location = self?.itemList.get(indexPath.row)?.location {
                 if !location.residentPosition {
-                    self?.navigationController?.view.showToastMessage(
+                    ToastHelper.showToastMessage(
                         NSLocalizedString("feedback_resident_location", comment: ""),
                         WithAction: NSLocalizedString("learn_more", comment: ""),
                         andCallback: {
@@ -48,7 +49,7 @@ extension ManagementViewController {
             style: .normal,
             title: nil
         ) { [weak self] action, view, handler in
-            self?.navigationController?.view.showToastMessage(
+            ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_delete_succeed", comment: "")
             )
             
@@ -59,9 +60,7 @@ extension ManagementViewController {
         delete.backgroundColor = .systemRed
         
         var actions = [UIContextualAction]()
-        if self.itemList.count > 1 {
-            actions.append(delete)
-        }
+        actions.append(delete)
         if !(
             self.itemList.get(
                 indexPath.row

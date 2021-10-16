@@ -330,7 +330,7 @@ class ManagementViewController: GeoViewController,
         self.searching.value = false
         
         if self.viewModel.addLocation(location: Location.buildLocal()) {
-            self.navigationController?.view.showToastMessage(
+            ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: "")
             )
         }

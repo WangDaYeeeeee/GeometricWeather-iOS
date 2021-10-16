@@ -21,9 +21,8 @@ class MainViewModel {
     private var initCompleted: Bool
     private var updating: Bool
     
-    // controllers.
+    // repository.
     private let repository = MainRepository()
-    var toastParentProvider: (() -> UIView?)?
     
     // MARK: - life cycle.
     
@@ -153,11 +152,11 @@ class MainViewModel {
         weatherUpdateResult: Bool
     ) {
         if !weatherUpdateResult {
-            self.toastParentProvider?()?.showToastMessage(
+            ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_get_weather_failed", comment: "")
             )
         } else if !(locationResult ?? true) {
-            self.toastParentProvider?()?.showToastMessage(
+            ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_location_failed", comment: "")
             )
         }
@@ -243,7 +242,7 @@ class MainViewModel {
         }
         
         if self.currentLocation.value.formattedId == location.formattedId {
-            self.toastParentProvider?()?.showToastMessage(
+            ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_updated_in_background", comment: "")
             )
             self.cancelRequest()
@@ -251,28 +250,35 @@ class MainViewModel {
         self.updateInnerData(location: location)
     }
     
+    func setLocation(index: Int) {
+        let location = self.selectableValidLocations.value.locations[index]
+        self.setLocation(formattedId: location.formattedId)
+    }
+    
     func setLocation(formattedId: String) {
         self.cancelRequest()
         
         for (i, location) in self.selectableValidLocations.value.locations.enumerated() {
-            if location.formattedId == formattedId {
-                self.setCurrentLocation(location: location)
-                
-                self.indicator.value = Indicator(
-                    total: self.selectableValidLocations.value.locations.count,
-                    index: i
-                )
-                
-                self.selectableTotalLocations.value = SelectableLocationArray(
-                    locations: self.selectableTotalLocations.value.locations,
-                    selectedId: formattedId
-                )
-                self.selectableValidLocations.value = SelectableLocationArray(
-                    locations: self.selectableValidLocations.value.locations,
-                    selectedId: formattedId
-                )
-                break
+            if location.formattedId != formattedId {
+                continue
             }
+            
+            self.setCurrentLocation(location: location)
+            
+            self.indicator.value = Indicator(
+                total: self.selectableValidLocations.value.locations.count,
+                index: i
+            )
+            
+            self.selectableTotalLocations.value = SelectableLocationArray(
+                locations: self.selectableTotalLocations.value.locations,
+                selectedId: formattedId
+            )
+            self.selectableValidLocations.value = SelectableLocationArray(
+                locations: self.selectableValidLocations.value.locations,
+                selectedId: formattedId
+            )
+            break
         }
     }
     
@@ -341,6 +347,9 @@ class MainViewModel {
         self.updateInnerData(total: total)
         self.repository.writeLocations(locations: total)
         
+        printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
+        updateAppExtensions()
+        
         return true
     }
     
@@ -355,6 +364,9 @@ class MainViewModel {
                 
         self.updateInnerData(total: total)
         self.repository.writeLocations(locations: total)
+        
+        printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
+        updateAppExtensions()
     }
     
     func updateLocation(location: Location) {
@@ -362,6 +374,9 @@ class MainViewModel {
         self.repository.writeLocations(
             locations: self.selectableTotalLocations.value.locations
         )
+        
+        printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
+        updateAppExtensions()
     }
     
     func deleteLocation(position: Int) {
@@ -370,6 +385,9 @@ class MainViewModel {
         
         self.updateInnerData(total: total)
         self.repository.deleteLocation(location: location)
+        
+        printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
+        updateAppExtensions()
     }
     
     // MARK: - getter.

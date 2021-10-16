@@ -114,7 +114,7 @@ private func polling(onTask task: BGTask) {
                     }
                     
                     printLog(keyword: "polling", content: "polling to post: \(location.formattedId)")
-                    NotificationCenter.default.post(
+                    NotificationCenter.default.postToMainThread(
                         name: .backgroundUpdate,
                         object: location
                     )

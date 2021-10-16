@@ -45,6 +45,13 @@ class MainHourlyCardCell: MainTableViewCell,
             HourlyTrendCollectionViewCell.self,
             forCellWithReuseIdentifier: trendReuseIdentifier
         )
+        self.hourlyCollectionView.itemSelected = { [weak self] index in
+            if let weather = self?.weather {
+                ToastHelper.showToastMessage(
+                    weather.hourlyForecasts[index.row].weatherText
+                )
+            }
+        }
         self.cardContainer.contentView.addSubview(self.hourlyCollectionView)
         
         self.hourlyBackgroundView.isUserInteractionEnabled = false

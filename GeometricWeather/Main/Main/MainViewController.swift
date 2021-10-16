@@ -15,13 +15,7 @@ class MainViewController: UIViewController,
         
     // MARK: - view models.
 
-    lazy var viewModel: MainViewModel = {
-        let vm = MainViewModel()
-        vm.toastParentProvider = { [weak self] in
-            return self?.navigationController?.view
-        }
-        return vm
-    }()
+    let viewModel = MainViewModel()
     
     // MARK: - inner data.
     
@@ -52,6 +46,8 @@ class MainViewController: UIViewController,
             }, completion: nil)
         }
     }
+    
+    var viewIsAppeared = false
     
     // cells.
     
@@ -103,21 +99,6 @@ class MainViewController: UIViewController,
         
         self.initSubviewsAndLayoutThem()
         
-        // register notification observers.
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.onBackgroundUpdate(_:)),
-            name: .backgroundUpdate,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.updateTableView),
-            name: .settingChanged,
-            object: nil
-        )
-        
         // observe theme changed.
         
         ThemeManager.shared.homeOverrideUIStyle.observeValue(
@@ -164,10 +145,45 @@ class MainViewController: UIViewController,
             
             self.dragSwitchView.dragEnabled = newValue.total > 1
         }
+        
+        // register notification observers.
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.onBackgroundUpdate(_:)),
+            name: .backgroundUpdate,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateTableView),
+            name: .settingChanged,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.responseAlertNotificationAction),
+            name: .alertNotificationAction,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.responseForecastNotificationAction),
+            name: .forecastNotificationAction,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.responseAppShortcutItemAction(_:)),
+            name: .appShortcutItemAction,
+            object: nil
+        )
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.viewIsAppeared = true
+        
         // start the indicator animation when this view enter to foreground if app is loading.
         self.updateTableViewRefreshControl(refreshing: self.viewModel.loading.value)
         
@@ -191,6 +207,8 @@ class MainViewController: UIViewController,
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.viewIsAppeared = false
+        
         // stop the indicator animation when this view enter to background.
         // otherwise we will find an error animation on indicator.
         self.updateTableViewRefreshControl(refreshing: false)
@@ -198,10 +216,21 @@ class MainViewController: UIViewController,
         self.navigationItem.title = NSLocalizedString("action_home", comment: "")
         
         // remove enter and exit foreground listener.
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
     }
     
     deinit {
+        NotificationCenter.default.removeObserver(self)
+        
         ThemeManager.shared.homeOverrideUIStyle.stopObserve(self.description)
         ThemeManager.shared.daylight.stopObserve(self.description)
         
@@ -249,7 +278,9 @@ class MainViewController: UIViewController,
         ? ThemeManager.shared.daylight.value
         : isDaylight(location: location)
         
-        self.navigationItem.title = getLocationText(location: location)
+        if self.viewIsAppeared {
+            self.navigationItem.title = getLocationText(location: location)
+        }
         self.weatherViewController.update(
             weatherKind: weatherCodeToWeatherKind(
                 code: location.weather?.current.weatherCode ?? .clear
@@ -288,7 +319,7 @@ class MainViewController: UIViewController,
     // MARK: - actions.
     
     @objc private func onManagementButtonClicked() {
-        if self.managementViewController.view.superview != nil {
+        if self.navigationController?.presentedViewController != nil {
             return
         }
         self.navigationController?.present(
@@ -349,7 +380,7 @@ class MainViewController: UIViewController,
     }
 
     func reactAlertAction() {
-        if self.alertViewController.view.superview != nil {
+        if self.navigationController?.presentedViewController != nil {
             return
         }
         self.alertViewController.alertList = self.viewModel.currentLocation.value.weather?.alerts ?? []

@@ -31,6 +31,12 @@ class SettingsViewController: GeoViewController {
         self.view.backgroundColor = .systemBackground
         
         self.navigationItem.title = NSLocalizedString("action_settings", comment: "")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(self.onAboutButtonClicked)
+        )
         
         self.addChild(self.innerViewController)
         self.view.addSubview(self.innerViewController.view)
@@ -41,8 +47,13 @@ class SettingsViewController: GeoViewController {
     }
     
     @objc private func onBackButtonClicked() {
-        if let parent = self.navigationController {
-            parent.popViewController(animated: true)
-        }
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func onAboutButtonClicked() {
+        self.navigationController?.pushViewController(
+            AboutViewController(),
+            animated: true
+        )
     }
 }

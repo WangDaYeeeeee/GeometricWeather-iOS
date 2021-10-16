@@ -8,30 +8,35 @@
 import Foundation
 import GeometricWeatherBasic
 
-private let touchDownAnimDuration = 0.1
-private let touchUpAnimDuration = 0.5
+private let touchDownAnimDuration = 0.4
+private let touchUpAnimDuration = 0.6
 
 private let touchDownAlpha = 0.5
+private let touchDownScale = 1.1
 
 class CornerButton: UIButton {
+    
+    private var intrinsicContentSizeCache: CGSize?
     
     override var intrinsicContentSize: CGSize {
         get {
             let superSize = super.intrinsicContentSize
-            return CGSize(
+            let size = CGSize(
                 width: superSize.width + 2 * littleMargin,
                 height: superSize.height + littleMargin
             )
+            
+            if self.intrinsicContentSizeCache != size {
+                self.intrinsicContentSizeCache = size
+                self.layer.cornerRadius = min(size.width, size.height) / 2.0
+            }
+            
+            return size
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        self.layer.cornerRadius = min(
-            self.frame.width,
-            self.frame.height
-        ) / 2.0
     }
     
     override func touchesBegan(
@@ -39,8 +44,11 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesBegan(touches, with: event)
-        UIView.animate(withDuration: touchDownAnimDuration) {
+        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
             self.titleLabel?.alpha = touchDownAlpha
+            self.transform = CGAffineTransform(scaleX: touchDownScale, y: touchDownScale)
+        } completion: { _ in
+            // do nothing.
         }
     }
     
@@ -49,8 +57,11 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesCancelled(touches, with: event)
-        UIView.animate(withDuration: touchUpAnimDuration) {
+        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
             self.titleLabel?.alpha = 1.0
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        } completion: { _ in
+            // do nothing.
         }
     }
     
@@ -59,8 +70,11 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesEnded(touches, with: event)
-        UIView.animate(withDuration: touchUpAnimDuration) {
+        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
             self.titleLabel?.alpha = 1.0
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        } completion: { _ in
+            // do nothing.
         }
     }
 }

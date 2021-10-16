@@ -91,6 +91,10 @@
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
 		37D92A4226D9266D00A13C63 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D92A4126D9266D00A13C63 /* ManagementViewController.swift */; };
 		37D92A4626D92D4D00A13C63 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */; };
+		37D9E60E2718454100209110 /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E60D2718454100209110 /* ToastHelper.swift */; };
+		37D9E61127185AFE00209110 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E61027185AFE00209110 /* AboutView.swift */; };
+		37D9E615271862B400209110 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E614271862B400209110 /* AboutViewController.swift */; };
+		37D9E6172719183200209110 /* AboutItemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E6162719183200209110 /* AboutItemViews.swift */; };
 		37E0E77B26CAA4DC0057B0EC /* MainTrendUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0E77A26CAA4DC0057B0EC /* MainTrendUtils.swift */; };
 		37E5D417271021A00052A690 /* DailyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D416271021A00052A690 /* DailyWidget.swift */; };
 		37E5D419271022550052A690 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D418271022550052A690 /* DailyView.swift */; };
@@ -102,6 +106,7 @@
 		37E5D42B2714030B0052A690 /* CurrentSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42A2714030B0052A690 /* CurrentSquareView.swift */; };
 		37E5D42D271433630052A690 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42C271433630052A690 /* Contants.swift */; };
 		37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42E27145A210052A690 /* AppNotificationHelper.swift */; };
+		37E5D4312717FEAD0052A690 /* MainViewController+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D4302717FEAD0052A690 /* MainViewController+Response.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +242,10 @@
 		37D7AA8B26B2AEB90028F67E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		37D92A4126D9266D00A13C63 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
 		37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		37D9E60D2718454100209110 /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
+		37D9E61027185AFE00209110 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		37D9E614271862B400209110 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		37D9E6162719183200209110 /* AboutItemViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutItemViews.swift; sourceTree = "<group>"; };
 		37E0E77A26CAA4DC0057B0EC /* MainTrendUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendUtils.swift; sourceTree = "<group>"; };
 		37E5D416271021A00052A690 /* DailyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget.swift; sourceTree = "<group>"; };
 		37E5D418271022550052A690 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
@@ -248,6 +257,7 @@
 		37E5D42A2714030B0052A690 /* CurrentSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSquareView.swift; sourceTree = "<group>"; };
 		37E5D42C271433630052A690 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
 		37E5D42E27145A210052A690 /* AppNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationHelper.swift; sourceTree = "<group>"; };
+		37E5D4302717FEAD0052A690 /* MainViewController+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Response.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +332,7 @@
 			children = (
 				3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */,
 				370BA5CA269C629C006BB1CE /* Common */,
+				37D9E60F27185AE700209110 /* About */,
 				3789E21C26ABDCE5005C3C06 /* Settings */,
 				3761DEB226A9B92E00B0612E /* Update */,
 				3786DDE2269F02BB00D407CE /* Main */,
@@ -418,6 +429,7 @@
 			children = (
 				3749A10B26E4762800EEA6A3 /* Toast-Swift.swift */,
 				3749A11026E47A8A00EEA6A3 /* ToastViews.swift */,
+				37D9E60D2718454100209110 /* ToastHelper.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -601,6 +613,7 @@
 				37E5D41F2712FCE20052A690 /* MainViewController+Layout.swift */,
 				378CB01726BF7EEA00C7BD13 /* MainViewController+UITableView.swift */,
 				37E5D41D271094A10052A690 /* MainViewController+PageIndicator.swift */,
+				37E5D4302717FEAD0052A690 /* MainViewController+Response.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -632,6 +645,16 @@
 				3799F50526D0EACE00B49D20 /* LinearProgressView.swift */,
 			);
 			path = ProgressView;
+			sourceTree = "<group>";
+		};
+		37D9E60F27185AE700209110 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				37D9E61027185AFE00209110 /* AboutView.swift */,
+				37D9E6162719183200209110 /* AboutItemViews.swift */,
+				37D9E614271862B400209110 /* AboutViewController.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		37E5D415271021840052A690 /* Daily */ = {
@@ -879,6 +902,7 @@
 				3789E22026AC0D2A005C3C06 /* UpdateHelper.swift in Sources */,
 				37E0E77B26CAA4DC0057B0EC /* MainTrendUtils.swift in Sources */,
 				378CB02626BFE43500C7BD13 /* StaggeredCellAnimation.swift in Sources */,
+				37D9E615271862B400209110 /* AboutViewController.swift in Sources */,
 				3799F50B26D10C9300B49D20 /* MainSunMoonCardCell.swift in Sources */,
 				3799F50D26D225A500B49D20 /* MoonPhaseView.swift in Sources */,
 				3742CBD026C76130001CDCED /* DailyTrendCollectionViewCell.swift in Sources */,
@@ -887,6 +911,7 @@
 				3739F27826C0D83B00EAE90A /* MainTimeBarView.swift in Sources */,
 				377647EE26F1F4D400B82BB2 /* SettingsViewController.swift in Sources */,
 				374BA60826FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,
+				37D9E6172719183200209110 /* AboutItemViews.swift in Sources */,
 				3749A0FD26E1F7C700EEA6A3 /* DotPagerIndicator.swift in Sources */,
 				3799F50926D1020800B49D20 /* SunMoonPathView.swift in Sources */,
 				3789E21B26ABD9A1005C3C06 /* ConvertUtils.swift in Sources */,
@@ -899,6 +924,8 @@
 				3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */,
 				37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */,
 				377647E526F1988800B82BB2 /* SettingsView.swift in Sources */,
+				37D9E61127185AFE00209110 /* AboutView.swift in Sources */,
+				37E5D4312717FEAD0052A690 /* MainViewController+Response.swift in Sources */,
 				378CB00B26BD80DD00C7BD13 /* DragSwitchView.swift in Sources */,
 				37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */,
 				378CB02426BFC50800C7BD13 /* MainDailyCardCell.swift in Sources */,
@@ -914,6 +941,7 @@
 				37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */,
 				3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
+				37D9E60E2718454100209110 /* ToastHelper.swift in Sources */,
 				3749A10C26E4762800EEA6A3 /* Toast-Swift.swift in Sources */,
 				3799F50F26D255C300B49D20 /* MainDetailsCardCell.swift in Sources */,
 			);

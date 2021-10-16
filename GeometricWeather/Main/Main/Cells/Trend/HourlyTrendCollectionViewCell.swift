@@ -129,6 +129,26 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             self.trendView.histogramDescription = "\(Int(precipitationProb))%"
         }
     }
+    
+    // MARK: - cell selection.
+    
+    override var isHighlighted: Bool {
+        didSet {
+            if (self.isHighlighted) {
+                UIView.animate(withDuration: 0.2, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+                    self.contentView.alpha = 0.5
+                } completion: { _ in
+                    // do nothing.
+                }
+            } else {
+                UIView.animate(withDuration: 0.2, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+                    self.contentView.alpha = 1.0
+                } completion: { _ in
+                    // do nothing.
+                }
+            }
+        }
+    }
 }
 
 // MARK: - background.

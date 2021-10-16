@@ -9,12 +9,17 @@ import UIKit
 import SnapKit
 import GeometricWeatherBasic
 
+private let minCountAnimationDuration = 2.0
+private let unitCountAnimationDeltaTemperature = 10.0
+
 class MainTableViewHeaderView: UIView, AbstractMainItem {
     
     private let container = UIView(frame: .zero)
-    private let largeTemperature = UILabel(frame: .zero)
+    private let largeTemperature = UICountingLabel(frame: .zero)
     private let title = UILabel(frame: .zero)
     private let subtitle = UILabel(frame: .zero)
+    
+    private var currentTemperature = 0
     
     // MARK: - life cycle.
     
@@ -26,6 +31,8 @@ class MainTableViewHeaderView: UIView, AbstractMainItem {
         self.largeTemperature.textAlignment = .natural
         self.largeTemperature.font = designTitleFont
         self.largeTemperature.textColor = .white
+        self.largeTemperature.format = "%d°"
+        self.largeTemperature.method = .easeInOut
         self.container.addSubview(self.largeTemperature)
         
         self.title.textAlignment = .natural
@@ -69,9 +76,19 @@ class MainTableViewHeaderView: UIView, AbstractMainItem {
     
     func bindData(location: Location) {
         if let weather = location.weather {
-            self.largeTemperature.text = SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                weather.current.temperature.temperature,
-                unit: NSLocalizedString("temperature_unit_short_c", comment: "")
+            let previousTemperature = self.currentTemperature
+            self.currentTemperature = SettingsManager.shared.temperatureUnit.getValue(
+                weather.current.temperature.temperature
+            )
+            self.largeTemperature.count(
+                from: CGFloat(previousTemperature),
+                to: CGFloat(self.currentTemperature),
+                withDuration: min(
+                    minCountAnimationDuration,
+                    Double(
+                        abs(previousTemperature - self.currentTemperature)
+                    ) / unitCountAnimationDeltaTemperature
+                )
             )
             
             var description = weather.current.weatherText

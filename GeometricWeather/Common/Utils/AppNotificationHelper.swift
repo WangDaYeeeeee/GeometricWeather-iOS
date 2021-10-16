@@ -8,9 +8,42 @@
 import Foundation
 import GeometricWeatherBasic
 
+// MARK: - response.
+
+extension Notification.Name {
+    
+    // send notification without anything.
+    static let alertNotificationAction = NSNotification.Name(
+        "com.wangdaye.geometricweather.alertNotificationAction"
+    )
+    static let forecastNotificationAction = NSNotification.Name(
+        "com.wangdaye.geometricweather.forecastNotificationAction"
+    )
+}
+
+func responseNotificationAction(_ response: UNNotificationResponse) {
+    let id = response.notification.request.identifier
+    
+    DispatchQueue.main.async {
+        if id.starts(with: alertNotificationIdentifier) {
+            NotificationCenter.default.postStikcy(
+                name: .alertNotificationAction,
+                object: nil
+            )
+            return
+        }
+        
+        NotificationCenter.default.postStikcy(
+            name: .forecastNotificationAction,
+            object: nil
+        )
+    }
+}
+
 // MARK: - alert.
 
 private let alertNotificationIdentifier = "alert_notification"
+private let alertNotificationGroupIdentifier = "alert_notification_group"
 
 func checkToPushAlertNotification(newWeather: Weather, oldWeahter: Weather?) {
     
@@ -33,7 +66,6 @@ func checkToPushAlertNotification(newWeather: Weather, oldWeahter: Weather?) {
     }
 }
 
-
 private func pushAlertNotification(alert: WeatherAlert) {
     let content = UNMutableNotificationContent()
     content.title = alert.description + ", " + DateFormatter.localizedString(
@@ -43,6 +75,7 @@ private func pushAlertNotification(alert: WeatherAlert) {
     )
     content.body = alert.content
     content.badge = NSNumber(value: 1)
+    content.threadIdentifier = alertNotificationGroupIdentifier
     
     UNUserNotificationCenter.current().add(
         UNNotificationRequest(
@@ -62,6 +95,7 @@ private func pushAlertNotification(alert: WeatherAlert) {
 
 private let todayForecastNotificationIdentifier = "today_forecast_notification"
 private let tomorrowForecastNotificationIdentifier = "tomorrow_forecast_notification"
+private let forecastNotificationGroupIdentifier = "forecast_notification_group"
 
 func resetTodayForecastPendingNotification(weather: Weather) {
 
@@ -93,6 +127,7 @@ func resetTodayForecastPendingNotification(weather: Weather) {
         weather.dailyForecasts[0].night.temperature.temperature,
         unit: "°"
     )
+    content.threadIdentifier = forecastNotificationGroupIdentifier
         
     UNUserNotificationCenter.current().add(
         UNNotificationRequest(
@@ -141,6 +176,7 @@ func resetTomorrowForecastPendingNotification(weather: Weather) {
         weather.dailyForecasts[1].night.temperature.temperature,
         unit: "°"
     )
+    content.threadIdentifier = forecastNotificationGroupIdentifier
         
     UNUserNotificationCenter.current().add(
         UNNotificationRequest(
@@ -162,6 +198,7 @@ func resetTomorrowForecastPendingNotification(weather: Weather) {
 // MARK: - precipitation.
 
 private let precipitationNotificationIdentifier = "precipitation_notification"
+private let precipitationNotificationGroupIdentifier = "precipitation_notification_group"
 
 func checkToPushPrecipitationNotification(weather: Weather) {
     if !SettingsManager.shared.precipitationAlertEnabled {
@@ -196,6 +233,7 @@ func checkToPushPrecipitationNotification(weather: Weather) {
         content.body = NSLocalizedString("feedback_short_term_precipitation_alert", comment: "")
     }
     content.badge = NSNumber(value: 1)
+    content.threadIdentifier = precipitationNotificationGroupIdentifier
     
     UNUserNotificationCenter.current().add(
         UNNotificationRequest(

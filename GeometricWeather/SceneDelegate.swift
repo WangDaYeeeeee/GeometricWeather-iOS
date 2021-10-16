@@ -26,6 +26,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             rootViewController: MainViewController()
         )
         window?.makeKeyAndVisible()
+        
+        if let item = connectionOptions.shortcutItem {
+            responseAppShortcutItemAction(item)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -58,6 +62,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Save changes in the application's managed object context when the application transitions to the background.
         DatabaseHelper.shared.checkToSaveContext()
+    }
+    
+    func windowScene(
+        _ windowScene: UIWindowScene,
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
+        responseAppShortcutItemAction(shortcutItem)
+        completionHandler(true)
     }
 }
 

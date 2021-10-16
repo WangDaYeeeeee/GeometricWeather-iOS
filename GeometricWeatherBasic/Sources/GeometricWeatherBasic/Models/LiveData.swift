@@ -77,11 +77,11 @@ public class LiveData<T> {
 
 // MARK: - equaltable.
 
-public class EqualtableLiveData<T: Equatable>: LiveData<T> {
+public class EqualtableLiveData<T: Equatable> {
     
-    private var valueChanged = false
+    // properties.
     
-    public override var value: T {
+    public var value: T {
         willSet {
             guard Thread.isMainThread else {
                 fatalError("You need update value in main thread.")
@@ -100,5 +100,53 @@ public class EqualtableLiveData<T: Equatable>: LiveData<T> {
                 }
             }
         }
+    }
+    
+    fileprivate var callbackMap = Dictionary<String, (T) -> Void>()
+    
+    private var valueChanged = false
+    
+    // life cycle.
+    
+    public init(_ value: T) {
+        self.value = value
+    }
+    
+    deinit {
+        self.callbackMap.removeAll()
+    }
+    
+    // observer.
+    
+    public func observeValue(_ key: String, callback: @escaping (T) -> Void) {
+        guard Thread.isMainThread else {
+            fatalError("You need register a callback in main thread.")
+        }
+        
+        // register callback.
+        callbackMap[key] = callback
+        // invoke callback at first register.
+        DispatchQueue.main.async {
+            callback(self.value)
+        }
+    }
+    
+    public func syncObserveValue(_ key: String, callback: @escaping (T) -> Void) {
+        guard Thread.isMainThread else {
+            fatalError("You need register a callback in main thread.")
+        }
+        
+        // register callback.
+        callbackMap[key] = callback
+        // invoke callback at first register.
+        callback(self.value)
+    }
+    
+    public func stopObserve(_ key: String) {
+        guard Thread.isMainThread else {
+            fatalError("You need register a callback in main thread.")
+        }
+        
+        callbackMap.removeValue(forKey: key)
     }
 }

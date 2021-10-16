@@ -54,11 +54,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "alert_enabled")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .alertEnabledChanged,
                 object: newValue
             )
@@ -72,11 +72,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "precipitation_alert_enabled")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .precipitationAlertEnabledChanged,
                 object: newValue
             )
@@ -93,11 +93,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "update_interval")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .updateIntervalChanged,
                 object: newValue
             )
@@ -116,11 +116,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "dark_mode")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .darkModeChanged,
                 object: newValue
             )
@@ -139,11 +139,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "weather_source")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .weatherSourceChanged,
                 object: newValue
             )
@@ -161,11 +161,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "temperature_unit")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .temperatureUnitChanged,
                 object: newValue
             )
@@ -181,11 +181,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "precipitation_unit")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .precipitationUnitChanged,
                 object: newValue
             )
@@ -201,11 +201,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "speed_unit")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .speedUnitChanged,
                 object: newValue
             )
@@ -221,11 +221,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "pressure_unit")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .pressureUnitChanged,
                 object: newValue
             )
@@ -241,11 +241,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue.key, forKey: "distance_unit")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .distanceUnitChanged,
                 object: newValue
             )
@@ -261,11 +261,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "today_forecast_enabled")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .todayForecastTimeChanged,
                 object: newValue
             )
@@ -279,11 +279,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "today_forecast_time")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .todayForecastTimeChanged,
                 object: newValue
             )
@@ -312,11 +312,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "tomorrow_forecast_enabled")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .tomorrowForecastEnabledChanged,
                 object: newValue
             )
@@ -330,11 +330,11 @@ public class SettingsManager {
         set {
             UserDefaults.shared.set(newValue, forKey: "tomorrow_forecast_time")
             
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .settingChanged,
                 object: nil
             )
-            NotificationCenter.default.post(
+            NotificationCenter.default.postToMainThread(
                 name: .tomorrowForecastTimeChanged,
                 object: newValue
             )

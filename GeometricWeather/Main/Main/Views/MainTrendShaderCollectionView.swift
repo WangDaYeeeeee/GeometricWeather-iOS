@@ -67,6 +67,7 @@ class MainTrendShaderCollectionView: UICollectionView,
                                         UICollectionViewDelegateFlowLayout {
     
     private let scrollBar = MainTrendScrollBarView(frame: .zero)
+    var itemSelected: ((IndexPath) -> Void)?
     
     // MARK: - life cycle.
     
@@ -125,5 +126,12 @@ class MainTrendShaderCollectionView: UICollectionView,
             width: collectionView.frame.width / CGFloat(getTrenItemDisplayCount()),
             height: collectionView.frame.height
         )
+    }
+        
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        self.itemSelected?(indexPath)
     }
 }

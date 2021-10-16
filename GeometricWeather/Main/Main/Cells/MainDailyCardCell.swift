@@ -12,7 +12,8 @@ private let trendReuseIdentifier = "daily_trend_cell"
 private let dailyTrendViewHeight = 324
 
 class MainDailyCardCell: MainTableViewCell,
-                            UICollectionViewDataSource {
+                            UICollectionViewDataSource,
+                            UICollectionViewDelegate {
     
     // MARK: - data.
     

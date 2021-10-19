@@ -41,9 +41,15 @@ class MainViewController: UIViewController,
             
             self.navigationBarBackground.layer.removeAllAnimations()
             let targetAlpha = blurNavigationBar ? 1.0 : 0.0
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.beginFromCurrentState, .curveEaseInOut], animations: { [weak self] in
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                options: [.beginFromCurrentState, .curveEaseInOut]
+            ) { [weak self] in
                 self?.navigationBarBackground.alpha = targetAlpha
-            }, completion: nil)
+            } completion: { _ in
+                // do nothing.
+            }
         }
     }
     
@@ -300,10 +306,16 @@ class MainViewController: UIViewController,
         self.statusBarStyle = darkContent ? .darkContent : .lightContent
         let color: UIColor = darkContent ? .black : .white
         
+        self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = color
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: color
         ]
+        self.navigationController?.navigationBar.setBackgroundImage(
+            UIImage(),
+            for: .default
+        )
+        self.navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     private func updateTableViewRefreshControl(refreshing: Bool) {

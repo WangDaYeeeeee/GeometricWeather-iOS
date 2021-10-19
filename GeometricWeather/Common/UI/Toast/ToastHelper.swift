@@ -12,8 +12,8 @@ class ToastHelper {
     static func showToastMessage(
         _ message: String,
         WithAction action: String? = nil,
-        andCallback callback: (() -> Void)? = nil,
-        withDuration duration: TimeInterval = shortToastInerval,
+        andDuration duration: TimeInterval = shortToastInerval,
+        onCallback callback: (() -> Void)? = nil,
         completion: ((_ didTap: Bool) -> Void)? = nil
     ) {
         UIApplication.shared.keyWindowInCurrentScene?.showToastMessage(

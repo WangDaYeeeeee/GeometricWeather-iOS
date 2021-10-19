@@ -44,7 +44,13 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesBegan(touches, with: event)
-        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+        UIView.animate(
+            withDuration: touchDownAnimDuration,
+            delay: 0.0,
+            usingSpringWithDamping: 0.3,
+            initialSpringVelocity: 4.0,
+            options: [.allowUserInteraction, .beginFromCurrentState]
+        ) {
             self.titleLabel?.alpha = touchDownAlpha
             self.transform = CGAffineTransform(scaleX: touchDownScale, y: touchDownScale)
         } completion: { _ in
@@ -57,7 +63,13 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesCancelled(touches, with: event)
-        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+        UIView.animate(
+            withDuration: touchDownAnimDuration,
+            delay: 0.0,
+            usingSpringWithDamping: 0.3,
+            initialSpringVelocity: 4.0,
+            options: [.allowUserInteraction, .beginFromCurrentState]
+        ) {
             self.titleLabel?.alpha = 1.0
             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         } completion: { _ in
@@ -70,7 +82,13 @@ class CornerButton: UIButton {
         with event: UIEvent?
     ) {
         super.touchesEnded(touches, with: event)
-        UIView.animate(withDuration: touchDownAnimDuration, delay: 0.0, usingSpringWithDamping: 0.3, initialSpringVelocity: 4.0, options: [.allowUserInteraction, .beginFromCurrentState]) {
+        UIView.animate(
+            withDuration: touchDownAnimDuration,
+            delay: 0.0,
+            usingSpringWithDamping: 0.3,
+            initialSpringVelocity: 4.0,
+            options: [.allowUserInteraction, .beginFromCurrentState]
+        ) {
             self.titleLabel?.alpha = 1.0
             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         } completion: { _ in

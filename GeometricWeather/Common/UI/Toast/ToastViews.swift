@@ -8,6 +8,13 @@
 import UIKit
 import GeometricWeatherBasic
 
+private let dragUpRatio = 0.3
+
+private let resetAnimationDuration = 0.4
+
+private let initScale = 1.1
+private let initOffset = 56.0
+
 class ToastWrapperView: UIView {
     
     private let toast: UIView
@@ -59,8 +66,8 @@ class MessageToastView: UIVisualEffectView {
         
         self.messageLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(littleMargin)
-            make.leading.equalToSuperview().offset(littleMargin)
-            make.trailing.equalToSuperview().offset(-littleMargin)
+            make.leading.equalToSuperview().offset(normalMargin)
+            make.trailing.equalToSuperview().offset(-normalMargin)
             make.bottom.equalToSuperview().offset(-littleMargin)
         }
     }
@@ -129,7 +136,7 @@ class ActionableToastView: UIVisualEffectView {
         }
         self.messageLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(littleMargin)
-            make.leading.equalToSuperview().offset(littleMargin)
+            make.leading.equalToSuperview().offset(normalMargin)
             make.trailing.equalTo(self.actionButton.snp.leading).offset(-littleMargin)
             make.bottom.equalToSuperview().offset(-littleMargin)
         }

@@ -25,9 +25,17 @@ extension ManagementViewController {
                     ToastHelper.showToastMessage(
                         NSLocalizedString("feedback_resident_location", comment: ""),
                         WithAction: NSLocalizedString("learn_more", comment: ""),
-                        andCallback: {
-                        // TODO: show dialog.
-                    }, withDuration: longToastInterval)
+                        andDuration: longToastInterval
+                    ) {
+                        if let view = UIApplication.shared.keyWindowInCurrentScene {
+                            StatementDialog(
+                                title: NSLocalizedString("feedback_resident_location", comment: ""),
+                                content: NSLocalizedString("feedback_resident_location_description", comment: "")
+                            ).showOn(view)
+                        }
+                    } completion: { didTap in
+                        // do nothing.
+                    }
                 }
                 
                 self?.viewModel.updateLocation(

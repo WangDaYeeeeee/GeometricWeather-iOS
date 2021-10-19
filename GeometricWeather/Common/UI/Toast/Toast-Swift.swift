@@ -142,7 +142,13 @@ public extension UIView {
             )
         }
         
-        UIView.animate(withDuration: showDuration, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [.allowUserInteraction], animations: {
+        UIView.animate(
+            withDuration: showDuration,
+            delay: 0.0,
+            usingSpringWithDamping: 0.6,
+            initialSpringVelocity: 0.5,
+            options: [.allowUserInteraction, .beginFromCurrentState]
+        ){
             toast.alpha = 1.0
             toast.transform = CGAffineTransform(
                 translationX: 0,
@@ -150,7 +156,7 @@ public extension UIView {
             ).concatenating(
                 CGAffineTransform(scaleX: 1, y: 1)
             )
-        }) { _ in
+        } completion: { _ in
             let timer = Timer(
                 timeInterval: duration,
                 target: self,
@@ -204,13 +210,17 @@ public extension UIView {
             timer.invalidate()
         }
         
-        UIView.animate(withDuration: hideDuration, delay: 0.0, options: [.curveEaseInOut, .beginFromCurrentState], animations: {
+        UIView.animate(
+            withDuration: hideDuration,
+            delay: 0.0,
+            options: [.curveEaseInOut, .beginFromCurrentState]
+        ) {
             toast.alpha = 0.0
             toast.transform = CGAffineTransform(
                 translationX: 0,
                 y: initOffset
             )
-        }) { _ in
+        } completion: { _ in
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
             

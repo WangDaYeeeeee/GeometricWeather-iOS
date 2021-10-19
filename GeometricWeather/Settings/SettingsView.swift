@@ -189,6 +189,7 @@ struct SettingsView: View {
             ]
         }.onChange(of: self.darkMode) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
+            ThemeManager.shared.update(darkMode: DarkMode[newValue])
         }.onChange(of: self.weatherSource) { newValue in
             SettingsManager.shared.weatherSource = WeatherSource[
                 newValue

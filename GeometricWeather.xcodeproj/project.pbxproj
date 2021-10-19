@@ -95,6 +95,8 @@
 		37D9E61127185AFE00209110 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E61027185AFE00209110 /* AboutView.swift */; };
 		37D9E615271862B400209110 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E614271862B400209110 /* AboutViewController.swift */; };
 		37D9E6172719183200209110 /* AboutItemViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E6162719183200209110 /* AboutItemViews.swift */; };
+		37D9E62D271D400700209110 /* GeoDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E62C271D400700209110 /* GeoDialog.swift */; };
+		37D9E62F271D4D4600209110 /* StatementDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E62E271D4D4600209110 /* StatementDialog.swift */; };
 		37E0E77B26CAA4DC0057B0EC /* MainTrendUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E0E77A26CAA4DC0057B0EC /* MainTrendUtils.swift */; };
 		37E5D417271021A00052A690 /* DailyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D416271021A00052A690 /* DailyWidget.swift */; };
 		37E5D419271022550052A690 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D418271022550052A690 /* DailyView.swift */; };
@@ -246,6 +248,8 @@
 		37D9E61027185AFE00209110 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		37D9E614271862B400209110 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		37D9E6162719183200209110 /* AboutItemViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutItemViews.swift; sourceTree = "<group>"; };
+		37D9E62C271D400700209110 /* GeoDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoDialog.swift; sourceTree = "<group>"; };
+		37D9E62E271D4D4600209110 /* StatementDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatementDialog.swift; sourceTree = "<group>"; };
 		37E0E77A26CAA4DC0057B0EC /* MainTrendUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendUtils.swift; sourceTree = "<group>"; };
 		37E5D416271021A00052A690 /* DailyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget.swift; sourceTree = "<group>"; };
 		37E5D418271022550052A690 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
@@ -526,6 +530,7 @@
 			children = (
 				3766725126D0A26A00C34188 /* UICountingLabel */,
 				37AA5E7D26DB742C00DBA181 /* JXMovableCellTableView */,
+				37D9E62B271D3FEC00209110 /* Dialog */,
 				3749A10D26E4763F00EEA6A3 /* Toast */,
 				3742CBD726C896E8001CDCED /* Trend */,
 				37CF4C3926CE496600E58736 /* ProgressView */,
@@ -655,6 +660,15 @@
 				37D9E614271862B400209110 /* AboutViewController.swift */,
 			);
 			path = About;
+			sourceTree = "<group>";
+		};
+		37D9E62B271D3FEC00209110 /* Dialog */ = {
+			isa = PBXGroup;
+			children = (
+				37D9E62C271D400700209110 /* GeoDialog.swift */,
+				37D9E62E271D4D4600209110 /* StatementDialog.swift */,
+			);
+			path = Dialog;
 			sourceTree = "<group>";
 		};
 		37E5D415271021840052A690 /* Daily */ = {
@@ -891,6 +905,7 @@
 				377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */,
 				37852BC326CA7C0F0058E353 /* MainHourlyCardCell.swift in Sources */,
 				37E5D4202712FCE20052A690 /* MainViewController+Layout.swift in Sources */,
+				37D9E62F271D4D4600209110 /* StatementDialog.swift in Sources */,
 				37E5D42327130BA80052A690 /* AppExtensionHelper.swift in Sources */,
 				3740708126C950390067BB78 /* HorizontalLinesBackgroundView.swift in Sources */,
 				3789E27426AD9984005C3C06 /* MainViewModel.swift in Sources */,
@@ -941,6 +956,7 @@
 				37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */,
 				3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
+				37D9E62D271D400700209110 /* GeoDialog.swift in Sources */,
 				37D9E60E2718454100209110 /* ToastHelper.swift in Sources */,
 				3749A10C26E4762800EEA6A3 /* Toast-Swift.swift in Sources */,
 				3799F50F26D255C300B49D20 /* MainDetailsCardCell.swift in Sources */,
@@ -1164,6 +1180,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1174,6 +1191,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1196,6 +1214,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeometricWeather/GeometricWeather.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1206,6 +1225,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

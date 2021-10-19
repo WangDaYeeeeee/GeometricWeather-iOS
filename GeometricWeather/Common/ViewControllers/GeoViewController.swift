@@ -37,10 +37,16 @@ class GeoViewController: UIViewController {
                 ? UIColor.black
                 : UIColor.white
                 
+                self.navigationController?.navigationBar.isTranslucent = true
                 self.navigationController?.navigationBar.tintColor = .systemBlue
                 self.navigationController?.navigationBar.titleTextAttributes = [
                     NSAttributedString.Key.foregroundColor: titleColor
                 ]
+                self.navigationController?.navigationBar.setBackgroundImage(
+                    nil,
+                    for: .default
+                )
+                self.navigationController?.navigationBar.shadowImage = nil
                 
                 self.statusBarStyle = self.view.traitCollection.userInterfaceStyle == .light
                 ? .darkContent

@@ -6,13 +6,19 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 class GeoNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.isTranslucent = true
         self.interactivePopGestureRecognizer?.isEnabled = true
+        
+        ThemeManager.shared.globalOverrideUIStyle.syncObserveValue(
+            self.description
+        ) { newValue in
+            self.overrideUserInterfaceStyle = newValue
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -122,7 +122,13 @@ class StaggeredCellAnimationHelper: NSObject,
             self.lastIndexPath = indexPath
             self.animatingIndexPaths.insert(indexPath)
             
-            UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [.allowUserInteraction], animations: { [weak view] in
+            UIView.animate(
+                withDuration: duration,
+                delay: delay,
+                usingSpringWithDamping: 0.6,
+                initialSpringVelocity: 0.5,
+                options: [.allowUserInteraction]
+            ) { [weak view] in
                 view?.alpha = 1
                 view?.transform = CGAffineTransform(
                     translationX: 0,
@@ -130,14 +136,14 @@ class StaggeredCellAnimationHelper: NSObject,
                 ).concatenating(
                     CGAffineTransform(scaleX: 1, y: 1)
                 )
-            }, completion: { [weak self, weak view] finished in
+            } completion: { [weak self, weak view] finished in
                 if !finished {
                     return
                 }
                 if let weakView = view {
                     self?.clearViewAnimations(weakView, indexPath: indexPath)
                 }
-            })
+            }
             
             view.staggeredScrollIntoScreen(atFirstTime: true)
         } else if !self.animatingIndexPaths.contains(indexPath) {

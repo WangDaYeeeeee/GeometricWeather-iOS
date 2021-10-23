@@ -8,8 +8,6 @@
 import UIKit
 import GeometricWeatherBasic
 
-private let cardBackgroundOpacity = 0.5
-
 protocol AbstractMainItem {
     
     func bindData(location: Location)
@@ -34,9 +32,11 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
         
         self.cardContainer.layer.cornerRadius = cardRadius
         self.cardContainer.layer.masksToBounds = true
-        self.cardContainer.contentView.backgroundColor = .systemBackground.withAlphaComponent(
-            cardBackgroundOpacity
-        )
+        self.cardContainer.contentView.backgroundColor = UIColor { trait in
+            return .systemBackground.withAlphaComponent(
+                trait.userInterfaceStyle == .light ? 0.2 : 0.0
+            )
+        }
         self.contentView.addSubview(self.cardContainer)
         
         self.cardTitle.font = titleFont
@@ -66,12 +66,6 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location) {
-//        self.cardContainer.contentView.backgroundColor = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
-//            weatherKind: weatherCodeToWeatherKind(
-//                code: location.weather?.current.weatherCode ?? .clear
-//            ),
-//            daylight: ThemeManager.shared.daylight.value,
-//            lightTheme: ThemeManager.shared.overrideUIStyle.value == .light
-//        ).main.withAlphaComponent(0.2)
+        // do nothing.
     }
 }

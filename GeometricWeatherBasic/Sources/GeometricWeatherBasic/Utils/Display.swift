@@ -36,32 +36,11 @@ public func formateTime(
     
     return formatter.string(
         from: Date(
-            timeIntervalSince1970: timeIntervalSine1970 + Double((
+            timeIntervalSince1970: timeIntervalSine1970 + Double(
                 timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-            ))
+            )
         )
     )
-}
-
-public func isToday(timezone: TimeZone) -> Bool {
-    
-    let currentDate = Date();
-    let year = Calendar.current.component(.year, from: currentDate)
-    let month = Calendar.current.component(.month, from: currentDate)
-    let day = Calendar.current.component(.day, from: currentDate)
-    
-    let timezoneDate = Date(
-        timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-            timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-        )
-    )
-    let timezoneYear = Calendar.current.component(.year, from: timezoneDate)
-    let timezoneMonth = Calendar.current.component(.month, from: timezoneDate)
-    let timezoneDay = Calendar.current.component(.day, from: timezoneDate)
-
-    return year == timezoneYear
-        && month == timezoneMonth
-        && day == timezoneDay
 }
 
 public func isTwelveHour() -> Bool {
@@ -169,20 +148,30 @@ public func getWindLevelText(level: Int) -> String {
 }
 
 public func getShortWindText(wind: Wind) -> String {
-    return wind.direction + " " + getWindLevelText(level: wind.level)
+    var text = ""
+    
+    if let direction = wind.direction {
+        text += direction + " "
+    }
+    
+    return text + getWindLevelText(level: wind.level)
 }
 
 public func getWindText(wind: Wind, unit: SpeedUnit) -> String {
-    var text = wind.direction
+    var text = ""
     
-    if let speed = wind.speed {
-        text += " " + unit.formatValueWithUnit(
-            speed,
-            unit: NSLocalizedString("speed_unit_kph", comment: "")
-        )
+    if let direction = wind.direction {
+        text += direction + " "
     }
     
-    text += " (" + getWindLevelText(level: wind.level) + ")"
+    if let speed = wind.speed {
+        text += unit.formatValueWithUnit(
+            speed,
+            unit: NSLocalizedString("speed_unit_kph", comment: "")
+        ) + " "
+    }
+    
+    text += "(" + getWindLevelText(level: wind.level) + ")"
     
     if !wind.degree.noDirection {
         text += " " + wind.degree.getWindArrow()
@@ -214,6 +203,13 @@ public func getDayNightTemperatureText(
     } else {
         return "\(nighttimeText)\(seperator)\(daytimeText)"
     }
+}
+
+public func getPercentText(
+    _ value: Double,
+    decimal: Int
+) -> String {
+    return value.toString(decimal) + "%"
 }
 
 // MARK: - color.

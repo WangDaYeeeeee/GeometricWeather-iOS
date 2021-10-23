@@ -9,19 +9,13 @@ import UIKit
 import ObjectiveC
 import GeometricWeatherBasic
 
-private let showDuration = 1.0
-private let hideDuration = 0.3
-
-private let initScale = 1.1
-private let initOffset = 128.0
-
 private enum DisplayEnum: Int {
     case unknown
     case showing
     case hiding
 }
 
-public extension UIView {
+extension UIView {
     
     private struct ToastKeys {
         static var status = "com.toast-swift.status"
@@ -87,7 +81,7 @@ public extension UIView {
     // MARK: - Show Toast Methods
     
     func showToast(
-        _ toast: UIView,
+        _ toast: ToastWrapperView,
         duration: TimeInterval,
         completion: ((_ didTap: Bool) -> Void)? = nil
     ) {
@@ -114,7 +108,7 @@ public extension UIView {
         }
     }
     
-    private func showToast(_ toast: UIView, duration: TimeInterval) {
+    private func showToast(_ toast: ToastWrapperView, duration: TimeInterval) {
         objc_setAssociatedObject(
             toast,
             &ToastKeys.status,
@@ -125,14 +119,6 @@ public extension UIView {
         self.activeToasts.add(toast)
         self.addSubview(toast)
         
-        toast.alpha = 0.0
-        toast.transform = CGAffineTransform(
-            translationX: 0.0,
-            y: initOffset
-        ).concatenating(
-            CGAffineTransform(scaleX: initScale, y: initScale)
-        )
-        
         toast.snp.makeConstraints { make in
             make.width.equalTo(getTabletAdaptiveWidth())
             make.width.lessThanOrEqualToSuperview()
@@ -142,48 +128,58 @@ public extension UIView {
             )
         }
         
-        UIView.animate(
-            withDuration: showDuration,
-            delay: 0.0,
-            usingSpringWithDamping: 0.6,
-            initialSpringVelocity: 0.5,
-            options: [.allowUserInteraction, .beginFromCurrentState]
-        ){
-            toast.alpha = 1.0
-            toast.transform = CGAffineTransform(
-                translationX: 0,
-                y: 0
-            ).concatenating(
-                CGAffineTransform(scaleX: 1, y: 1)
-            )
-        } completion: { _ in
-            let timer = Timer(
-                timeInterval: duration,
-                target: self,
-                selector: #selector(UIView.toastTimerDidFinish(_:)),
-                userInfo: toast,
-                repeats: false
-            )
-            RunLoop.main.add(timer, forMode: .common)
-            objc_setAssociatedObject(
-                toast,
-                &ToastKeys.timer,
-                timer,
-                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            )
+        toast.executeShowAnimation {
+            self.registerDelayHideTimer(for: toast, withDuration: duration)
+        } dragBeginCallback: { [weak toast] in
+            if toast == nil {
+                return
+            }
+            
+            if let timer = objc_getAssociatedObject(
+                toast!,
+                &ToastKeys.timer
+            ) as? Timer {
+                timer.invalidate()
+            }
+        } dragEndCallback: { [weak self, weak toast] in
+            if let t = toast {
+                self?.registerDelayHideTimer(for: t, withDuration: duration)
+            }
+        } andDragDismissCallback: { [weak self] in
+            self?.hideToast()
         }
+    }
+    
+    private func registerDelayHideTimer(
+        for toast: ToastWrapperView,
+        withDuration duration: Double
+    ) {
+        let timer = Timer(
+            timeInterval: duration,
+            target: self,
+            selector: #selector(UIView.toastTimerDidFinish(_:)),
+            userInfo: toast,
+            repeats: false
+        )
+        RunLoop.main.add(timer, forMode: .common)
+        objc_setAssociatedObject(
+            toast,
+            &ToastKeys.timer,
+            timer,
+            .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+        )
     }
     
     // MARK: - Hide Toast Methods
     
     func hideToast() {
-        guard let activeToast = activeToasts.firstObject as? UIView else {
+        guard let activeToast = activeToasts.firstObject as? ToastWrapperView else {
             return
         }
         self.hideToast(activeToast, fromTap: false)
     }
     
-    func hideToast(_ toast: UIView, fromTap: Bool) {
+    func hideToast(_ toast: ToastWrapperView, fromTap: Bool) {
         guard let statusInt = objc_getAssociatedObject(
             toast,
             &ToastKeys.status
@@ -210,17 +206,7 @@ public extension UIView {
             timer.invalidate()
         }
         
-        UIView.animate(
-            withDuration: hideDuration,
-            delay: 0.0,
-            options: [.curveEaseInOut, .beginFromCurrentState]
-        ) {
-            toast.alpha = 0.0
-            toast.transform = CGAffineTransform(
-                translationX: 0,
-                y: initOffset
-            )
-        } completion: { _ in
+        toast.executeHideAnimation {
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
             
@@ -231,7 +217,7 @@ public extension UIView {
                 completion(fromTap)
             }
             
-            if let nextToast = self.queue.firstObject as? UIView,
+            if let nextToast = self.queue.firstObject as? ToastWrapperView,
                 let duration = objc_getAssociatedObject(
                     nextToast,
                     &ToastKeys.duration
@@ -251,7 +237,7 @@ public extension UIView {
         }
         
         self.activeToasts.compactMap {
-            $0 as? UIView
+            $0 as? ToastWrapperView
         }.forEach {
             self.hideToast($0, fromTap: false)
         }
@@ -265,7 +251,7 @@ public extension UIView {
     
     @objc
     private func toastTimerDidFinish(_ timer: Timer) {
-        guard let toast = timer.userInfo as? UIView else {
+        guard let toast = timer.userInfo as? ToastWrapperView else {
             return
         }
         self.hideToast(toast, fromTap: false)

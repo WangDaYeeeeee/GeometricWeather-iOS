@@ -108,7 +108,7 @@ class MainViewController: UIViewController,
         // observe theme changed.
         
         ThemeManager.shared.homeOverrideUIStyle.observeValue(
-            self.description
+            self
         ) { newValue in
             self.overrideUserInterfaceStyle = newValue
             self.updateNavigationBarTintColor()
@@ -121,7 +121,7 @@ class MainViewController: UIViewController,
             : UIColor.white.withAlphaComponent(0.2).cgColor
         }
         ThemeManager.shared.daylight.observeValue(
-            self.description
+            self
         ) { _ in
             self.updatePreviewableSubviews()
         }
@@ -129,18 +129,18 @@ class MainViewController: UIViewController,
         // observe live data.
         
         self.viewModel.currentLocation.observeValue(
-            self.description
+            self
         ) { newValue in
             self.updatePreviewableSubviews()
             self.updateTableView()
         }
         self.viewModel.loading.observeValue(
-            self.description
+            self
         ) { newValue in
             self.updateTableViewRefreshControl(refreshing: newValue)
         }
         self.viewModel.indicator.observeValue(
-            self.description
+            self
         ) { newValue in
             if self.indicator.selectedIndex != newValue.index {
                 self.indicator.selectedIndex = newValue.index
@@ -237,11 +237,11 @@ class MainViewController: UIViewController,
     deinit {
         NotificationCenter.default.removeObserver(self)
         
-        ThemeManager.shared.homeOverrideUIStyle.stopObserve(self.description)
-        ThemeManager.shared.daylight.stopObserve(self.description)
+        ThemeManager.shared.homeOverrideUIStyle.stopObserve(self)
+        ThemeManager.shared.daylight.stopObserve(self)
         
-        self.viewModel.currentLocation.stopObserve(self.description)
-        self.viewModel.loading.stopObserve(self.description)
+        self.viewModel.currentLocation.stopObserve(self)
+        self.viewModel.loading.stopObserve(self)
     }
     
     override func viewWillTransition(

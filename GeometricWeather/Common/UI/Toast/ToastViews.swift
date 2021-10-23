@@ -8,16 +8,37 @@
 import UIKit
 import GeometricWeatherBasic
 
-private let dragUpRatio = 0.3
+private let dragUpRatio = 0.1
 
+private let showDuration = 1.0
+private let hideDuration = 0.3
 private let resetAnimationDuration = 0.4
 
 private let initScale = 1.1
-private let initOffset = 56.0
+private let initOffset = 128.0
+
+private enum ToastStatus {
+    case hiding
+    case executingShowAnimation
+    case showing
+    case executingHideAnimation
+}
 
 class ToastWrapperView: UIView {
     
     private let toast: UIView
+    
+    private var status = ToastStatus.hiding
+    private var dragging = false
+    
+    private var offsetY: CGFloat = 0
+    private var offsetTrigger: CGFloat = 16.0
+    
+    private var animation: UIViewPropertyAnimator?
+    
+    private var dragBeginCallback: (() -> Void)?
+    private var dragEndCallback: (() -> Void)?
+    private var dragDismissCallback: (() -> Void)?
     
     init(toast: UIView) {
         self.toast = toast
@@ -32,10 +53,214 @@ class ToastWrapperView: UIView {
             make.height.greaterThanOrEqualTo(64.0)
             make.bottom.equalToSuperview().offset(-normalMargin)
         }
+        
+        self.alpha = 0.0
+        self.transform = CGAffineTransform(
+            translationX: 0.0,
+            y: initOffset
+        ).concatenating(
+            CGAffineTransform(scaleX: initScale, y: initScale)
+        )
+        
+        self.status = .hiding
+        
+        self.addGestureRecognizer(
+            UIPanGestureRecognizer(
+                target: self,
+                action: #selector(self.onDrag(gesture:))
+            )
+        )
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - action.
+    
+    @objc private func onDrag(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began, .changed:
+            if gesture.state == .began {
+                self.beginDrag()
+            }
+            self.dragContentView(gesture)
+            break
+            
+        case .ended, .cancelled, .failed:
+            self.dragContentView(gesture)
+            self.endDrag()
+            break
+            
+        default:
+            self.dragging = false
+            break
+        }
+    }
+    
+    private func beginDrag() {
+        if self.status == .executingHideAnimation
+            || self.status == .hiding {
+            return
+        }
+        
+        self.status = .showing
+        self.dragging = true
+        
+        self.clearAnimations()
+        self.offsetY = self.transform.ty
+        
+        self.dragBeginCallback?()
+    }
+    
+    private func dragContentView(_ gesture: UIPanGestureRecognizer) {
+        if self.status == .executingHideAnimation
+            || self.status == .hiding {
+            return
+        }
+        
+        let offset = gesture.translation(in: self).y * (
+            self.offsetY > 0 ? 1 : dragUpRatio
+        )
+        
+        if self.dragging {
+            self.offsetY += offset
+        } else {
+            self.offsetY = 0
+        }
+        
+        self.transform = self.transform.translatedBy(
+            x: 0,
+            y: offset
+        )
+        
+        gesture.setTranslation(.zero, in: self)
+    }
+    
+    private func endDrag() {
+        if self.status == .executingHideAnimation
+            || self.status == .hiding {
+            return
+        }
+        
+        if !self.dragging {
+            return
+        }
+        self.dragging = false
+        
+        if self.offsetY >= self.offsetTrigger {
+            self.dragDismissCallback?()
+        } else {
+            self.resetSelf()
+        }
+        
+        self.dragEndCallback?()
+    }
+    
+    private func resetSelf() {
+        let a = UIViewPropertyAnimator(
+            duration: resetAnimationDuration,
+            dampingRatio: 0.5
+        ) { [weak self] in
+            self?.alpha = 1.0
+            self?.transform = CGAffineTransform(
+                translationX: 0,
+                y: 0
+            ).concatenating(
+                CGAffineTransform(scaleX: 1.0, y: 1.0)
+            )
+        }
+        a.addCompletion { [weak self] position in
+            if position == .end {
+                self?.offsetY = 0
+            }
+        }
+        a.startAnimation()
+        
+        self.animation = a
+    }
+    
+    private func getProgress() -> Double {
+        return -1 * self.offsetY / self.offsetTrigger
+    }
+    
+    private func getAlpha() -> Double {
+        return 1.0 - min(
+            fabs(self.getProgress()),
+            1.0
+        )
+    }
+    
+    // MARK: - visibility.
+    
+    func executeShowAnimation(
+        withCompletion completion: (() -> Void)?,
+        dragBeginCallback beginCallback: (() -> Void)?,
+        dragEndCallback endCallback: (() -> Void)?,
+        andDragDismissCallback dismissCallback: (() -> Void)?
+    ) {
+        self.clearAnimations()
+        
+        self.dragBeginCallback = beginCallback
+        self.dragEndCallback = endCallback
+        self.dragDismissCallback = dismissCallback
+        
+        self.status = .executingShowAnimation
+        
+        let a = UIViewPropertyAnimator(
+            duration: showDuration,
+            dampingRatio: 0.5
+        ) {
+            self.alpha = 1.0
+            self.transform = CGAffineTransform(
+                translationX: 0,
+                y: 0
+            ).concatenating(
+                CGAffineTransform(scaleX: 1, y: 1)
+            )
+        }
+        a.addCompletion { [weak self] position in
+            if position == .end {
+                self?.status = .showing
+                completion?()
+            }
+        }
+        a.startAnimation()
+        
+        self.animation = a
+    }
+    
+    func executeHideAnimation(
+        withCompletion completion: (() -> Void)?
+    ) {
+        self.clearAnimations()
+        
+        self.status = .executingHideAnimation
+        
+        let a = UIViewPropertyAnimator(
+            duration: hideDuration,
+            curve: .easeInOut
+        ) {
+            self.alpha = 0.0
+            self.transform = CGAffineTransform(
+                translationX: 0,
+                y: initOffset
+            )
+        }
+        a.addCompletion { [weak self] position in
+            if position == .end {
+                self?.status = .hiding
+                completion?()
+            }
+        }
+        a.startAnimation()
+        
+        self.animation = a
+    }
+    
+    private func clearAnimations() {
+        self.animation?.stopAnimation(true)
+        self.animation = nil
     }
 }
 
@@ -159,7 +384,7 @@ class ActionableToastView: UIVisualEffectView {
     @objc private func onAction() {
         self.actionCallback()
         
-        if let wrapper = self.superview {
+        if let wrapper = self.superview as? ToastWrapperView {
             wrapper.superview?.hideToast(wrapper, fromTap: true)
         }
     }

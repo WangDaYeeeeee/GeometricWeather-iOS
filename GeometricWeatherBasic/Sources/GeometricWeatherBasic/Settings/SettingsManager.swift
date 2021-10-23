@@ -131,10 +131,11 @@ public class SettingsManager {
     
     public var weatherSource: WeatherSource {
         get {
-            return WeatherSource[
-                UserDefaults.shared.string(forKey: "weather_source")
-                ?? "weather_source_accu"
-            ]
+            return .caiYun
+//            return WeatherSource[
+//                UserDefaults.shared.string(forKey: "weather_source")
+//                ?? "weather_source_accu"
+//            ]
         }
         set {
             UserDefaults.shared.set(newValue.key, forKey: "weather_source")

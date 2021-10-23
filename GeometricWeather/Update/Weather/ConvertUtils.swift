@@ -13,33 +13,33 @@ func toInt(_ value: Double) -> Int {
 }
 
 func getWindLevelInt(speed: Double) -> Int {
-  if (speed <= 0) {
-    return 0;
-  } else if (speed <= 1) {
-    return 1;
-  } else if (speed <= 2) {
-    return 2;
-  } else if (speed <= 3) {
-    return 3;
-  } else if (speed <= 4) {
-    return 4;
-  } else if (speed <= 5) {
-    return 5;
-  } else if (speed <= 6) {
-    return 6;
-  } else if (speed <= 7) {
-    return 7;
-  } else if (speed <= 8) {
-    return 8;
-  } else if (speed <= 9) {
-    return 9;
-  } else if (speed <= 10) {
-    return 10;
-  } else if (speed <= 11) {
-    return 11;
-  } else {
-    return 12;
-  }
+    if speed < 1 {
+        return 0
+    } else if speed < 5 {
+        return 1
+    } else if speed < 11 {
+        return 2
+    } else if speed < 19 {
+        return 3
+    } else if speed < 28 {
+        return 4
+    } else if speed < 38 {
+        return 5
+    } else if speed < 49 {
+        return 6
+    } else if speed < 61 {
+        return 7
+    } else if speed < 74 {
+        return 8
+    } else if speed < 88 {
+        return 9
+    } else if speed < 102 {
+        return 10
+    } else if speed < 117 {
+        return 11
+    } else {
+        return 12
+    }
 }
 
 func getAqiQualityInt(index: Int) -> Int {

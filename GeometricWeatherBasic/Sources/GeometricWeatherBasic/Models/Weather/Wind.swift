@@ -9,7 +9,7 @@ import Foundation
 
 public struct Wind: Codable {
     
-    public let direction: String
+    public let direction: String?
     public let degree: WindDegree
     public let speed: Double?
     public let level: Int
@@ -27,7 +27,7 @@ public struct Wind: Codable {
     public static let windSpeedLevel10 = 103.0
     public static let windSpeedLevel11 = 117.0
     
-    public init(direction: String, degree: WindDegree, speed: Double?, level: Int) {
+    public init(direction: String?, degree: WindDegree, speed: Double?, level: Int) {
         self.direction = direction
         self.degree = degree
         self.speed = speed

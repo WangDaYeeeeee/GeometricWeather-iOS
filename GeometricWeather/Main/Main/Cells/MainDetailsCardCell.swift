@@ -82,7 +82,10 @@ class MainDetailsCardCell: MainTableViewCell {
                     self.generateDetailItemView(
                         iconName: "humidity",
                         title: NSLocalizedString("humidity", comment: ""),
-                        body: "\(humidity)%"
+                        body: getPercentText(
+                            humidity,
+                            decimal: 1
+                        )
                     )
                 )
             }

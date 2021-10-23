@@ -78,6 +78,21 @@
 "snow" = "雪";
 "ice" = "冰";
 
+"weather_clear" = "晴朗";
+"weather_partly_cloudy" = "多云";
+"weather_cloudy" = "阴";
+"weather_light_rain" = "小雨";
+"weather_moderate_rain" = "中雨";
+"weather_heavy_rain" = "大雨";
+"weather_fog" = "雾";
+"weather_haze" = "霾";
+"weather_light_snow" = "小雪";
+"weather_moderate_snow" = "中雪";
+"weather_heavy_snow" = "大雪";
+"weather_dust" = "浮尘";
+"weather_sand" = "沙尘";
+"weather_wind" = "大风";
+
 "wind_0" = "无风";
 "wind_1" = "一级";
 "wind_2" = "二级";

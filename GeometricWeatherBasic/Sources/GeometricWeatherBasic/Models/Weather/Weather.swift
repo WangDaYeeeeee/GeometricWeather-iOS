@@ -39,7 +39,7 @@ public struct Weather: Codable, Equatable {
     }
     
     public func isValid(pollingIntervalHours: Double) -> Bool {
-        let updateTime = base.updateTime
+        let updateTime = base.timeStamp
         let currentTime = Date().timeIntervalSince1970
     
         return currentTime >= updateTime

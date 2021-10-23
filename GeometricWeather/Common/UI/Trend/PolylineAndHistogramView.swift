@@ -29,6 +29,7 @@ class PolylineAndHistogramView: UIView {
     var histogramValue: Double? {
         didSet {
             self.sizeCache = .zero
+            self.histogramLabel.alpha = self.histogramValue == nil ? 0 : 1
             self.setNeedsLayout()
         }
     }

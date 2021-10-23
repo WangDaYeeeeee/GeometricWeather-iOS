@@ -28,7 +28,7 @@ class GeoViewController: UIViewController {
         super.viewWillAppear(animated)
         
         ThemeManager.shared.globalOverrideUIStyle.syncObserveValue(
-            self.description
+            self
         ) { newValue in
             self.overrideUserInterfaceStyle = newValue
             

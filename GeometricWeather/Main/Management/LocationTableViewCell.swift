@@ -181,15 +181,16 @@ class LocationTableViewCell: UITableViewCell {
         super.setHighlighted(highlighted, animated: animated)
         
         if (highlighted) {
+            self.highlightEffectContainer.alpha = 0.5
+            
             UIView.animate(withDuration: 0.2) {
                 self.highlightEffectContainer.transform = CGAffineTransform(
                     scaleX: 0.98,
                     y: 0.98
                 )
-                self.highlightEffectContainer.alpha = 0.5
             }
         } else {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.45) {
                 self.highlightEffectContainer.transform = CGAffineTransform(
                     scaleX: 1.0,
                     y: 1.0

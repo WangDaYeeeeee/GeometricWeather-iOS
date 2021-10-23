@@ -65,7 +65,8 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         next: Hourly?,
         temperatureRange: TemperatureRange,
         weatherCode: WeatherCode,
-        timezone: TimeZone
+        timezone: TimeZone,
+        showPrecipitationProb: Bool
     ) {
         self.hourLabel.text = getHourText(
             hour: hourly.getHour(
@@ -105,9 +106,30 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
                 max: Double(temperatureRange.max)
             )
         )
-        let precipitationProb = hourly.precipitationProbability ?? 0.0
-        if precipitationProb > 0 {
-            self.trendView.histogramValue = precipitationProb / 100.0
+        if showPrecipitationProb {
+            let precipitationProb = hourly.precipitationProbability ?? 0.0
+            if precipitationProb > 0 {
+                self.trendView.histogramValue = precipitationProb / 100.0
+                self.trendView.histogramDescription = getPercentText(
+                    precipitationProb,
+                    decimal: 0
+                )
+            } else {
+                self.trendView.histogramValue = nil
+            }
+        } else {
+            let precipitation = hourly.precipitation.total ?? 0.0
+            if precipitation > 0 {
+                let unit = SettingsManager.shared.precipitationUnit
+                
+                self.trendView.histogramValue = precipitation / 50.0 // 50 mm/h - heavy rain.
+                self.trendView.histogramDescription = unit.formatValueWithUnit(
+                    precipitation,
+                    unit: ""
+                )
+            } else {
+                self.trendView.histogramValue = nil
+            }
         }
         
         let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
@@ -125,9 +147,6 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             hourly.temperature.temperature,
             unit: "°"
         )
-        if precipitationProb > 0 {
-            self.trendView.histogramDescription = "\(Int(precipitationProb))%"
-        }
     }
     
     // MARK: - cell selection.
@@ -135,18 +154,12 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
     override var isHighlighted: Bool {
         didSet {
             if (self.isHighlighted) {
-                UIView.animate(
-                    withDuration: 0.2,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 0.5
-                } completion: { _ in
-                    // do nothing.
-                }
+                self.contentView.layer.removeAllAnimations()
+                self.contentView.alpha = 0.5
             } else {
+                self.contentView.layer.removeAllAnimations()
                 UIView.animate(
-                    withDuration: 0.2,
+                    withDuration: 0.45,
                     delay: 0.0,
                     options: [.allowUserInteraction, .beginFromCurrentState]
                 ) {

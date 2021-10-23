@@ -14,12 +14,7 @@ public struct MaterialWeatherView: View, WeatherView {
     
     // state.
     
-    @ObservedObject private var _state: WeatherViewState
-    public var state: WeatherViewState {
-        get {
-            return _state
-        }
-    }
+    @ObservedObject private(set) public var state: WeatherViewState
     
     @StateObject private var gravityData = GravityReactionData()
     
@@ -35,7 +30,7 @@ public struct MaterialWeatherView: View, WeatherView {
     // life cycle.
     
     init(state: WeatherViewState) {
-        self._state = state
+        self.state = state
         
         self.weatherKind1 = state.weatherKind
         self.daylight1 = state.daylight
@@ -72,7 +67,7 @@ public struct MaterialWeatherView: View, WeatherView {
                         height: height,
                         rotation2D: rotation2D,
                         rotation3D: rotation3D,
-                        paddingTop: _state.paddingTop
+                        paddingTop: self.state.paddingTop
                     ).opacity(
                         show1hide2progress
                     )
@@ -87,7 +82,7 @@ public struct MaterialWeatherView: View, WeatherView {
                         height: height,
                         rotation2D: rotation2D,
                         rotation3D: rotation3D,
-                        paddingTop: _state.paddingTop
+                        paddingTop: self.state.paddingTop
                     ).opacity(
                         1 - show1hide2progress
                     )
@@ -97,7 +92,7 @@ public struct MaterialWeatherView: View, WeatherView {
                     (Double(proxy.size.width) - getTabletAdaptiveWidth(
                         maxWidth: Double(proxy.size.width)
                     )) / 2.0
-                ) + _state.offsetHorizontal,
+                ) + self.state.offsetHorizontal,
                 y: 0.0
             )
         }.background(Group {
@@ -123,39 +118,39 @@ public struct MaterialWeatherView: View, WeatherView {
             // switch state when interface orientation change.
             show1hide2.toggle()
             
-            self.weatherKind1 = _state.weatherKind
-            self.daylight1 = _state.daylight
-            self.weatherKind2 = _state.weatherKind
-            self.daylight2 = _state.daylight
+            self.weatherKind1 = self.state.weatherKind
+            self.daylight1 = self.state.daylight
+            self.weatherKind2 = self.state.weatherKind
+            self.daylight2 = self.state.daylight
             
             // change progress in animation.
             withAnimation(.easeInOut(duration: 0.4)) {
                 show1hide2progress = show1hide2 ? 1 : 0
             }
-        }.onChange(of: _state.updateWeatherTime) { _ in
+        }.onChange(of: self.state.updateWeatherTime) { _ in
             // we need switch the state to right value when weather data has been update.
             show1hide2.toggle()
             
             if show1hide2 {
                 // let weather view 1 show the current weather,
                 // and weather view 2 show the previous weather.
-                self.weatherKind1 = _state.weatherKind
-                self.daylight1 = _state.daylight
-                self.weatherKind2 = _state.prevWeatherKind
-                self.daylight2 = _state.prevDaylight
+                self.weatherKind1 = self.state.weatherKind
+                self.daylight1 = self.state.daylight
+                self.weatherKind2 = self.state.prevWeatherKind
+                self.daylight2 = self.state.prevDaylight
             } else {
                 // opposite ot the above satuation.
-                self.weatherKind1 = _state.prevWeatherKind
-                self.daylight1 = _state.prevDaylight
-                self.weatherKind2 = _state.weatherKind
-                self.daylight2 = _state.daylight
+                self.weatherKind1 = self.state.prevWeatherKind
+                self.daylight1 = self.state.prevDaylight
+                self.weatherKind2 = self.state.weatherKind
+                self.daylight2 = self.state.daylight
             }
             
             // change progress in animation.
             withAnimation(.easeInOut(duration: 0.4)) {
                 show1hide2progress = show1hide2 ? 1 : 0
             }
-        }.onChange(of: _state.drawable) { newValue in
+        }.onChange(of: self.state.drawable) { newValue in
             // reset interval computers when drawable change.
             gravityData.resetIntervalComputers()
         }.onAppear() {

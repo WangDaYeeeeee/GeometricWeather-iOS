@@ -19,6 +19,7 @@ class MainHourlyCardCell: MainTableViewCell,
     private var weather: Weather?
     private var timezone: TimeZone?
     private var temperatureRange: TemperatureRange?
+    private var showPrecipitationProb = true
     
     // MARK: - subviews.
     
@@ -46,10 +47,14 @@ class MainHourlyCardCell: MainTableViewCell,
             forCellWithReuseIdentifier: trendReuseIdentifier
         )
         self.hourlyCollectionView.itemSelected = { [weak self] index in
-            if let weather = self?.weather {
-                ToastHelper.showToastMessage(
-                    weather.hourlyForecasts[index.row].weatherText
-                )
+            if let weather = self?.weather,
+                let timezone = self?.timezone,
+                let view = UIApplication.shared.keyWindowInCurrentScene {
+                HourlyDialog(
+                    weather: weather,
+                    timezone: timezone,
+                    index: index.row
+                ).showOn(view)
             }
         }
         self.cardContainer.contentView.addSubview(self.hourlyCollectionView)
@@ -104,6 +109,7 @@ class MainHourlyCardCell: MainTableViewCell,
                 }
             }
             self.temperatureRange = (minTemp, maxTemp)
+            self.showPrecipitationProb = location.weatherSource == .accu
             
             self.summaryLabel.text = weather.current.hourlyForecast
             
@@ -176,7 +182,8 @@ class MainHourlyCardCell: MainTableViewCell,
                 next: indexPath.row == hourlies.count - 1 ? nil : hourlies[indexPath.row + 1],
                 temperatureRange: self.temperatureRange ?? (0, 0),
                 weatherCode: weather.current.weatherCode,
-                timezone: self.timezone ?? .current
+                timezone: self.timezone ?? .current,
+                showPrecipitationProb: self.showPrecipitationProb
             )
         }
         return cell

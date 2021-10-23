@@ -10,7 +10,12 @@ import Moya
 import RxSwift
 import GeometricWeatherBasic
 
-func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
+func getWeatherApi(
+    _ weatherSource: WeatherSource
+) -> WeatherApi {
+    if weatherSource == .caiYun {
+        return CaiYunApi()
+    }
     return AccuApi()
 }
 

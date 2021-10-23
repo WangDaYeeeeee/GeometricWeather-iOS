@@ -128,15 +128,17 @@ class ManagementViewController: GeoViewController,
         super.viewWillAppear(animated)
         
         self.viewModel.selectableTotalLocations.observeValue(
-            self.description
+            self
         ) { newValue in
             self.updateLocationList(newValue)
             
-            self.searchBar.showsBookmarkButton = self.itemList.first(where: { item in
-                item.location.currentPosition
-            }) == nil
+            self.searchBar.showsBookmarkButton = self.itemList.first(
+                where: { item in
+                    item.location.currentPosition
+                }
+            ) == nil
         }
-        self.searching.observeValue(self.description) { newValue in
+        self.searching.observeValue(self) { newValue in
             self.searchBar.setShowsCancelButton(
                 newValue,
                 animated: true
@@ -159,10 +161,8 @@ class ManagementViewController: GeoViewController,
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
                 
-        self.viewModel.selectableTotalLocations.stopObserve(
-            self.description
-        )
-        self.searching.stopObserve(self.description)
+        self.viewModel.selectableTotalLocations.stopObserve(self)
+        self.searching.stopObserve(self)
         
         self.searching.value = false
         self.itemList.removeAll()

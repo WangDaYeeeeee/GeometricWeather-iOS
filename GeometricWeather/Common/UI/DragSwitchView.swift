@@ -167,7 +167,13 @@ class DragSwitchView: UIView {
     private func resetSelf() {
         let options: UIView.AnimationOptions = [.beginFromCurrentState, .allowUserInteraction]
         
-        Self.animate(withDuration: resetAnimationDuration, delay: 0, usingSpringWithDamping: 0.35, initialSpringVelocity: 0.8, options: options , animations: { [weak self] in
+        Self.animate(
+            withDuration: resetAnimationDuration,
+            delay: 0,
+            usingSpringWithDamping: 0.35,
+            initialSpringVelocity: 0.8,
+            options: options
+        ) { [weak self] in
             guard self != nil else {
                 return
             }
@@ -177,12 +183,12 @@ class DragSwitchView: UIView {
                 y: self!.frame.height / 2
             )
             self!.contentView.alpha = 1
-        }, completion: { [weak self] finished in
+        } completion: { [weak self] finished in
             if finished {
                 self?.offsetX = 0
                 self?.delegate?.onRebounded()
             }
-        })
+        }
     }
     
     private func getProgress() -> Double {

@@ -26,18 +26,9 @@ class CircularProgressView: UIView {
     // data.
     
     // 0 - 1.
-    private var _progress = 0.0
-    var progress: Double {
-        get {
-            return _progress
-        }
-    }
-    private var _colors = (from: UIColor.clear, to: UIColor.clear)
-    var colors: (from: UIColor, to: UIColor) {
-        get {
-            return _colors
-        }
-    }
+    private(set) var progress = 0.0
+    private(set) var colors = (from: UIColor.clear, to: UIColor.clear)
+    private var durationCache = 0.0
     
     var progressValue: Int {
         get {
@@ -127,10 +118,11 @@ class CircularProgressView: UIView {
         sizeCache = self.frame.size
         
         self.setProgress(
-            self._progress, withAnimationDuration: 0.0,
+            self.progress,
+            withAnimationDuration: self.durationCache,
             value: self.progressValue,
             andDescription: self.progressDescription,
-            betweenColors: self._colors
+            betweenColors: self.colors
         )
         
         self.progressValueLabel.frame = self.bounds
@@ -157,8 +149,9 @@ class CircularProgressView: UIView {
         andDescription: String,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
-        self._progress = progress
-        self._colors = betweenColors
+        self.progress = progress
+        self.colors = betweenColors
+        self.durationCache = withAnimationDuration
         
         self.progressValue = value
         self.progressDescription = andDescription

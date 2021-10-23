@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Option {
+public protocol Option: Equatable {
     
     associatedtype ImplType: Option
     
@@ -18,6 +18,13 @@ public protocol Option {
     static subscript(key: String) -> ImplType { get }
     
     var key: String { get }
+}
+
+public extension Option {
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.key == rhs.key
+    }
 }
 
 public protocol ReadableOption: Option {

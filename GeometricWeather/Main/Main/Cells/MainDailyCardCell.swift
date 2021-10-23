@@ -29,6 +29,7 @@ class MainDailyCardCell: MainTableViewCell,
     private var weather: Weather?
     private var timezone: TimeZone?
     private var temperatureRange: TemperatureRange?
+    private var showPrecipitationProb = true
     
     // MARK: - subviews.
     
@@ -115,6 +116,7 @@ class MainDailyCardCell: MainTableViewCell,
                 }
             }
             self.temperatureRange = (minTemp, maxTemp)
+            self.showPrecipitationProb = location.weatherSource == .accu
             
             self.timeBar.register(
                 weather: weather,
@@ -150,12 +152,6 @@ class MainDailyCardCell: MainTableViewCell,
                 self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
             }
         }
-    }
-    
-    // MARK: - interfaces.
-    
-    func registerScrollDelegate(delegate: UIScrollViewDelegate?) {
-        
     }
     
     // MARK: - delegates.
@@ -198,7 +194,8 @@ class MainDailyCardCell: MainTableViewCell,
                 next: indexPath.row == dailies.count - 1 ? nil : dailies[indexPath.row + 1],
                 temperatureRange: self.temperatureRange ?? (0, 0),
                 weatherCode: weather.current.weatherCode,
-                timezone: self.timezone ?? .current
+                timezone: self.timezone ?? .current,
+                showPrecipitationProb: self.showPrecipitationProb
             )
         }
         return cell

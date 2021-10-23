@@ -44,7 +44,7 @@ func generateLocation(
         city: "\(from.localizedName)\(zipCode == nil ? "" : "(\(zipCode!))")",
         district: "",
         weather: nil,
-        weatherSource: WeatherSource["weather_source_accu"],
+        weatherSource: .accu,
         currentPosition: src?.currentPosition ?? false,
         residentPosition: src?.residentPosition ?? false
     )
@@ -61,13 +61,7 @@ func generateWeather(
     return Weather(
         base: Base(
             cityId: location.cityId,
-            timeStamp: Date().timeIntervalSince1970,
-            publishTime: Double(
-                currentResult.epochTime + (
-                    location.timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-                )
-            ),
-            updateTime: Date().timeIntervalSince1970
+            timeStamp: Date().timeIntervalSince1970
         ),
         current: Current(
             weatherText: currentResult.weatherText,
@@ -138,38 +132,38 @@ func generateWeather(
 }
 
 private func getWeatherCode(_ icon: Int) -> WeatherCode {
-  if icon == 1 || icon == 2 || icon == 30
-      || icon == 33 || icon == 34 {
-    return WeatherCode.clear
-  } else if icon == 3 || icon == 4 || icon == 6 || icon == 7
-      || icon == 35 || icon == 36 || icon == 38 {
-    return WeatherCode.partlyCloudy
-  } else if icon == 5 || icon == 37 {
-    return WeatherCode.haze
-  } else if icon == 8 {
-    return WeatherCode.cloudy
-  } else if icon == 11 {
-    return WeatherCode.fog
-  } else if icon == 12 || icon == 13 || icon == 14 || icon == 39 || icon == 40 {
-      return WeatherCode.rain(.light)
-  } else if icon == 18 {
-      return WeatherCode.rain(.middle)
-  } else if icon == 15 || icon == 16 || icon == 17 || icon == 41 || icon == 42 {
-    return WeatherCode.thunderstorm
-  } else if icon == 19 || icon == 20 || icon == 21 || icon == 23
+    if icon == 1 || icon == 2 || icon == 30
+        || icon == 33 || icon == 34 {
+        return WeatherCode.clear
+    } else if icon == 3 || icon == 4 || icon == 6 || icon == 7
+                || icon == 35 || icon == 36 || icon == 38 {
+        return WeatherCode.partlyCloudy
+    } else if icon == 5 || icon == 37 {
+        return WeatherCode.haze
+    } else if icon == 8 {
+        return WeatherCode.cloudy
+    } else if icon == 11 {
+        return WeatherCode.fog
+    } else if icon == 12 || icon == 13 || icon == 14 || icon == 39 || icon == 40 {
+        return WeatherCode.rain(.light)
+    } else if icon == 18 {
+        return WeatherCode.rain(.middle)
+    } else if icon == 15 || icon == 16 || icon == 17 || icon == 41 || icon == 42 {
+        return WeatherCode.thunderstorm
+    } else if icon == 19 || icon == 20 || icon == 21 || icon == 23
       || icon == 31 || icon == 43 || icon == 44 {
-      return WeatherCode.snow(.light)
-  } else if icon == 22 || icon == 24 {
-      return WeatherCode.snow(.middle)
-  } else if icon == 25 {
-    return WeatherCode.hail
-  } else if icon == 26 || icon == 29 {
-      return WeatherCode.sleet(.light)
-  } else if icon == 32 {
-    return WeatherCode.wind
-  } else {
-    return WeatherCode.cloudy
-  }
+        return WeatherCode.snow(.light)
+    } else if icon == 22 || icon == 24 {
+        return WeatherCode.snow(.middle)
+    } else if icon == 25 {
+        return WeatherCode.hail
+    } else if icon == 26 || icon == 29 {
+        return WeatherCode.sleet(.light)
+    } else if icon == 32 {
+        return WeatherCode.wind
+    } else {
+        return WeatherCode.cloudy
+    }
 }
 
 private func convertUnit(_ str: String) -> String {

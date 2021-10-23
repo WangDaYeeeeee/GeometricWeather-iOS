@@ -7,7 +7,6 @@
 
 import UIKit
 
-private let touchDownAnimDuration = 0.1
 private let touchUpAnimDuration = 0.45
 
 private let touchDownAlpha = 0.2
@@ -18,15 +17,15 @@ class UIViewEffect : UIView {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
-        UIView.animate(withDuration: touchDownAnimDuration) {
-            self.alpha = touchDownAlpha
-        }
+        super.touchesBegan(touches, with: event)
+        self.alpha = touchDownAlpha
     }
     
     override func touchesCancelled(
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesCancelled(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -36,6 +35,7 @@ class UIViewEffect : UIView {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesEnded(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -48,15 +48,15 @@ class UIStackViewEffect : UIStackView {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
-        UIView.animate(withDuration: touchDownAnimDuration) {
-            self.alpha = touchDownAlpha
-        }
+        super.touchesBegan(touches, with: event)
+        self.alpha = touchDownAlpha
     }
     
     override func touchesCancelled(
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesCancelled(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -66,6 +66,7 @@ class UIStackViewEffect : UIStackView {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesEnded(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -78,15 +79,15 @@ class UILabelEffect : UILabel {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
-        UIView.animate(withDuration: touchDownAnimDuration) {
-            self.alpha = touchDownAlpha
-        }
+        super.touchesBegan(touches, with: event)
+        self.alpha = touchDownAlpha
     }
     
     override func touchesCancelled(
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesCancelled(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -96,6 +97,7 @@ class UILabelEffect : UILabel {
         _ touches: Set<UITouch>,
         with event: UIEvent?
     ) {
+        super.touchesEnded(touches, with: event)
         UIView.animate(withDuration: touchUpAnimDuration) {
             self.alpha = 1.0
         }
@@ -109,9 +111,7 @@ class ImageButtonEffect: UIButton {
         with event: UIEvent?
     ) {
         super.touchesBegan(touches, with: event)
-        UIView.animate(withDuration: touchDownAnimDuration) {
-            self.alpha = touchDownAlpha
-        }
+        self.alpha = touchDownAlpha
     }
     
     override func touchesCancelled(
@@ -140,8 +140,8 @@ class AutoHideKeyboardTableView : UITableView {
     var hideKeyboardExecutor: (() -> Void)?
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.hideKeyboardExecutor?()
         super.touchesBegan(touches, with: event)
+        self.hideKeyboardExecutor?()
     }
     
     override func touchesShouldBegin(

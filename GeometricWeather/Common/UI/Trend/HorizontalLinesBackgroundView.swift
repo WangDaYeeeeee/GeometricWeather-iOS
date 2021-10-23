@@ -17,12 +17,16 @@ class HorizontalLinesBackgroundView: UIView {
     var highValue: Double? {
         didSet {
             self.sizeCache = .zero
+            self.highLeadingLabel.alpha = self.highValue == nil ? 0 : 1
+            self.highTrailingLabel.alpha = self.highValue == nil ? 0 : 1
             self.setNeedsLayout()
         }
     }
     var lowValue: Double? {
         didSet {
             self.sizeCache = .zero
+            self.lowLeadingLabel.alpha = self.highValue == nil ? 0 : 1
+            self.lowTrailingLabel.alpha = self.highValue == nil ? 0 : 1
             self.setNeedsLayout()
         }
     }

@@ -141,7 +141,7 @@ class MainSunMoonCardCell: MainTableViewCell {
             if let angle = weather.dailyForecasts[0].moonPhase.angle,
                 let _ = weather.dailyForecasts[0].moonPhase.description {
                 self.moonPhaseView.alpha = 1.0
-                self.moonLabel.alpha = 1.0
+                self.moonPhaseLabel.alpha = 1.0
                 
                 self.moonPhaseView.angle = Double(angle)
                 self.moonPhaseView.lightColor = .white
@@ -156,7 +156,7 @@ class MainSunMoonCardCell: MainTableViewCell {
                 )
             } else {
                 self.moonPhaseView.alpha = 0.0
-                self.moonLabel.alpha = 0.0
+                self.moonPhaseLabel.alpha = 0.0
             }
             
             // sun moon path view.
@@ -233,8 +233,8 @@ class MainSunMoonCardCell: MainTableViewCell {
     
     override func staggeredScrollIntoScreen(atFirstTime: Bool) {
         if atFirstTime {
-            var sunProgress = 0.0
-            var moonProgress = 0.0
+            var sunProgress = -1.0
+            var moonProgress = -1.0
             if let riseTime = weather?.dailyForecasts[0].sun.riseTime,
                 let setTime = weather?.dailyForecasts[0].sun.setTime {
                 sunProgress = getPathProgress(
@@ -255,8 +255,8 @@ class MainSunMoonCardCell: MainTableViewCell {
             self.sunMoonPathView.setProgress(
                 (sunProgress, moonProgress),
                 withAnimationDuration: (
-                    sunProgress == 0 ? 0.0 : (2.0 + sunProgress * 3.0),
-                    moonProgress == 0 ? 0.0 : (2.0 * moonProgress * 3.0)
+                    sunProgress == -1.0 ? -1.0 : (2.0 + sunProgress * 3.0),
+                    moonProgress == -1.0 ? -1.0 : (2.0 * moonProgress * 3.0)
                 )
             )
         }

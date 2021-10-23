@@ -31,18 +31,8 @@ class SunMoonPathView: UIView {
     // data.
     
     // 0 - 1.
-    private var _sunProgress = 0.0
-    var sunProgress: Double {
-        get {
-            return _sunProgress
-        }
-    }
-    private var _moonProgress = 0.0
-    var moonProgress: Double {
-        get {
-            return _moonProgress
-        }
-    }
+    private(set) var sunProgress = 0.0
+    private(set) var moonProgress = 0.0
     
     var sunColor: UIColor {
         get {
@@ -171,7 +161,7 @@ class SunMoonPathView: UIView {
     
     override func layoutSubviews() {        
         self.setProgress(
-            (self._sunProgress, self._moonProgress),
+            (self.sunProgress, self.moonProgress),
             withAnimationDuration: (0.0, 0.0)
         )
         
@@ -181,14 +171,14 @@ class SunMoonPathView: UIView {
     
     // MARK: - interfaces.
     
-    // progress: 0 - 1.
+    // progress: 0 - 1 if there is a valid progress, negative value if no progress.
     // duration: 0 = no animation, otherwise execute an animation.
     func setProgress(
         _ progress: (sun: Double, moon: Double),
         withAnimationDuration: (sun: TimeInterval, moon: TimeInterval)
     ) {
-        self._sunProgress = progress.sun
-        self._moonProgress = progress.moon
+        self.sunProgress = progress.sun
+        self.moonProgress = progress.moon
         
         let arcPath = UIBezierPath(
             arcCenter: CGPoint(
@@ -247,19 +237,24 @@ class SunMoonPathView: UIView {
         andCGPath path: CGPath,
         forShapeLayer layer: CAShapeLayer
     ) {
+        let actualProgress = max(
+            0,
+            min(progress, 1)
+        )
+        
         layer.path = path
         layer.strokeStart = 0.0
         
         if duration == 0 {
             layer.removeAllAnimations()
-            layer.strokeEnd = progress
+            layer.strokeEnd = actualProgress
             return
         }
         
         layer.strokeEnd = 0.0
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        pathAnimation.toValue = progress
+        pathAnimation.toValue = actualProgress
         pathAnimation.duration = duration
         pathAnimation.fillMode = .forwards
         pathAnimation.isRemovedOnCompletion = false
@@ -273,13 +268,17 @@ class SunMoonPathView: UIView {
         forKey key: String,
         forIcon icon: UIImageView
     ) {
-        icon.alpha = progress == 0 ? 0.0 : 1.0
+        icon.alpha = progress < 0 ? 0.0 : 1.0
+        let actualProgress = max(
+            0,
+            min(progress, 1)
+        )
         
         let pathAnimation = CAKeyframeAnimation(keyPath: "position")
-        pathAnimation.path = self.getAnimationPath(for: progress).cgPath
+        pathAnimation.path = self.getAnimationPath(for: actualProgress).cgPath
         
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = Double(Int(progress * 7)) * 2 * .pi
+        rotationAnimation.toValue = Double(Int(actualProgress * 7)) * 2 * .pi
         
         let animationGroup = CAAnimationGroup()
         animationGroup.duration = max(duration, 0.1)

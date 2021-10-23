@@ -112,17 +112,6 @@ class GeoDialog: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func clearAnimations(onlyForeground: Bool = false) {
-        self.foregroundAnimation?.stopAnimation(true)
-        self.foregroundAnimation = nil
-        if onlyForeground {
-            return
-        }
-        
-        self.backgroundAnimation?.stopAnimation(true)
-        self.backgroundAnimation = nil
-    }
-    
     // MARK: - action.
     
     @objc private func onTap() {
@@ -320,5 +309,16 @@ class GeoDialog: UIView {
         foregroundAnim.startAnimation()
         self.backgroundAnimation = backgroundAnim
         self.foregroundAnimation = foregroundAnim
+    }
+    
+    private func clearAnimations(onlyForeground: Bool = false) {
+        self.foregroundAnimation?.stopAnimation(true)
+        self.foregroundAnimation = nil
+        if onlyForeground {
+            return
+        }
+        
+        self.backgroundAnimation?.stopAnimation(true)
+        self.backgroundAnimation = nil
     }
 }

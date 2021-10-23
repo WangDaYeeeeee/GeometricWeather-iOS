@@ -37,9 +37,9 @@ public struct Location: Equatable {
     
     public var formattedId: String {
         get {
-            return currentPosition
-                ? Self.currentLocationId
-                : (cityId + "&" + weatherSource.key)
+            return self.currentPosition
+            ? Self.currentLocationId
+            : (self.cityId + "&" + self.weatherSource.key)
         }
     }
     

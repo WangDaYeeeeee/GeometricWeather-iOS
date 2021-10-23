@@ -78,6 +78,21 @@
 "snow" = "Snow";
 "ice" = "Ice";
 
+"weather_clear" = "Clear";
+"weather_partly_cloudy" = "Partly Cloudy";
+"weather_cloudy" = "Cloudy";
+"weather_light_rain" = "Light Rain";
+"weather_moderate_rain" = "Moderate Rain";
+"weather_heavy_rain" = "Heavy Rain";
+"weather_fog" = "Fog";
+"weather_haze" = "Haze";
+"weather_light_snow" = "Light Snow";
+"weather_moderate_snow" = "Moderate Snow";
+"weather_heavy_snow" = "Heavy Snow";
+"weather_dust" = "Dust";
+"weather_sand" = "Sand";
+"weather_wind" = "Wind";
+
 "wind_0" = "Calm";
 "wind_1" = "Light air";
 "wind_2" = "Light breeze";
@@ -152,8 +167,8 @@
 // "Month  = MMM(long) / M(short). Day = dd(long) / d(short). Week = EEEE(long) / EEE(short)."
 "date_format_short" = "M-d";
 "date_format_long" = "MMM d";
-"date_format_widget_short" = "EEEE; MMM d";
-"date_format_widget_long" = "EEEE; MMM d";
+"date_format_widget_short" = "EEEE, MMM d";
+"date_format_widget_long" = "EEEE, MMM d";
 
 "feedback_request_permission" = "Permissions";
 "feedback_request_location" = "Location";

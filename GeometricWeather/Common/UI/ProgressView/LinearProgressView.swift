@@ -26,18 +26,8 @@ class LinearProgressView: UIView {
     // data.
     
     // 0 - 1.
-    private var _progress = 0.0
-    var progress: Double {
-        get {
-            return _progress
-        }
-    }
-    private var _colors = (from: UIColor.clear, to: UIColor.clear)
-    var colors: (from: UIColor, to: UIColor) {
-        get {
-            return _colors
-        }
-    }
+    private(set) var progress = 0.0
+    private(set) var colors = (from: UIColor.clear, to: UIColor.clear)
     
     var topDescription: String {
         get {
@@ -130,9 +120,9 @@ class LinearProgressView: UIView {
         sizeCache = self.frame.size
         
         self.setProgress(
-            self._progress, withAnimationDuration: 0.0,
+            self.progress, withAnimationDuration: 0.0,
             andDescription: (self.topDescription, self.bottomDiscription),
-            betweenColors: self._colors
+            betweenColors: self.colors
         )
         
         self.progressTopLabel.frame.origin = CGPoint(
@@ -156,8 +146,8 @@ class LinearProgressView: UIView {
         andDescription: (top: String, bottom: String)? = nil,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
-        self._progress = progress
-        self._colors = betweenColors
+        self.progress = progress
+        self.colors = betweenColors
         
         if let desc = andDescription {
             self.topDescription = desc.top

@@ -41,6 +41,10 @@
 		374BA62726FC894E0080B5CA /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 374BA62626FC894E0080B5CA /* GeometricWeatherBasic */; };
 		374BA62A26FC89E10080B5CA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 374BA62C26FC89E10080B5CA /* Localizable.strings */; };
 		374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */; };
+		37543A742720164C00BA2A14 /* CaiYunApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A732720164C00BA2A14 /* CaiYunApi.swift */; };
+		37543A76272028F100BA2A14 /* CaiYunJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A75272028F100BA2A14 /* CaiYunJson.swift */; };
+		37543A7827202A9D00BA2A14 /* CaiYunConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A7727202A9D00BA2A14 /* CaiYunConvert.swift */; };
+		37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A7B27224E3900BA2A14 /* HourlyDialog.swift */; };
 		3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3754FFB426F33A4E00D5A097 /* GeoViewController.swift */; };
 		3761DEB626A9B9AD00B0612E /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761DEB526A9B9AD00B0612E /* LocationHelper.swift */; };
 		3766725026CFEF9B00C34188 /* MainAirQualityCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3766724F26CFEF9B00C34188 /* MainAirQualityCardCell.swift */; };
@@ -86,6 +90,7 @@
 		37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */; };
 		37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7626DA3C4900DBA181 /* SearchViewController.swift */; };
 		37AA5E8026DB744E00DBA181 /* JXMovableCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7F26DB744E00DBA181 /* JXMovableCellTableView.m */; };
+		37CCA445271FBB880034D247 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 37CCA444271FBB880034D247 /* Then */; };
 		37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF4C3726CE496000E58736 /* CircularProgressView.swift */; };
 		37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */; };
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
@@ -192,6 +197,10 @@
 		374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidget.swift; sourceTree = "<group>"; };
 		374BA63526FC8FD90080B5CA /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		374BA64026FC8FD90080B5CA /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		37543A732720164C00BA2A14 /* CaiYunApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaiYunApi.swift; sourceTree = "<group>"; };
+		37543A75272028F100BA2A14 /* CaiYunJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaiYunJson.swift; sourceTree = "<group>"; };
+		37543A7727202A9D00BA2A14 /* CaiYunConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaiYunConvert.swift; sourceTree = "<group>"; };
+		37543A7B27224E3900BA2A14 /* HourlyDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyDialog.swift; sourceTree = "<group>"; };
 		3754FFB426F33A4E00D5A097 /* GeoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoViewController.swift; sourceTree = "<group>"; };
 		3761DEB526A9B9AD00B0612E /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		3766724F26CFEF9B00C34188 /* MainAirQualityCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAirQualityCardCell.swift; sourceTree = "<group>"; };
@@ -272,6 +281,7 @@
 				3789E1FD26AADA14005C3C06 /* Moya in Frameworks */,
 				3789E1FA26AAD85A005C3C06 /* Reachability in Frameworks */,
 				37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */,
+				37CCA445271FBB880034D247 /* Then in Frameworks */,
 				3789E20126AADA14005C3C06 /* RxMoya in Frameworks */,
 				3789E1FF26AADA14005C3C06 /* ReactiveMoya in Frameworks */,
 				3739F27626C0C7DA00EAE90A /* SnapKit in Frameworks */,
@@ -465,6 +475,31 @@
 			path = Weather;
 			sourceTree = "<group>";
 		};
+		37543A722720163100BA2A14 /* CaiYun */ = {
+			isa = PBXGroup;
+			children = (
+				37543A732720164C00BA2A14 /* CaiYunApi.swift */,
+				37543A7727202A9D00BA2A14 /* CaiYunConvert.swift */,
+				37543A75272028F100BA2A14 /* CaiYunJson.swift */,
+			);
+			path = CaiYun;
+			sourceTree = "<group>";
+		};
+		37543A7927224DE700BA2A14 /* Daily */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Daily;
+			sourceTree = "<group>";
+		};
+		37543A7A27224E2200BA2A14 /* Hourly */ = {
+			isa = PBXGroup;
+			children = (
+				37543A7B27224E3900BA2A14 /* HourlyDialog.swift */,
+			);
+			path = Hourly;
+			sourceTree = "<group>";
+		};
 		3754FFB326F33A3B00D5A097 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +531,7 @@
 		3761DEB426A9B99B00B0612E /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				37543A722720163100BA2A14 /* CaiYun */,
 				3789E20226AADA21005C3C06 /* Accu */,
 				3789E20526AAEEA4005C3C06 /* WeatherApi.swift */,
 				3789E21A26ABD9A1005C3C06 /* ConvertUtils.swift */,
@@ -517,6 +553,8 @@
 			children = (
 				3749A10426E456B100EEA6A3 /* Alerts */,
 				37AA5E7226DA39CC00DBA181 /* Management */,
+				37543A7927224DE700BA2A14 /* Daily */,
+				37543A7A27224E2200BA2A14 /* Hourly */,
 				37AA5E7126DA39C500DBA181 /* Main */,
 				3789E27326AD9984005C3C06 /* MainViewModel.swift */,
 				3789E27726ADA713005C3C06 /* MainRepository.swift */,
@@ -733,6 +771,7 @@
 				3789E20026AADA14005C3C06 /* RxMoya */,
 				3739F27526C0C7DA00EAE90A /* SnapKit */,
 				37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */,
+				37CCA444271FBB880034D247 /* Then */,
 			);
 			productName = GeometricWeather;
 			productReference = 370BA594269C398D006BB1CE /* GeometricWeather.app */;
@@ -834,6 +873,7 @@
 				3789E1F826AAD85A005C3C06 /* XCRemoteSwiftPackageReference "Reachability" */,
 				3789E1FB26AADA14005C3C06 /* XCRemoteSwiftPackageReference "Moya" */,
 				3739F27426C0C7D900EAE90A /* XCRemoteSwiftPackageReference "SnapKit" */,
+				37CCA443271FBB880034D247 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 370BA595269C398D006BB1CE /* Products */;
 			projectDirPath = "";
@@ -912,6 +952,7 @@
 				3799F51126D2561C00B49D20 /* MainDetailItemView.swift in Sources */,
 				3789E21726ABA9FF005C3C06 /* AccuConvert.swift in Sources */,
 				37D92A4226D9266D00A13C63 /* ManagementViewController.swift in Sources */,
+				37543A76272028F100BA2A14 /* CaiYunJson.swift in Sources */,
 				3799F51626D282BB00B49D20 /* AllergenCollectionViewCell.swift in Sources */,
 				378CB01626BF7DED00C7BD13 /* MainTableViewHeaderView.swift in Sources */,
 				3789E22026AC0D2A005C3C06 /* UpdateHelper.swift in Sources */,
@@ -935,10 +976,12 @@
 				3761DEB626A9B9AD00B0612E /* LocationHelper.swift in Sources */,
 				3789E20626AAEEA4005C3C06 /* WeatherApi.swift in Sources */,
 				3799F50626D0EACE00B49D20 /* LinearProgressView.swift in Sources */,
+				37543A7827202A9D00BA2A14 /* CaiYunConvert.swift in Sources */,
 				37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */,
 				3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */,
 				37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */,
 				377647E526F1988800B82BB2 /* SettingsView.swift in Sources */,
+				37543A742720164C00BA2A14 /* CaiYunApi.swift in Sources */,
 				37D9E61127185AFE00209110 /* AboutView.swift in Sources */,
 				37E5D4312717FEAD0052A690 /* MainViewController+Response.swift in Sources */,
 				378CB00B26BD80DD00C7BD13 /* DragSwitchView.swift in Sources */,
@@ -955,6 +998,7 @@
 				377B1D6926B6BCA700E7E07E /* MainViewController.swift in Sources */,
 				37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */,
 				3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */,
+				37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
 				37D9E62D271D400700209110 /* GeoDialog.swift in Sources */,
 				37D9E60E2718454100209110 /* ToastHelper.swift in Sources */,
@@ -1180,7 +1224,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1214,7 +1258,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeometricWeather/GeometricWeather.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1243,7 +1287,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				INFOPLIST_FILE = GeometricWeatherTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1265,7 +1309,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				INFOPLIST_FILE = GeometricWeatherTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1456,6 +1500,14 @@
 				minimumVersion = 14.0.0;
 			};
 		};
+		37CCA443271FBB880034D247 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1491,6 +1543,11 @@
 		37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GeometricWeatherBasic;
+		};
+		37CCA444271FBB880034D247 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 37CCA443271FBB880034D247 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

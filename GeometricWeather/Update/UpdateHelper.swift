@@ -11,9 +11,20 @@ import GeometricWeatherBasic
 class UpdateHelper {
     
     private let locator = LocationHelper()
-    private let weatherAPi = getWeatherApi(SettingsManager.shared.weatherSource)
+    
+    private let accuApi = AccuApi()
+    private let caiYunApi = CaiYunApi()
     
     private var weatherRequestTokens = [CancelToken]()
+    
+    private func getWeatherApi(
+        _ weatherSource: WeatherSource
+    ) -> WeatherApi {
+        if weatherSource == .caiYun {
+            return self.caiYunApi
+        }
+        return self.accuApi
+    }
     
     func update(
         target: Location,
@@ -90,7 +101,11 @@ class UpdateHelper {
     ) {
         printLog(keyword: "update", content: "get geo position for: \(target.formattedId)")
         
-        let token = weatherAPi.getGeoPosition(target: target) { location in
+        let token = self.getWeatherApi(
+            SettingsManager.shared.weatherSource
+        ).getGeoPosition(
+            target: target
+        ) { location in
             if let result = location {
                 DispatchQueue.global(qos: .background).async {
                     DatabaseHelper.shared.writeLocation(location: result)
@@ -132,7 +147,11 @@ class UpdateHelper {
     ) {
         printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
         
-        let token = weatherAPi.getWeather(target: target) { weather in
+        let token = self.getWeatherApi(
+            target.weatherSource
+        ).getWeather(
+            target: target
+        ) { weather in
             self.weatherRequestTokens.removeAll()
             
             if let result = weather {

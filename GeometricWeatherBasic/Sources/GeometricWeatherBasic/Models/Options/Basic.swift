@@ -11,24 +11,24 @@ public struct UpdateInterval: Option {
     
     public typealias ImplType = UpdateInterval
     
-    public static var all = [
-        UpdateInterval(
-            key: "update_interval_1",
-            hours: 1.0
-        ),
-        UpdateInterval(
-            key: "update_interval_2",
-            hours: 2.0
-        ),
-        UpdateInterval(
-            key: "update_interval_3",
-            hours: 3.0
-        ),
-        UpdateInterval(
-            key: "update_interval_4",
-            hours: 4.0
-        ),
-    ]
+    public static let anHour = UpdateInterval(
+        key: "update_interval_1",
+        hours: 1.0
+    )
+    public static let twoHour = UpdateInterval(
+        key: "update_interval_2",
+        hours: 2.0
+    )
+    public static let threeHour = UpdateInterval(
+        key: "update_interval_3",
+        hours: 3.0
+    )
+    public static let fourHour = UpdateInterval(
+        key: "update_interval_4",
+        hours: 4.0
+    )
+    
+    public static var all = [anHour, twoHour, threeHour, fourHour]
     
     public static subscript(index: Int) -> UpdateInterval {
         get {

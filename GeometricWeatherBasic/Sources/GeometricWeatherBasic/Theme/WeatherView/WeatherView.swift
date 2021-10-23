@@ -77,33 +77,10 @@ public func weatherCodeToWeatherKind(code: WeatherCode) -> WeatherKind {
 
 public class WeatherViewState: ObservableObject {
     
-    @Published private var _weatherKind: WeatherKind
-    public var weatherKind: WeatherKind {
-        get {
-            return _weatherKind
-        }
-    }
-    
-    @Published private var _prevWeatherKind = WeatherKind.null
-    public var prevWeatherKind: WeatherKind {
-        get {
-            return _prevWeatherKind
-        }
-    }
-    
-    @Published private var _daylight: Bool
-    public var daylight: Bool {
-        get {
-            return _daylight
-        }
-    }
-    
-    @Published private var _prevDaylight = true
-    public var prevDaylight: Bool {
-        get {
-            return _prevDaylight
-        }
-    }
+    @Published private(set) var weatherKind: WeatherKind
+    @Published private(set) var prevWeatherKind = WeatherKind.null
+    @Published private(set) var daylight: Bool
+    @Published private(set) var prevDaylight = true
     
     @Published public var scrollOffset: CGFloat
     @Published public var drawable: Bool
@@ -120,8 +97,8 @@ public class WeatherViewState: ObservableObject {
         paddingTop: CGFloat = 0.0,
         offsetHorizontal: CGFloat = 0.0
     ) {
-        self._weatherKind = weatherKind
-        self._daylight = daylight
+        self.weatherKind = weatherKind
+        self.daylight = daylight
         self.scrollOffset = scrollOffset
         self.drawable = drawable
         self.paddingTop = paddingTop
@@ -129,15 +106,16 @@ public class WeatherViewState: ObservableObject {
     }
     
     public func update(weatherKind: WeatherKind, daylight: Bool) {
-        if weatherKind == _weatherKind && daylight == _daylight {
+        if self.weatherKind == weatherKind
+            && self.daylight == daylight {
             return
         }
         
-        self._prevWeatherKind = self._weatherKind
-        self._prevDaylight = self._daylight
+        self.prevWeatherKind = self.weatherKind
+        self.prevDaylight = self.daylight
         
-        self._weatherKind = weatherKind
-        self._daylight = daylight
+        self.weatherKind = weatherKind
+        self.daylight = daylight
         
         self.updateWeatherTime = Date().timeIntervalSince1970
     }

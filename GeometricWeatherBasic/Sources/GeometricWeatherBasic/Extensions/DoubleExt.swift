@@ -19,6 +19,20 @@ public extension Double {
     
     func toString(_ decimal: Int) -> String {
         let truncated = trunc(self * 10) / 10
-        return String(format: "%.1f", truncated)
+        var str = String(format: "%.\(decimal)f", truncated)
+        
+        if (Double(str) ?? 0) > 0 {
+            return str
+        }
+        
+        str = "<0"
+        if decimal > 0 {
+            str += "."
+        }
+        for _ in 0 ..< (decimal - 1) {
+            str += "0"
+        }
+        str += "1"
+        return str
     }
 }

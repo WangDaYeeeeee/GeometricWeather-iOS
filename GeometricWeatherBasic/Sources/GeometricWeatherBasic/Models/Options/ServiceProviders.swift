@@ -11,23 +11,34 @@ public struct WeatherSource: ReadableOption {
     
     public typealias ImplType = WeatherSource
     
-    public static let all = [
-        WeatherSource(
-            key: "weather_source_accu",
-            voiceKey: "weather_source_voice_accu",
-            url: "accuweather.com",
-            color: 0xef5823
-        )
-    ]
+    public static let accu = WeatherSource(
+        key: "weather_source_accu",
+        voiceKey: "weather_source_voice_accu",
+        url: "accuweather.com",
+        color: 0xef5823
+    )
+    public static let caiYun = WeatherSource(
+        key: "weather_source_caiyun",
+        voiceKey: "weather_source_voice_caiyun",
+        url: "caiyunapp.com",
+        color: 0x5ebb8e
+    )
+    
+    public static let all = [accu, caiYun]
     
     public static subscript(index: Int) -> WeatherSource {
         get {
-            return WeatherSource.all[0]
+            return WeatherSource.all[index]
         }
     }
     
     public static subscript(key: String) -> WeatherSource {
         get {
+            for item in WeatherSource.all {
+                if item.key == key {
+                    return item
+                }
+            }
             return WeatherSource.all[0]
         }
     }

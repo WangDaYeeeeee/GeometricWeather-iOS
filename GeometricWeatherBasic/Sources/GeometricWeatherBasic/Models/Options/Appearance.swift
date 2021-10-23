@@ -11,12 +11,12 @@ public struct DarkMode: Option {
     
     public typealias ImplType = DarkMode
     
-    public static var all = [
-        DarkMode(key: "dark_mode_system"),
-        DarkMode(key: "dark_mode_auto"),
-        DarkMode(key: "dark_mode_light"),
-        DarkMode(key: "dark_mode_dark"),
-    ]
+    public static let followSystem = DarkMode(key: "dark_mode_system")
+    public static let auto = DarkMode(key: "dark_mode_auto")
+    public static let light = DarkMode(key: "dark_mode_light")
+    public static let dark = DarkMode(key: "dark_mode_dark")
+    
+    public static var all = [followSystem, auto, light, dark]
     
     public static subscript(index: Int) -> DarkMode {
         get {

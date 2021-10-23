@@ -8,8 +8,6 @@
 import UIKit
 import GeometricWeatherBasic
 
-private let observerKey = "SearchViewController"
-
 private let cellReuseId = "SearchTableViewCell"
 
 protocol SearchViewDelegate: NSObjectProtocol {
@@ -95,7 +93,7 @@ class SearchViewController: UIViewController,
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.requesting.observeValue(observerKey) { newValue in
+        self.requesting.observeValue(self) { newValue in
             if newValue {
                 UIView.animate(withDuration: 0.3) {
                     self.tableView.alpha = 0.0
@@ -113,7 +111,7 @@ class SearchViewController: UIViewController,
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        self.requesting.stopObserve(observerKey)
+        self.requesting.stopObserve(self)
     }
     
     // MARK: - interfaces.

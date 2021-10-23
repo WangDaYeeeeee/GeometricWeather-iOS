@@ -9,6 +9,7 @@ import Foundation
 
 public struct Hourly: Codable {
     
+    // local time.
     public let time: TimeInterval
     public let daylight: Bool
     
@@ -18,6 +19,7 @@ public struct Hourly: Codable {
     public let temperature: Temperature
     public let precipitation: Precipitation
     public let precipitationProbability: Double?
+    public let wind: Wind?
     
     public init(
         time: TimeInterval,
@@ -26,7 +28,8 @@ public struct Hourly: Codable {
         weatherCode: WeatherCode,
         temperature: Temperature,
         precipitation: Precipitation,
-        precipitationProbability: Double?
+        precipitationProbability: Double?,
+        wind: Wind? = nil
     ) {
         self.time = time
         self.daylight = daylight
@@ -35,6 +38,7 @@ public struct Hourly: Codable {
         self.temperature = temperature
         self.precipitation = precipitation
         self.precipitationProbability = precipitationProbability
+        self.wind = wind
     }
 
     public func getHour(_ twelveHour: Bool, timezone: TimeZone) -> Int {
@@ -51,7 +55,7 @@ public struct Hourly: Codable {
         return hour
     }
     
-    public func formateDate(format: String) -> String {
+    public func formatDate(format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         return formatter.string(from: Date(timeIntervalSince1970: time))

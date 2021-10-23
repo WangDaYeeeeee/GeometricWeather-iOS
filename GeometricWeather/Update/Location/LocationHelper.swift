@@ -38,62 +38,93 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
             return
         }
         
-        if isRunning {
-            callbacks.append(callback)
+        if self.isRunning {
+            self.callbacks.append(callback)
             return
         }
         
-        isRunning = true
-        callbacks.append(callback)
+        self.isRunning = true
+        self.callbacks.append(callback)
         
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.distanceFilter = 0
         self.locationManager.delegate = self
         
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.startUpdatingLocation()
+        let authStatus = self.locationManager.authorizationStatus
         
-        timer = Timer.scheduledTimer(withTimeInterval: timeOut, repeats: false) { timer in
-            if let location = self.locationManager.location {
-                for callback in self.callbacks {
-                    callback((
-                        location.coordinate.latitude,
-                        location.coordinate.longitude
-                    ))
-                }
-            } else {
-                for callback in self.callbacks {
-                    callback(nil)
-                }
-            }
-            
-            self.stopRequest()
+        if authStatus == .notDetermined {
+            self.locationManager.requestAlwaysAuthorization()
+            return
         }
+        
+        if authStatus == .authorizedAlways
+            || authStatus == .authorizedWhenInUse {
+            self.startUpdatingLocation()
+            return
+        }
+        
+        self.publishResult(nil)
+        self.stopRequest()
     }
     
     func stopRequest() {
         self.locationManager.stopUpdatingLocation()
-        callbacks.removeAll()
-        isRunning = false
+        self.callbacks.removeAll()
+        self.isRunning = false
         
-        timer?.invalidate()
-        timer = nil
+        self.timer?.invalidate()
+        self.timer = nil
     }
     
-    // MARK: - protocols.
+    private func startUpdatingLocation() {
+        self.locationManager.startUpdatingLocation()
+        
+        self.timer = Timer.scheduledTimer(
+            withTimeInterval: timeOut,
+            repeats: false
+        ) { timer in
+            self.publishResult(self.locationManager.location)
+            self.stopRequest()
+        }
+    }
+    
+    private func publishResult(_ result: CLLocation?) {
+        if let location = result {
+            for callback in self.callbacks {
+                callback((
+                    location.coordinate.latitude,
+                    location.coordinate.longitude
+                ))
+            }
+        } else {
+            for callback in self.callbacks {
+                callback(nil)
+            }
+        }
+    }
+    
+    // MARK: - delegate.
+    
+    func locationManagerDidChangeAuthorization(
+        _ manager: CLLocationManager
+    ) {
+        if manager.authorizationStatus == .authorizedAlways
+            || manager.authorizationStatus == .authorizedWhenInUse {
+            self.startUpdatingLocation()
+            return
+        }
+        
+        self.publishResult(nil)
+        self.stopRequest()
+    }
     
     func locationManager(
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
     ) {
         if let location = locations.last {
-            for callback in callbacks {
-                callback((
-                    location.coordinate.latitude,
-                    location.coordinate.longitude
-                ))
-            }
-            stopRequest()
+            self.publishResult(location)
+            self.stopRequest()
         }
     }
 }

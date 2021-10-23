@@ -10,9 +10,6 @@ import GeometricWeatherBasic
 
 class StatementDialog: GeoDialog {
     
-    private let titleLabel = UILabel(frame: .zero)
-    private let contentLabel = UILabel(frame: .zero)
-    
     init(title: String, content: String) {
         let container = UIView(frame: .zero)
         
@@ -22,19 +19,21 @@ class StatementDialog: GeoDialog {
         vstack.spacing = normalMargin
         container.addSubview(vstack)
         
-        self.titleLabel.text = title
-        self.titleLabel.textColor = .label
-        self.titleLabel.font = largeTitleFont
-        self.titleLabel.lineBreakMode = .byWordWrapping
-        self.titleLabel.numberOfLines = 0
-        vstack.addArrangedSubview(self.titleLabel)
+        let titleLabel = UILabel(frame: .zero)
+        titleLabel.text = title
+        titleLabel.textColor = .label
+        titleLabel.font = largeTitleFont
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.numberOfLines = 0
+        vstack.addArrangedSubview(titleLabel)
         
-        self.contentLabel.text = content
-        self.contentLabel.textColor = .secondaryLabel
-        self.contentLabel.font = bodyFont
-        self.contentLabel.lineBreakMode = .byWordWrapping
-        self.contentLabel.numberOfLines = 0
-        vstack.addArrangedSubview(self.contentLabel)
+        let contentLabel = UILabel(frame: .zero)
+        contentLabel.text = content
+        contentLabel.textColor = .secondaryLabel
+        contentLabel.font = bodyFont
+        contentLabel.lineBreakMode = .byWordWrapping
+        contentLabel.numberOfLines = 0
+        vstack.addArrangedSubview(contentLabel)
         
         vstack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(normalMargin)

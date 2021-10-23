@@ -133,7 +133,7 @@ class MainTimeBarView: UIStackView {
         
         self.updateTimeLabel.text = NSLocalizedString("refresh_at", comment: "")
         + ": "
-        + weather.base.formateUpdateTime(twelveHour: isTwelveHour())
+        + weather.base.formatePublishTime(twelveHour: isTwelveHour())
         
         if timezone != .current {
             self.timezoneTimeLabel.text = Self.getLocalTimeText(

@@ -9,6 +9,7 @@ import Foundation
 
 public struct Daily: Codable {
     
+    // local time.
     public let time: TimeInterval
     
     public let day: HalfDay
@@ -50,7 +51,6 @@ public struct Daily: Codable {
     public func getDate(format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
-        
         return formatter.string(from: Date(timeIntervalSince1970: time))
     }
 
@@ -69,22 +69,22 @@ public struct Daily: Codable {
     }
 
     public func isToday(timezone: TimeZone) -> Bool {
-        let currentDate = Date();
-        let year = Calendar.current.component(.year, from: currentDate)
-        let month = Calendar.current.component(.month, from: currentDate)
-        let day = Calendar.current.component(.day, from: currentDate)
+        let dailyDate = Date(timeIntervalSince1970: self.time)
+        let year = Calendar.current.component(.year, from: dailyDate)
+        let month = Calendar.current.component(.month, from: dailyDate)
+        let day = Calendar.current.component(.day, from: dailyDate)
         
-        let timezoneDate = Date(
-            timeIntervalSince1970: time + Double(
+        let localDate = Date(
+            timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
                 timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
             )
         )
-        let timezoneYear = Calendar.current.component(.year, from: timezoneDate)
-        let timezoneMonth = Calendar.current.component(.month, from: timezoneDate)
-        let timezoneDay = Calendar.current.component(.day, from: timezoneDate)
+        let localYear = Calendar.current.component(.year, from: localDate)
+        let localMonth = Calendar.current.component(.month, from: localDate)
+        let localDay = Calendar.current.component(.day, from: localDate)
 
-        return year == timezoneYear
-            && month == timezoneMonth
-            && day == timezoneDay
+        return year == localYear
+            && month == localMonth
+            && day == localDay
     }
 }

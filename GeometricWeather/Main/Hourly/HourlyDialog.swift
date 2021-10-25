@@ -72,14 +72,20 @@ class HourlyDialog: GeoDialog {
                 make.trailing.equalToSuperview()
             }
             
-            if hourly.precipitation.isValid() {
-                let precipitationUnit = SettingsManager.shared.precipitationUnit
+            if let precipitationIntensity = hourly.precipitationIntensity {
+                let precipitationIntensityUnit = SettingsManager.shared.precipitationIntensityUnit
                 
                 let item = HourlyItemView(
-                    title: NSLocalizedString("precipitation", comment: ""),
-                    content: precipitationUnit.formatValueWithUnit(
-                        hourly.precipitation.total ?? 0.0,
-                        unit: NSLocalizedString(precipitationUnit.key, comment: "")
+                    title: NSLocalizedString(
+                        "precipitation_intensity",
+                        comment: ""
+                    ),
+                    content: precipitationIntensityUnit.formatValueWithUnit(
+                        precipitationIntensity,
+                        unit: NSLocalizedString(
+                            precipitationIntensityUnit.key,
+                            comment: ""
+                        )
                     )
                 )
                 stack2.addArrangedSubview(item)

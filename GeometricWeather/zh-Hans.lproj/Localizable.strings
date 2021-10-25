@@ -16,6 +16,7 @@
 "refresh_at" = "更新于";
 "local_time" = "当地时间";
 "precipitation" = "降水量";
+"precipitation_intensity" = "降水强度";
 "precipitation_probability" = "降水概率";
 "precipitation_duration" = "降水时长";
 "maxi_temp" = "白天";
@@ -350,6 +351,16 @@
 "precipitation_unit_voice_cm" = "厘米";
 "precipitation_unit_voice_in" = "英寸";
 "precipitation_unit_voice_lpsqm" = "升每平方米";
+
+"precipitation_intensity_unit_mm" = "毫米/时";
+"precipitation_intensity_unit_cm" = "厘米/时";
+"precipitation_intensity_unit_in" = "英寸/时";
+"precipitation_intensity_unit_lpsqm" = "升/米²/时";
+
+"precipitation_intensity_unit_voice_mm" = "毫米每小时";
+"precipitation_intensity_unit_voice_cm" = "厘米每小时";
+"precipitation_intensity_unit_voice_in" = "英寸每小时";
+"precipitation_intensity_unit_voice_lpsqm" = "升每平方米每小时";
 
 "temperature_unit_c" = "℃";
 "temperature_unit_f" = "℉";

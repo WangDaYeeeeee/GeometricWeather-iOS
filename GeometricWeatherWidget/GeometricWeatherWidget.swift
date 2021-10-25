@@ -60,7 +60,7 @@ struct Provider: IntentTimelineProvider {
             Timeline(entries: [
                 GeoWidgetEntry(
                     location: readLocationWithWeatherCache(),
-                    date: Date().addingTimeInterval(30 * 60),
+                    date: Date().addingTimeInterval(15 * 60),
                     configuration: ConfigurationIntent()
                 )
             ], policy: .atEnd)

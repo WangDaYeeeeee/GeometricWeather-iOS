@@ -25,13 +25,13 @@ public let colorLevel4 = UIColor.colorFromRGB(0xe52f35);
 public let colorLevel5 = UIColor.colorFromRGB(0x99004c);
 public let colorLevel6 = UIColor.colorFromRGB(0x7e0023);
 
-public let precipitationProbabilityColor = UIColor(dynamicProvider: { traitCollection in
+public let precipitationProbabilityColor = UIColor { traitCollection in
     if traitCollection.userInterfaceStyle == .light {
         return .colorFromRGB(0x2a69c9)
     } else {
         return .colorFromRGB(0x82cffb)
     }
-})
+}
 
 public let designTitleFont = UIFont.systemFont(ofSize: 128.0, weight: .ultraLight)
 public let largeTitleFont = UIFont.systemFont(ofSize: 18.0, weight: .bold)
@@ -65,7 +65,7 @@ public class ThemeManager {
             )
         )
         self.daylight = EqualtableLiveData(isDaylight())
-                
+                        
         self.darkMode = darkMode
     }
     
@@ -75,7 +75,9 @@ public class ThemeManager {
     public let globalOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
     public let daylight: EqualtableLiveData<Bool>
     
-    public let weatherThemeDelegate = MaterialWeatherThemeDelegate()
+    public let weatherThemeDelegate = AnyWeatherThemeDelegate(
+        MaterialWeatherThemeDelegate()
+    )
     
     private var darkMode: DarkMode
     

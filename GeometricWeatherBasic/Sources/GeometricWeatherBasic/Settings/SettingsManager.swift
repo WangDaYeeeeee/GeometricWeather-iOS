@@ -192,6 +192,16 @@ public class SettingsManager {
             )
         }
     }
+    public var precipitationIntensityUnit: PrecipitationIntensityUnit {
+        get {
+            return PrecipitationIntensityUnit[
+                self.precipitationUnit.key.replacingOccurrences(
+                    of: "precipitation",
+                    with: "precipitation_intensity"
+                )
+            ]
+        }
+    }
     
     public var speedUnit: SpeedUnit {
         get {

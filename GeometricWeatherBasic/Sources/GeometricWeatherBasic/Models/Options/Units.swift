@@ -352,6 +352,87 @@ public struct PrecipitationUnit: Unit {
     }
 }
 
+// MARK: - precipitation intensity.
+public struct PrecipitationIntensityUnit: Unit {
+    
+    public typealias ImplType = PrecipitationIntensityUnit
+    public typealias ValueType = Double
+    
+    public static let mm = PrecipitationIntensityUnit(
+        key: "precipitation_intensity_unit_mm",
+        voiceKey: "precipitation_intensity_unit_voice_mm",
+        valueConterver: { (value: Double) -> Double in
+            return value
+        }
+    )
+    public static let cm = PrecipitationIntensityUnit(
+        key: "precipitation_intensity_unit_cm",
+        voiceKey: "precipitation_intensity_unit_voice_cm",
+        valueConterver: { (value: Double) -> Double in
+            return value * 0.1
+        }
+    )
+    public static let inch = PrecipitationIntensityUnit(
+        key: "precipitation_intensity_unit_in",
+        voiceKey: "precipitation_intensity_unit_voice_in",
+        valueConterver: { (value: Double) -> Double in
+            return value * 0.0394
+        }
+    )
+    public static let lpsqm = PrecipitationIntensityUnit(
+        key: "precipitation_intensity_unit_lpsqm",
+        voiceKey: "precipitation_intensity_unit_voice_lpsqm",
+        valueConterver: { (value: Double) -> Double in
+            return value
+        }
+    )
+    
+    public static let all = [mm, cm, inch, lpsqm]
+    
+    public static subscript(index: Int) -> PrecipitationIntensityUnit {
+        get {
+            return PrecipitationIntensityUnit.all[index]
+        }
+    }
+    
+    public static subscript(key: String) -> PrecipitationIntensityUnit {
+        get {
+            for item in PrecipitationIntensityUnit.all {
+                if item.key == key {
+                    return item
+                }
+            }
+            return PrecipitationIntensityUnit.all[0]
+        }
+    }
+    
+    public let key: String
+    public let voiceKey: String
+    public let valueConterver: ValueConverter<Double>
+    
+    public init(
+        key: String,
+        voiceKey: String,
+        valueConterver: @escaping ValueConverter<Double>
+    ) {
+        self.key = key
+        self.voiceKey = voiceKey
+        self.valueConterver = valueConterver
+    }
+    
+    public func getValue(_ valueInDefaultType: Double) -> Double {
+        return valueConterver(valueInDefaultType)
+    }
+    
+    public func formatValue(_ valueInDefaultType: Double) -> String {
+        return getValue(valueInDefaultType).toString(1)
+    }
+    
+    public func formatValueWithUnit(_ valueInDefaultType: Double, unit: String) -> String {
+        return "\(formatValue(valueInDefaultType))\(unit)"
+    }
+}
+
 // MARK: - distance.
 public struct DistanceUnit: Unit {
     

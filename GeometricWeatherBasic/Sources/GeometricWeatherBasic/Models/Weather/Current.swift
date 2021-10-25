@@ -13,8 +13,8 @@ public struct Current: Codable {
     public let weatherCode: WeatherCode
     
     public let temperature: Temperature
-    public let precipitation: Precipitation
-    public let precipitationProbability: Double
+    public let precipitationIntensity: Double?
+    public let precipitationProbability: Double?
     public let wind: Wind
     public let uv: UV
     public let airQuality: AirQuality
@@ -33,8 +33,8 @@ public struct Current: Codable {
         weatherText: String,
         weatherCode: WeatherCode,
         temperature: Temperature,
-        precipitation: Precipitation,
-        precipitationProbability: Double,
+        precipitationIntensity: Double?,
+        precipitationProbability: Double?,
         wind: Wind,
         uv: UV,
         airQuality: AirQuality,
@@ -50,7 +50,7 @@ public struct Current: Codable {
         self.weatherText = weatherText
         self.weatherCode = weatherCode
         self.temperature = temperature
-        self.precipitation = precipitation
+        self.precipitationIntensity = precipitationIntensity
         self.precipitationProbability = precipitationProbability
         self.wind = wind
         self.uv = uv

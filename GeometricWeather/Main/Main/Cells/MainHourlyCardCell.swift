@@ -19,7 +19,7 @@ class MainHourlyCardCell: MainTableViewCell,
     private var weather: Weather?
     private var timezone: TimeZone?
     private var temperatureRange: TemperatureRange?
-    private var showPrecipitationProb = true
+    private var source: WeatherSource?
     
     // MARK: - subviews.
     
@@ -109,8 +109,8 @@ class MainHourlyCardCell: MainTableViewCell,
                 }
             }
             self.temperatureRange = (minTemp, maxTemp)
-            self.showPrecipitationProb = location.weatherSource == .accu
-            
+            self.source = location.weatherSource
+
             self.summaryLabel.text = weather.current.hourlyForecast
             
             self.hourlyBackgroundView.bindData(
@@ -176,6 +176,15 @@ class MainHourlyCardCell: MainTableViewCell,
         )
         if let weather = self.weather,
             let hourlies = self.weather?.hourlyForecasts {
+            
+            var histogramType = HourlyHistogramType.none
+            if self.source?.hasHourlyPrecipitationProb ?? false {
+                histogramType = .precipitationProb
+            }
+            if self.source?.hasHourlyPrecipitationIntensity ?? false {
+                histogramType = .precipitationIntensity
+            }
+            
             (cell as? HourlyTrendCollectionViewCell)?.bindData(
                 prev: indexPath.row == 0 ? nil : hourlies[indexPath.row - 1],
                 hourly: hourlies[indexPath.row],
@@ -183,7 +192,7 @@ class MainHourlyCardCell: MainTableViewCell,
                 temperatureRange: self.temperatureRange ?? (0, 0),
                 weatherCode: weather.current.weatherCode,
                 timezone: self.timezone ?? .current,
-                showPrecipitationProb: self.showPrecipitationProb
+                histogramType: histogramType
             )
         }
         return cell

@@ -11,6 +11,36 @@ private let headerHeightRatio: CGFloat = 0.66
 
 public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
     
+    public typealias WeatherView = MaterialWeatherView
+    public typealias WidgetBackgroundView = MtrlWidgetBackgroundView
+    
+    public func getWeatherViewController() -> WeatherViewController<MaterialWeatherView> {
+        let state = WeatherViewState(
+            weatherKind: .null,
+            daylight: isDaylight()
+        )
+        return WeatherViewController(
+            MaterialWeatherView(state: state),
+            state: state
+        )
+    }
+    
+    public func getWeatherView(
+        _ state: WeatherViewState
+    ) -> MaterialWeatherView {
+        return MaterialWeatherView(state: state)
+    }
+    
+    public func getWidgetBackgroundView(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> MtrlWidgetBackgroundView {
+        return MtrlWidgetBackgroundView(
+            weatherKind: weatherKind,
+            daylight: daylight
+        )
+    }
+    
     public func getThemeColors(
         weatherKind: WeatherKind,
         daylight: Bool,
@@ -125,17 +155,5 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
     
     public func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat {
         return viewHeight * headerHeightRatio
-    }
-    
-    public func getWidgetBackground(
-        weatherKind: WeatherKind,
-        daylight: Bool,
-        currentLocation: Bool
-    ) -> some View {
-        return MtrlWidgetBackgroundView(
-            weatherKind: weatherKind,
-            daylight: daylight,
-            currentLocation: currentLocation
-        )
     }
 }

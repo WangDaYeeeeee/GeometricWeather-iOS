@@ -133,6 +133,16 @@ public protocol WeatherView {
 
 // inject colors and ui properties depend on weather.
 public protocol WeatherThemeDelegate {
+    
+    associatedtype WeatherView: View
+    associatedtype WidgetBackgroundView: View
+    
+    func getWeatherViewController() -> WeatherViewController<WeatherView>
+    
+    func getWidgetBackgroundView(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> WidgetBackgroundView
         
     // @return (
     //     main theme color,
@@ -146,4 +156,76 @@ public protocol WeatherThemeDelegate {
     ) -> (main: UIColor, daytime: UIColor, nighttime: UIColor)
     
     func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat
+}
+
+public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
+    
+    // method implementations.
+    
+    private let getWeatherViewControllerFunc: () -> WeatherViewController<V>
+    
+    private let getWidgetBackgroundViewFunc: (
+        _ weatherKind: WeatherKind,
+        _ daylight: Bool
+    ) -> W
+    
+    private let getThemeColorsFunc: (
+        _ weatherKind: WeatherKind,
+        _ daylight: Bool,
+        _ lightTheme: Bool
+    ) -> (
+        main: UIColor,
+        daytime: UIColor,
+        nighttime: UIColor
+    )
+    
+    private let getHeaderHeightFunc: (
+        _ viewHeight: CGFloat
+    ) -> CGFloat
+    
+    // life cycle.
+    
+    init<Impl: WeatherThemeDelegate>(
+        _ impl: Impl
+    ) where Impl.WeatherView == V, Impl.WidgetBackgroundView == W {
+        
+        self.getWeatherViewControllerFunc = impl.getWeatherViewController
+        self.getWidgetBackgroundViewFunc = impl.getWidgetBackgroundView(weatherKind:daylight:)
+        self.getThemeColorsFunc = impl.getThemeColors(weatherKind:daylight:lightTheme:)
+        self.getHeaderHeightFunc = impl.getHeaderHeight(_:)
+    }
+    
+    // override methods.
+    
+    public func getWeatherViewController() -> WeatherViewController<V> {
+        return self.getWeatherViewControllerFunc()
+    }
+    
+    public func getWidgetBackgroundView(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> W {
+        return self.getWidgetBackgroundViewFunc(weatherKind, daylight)
+    }
+        
+    // @return (
+    //     main theme color,
+    //     color of daytime chart line,
+    //     color of nighttime chart line
+    // )
+    public func getThemeColors(
+        weatherKind: WeatherKind,
+        daylight: Bool,
+        lightTheme: Bool
+    ) -> (
+        main: UIColor,
+        daytime: UIColor,
+        nighttime: UIColor
+    ) {
+        return self.getThemeColorsFunc(weatherKind, daylight, lightTheme)
+    }
+    
+    public func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat {
+        return self.getHeaderHeightFunc(viewHeight)
+    }
 }

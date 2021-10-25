@@ -8,6 +8,12 @@
 import UIKit
 import GeometricWeatherBasic
 
+enum HourlyHistogramType {
+    case precipitationProb
+    case precipitationIntensity
+    case none
+}
+
 // MARK: - cell.
 
 class HourlyTrendCollectionViewCell: UICollectionViewCell {
@@ -66,7 +72,7 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         temperatureRange: TemperatureRange,
         weatherCode: WeatherCode,
         timezone: TimeZone,
-        showPrecipitationProb: Bool
+        histogramType: HourlyHistogramType
     ) {
         self.hourLabel.text = getHourText(
             hour: hourly.getHour(
@@ -106,10 +112,12 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
                 max: Double(temperatureRange.max)
             )
         )
-        if showPrecipitationProb {
+        
+        switch histogramType {
+        case .precipitationProb:
             let precipitationProb = hourly.precipitationProbability ?? 0.0
             if precipitationProb > 0 {
-                self.trendView.histogramValue = precipitationProb / 100.0
+                self.trendView.histogramValue = min(precipitationProb / 100.0, 1.0)
                 self.trendView.histogramDescription = getPercentText(
                     precipitationProb,
                     decimal: 0
@@ -117,19 +125,23 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             } else {
                 self.trendView.histogramValue = nil
             }
-        } else {
-            let precipitation = hourly.precipitation.total ?? 0.0
-            if precipitation > 0 {
-                let unit = SettingsManager.shared.precipitationUnit
+            
+        case .precipitationIntensity:
+            let precipitationIntensity = hourly.precipitationIntensity ?? 0.0
+            if precipitationIntensity > 0 {
+                let unit = SettingsManager.shared.precipitationIntensityUnit
                 
-                self.trendView.histogramValue = precipitation / 50.0 // 50 mm/h - heavy rain.
+                self.trendView.histogramValue = min(precipitationIntensity / 11.33, 1.0) // 11.33 mm/h - heavy rain.
                 self.trendView.histogramDescription = unit.formatValueWithUnit(
-                    precipitation,
+                    precipitationIntensity,
                     unit: ""
                 )
             } else {
                 self.trendView.histogramValue = nil
             }
+            
+        case .none:
+            self.trendView.histogramValue = nil
         }
         
         let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(

@@ -67,10 +67,8 @@ func generateWeather(
                 temperature: Int(weatherResult.result.realtime.temperature),
                 realFeelTemperature: Int(weatherResult.result.realtime.apparentTemperature)
             ),
-            precipitation: Precipitation(
-                total: weatherResult.result.realtime.precipitation.local.intensity
-            ),
-            precipitationProbability: 0,
+            precipitationIntensity: weatherResult.result.realtime.precipitation.local.intensity,
+            precipitationProbability: nil,
             wind: Wind(
                 direction: getWindDirectionText(
                     weatherResult.result.realtime.wind.direction
@@ -260,9 +258,8 @@ private func getDailyList(
                     temperature: Temperature(
                         temperature: Int(weatherResult.result.daily.temperature[i].max)
                     ),
-                    precipitation: Precipitation(
-                        total: weatherResult.result.daily.precipitation[i].avg
-                    ),
+                    precipitationTotal: nil,
+                    precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
                     precipitationProbability: nil,
                     wind: Wind(
                         direction: getWindDirectionText(
@@ -292,9 +289,8 @@ private func getDailyList(
                     temperature: Temperature(
                         temperature: Int(weatherResult.result.daily.temperature[i].min)
                     ),
-                    precipitation: Precipitation(
-                        total: weatherResult.result.daily.precipitation[i].avg
-                    ),
+                    precipitationTotal: nil,
+                    precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
                     precipitationProbability: nil,
                     wind: Wind(
                         direction: getWindDirectionText(
@@ -445,9 +441,7 @@ private func getHourlyList(
                 temperature: Temperature(
                     temperature: Int(weatherResult.result.hourly.temperature[i].value)
                 ),
-                precipitation: Precipitation(
-                    total: weatherResult.result.hourly.precipitation[i].value
-                ),
+                precipitationIntensity: weatherResult.result.hourly.precipitation[i].value,
                 precipitationProbability: nil,
                 wind: Wind(
                     direction: getWindDirectionText(

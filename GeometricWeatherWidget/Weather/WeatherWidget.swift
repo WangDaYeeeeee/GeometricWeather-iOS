@@ -19,12 +19,11 @@ struct WeatherWidgetEntryView : View {
 
     var body: some View {
         ZStack {
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackground(
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.entry.location.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.entry.location.daylight,
-                currentLocation: self.entry.location.currentPosition
+                daylight: self.entry.location.daylight
             )
             
             switch self.family {
@@ -54,6 +53,8 @@ struct WeatherWidget: Widget {
             WeatherWidgetEntryView(entry: entry)
         }.configurationDisplayName(
             NSLocalizedString("forecast", comment: "")
+        ).supportedFamilies(
+            [.systemSmall, .systemMedium, .systemLarge]
         )
     }
 }

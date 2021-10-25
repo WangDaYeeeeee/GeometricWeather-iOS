@@ -75,10 +75,8 @@ func generateWeather(
                 wetBulbTemperature: Int.toInt(currentResult.wetBulbTemperature.metric?.value),
                 degreeDayTemperature: nil
             ),
-            precipitation: Precipitation(
-                total: Double(currentResult.precip1Hr.metric?.value ?? 0)
-            ),
-            precipitationProbability: 0.0,
+            precipitationIntensity: Double(currentResult.precip1Hr.metric?.value ?? 0),
+            precipitationProbability: nil,
             wind: Wind(
                 direction: currentResult.wind?.direction.localized ?? "",
                 degree: WindDegree(
@@ -298,13 +296,8 @@ private func getDailies(
                         realFeelShaderTemperature: Int.toInt(forecast.realFeelTemperatureShade?.maximum.value),
                         degreeDayTemperature: Int.toInt(forecast.degreeDaySummary?.heating.value)
                     ),
-                    precipitation: Precipitation(
-                        total: forecast.day.totalLiquid.value,
-                        thunderstorm: nil,
-                        rain: forecast.day.rain.value,
-                        snow: forecast.day.snow.value,
-                        ice: forecast.day.ice.value
-                    ),
+                    precipitationTotal: forecast.day.totalLiquid.value,
+                    precipitationIntensity: forecast.day.totalLiquid.value / forecast.day.hoursOfPrecipitation,
                     precipitationProbability: forecast.day.precipitationProbability,
                     wind: Wind(
                         direction: forecast.day.wind?.direction.localized ?? "",
@@ -329,13 +322,8 @@ private func getDailies(
                         realFeelShaderTemperature: Int.toInt(forecast.realFeelTemperatureShade?.minimum.value),
                         degreeDayTemperature: Int.toInt(forecast.degreeDaySummary?.cooling.value)
                     ),
-                    precipitation: Precipitation(
-                        total: forecast.night.totalLiquid.value,
-                        thunderstorm: nil,
-                        rain: forecast.night.rain.value,
-                        snow: forecast.night.snow.value,
-                        ice: forecast.night.ice.value
-                    ),
+                    precipitationTotal: forecast.night.totalLiquid.value,
+                    precipitationIntensity: forecast.night.totalLiquid.value / forecast.night.hoursOfPrecipitation,
                     precipitationProbability: forecast.night.precipitationProbability,
                     wind: Wind(
                         direction: forecast.night.wind?.direction.localized ?? "",
@@ -409,7 +397,7 @@ private func getHourlies(
                 temperature: Temperature(
                     temperature: toInt(result.temperature.value)
                 ),
-                precipitation: Precipitation(total: nil),
+                precipitationIntensity: nil,
                 precipitationProbability: result.precipitationProbability
             )
         )

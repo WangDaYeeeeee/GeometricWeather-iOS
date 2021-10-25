@@ -16,6 +16,7 @@
 "refresh_at" = "Refreshed at";
 "local_time" = "Local time";
 "precipitation" = "Precipitation";
+"precipitation_intensity" = "Precipitation intensity";
 "precipitation_probability" = "Precipitation probability";
 "precipitation_duration" = "Precipitation duration";
 "maxi_temp" = "daytime";
@@ -353,6 +354,16 @@
 "precipitation_unit_voice_cm" = "Centimeter";
 "precipitation_unit_voice_in" = "Inches";
 "precipitation_unit_voice_lpsqm" = "Liters per square meter";
+
+"precipitation_intensity_unit_mm" = "mm/h";
+"precipitation_intensity_unit_cm" = "cm/h";
+"precipitation_intensity_unit_in" = "inch/h";
+"precipitation_intensity_unit_lpsqm" = "L/m²/h";
+
+"precipitation_intensity_unit_voice_mm" = "Millimeters per hour";
+"precipitation_intensity_unit_voice_cm" = "Centimeter per hour";
+"precipitation_intensity_unit_voice_in" = "Inches per hour";
+"precipitation_intensity_unit_voice_lpsqm" = "Liters per square meter per hour";
 
 "temperature_unit_c" = "℃";
 "temperature_unit_f" = "℉";

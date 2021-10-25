@@ -15,13 +15,23 @@ public struct WeatherSource: ReadableOption {
         key: "weather_source_accu",
         voiceKey: "weather_source_voice_accu",
         url: "accuweather.com",
-        color: 0xef5823
+        color: 0xef5823,
+        hasDailyPrecipitationTotal: true,
+        hasDailyPrecipitationProb: true,
+        hasHourlyPrecipitationProb: true,
+        hasDailyPrecipitationIntensity: true,
+        hasHourlyPrecipitationIntensity: true
     )
     public static let caiYun = WeatherSource(
         key: "weather_source_caiyun",
         voiceKey: "weather_source_voice_caiyun",
         url: "caiyunapp.com",
-        color: 0x5ebb8e
+        color: 0x5ebb8e,
+        hasDailyPrecipitationTotal: false,
+        hasDailyPrecipitationProb: false,
+        hasHourlyPrecipitationProb: false,
+        hasDailyPrecipitationIntensity: true,
+        hasHourlyPrecipitationIntensity: true
     )
     
     public static let all = [accu, caiYun]
@@ -48,10 +58,9 @@ public struct WeatherSource: ReadableOption {
     public let url: String
     public let color: Int
     
-    public init(key: String, voiceKey: String, url: String, color: Int) {
-        self.key = key
-        self.voiceKey = voiceKey
-        self.url = url
-        self.color = color
-    }
+    public let hasDailyPrecipitationTotal: Bool
+    public let hasDailyPrecipitationProb: Bool
+    public let hasHourlyPrecipitationProb: Bool
+    public let hasDailyPrecipitationIntensity: Bool
+    public let hasHourlyPrecipitationIntensity: Bool
 }

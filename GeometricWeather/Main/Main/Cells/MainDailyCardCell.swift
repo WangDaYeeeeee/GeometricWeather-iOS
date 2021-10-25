@@ -29,7 +29,7 @@ class MainDailyCardCell: MainTableViewCell,
     private var weather: Weather?
     private var timezone: TimeZone?
     private var temperatureRange: TemperatureRange?
-    private var showPrecipitationProb = true
+    private var source: WeatherSource?
     
     // MARK: - subviews.
     
@@ -116,7 +116,7 @@ class MainDailyCardCell: MainTableViewCell,
                 }
             }
             self.temperatureRange = (minTemp, maxTemp)
-            self.showPrecipitationProb = location.weatherSource == .accu
+            self.source = location.weatherSource
             
             self.timeBar.register(
                 weather: weather,
@@ -188,6 +188,18 @@ class MainDailyCardCell: MainTableViewCell,
         )
         if let weather = self.weather,
             let dailies = self.weather?.dailyForecasts {
+            
+            var histogramType = DailyHistogramType.none
+            if self.source?.hasDailyPrecipitationProb ?? false {
+                histogramType = .precipitationProb
+            }
+            if self.source?.hasDailyPrecipitationTotal ?? false {
+                histogramType = .precipitationTotal
+            }
+            if self.source?.hasDailyPrecipitationIntensity ?? false {
+                histogramType = .precipitationIntensity
+            }
+            
             (cell as? DailyTrendCollectionViewCell)?.bindData(
                 prev: indexPath.row == 0 ? nil : dailies[indexPath.row - 1],
                 daily: dailies[indexPath.row],
@@ -195,7 +207,7 @@ class MainDailyCardCell: MainTableViewCell,
                 temperatureRange: self.temperatureRange ?? (0, 0),
                 weatherCode: weather.current.weatherCode,
                 timezone: self.timezone ?? .current,
-                showPrecipitationProb: self.showPrecipitationProb
+                histogramType: histogramType
             )
         }
         return cell

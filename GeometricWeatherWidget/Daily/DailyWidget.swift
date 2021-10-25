@@ -18,12 +18,11 @@ struct DailyWidgetEntryView : View {
 
     var body: some View {
         ZStack {
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackground(
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.entry.location.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.entry.location.daylight,
-                currentLocation: self.entry.location.currentPosition
+                daylight: self.entry.location.daylight
             )
             
             DailyView(

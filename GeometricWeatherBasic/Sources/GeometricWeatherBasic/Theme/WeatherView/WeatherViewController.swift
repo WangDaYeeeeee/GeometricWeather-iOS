@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-public class WeatherViewController: UIHostingController<MaterialWeatherView> {
+public class WeatherViewController<V: View>: UIHostingController<V> {
     
-    private let state = WeatherViewState(
-        weatherKind: .null,
-        daylight: isDaylight()
-    )
+    private let state: WeatherViewState
     
     public var scrollOffset: CGFloat {
         get {
@@ -50,8 +47,9 @@ public class WeatherViewController: UIHostingController<MaterialWeatherView> {
         }
     }
     
-    public init() {
-        super.init(rootView: MaterialWeatherView(state: state))
+    public init(_ rootView: V, state: WeatherViewState) {
+        self.state = state
+        super.init(rootView: rootView)
     }
     
     @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {

@@ -8,6 +8,13 @@
 import UIKit
 import GeometricWeatherBasic
 
+enum DailyHistogramType {
+    case precipitationProb
+    case precipitationTotal
+    case precipitationIntensity
+    case none
+}
+
 // MARK: - cell.
 
 class DailyTrendCollectionViewCell: UICollectionViewCell {
@@ -91,7 +98,7 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         temperatureRange: TemperatureRange,
         weatherCode: WeatherCode,
         timezone: TimeZone,
-        showPrecipitationProb: Bool
+        histogramType: DailyHistogramType
     ) {
         self.weekLabel.text = daily.isToday(timezone: timezone)
         ? NSLocalizedString("today", comment: "")
@@ -162,13 +169,15 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
                 max: Double(temperatureRange.max)
             )
         )
-        if showPrecipitationProb {
+        
+        switch histogramType {
+        case .precipitationProb:
             let precipitationProb = max(
                 daily.day.precipitationProbability ?? 0.0,
                 daily.night.precipitationProbability ?? 0.0
             )
             if precipitationProb > 0 {
-                self.trendView.histogramValue = precipitationProb / 100.0
+                self.trendView.histogramValue = min(precipitationProb / 100.0, 1.0)
                 self.trendView.histogramDescription = getPercentText(
                     precipitationProb,
                     decimal: 0
@@ -176,22 +185,43 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             } else {
                 self.trendView.histogramValue = nil
             }
-        } else {
-            let precipitation = max(
-                daily.day.precipitation.total ?? 0.0,
-                daily.night.precipitation.total ?? 0.0
+            
+        case .precipitationTotal:
+            let precipitationTotal = max(
+                daily.day.precipitationTotal ?? 0.0,
+                daily.night.precipitationTotal ?? 0.0
             )
-            if precipitation > 0 {
+            if precipitationTotal > 0 {
                 let unit = SettingsManager.shared.precipitationUnit
                 
-                self.trendView.histogramValue = precipitation / 50.0 // 50 mm/h - heavy rain.
+                self.trendView.histogramValue = min(precipitationTotal / 50.0, 1.0) // 50 mm/d - heavy rain.
                 self.trendView.histogramDescription = unit.formatValueWithUnit(
-                    precipitation,
+                    precipitationTotal,
                     unit: ""
                 )
             } else {
                 self.trendView.histogramValue = nil
             }
+            
+        case .precipitationIntensity:
+            let precipitationIntensity = max(
+                daily.day.precipitationIntensity ?? 0.0,
+                daily.night.precipitationIntensity ?? 0.0
+            )
+            if precipitationIntensity > 0 {
+                let unit = SettingsManager.shared.precipitationIntensityUnit
+                
+                self.trendView.histogramValue = min(precipitationIntensity / 11.33, 1.0) // 11.33 mm/h - heavy rain.
+                self.trendView.histogramDescription = unit.formatValueWithUnit(
+                    precipitationIntensity,
+                    unit: ""
+                )
+            } else {
+                self.trendView.histogramValue = nil
+            }
+            
+        case .none:
+            self.trendView.histogramValue = nil
         }
         
         let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(

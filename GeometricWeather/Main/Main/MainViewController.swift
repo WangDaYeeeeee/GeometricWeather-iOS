@@ -69,7 +69,7 @@ class MainViewController: UIViewController,
     
     // MARK: - subviews.
     
-    let weatherViewController = WeatherViewController()
+    let weatherViewController = ThemeManager.shared.weatherThemeDelegate.getWeatherViewController()
     lazy var managementViewController: ManagementViewController = {
         return ManagementViewController(self.viewModel)
     }()

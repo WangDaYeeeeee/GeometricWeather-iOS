@@ -17,7 +17,7 @@ public struct Hourly: Codable {
     public let weatherCode: WeatherCode
     
     public let temperature: Temperature
-    public let precipitation: Precipitation
+    public let precipitationIntensity: Double?
     public let precipitationProbability: Double?
     public let wind: Wind?
     
@@ -27,7 +27,7 @@ public struct Hourly: Codable {
         weatherText: String,
         weatherCode: WeatherCode,
         temperature: Temperature,
-        precipitation: Precipitation,
+        precipitationIntensity: Double?,
         precipitationProbability: Double?,
         wind: Wind? = nil
     ) {
@@ -36,7 +36,7 @@ public struct Hourly: Codable {
         self.weatherText = weatherText
         self.weatherCode = weatherCode
         self.temperature = temperature
-        self.precipitation = precipitation
+        self.precipitationIntensity = precipitationIntensity
         self.precipitationProbability = precipitationProbability
         self.wind = wind
     }

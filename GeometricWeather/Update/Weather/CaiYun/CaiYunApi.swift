@@ -11,10 +11,10 @@ import RxMoya
 import RxSwift
 import GeometricWeatherBasic
 
-private let ACCU_WEATHER_KEY = "srRLeAmTroxPinDG8Aus3Ikl6tLGJd94"
-private let ACCU_CURRENT_KEY = "131778526309453295c9ce2350a79e87"
+private let ACCU_WEATHER_KEY = ""
+private let ACCU_CURRENT_KEY = ""
 
-private let CAIYUN_WEATHER_API_KEY = "mCsnasNJUFP1-mPe"
+private let CAIYUN_WEATHER_API_KEY = ""
 private let CAIYUN_WEATHER_BASE_URL = "https://api.caiyunapp.com/v2.5/"
 
 // MARK: - implementation.

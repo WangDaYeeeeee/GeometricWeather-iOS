@@ -182,7 +182,7 @@ class PolylineAndHistogramView: UIView {
         
         self.timelineShape.lineCap = .round
         self.timelineShape.lineWidth = trendTimelineWidth
-        self.timelineShape.strokeColor = UIColor.separator.withAlphaComponent(
+        self.timelineShape.strokeColor = UIColor.gray.withAlphaComponent(
             trendTimelineAlpha
         ).cgColor
         self.timelineShape.fillColor = UIColor.clear.cgColor

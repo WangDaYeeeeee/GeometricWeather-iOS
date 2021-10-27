@@ -58,4 +58,18 @@ extension MainViewController {
             completion: nil
         )
     }
+    
+    @objc func responseDailyTrendCellTapAction(_ notification: NSNotification) {
+        if self.navigationController?.presentedViewController != nil {
+            return
+        }
+        guard let index = (notification.object as? Int) else {
+            return
+        }
+        
+        let vc = DailyViewController(nibName: nil, bundle: nil)
+        vc.initData = (self.viewModel.currentLocation.value, index)
+        
+        self.navigationController?.present(vc, animated: true, completion: nil)
+    }
 }

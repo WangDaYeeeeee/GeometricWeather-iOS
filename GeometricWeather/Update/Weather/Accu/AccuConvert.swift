@@ -125,6 +125,7 @@ func generateWeather(
         ),
         dailyForecasts: getDailies(result: dailyResult, timezone: location.timezone),
         hourlyForecasts: getHourlies(results: hourlyResults, timezone: location.timezone),
+        minutelyForecast: nil,
         alerts: getAlerts(results: alertResults ?? [], timezone: location.timezone)
     )
 }

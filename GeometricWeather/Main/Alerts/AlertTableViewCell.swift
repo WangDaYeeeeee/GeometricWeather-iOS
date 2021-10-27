@@ -24,10 +24,14 @@ class AlertTableViewCell: UITableViewCell {
         
         self.titleLabel.font = titleFont
         self.titleLabel.textColor = .label
+        self.titleLabel.numberOfLines = 0
+        self.titleLabel.lineBreakMode = .byWordWrapping
         self.contentView.addSubview(self.titleLabel)
         
         self.captionLabel.font = miniCaptionFont
         self.captionLabel.textColor = .tertiaryLabel
+        self.captionLabel.numberOfLines = 0
+        self.captionLabel.lineBreakMode = .byWordWrapping
         self.contentView.addSubview(self.captionLabel)
         
         self.bodyLabel.font = bodyFont

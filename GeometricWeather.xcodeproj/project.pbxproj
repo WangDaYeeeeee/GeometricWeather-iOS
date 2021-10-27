@@ -45,6 +45,7 @@
 		37543A76272028F100BA2A14 /* CaiYunJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A75272028F100BA2A14 /* CaiYunJson.swift */; };
 		37543A7827202A9D00BA2A14 /* CaiYunConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A7727202A9D00BA2A14 /* CaiYunConvert.swift */; };
 		37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A7B27224E3900BA2A14 /* HourlyDialog.swift */; };
+		37543A7E2727943200BA2A14 /* BeizerPolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37543A7D2727943200BA2A14 /* BeizerPolylineView.swift */; };
 		3754FFB526F33A4E00D5A097 /* GeoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3754FFB426F33A4E00D5A097 /* GeoViewController.swift */; };
 		3761DEB626A9B9AD00B0612E /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3761DEB526A9B9AD00B0612E /* LocationHelper.swift */; };
 		3766725026CFEF9B00C34188 /* MainAirQualityCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3766724F26CFEF9B00C34188 /* MainAirQualityCardCell.swift */; };
@@ -90,6 +91,9 @@
 		37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */; };
 		37AA5E7726DA3C4900DBA181 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7626DA3C4900DBA181 /* SearchViewController.swift */; };
 		37AA5E8026DB744E00DBA181 /* JXMovableCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7F26DB744E00DBA181 /* JXMovableCellTableView.m */; };
+		37BA825E272956F200EFADFD /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA825D272956F200EFADFD /* DailyView.swift */; };
+		37BA82602729684B00EFADFD /* DailyPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA825F2729684B00EFADFD /* DailyPageController.swift */; };
+		37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA8261272968F400EFADFD /* DailyViewController.swift */; };
 		37CCA445271FBB880034D247 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 37CCA444271FBB880034D247 /* Then */; };
 		37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF4C3726CE496000E58736 /* CircularProgressView.swift */; };
 		37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */; };
@@ -201,6 +205,7 @@
 		37543A75272028F100BA2A14 /* CaiYunJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaiYunJson.swift; sourceTree = "<group>"; };
 		37543A7727202A9D00BA2A14 /* CaiYunConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaiYunConvert.swift; sourceTree = "<group>"; };
 		37543A7B27224E3900BA2A14 /* HourlyDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyDialog.swift; sourceTree = "<group>"; };
+		37543A7D2727943200BA2A14 /* BeizerPolylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeizerPolylineView.swift; sourceTree = "<group>"; };
 		3754FFB426F33A4E00D5A097 /* GeoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoViewController.swift; sourceTree = "<group>"; };
 		3761DEB526A9B9AD00B0612E /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		3766724F26CFEF9B00C34188 /* MainAirQualityCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAirQualityCardCell.swift; sourceTree = "<group>"; };
@@ -247,6 +252,9 @@
 		37AA5E7626DA3C4900DBA181 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		37AA5E7E26DB744E00DBA181 /* JXMovableCellTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXMovableCellTableView.h; sourceTree = "<group>"; };
 		37AA5E7F26DB744E00DBA181 /* JXMovableCellTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXMovableCellTableView.m; sourceTree = "<group>"; };
+		37BA825D272956F200EFADFD /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
+		37BA825F2729684B00EFADFD /* DailyPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPageController.swift; sourceTree = "<group>"; };
+		37BA8261272968F400EFADFD /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		37CF4C3726CE496000E58736 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendShaderCollectionView.swift; sourceTree = "<group>"; };
 		37D7AA8926B2AEB70028F67E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -425,6 +433,7 @@
 				3740707E26C94FEF0067BB78 /* TrendUtils.swift */,
 				3742CBEB26C8DB76001CDCED /* PolylineAndHistogramView.swift */,
 				3740708026C950390067BB78 /* HorizontalLinesBackgroundView.swift */,
+				37543A7D2727943200BA2A14 /* BeizerPolylineView.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -488,6 +497,9 @@
 		37543A7927224DE700BA2A14 /* Daily */ = {
 			isa = PBXGroup;
 			children = (
+				37BA825D272956F200EFADFD /* DailyView.swift */,
+				37BA825F2729684B00EFADFD /* DailyPageController.swift */,
+				37BA8261272968F400EFADFD /* DailyViewController.swift */,
 			);
 			path = Daily;
 			sourceTree = "<group>";
@@ -955,6 +967,7 @@
 				37543A76272028F100BA2A14 /* CaiYunJson.swift in Sources */,
 				3799F51626D282BB00B49D20 /* AllergenCollectionViewCell.swift in Sources */,
 				378CB01626BF7DED00C7BD13 /* MainTableViewHeaderView.swift in Sources */,
+				37543A7E2727943200BA2A14 /* BeizerPolylineView.swift in Sources */,
 				3789E22026AC0D2A005C3C06 /* UpdateHelper.swift in Sources */,
 				37E0E77B26CAA4DC0057B0EC /* MainTrendUtils.swift in Sources */,
 				378CB02626BFE43500C7BD13 /* StaggeredCellAnimation.swift in Sources */,
@@ -985,6 +998,7 @@
 				37D9E61127185AFE00209110 /* AboutView.swift in Sources */,
 				37E5D4312717FEAD0052A690 /* MainViewController+Response.swift in Sources */,
 				378CB00B26BD80DD00C7BD13 /* DragSwitchView.swift in Sources */,
+				37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */,
 				37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */,
 				378CB02426BFC50800C7BD13 /* MainDailyCardCell.swift in Sources */,
 				377647EA26F1CB3D00B82BB2 /* SettingsCellViews.swift in Sources */,
@@ -993,11 +1007,13 @@
 				37852BC526CA815C0058E353 /* HourlyTrendCollectionViewCell.swift in Sources */,
 				378CB01E26BF966500C7BD13 /* MainTableViewCell.swift in Sources */,
 				3789E27626AD9A0C005C3C06 /* MainModels.swift in Sources */,
+				37BA825E272956F200EFADFD /* DailyView.swift in Sources */,
 				3749A10626E456D300EEA6A3 /* AlertTableViewCell.swift in Sources */,
 				3749A11326E4950E00EEA6A3 /* CornerButton.swift in Sources */,
 				377B1D6926B6BCA700E7E07E /* MainViewController.swift in Sources */,
 				37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */,
 				3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */,
+				37BA82602729684B00EFADFD /* DailyPageController.swift in Sources */,
 				37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
 				37D9E62D271D400700209110 /* GeoDialog.swift in Sources */,
@@ -1224,7 +1240,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1235,7 +1251,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1258,7 +1274,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeometricWeather/GeometricWeather.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1269,7 +1285,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

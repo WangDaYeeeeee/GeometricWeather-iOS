@@ -18,12 +18,6 @@ public struct AirQuality: Codable {
     public let o3: Double?
     public let co: Double?
     
-    public static let aqiIndexLevel1 = 50;
-    public static let aqiIndexLevel2 = 100;
-    public static let aqiIndexLevel3 = 150;
-    public static let aqiIndexLevel4 = 200;
-    public static let aqiIndexLevel5 = 300;
-    
     public init(
         aqiLevel: Int?,
         aqiIndex: Int?,
@@ -47,15 +41,15 @@ public struct AirQuality: Codable {
     public func getAqiLevel() -> Int {
         if (aqiIndex == nil) {
             return 1
-        } else if aqiIndex! <= Self.aqiIndexLevel1 {
+        } else if aqiIndex! <= aqiIndexLevel1 {
             return 1
-        } else if aqiIndex! <= Self.aqiIndexLevel2 {
+        } else if aqiIndex! <= aqiIndexLevel2 {
             return 2
-        } else if aqiIndex! <= Self.aqiIndexLevel3 {
+        } else if aqiIndex! <= aqiIndexLevel3 {
             return 3
-        } else if aqiIndex! <= Self.aqiIndexLevel4 {
+        } else if aqiIndex! <= aqiIndexLevel4 {
             return 4
-        } else if aqiIndex! <= Self.aqiIndexLevel5 {
+        } else if aqiIndex! <= aqiIndexLevel5 {
             return 5
         } else {
             return 6

@@ -139,6 +139,15 @@ func generateWeather(
             timezone: location.timezone
         ),
         hourlyForecasts: getHourlyList(weatherResult),
+        minutelyForecast: Minutely(
+            beginTime: Date().timeIntervalSince1970 + Double(
+                location.timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
+            ),
+            endTime: Date().timeIntervalSince1970 + Double(
+                location.timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
+            ) + 2 * 60 * 60,
+            precipitationIntensityInPercentage: weatherResult.result.minutely.precipitation2H
+        ),
         alerts: getAlertList(weatherResult)
     )
 }

@@ -184,6 +184,12 @@ class MainViewController: UIViewController,
             name: .appShortcutItemAction,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.responseDailyTrendCellTapAction(_:)),
+            name: .dailyTrendCellTapAction,
+            object: nil
+        )
     }
     
     override func viewDidAppear(_ animated: Bool) {

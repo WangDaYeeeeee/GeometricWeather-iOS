@@ -16,6 +16,7 @@ public struct Weather: Codable, Equatable {
     
     public let dailyForecasts: Array<Daily>
     public let hourlyForecasts: Array<Hourly>
+    public let minutelyForecast: Minutely?
     public let alerts: Array<WeatherAlert>
     
     public init(
@@ -24,6 +25,7 @@ public struct Weather: Codable, Equatable {
         yesterday: History?,
         dailyForecasts: Array<Daily>,
         hourlyForecasts: Array<Hourly>,
+        minutelyForecast: Minutely?,
         alerts: Array<WeatherAlert>
     ) {
         self.base = base
@@ -31,6 +33,7 @@ public struct Weather: Codable, Equatable {
         self.yesterday = yesterday
         self.dailyForecasts = dailyForecasts
         self.hourlyForecasts = hourlyForecasts
+        self.minutelyForecast = minutelyForecast
         self.alerts = alerts
     }
     

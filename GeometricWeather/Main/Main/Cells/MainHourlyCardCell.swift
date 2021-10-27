@@ -9,7 +9,8 @@ import UIKit
 import GeometricWeatherBasic
 
 private let trendReuseIdentifier = "hourly_trend_cell"
-private let hourlyTrendViewHeight = 256
+private let hourlyTrendViewHeight = 216.0
+private let minutelyTrendViewHeight = 56.0
 
 class MainHourlyCardCell: MainTableViewCell,
                             UICollectionViewDataSource {
@@ -23,10 +24,22 @@ class MainHourlyCardCell: MainTableViewCell,
     
     // MARK: - subviews.
     
+    private let vstack = UIStackView(frame: .zero)
+    
     private let summaryLabel = UILabel(frame: .zero)
     
+    private let hourlyTrendGroupView = UIView(frame: .zero)
     private let hourlyBackgroundView = HourlyTrendCellBackgroundView(frame: .zero)
     private let hourlyCollectionView = MainTrendShaderCollectionView(frame: .zero)
+    
+    private let minutelyTitleVibrancyContainer = UIVisualEffectView(
+        effect: UIVibrancyEffect(
+            blurEffect: UIBlurEffect(style: .prominent)
+        )
+    )
+    private let minutelyTitle = UILabel(frame: .zero)
+    
+    private let minutelyView = BeizerPolylineView(frame: .zero)
     
     // MARK: - life cycle.
     
@@ -35,11 +48,16 @@ class MainHourlyCardCell: MainTableViewCell,
                 
         self.cardTitle.text = NSLocalizedString("hourly_overview", comment: "")
         
+        self.vstack.axis = .vertical
+        self.vstack.alignment = .center
+        self.vstack.spacing = 0
+        self.cardContainer.contentView.addSubview(self.vstack)
+        
         self.summaryLabel.font = miniCaptionFont;
         self.summaryLabel.textColor = .tertiaryLabel
         self.summaryLabel.numberOfLines = 0
         self.summaryLabel.lineBreakMode = .byWordWrapping
-        self.cardContainer.contentView.addSubview(self.summaryLabel)
+        self.vstack.addArrangedSubview(self.summaryLabel)
         
         self.hourlyCollectionView.dataSource = self
         self.hourlyCollectionView.register(
@@ -57,33 +75,58 @@ class MainHourlyCardCell: MainTableViewCell,
                 ).showOn(view)
             }
         }
-        self.cardContainer.contentView.addSubview(self.hourlyCollectionView)
+        self.hourlyTrendGroupView.addSubview(self.hourlyCollectionView)
         
         self.hourlyBackgroundView.isUserInteractionEnabled = false
-        self.cardContainer.contentView.addSubview(self.hourlyBackgroundView)
+        self.hourlyTrendGroupView.addSubview(self.hourlyBackgroundView)
+        
+        self.vstack.addArrangedSubview(self.hourlyTrendGroupView)
+        
+        self.minutelyTitle.text = NSLocalizedString(
+            "precipitation_overview",
+            comment: ""
+        )
+        self.minutelyTitle.font = titleFont
+        self.minutelyTitleVibrancyContainer.contentView.addSubview(self.minutelyTitle)
         
         self.titleVibrancyContainer.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(normalMargin)
             make.leading.equalToSuperview().offset(normalMargin)
             make.trailing.equalToSuperview().offset(-normalMargin)
         }
-        self.summaryLabel.snp.makeConstraints { make in
+        self.vstack.snp.makeConstraints { make in
             make.top.equalTo(self.titleVibrancyContainer.snp.bottom)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        self.summaryLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(normalMargin)
             make.trailing.equalToSuperview().offset(-normalMargin)
         }
+        self.hourlyTrendGroupView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(hourlyTrendViewHeight + 2 * littleMargin)
+        }
         self.hourlyBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(self.summaryLabel.snp.bottom).offset(littleMargin)
+            make.centerY.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.height.equalTo(hourlyTrendViewHeight)
-            make.bottom.equalToSuperview().offset(-littleMargin)
         }
         self.hourlyCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(self.hourlyBackgroundView.snp.top)
-            make.leading.equalTo(self.hourlyBackgroundView.snp.leading)
-            make.trailing.equalTo(self.hourlyBackgroundView.snp.trailing)
-            make.bottom.equalTo(self.hourlyBackgroundView.snp.bottom)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(hourlyTrendViewHeight)
+        }
+        
+        self.minutelyTitle.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(littleMargin)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-littleMargin)
         }
     }
     
@@ -93,6 +136,9 @@ class MainHourlyCardCell: MainTableViewCell,
     
     override func bindData(location: Location) {
         super.bindData(location: location)
+        
+        self.minutelyTitleVibrancyContainer.removeFromSuperview()
+        self.minutelyView.removeFromSuperview()
         
         if let weather = location.weather {
             self.weather = weather
@@ -125,6 +171,54 @@ class MainHourlyCardCell: MainTableViewCell,
             )
             self.hourlyCollectionView.collectionViewLayout.invalidateLayout()
             self.hourlyCollectionView.reloadData()
+            
+            // minutely.
+            
+            guard let minutely = weather.minutelyForecast else {
+                return
+            }
+            if minutely.precipitationIntensityInPercentage.count < 2 {
+                return
+            }
+            var allZero = true
+            for value in minutely.precipitationIntensityInPercentage {
+                if value >= radarPrecipitationIntensityLight {
+                    allZero = false
+                    break
+                }
+            }
+            if allZero {
+                return
+            }
+            
+            self.vstack.addArrangedSubview(self.minutelyTitleVibrancyContainer)
+            self.minutelyTitleVibrancyContainer.snp.makeConstraints { make in
+                make.leading.equalToSuperview().offset(normalMargin)
+                make.trailing.equalToSuperview().offset(-normalMargin)
+            }
+            
+            self.minutelyView.polylineColor = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+                weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
+                daylight: ThemeManager.shared.daylight.value,
+                lightTheme: self.traitCollection.userInterfaceStyle == .light
+            ).daytime
+            self.minutelyView.polylineValues = getPrecipitationIntensityInPercentage(
+                intensityInRadarStandard: minutely.precipitationIntensityInPercentage
+            )
+            self.minutelyView.beginTime = formateTime(
+                timeIntervalSine1970: minutely.beginTime,
+                twelveHour: isTwelveHour()
+            )
+            self.minutelyView.endTime = formateTime(
+                timeIntervalSine1970: minutely.endTime,
+                twelveHour: isTwelveHour()
+            )
+            self.vstack.addArrangedSubview(self.minutelyView)
+            self.minutelyView.snp.makeConstraints { make in
+                make.leading.equalToSuperview()
+                make.trailing.equalToSuperview()
+                make.height.equalTo(minutelyTrendViewHeight)
+            }
         }
     }
     

@@ -11,6 +11,14 @@ import GeometricWeatherBasic
 private let trendReuseIdentifier = "daily_trend_cell"
 private let dailyTrendViewHeight = 324
 
+extension Notification.Name {
+    
+    // send notifications with index.
+    static let dailyTrendCellTapAction = Notification.Name(
+        "com.wangdaye.geometricweather.dailyTrendCellTapAction"
+    )
+}
+
 class MainDailyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegate {
@@ -59,6 +67,12 @@ class MainDailyCardCell: MainTableViewCell,
             DailyTrendCollectionViewCell.self,
             forCellWithReuseIdentifier: trendReuseIdentifier
         )
+        self.dailyCollectionView.itemSelected = { index in
+            NotificationCenter.default.post(
+                name: .dailyTrendCellTapAction,
+                object: index.row
+            )
+        }
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         
         self.dailyBackgroundView.isUserInteractionEnabled = false

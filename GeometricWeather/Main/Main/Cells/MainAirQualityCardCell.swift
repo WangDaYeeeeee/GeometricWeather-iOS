@@ -170,7 +170,7 @@ class MainAirQualityCardCell: MainTableViewCell {
             let aqiIndex = self.weather?.current.airQuality.aqiIndex ?? 0
             let aqiLevel = self.weather?.current.airQuality.aqiLevel ?? 0
             let aqiProgress = min(
-                Double(aqiIndex) / Double(AirQuality.aqiIndexLevel5),
+                Double(aqiIndex) / Double(aqiIndexLevel5),
                 1.0
             )
             self.circularProgressView.setProgress(

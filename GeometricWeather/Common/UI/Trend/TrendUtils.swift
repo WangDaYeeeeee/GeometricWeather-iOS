@@ -17,7 +17,7 @@ let trendTextMargin = 4.0
 
 let trendPrecipitationAlpha = 0.35
 let trendTimelineAlpha = 0.1
-let trendHorizontalLineAlpha = 0.15
+let trendHorizontalLineAlpha = 0.2
 
 let trendTimelineZ = -1.0
 let trendShadowZ = 0.0

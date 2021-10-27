@@ -194,7 +194,10 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             if precipitationTotal > 0 {
                 let unit = SettingsManager.shared.precipitationUnit
                 
-                self.trendView.histogramValue = min(precipitationTotal / 50.0, 1.0) // 50 mm/d - heavy rain.
+                self.trendView.histogramValue = min(
+                    precipitationTotal / dailyPrecipitationHeavy,
+                    1.0
+                )
                 self.trendView.histogramDescription = unit.formatValueWithUnit(
                     precipitationTotal,
                     unit: ""
@@ -211,7 +214,10 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             if precipitationIntensity > 0 {
                 let unit = SettingsManager.shared.precipitationIntensityUnit
                 
-                self.trendView.histogramValue = min(precipitationIntensity / 11.33, 1.0) // 11.33 mm/h - heavy rain.
+                self.trendView.histogramValue = min(
+                    precipitationIntensity / hourlyPrecipitationHeavy,
+                    1.0
+                )
                 self.trendView.histogramDescription = unit.formatValueWithUnit(
                     precipitationIntensity,
                     unit: ""
@@ -345,8 +351,8 @@ class DailyTrendCellBackgroundView: UIView {
             max: Double(temperatureRange.max)
         )
         
-        self.horizontalLinesView.highLineColor = .separator
-        self.horizontalLinesView.lowLineColor = .separator
+        self.horizontalLinesView.highLineColor = .gray
+        self.horizontalLinesView.lowLineColor = .gray
         
         self.horizontalLinesView.highDescription = (
             SettingsManager.shared.temperatureUnit.formatValueWithUnit(daytimeTemp, unit: "°"),

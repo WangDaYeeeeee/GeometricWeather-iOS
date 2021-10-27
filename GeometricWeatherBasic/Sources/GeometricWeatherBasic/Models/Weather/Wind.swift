@@ -14,19 +14,6 @@ public struct Wind: Codable {
     public let speed: Double?
     public let level: Int
     
-    public static let windSpeedLevel0 = 2.0
-    public static let windSpeedLevel1 = 6.0
-    public static let windSpeedLevel2 = 12.0
-    public static let windSpeedLevel3 = 19.0
-    public static let windSpeedLevel4 = 30.0
-    public static let windSpeedLevel5 = 40.0
-    public static let windSpeedLevel6 = 51.0
-    public static let windSpeedLevel7 = 62.0
-    public static let windSpeedLevel8 = 75.0
-    public static let windSpeedLevel9 = 87.0
-    public static let windSpeedLevel10 = 103.0
-    public static let windSpeedLevel11 = 117.0
-    
     public init(direction: String?, degree: WindDegree, speed: Double?, level: Int) {
         self.direction = direction
         self.degree = degree
@@ -37,15 +24,15 @@ public struct Wind: Codable {
     public func getWindLevel() -> Int {
         if (speed == nil) {
             return 1
-        } else if (speed! <= Self.windSpeedLevel3) {
+        } else if (speed! <= windSpeedLevel3) {
             return 1
-        } else if (speed! <= Self.windSpeedLevel5) {
+        } else if (speed! <= windSpeedLevel5) {
             return 2
-        } else if (speed! <= Self.windSpeedLevel7) {
+        } else if (speed! <= windSpeedLevel7) {
             return 3
-        } else if (speed! <= Self.windSpeedLevel9) {
+        } else if (speed! <= windSpeedLevel9) {
             return 4
-        } else if (speed! <= Self.windSpeedLevel11) {
+        } else if (speed! <= windSpeedLevel11) {
             return 5
         } else {
             return 6

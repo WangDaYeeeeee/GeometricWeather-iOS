@@ -45,15 +45,15 @@ func getWindLevelInt(speed: Double) -> Int {
 func getAqiQualityInt(index: Int) -> Int {
   if (index < 0) {
     return 0;
-  } else if (index <= AirQuality.aqiIndexLevel1) {
+  } else if (index <= aqiIndexLevel1) {
     return 1;
-  } else if (index <= AirQuality.aqiIndexLevel2) {
+  } else if (index <= aqiIndexLevel2) {
     return 2;
-  } else if (index <= AirQuality.aqiIndexLevel3) {
+  } else if (index <= aqiIndexLevel3) {
     return 3;
-  } else if (index <= AirQuality.aqiIndexLevel4) {
+  } else if (index <= aqiIndexLevel4) {
     return 4;
-  } else if (index <= AirQuality.aqiIndexLevel5) {
+  } else if (index <= aqiIndexLevel5) {
     return 5;
   } else {
     return 6;
@@ -115,6 +115,14 @@ func getMoonPhaseAngle(phase: String) -> Int? {
     default:
         return 360;
   }
+}
+
+func getPrecipitationIntensityInPercentage(
+    intensityInRadarStandard: [Double]
+) -> [Double] {
+    return intensityInRadarStandard.map { value in
+        min(value / radarPrecipitationIntensityHeavy, 1.0)
+    }
 }
 
 func isDaylight(sunrise: Date, sunset: Date, current: Date) -> Bool {

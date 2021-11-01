@@ -10,34 +10,18 @@ import GeometricWeatherBasic
 
 // MARK: - response.
 
-extension Notification.Name {
-    
-    // send notification without anything.
-    static let alertNotificationAction = NSNotification.Name(
-        "com.wangdaye.geometricweather.alertNotificationAction"
-    )
-    static let forecastNotificationAction = NSNotification.Name(
-        "com.wangdaye.geometricweather.forecastNotificationAction"
-    )
-}
+struct AlertNotificationAction {}
+struct ForecastNotificationAction {}
 
 func responseNotificationAction(_ response: UNNotificationResponse) {
     let id = response.notification.request.identifier
     
-    DispatchQueue.main.async {
-        if id.starts(with: alertNotificationIdentifier) {
-            NotificationCenter.default.postStikcy(
-                name: .alertNotificationAction,
-                object: nil
-            )
-            return
-        }
-        
-        NotificationCenter.default.postStikcy(
-            name: .forecastNotificationAction,
-            object: nil
-        )
+    if id.starts(with: alertNotificationIdentifier) {
+        EventBus.shared.post(AlertNotificationAction())
+        return
     }
+    
+    EventBus.shared.post(ForecastNotificationAction())
 }
 
 // MARK: - alert.
@@ -81,10 +65,7 @@ private func pushAlertNotification(alert: WeatherAlert) {
         UNNotificationRequest(
             identifier: alertNotificationIdentifier + "_" + alert.alertId.description,
             content: content,
-            trigger: UNTimeIntervalNotificationTrigger(
-                timeInterval: 0.0,
-                repeats: false
-            )
+            trigger: nil
         )
     ) { _ in
         // do nothing.
@@ -239,10 +220,7 @@ func checkToPushPrecipitationNotification(weather: Weather) {
         UNNotificationRequest(
             identifier: precipitationNotificationIdentifier,
             content: content,
-            trigger: UNTimeIntervalNotificationTrigger(
-                timeInterval: 0.0,
-                repeats: false
-            )
+            trigger: nil
         )
     ) { _ in
         // do nothing.

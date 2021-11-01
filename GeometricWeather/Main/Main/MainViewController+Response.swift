@@ -9,16 +9,17 @@ import Foundation
 
 extension MainViewController {
     
-    @objc func responseAlertNotificationAction() {
+    func responseAlertNotificationAction() {
         self.viewModel.setLocation(index: 0)
-        self.alertViewController.alertList = self.viewModel.currentLocation.value.weather?.alerts ?? []
         
         self.navigationController?.popToViewController(self, animated: true)
         
         if let presentedVC = self.navigationController?.presentedViewController {
             presentedVC.dismiss(animated: true) {
                 self.navigationController?.present(
-                    self.alertViewController,
+                    AlertViewController(
+                        param: self.viewModel.currentLocation.value.weather?.alerts ?? []
+                    ),
                     animated: true,
                     completion: nil
                 )
@@ -27,13 +28,15 @@ extension MainViewController {
         }
         
         self.navigationController?.present(
-            self.alertViewController,
+            AlertViewController(
+                param: self.viewModel.currentLocation.value.weather?.alerts ?? []
+            ),
             animated: true,
             completion: nil
         )
     }
     
-    @objc func responseForecastNotificationAction() {
+    func responseForecastNotificationAction() {
         self.viewModel.setLocation(index: 0)
         self.navigationController?.popToViewController(
             self,
@@ -45,10 +48,9 @@ extension MainViewController {
         )
     }
     
-    @objc func responseAppShortcutItemAction(_ notification: NSNotification) {
-        if let formattedId = (notification.object as? String) {
-            self.viewModel.setLocation(formattedId: formattedId)
-        }
+    func responseAppShortcutItemAction(_ formattedId: String) {
+        self.viewModel.setLocation(formattedId: formattedId)
+        
         self.navigationController?.popToViewController(
             self,
             animated: true
@@ -59,17 +61,39 @@ extension MainViewController {
         )
     }
     
-    @objc func responseDailyTrendCellTapAction(_ notification: NSNotification) {
+    func responseDailyTrendCellTapAction(_ index: Int) {
         if self.navigationController?.presentedViewController != nil {
             return
         }
-        guard let index = (notification.object as? Int) else {
+                
+        self.navigationController?.present(
+            DailyViewController(
+                param: (self.viewModel.currentLocation.value, index)
+            ),
+            animated: true,
+            completion: nil
+        )
+    }
+    
+    func responseToastMessage(_ message: MainToastMessage) {
+        switch message {
+        case .backgroundUpdate:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_updated_in_background", comment: "")
+            )
+            return
+            
+        case .locationFailed:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_location_failed", comment: "")
+            )
+            return
+            
+        case .weatherRequestFailed:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_get_weather_failed", comment: "")
+            )
             return
         }
-        
-        let vc = DailyViewController(nibName: nil, bundle: nil)
-        vc.initData = (self.viewModel.currentLocation.value, index)
-        
-        self.navigationController?.present(vc, animated: true, completion: nil)
     }
 }

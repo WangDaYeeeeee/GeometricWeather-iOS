@@ -95,14 +95,16 @@ class HourlyDialog: GeoDialog {
                 }
             }
             if let precipitationProb = hourly.precipitationProbability {                
-                let item = HourlyItemView(
-                    title: NSLocalizedString("precipitation_probability", comment: ""),
-                    content: getPercentText(precipitationProb, decimal: 0)
-                )
-                stack2.addArrangedSubview(item)
-                item.snp.makeConstraints { make in
-                    make.leading.equalToSuperview()
-                    make.trailing.equalToSuperview()
+                if precipitationProb > 0 {
+                    let item = HourlyItemView(
+                        title: NSLocalizedString("precipitation_probability", comment: ""),
+                        content: "\(Int(precipitationProb))%"
+                    )
+                    stack2.addArrangedSubview(item)
+                    item.snp.makeConstraints { make in
+                        make.leading.equalToSuperview()
+                        make.trailing.equalToSuperview()
+                    }
                 }
             }
             if let wind = hourly.wind {
@@ -133,20 +135,6 @@ class HourlyDialog: GeoDialog {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        ThemeManager.shared.homeOverrideUIStyle.syncObserveValue(
-            self
-        ) { [weak self] newValue in
-            self?.overrideUserInterfaceStyle = newValue
-        }
-    }
-    
-    override func removeFromSuperview() {
-        super.removeFromSuperview()
-        ThemeManager.shared.globalOverrideUIStyle.stopObserve(self)
     }
 }
 

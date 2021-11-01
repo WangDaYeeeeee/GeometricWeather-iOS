@@ -85,6 +85,7 @@
 "weather_light_rain" = "Light Rain";
 "weather_moderate_rain" = "Moderate Rain";
 "weather_heavy_rain" = "Heavy Rain";
+"weather_hail" = "Hail";
 "weather_fog" = "Fog";
 "weather_haze" = "Haze";
 "weather_light_snow" = "Light Snow";
@@ -107,6 +108,23 @@
 "wind_10" = "Storm";
 "wind_11" = "Violent storm";
 "wind_12" = "Hurricane";
+
+"wind_direction_n" = "N";
+"wind_direction_nne" = "NNE";
+"wind_direction_ne" = "NE";
+"wind_direction_ene" = "ENE";
+"wind_direction_e" = "E";
+"wind_direction_ese" = "ESE";
+"wind_direction_se" = "SE";
+"wind_direction_sse" = "SSE";
+"wind_direction_s" = "S";
+"wind_direction_ssw" = "SSW";
+"wind_direction_sw" = "SW";
+"wind_direction_wsw" = "WSW";
+"wind_direction_w" = "W";
+"wind_direction_wnw" = "WNW";
+"wind_direction_nw" = "NW";
+"wind_direction_nnw" = "NNW";
 
 "precipitation_light" = "Drizzle";
 "precipitation_middle" = "Rain";

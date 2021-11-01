@@ -16,6 +16,7 @@ class MainViewModel {
     let selectableValidLocations: LiveData<SelectableLocationArray>
     let selectableTotalLocations: LiveData<SelectableLocationArray>
     let loading: LiveData<Bool>
+    let toastMessage: LiveData<MainToastMessage?>
     
     // inner data.
     private var initCompleted: Bool
@@ -51,6 +52,8 @@ class MainViewModel {
             )
         )
         self.loading = LiveData(false)
+        
+        self.toastMessage = LiveData(nil)
         
         // update theme.
         ThemeManager.shared.update(location: data.valid[0])
@@ -152,13 +155,9 @@ class MainViewModel {
         weatherUpdateResult: Bool
     ) {
         if !weatherUpdateResult {
-            ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_get_weather_failed", comment: "")
-            )
+            self.toastMessage.value = .weatherRequestFailed
         } else if !(locationResult ?? true) {
-            ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_location_failed", comment: "")
-            )
+            self.toastMessage.value = .locationFailed
         }
         
         self.updateInnerData(location: location)
@@ -242,9 +241,7 @@ class MainViewModel {
         }
         
         if self.currentLocation.value.formattedId == location.formattedId {
-            ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_updated_in_background", comment: "")
-            )
+            self.toastMessage.value = .backgroundUpdate
             self.cancelRequest()
         }
         self.updateInnerData(location: location)

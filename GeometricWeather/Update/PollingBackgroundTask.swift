@@ -14,14 +14,10 @@ let pollingIntervalInHours = 1.0
 
 private let identifier = "com.wangdaye.geometricweather.polling"
 
-// MARK: - notification.
+// MARK: - event.
 
-extension Notification.Name {
-    
-    // send notification with a location object.
-    static let backgroundUpdate = NSNotification.Name(
-        "com.wangdaye.geometricweather.backgroundUpdate"
-    )
+struct BackgroundUpdateEvent {
+    let location: Location
 }
 
 // MARK: - polling task.
@@ -114,9 +110,8 @@ private func polling(onTask task: BGTask) {
                     }
                     
                     printLog(keyword: "polling", content: "polling to post: \(location.formattedId)")
-                    NotificationCenter.default.postToMainThread(
-                        name: .backgroundUpdate,
-                        object: location
+                    EventBus.shared.post(
+                        BackgroundUpdateEvent(location: location)
                     )
                 } else {
                     suceed = false

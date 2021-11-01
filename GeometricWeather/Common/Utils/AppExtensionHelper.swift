@@ -11,23 +11,17 @@ import GeometricWeatherBasic
 
 // MARK: - response.
 
-extension Notification.Name {
+struct AppShortcutItemAction {
     
-    // send notification with formatted id of location.
-    static let appShortcutItemAction = NSNotification.Name(
-        "com.wangdaye.geometricweather.appShortcutItemAction"
-    )
+    let formattedId: String
 }
 
 func responseAppShortcutItemAction(
     _ shortcutItem: UIApplicationShortcutItem
 ) {
-    DispatchQueue.main.async {
-        NotificationCenter.default.postToMainThread(
-            name: .appShortcutItemAction,
-            object: shortcutItem.type
-        )
-    }
+    EventBus.shared.post(
+        AppShortcutItemAction(formattedId: shortcutItem.type)
+    )
 }
 
 // MARK: - update.

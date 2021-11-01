@@ -94,6 +94,7 @@
 		37BA825E272956F200EFADFD /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA825D272956F200EFADFD /* DailyView.swift */; };
 		37BA82602729684B00EFADFD /* DailyPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA825F2729684B00EFADFD /* DailyPageController.swift */; };
 		37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA8261272968F400EFADFD /* DailyViewController.swift */; };
+		37BA8264272F84A200EFADFD /* GeoDialog+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA8263272F84A200EFADFD /* GeoDialog+Helper.swift */; };
 		37CCA445271FBB880034D247 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 37CCA444271FBB880034D247 /* Then */; };
 		37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF4C3726CE496000E58736 /* CircularProgressView.swift */; };
 		37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */; };
@@ -255,6 +256,7 @@
 		37BA825D272956F200EFADFD /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		37BA825F2729684B00EFADFD /* DailyPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPageController.swift; sourceTree = "<group>"; };
 		37BA8261272968F400EFADFD /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
+		37BA8263272F84A200EFADFD /* GeoDialog+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoDialog+Helper.swift"; sourceTree = "<group>"; };
 		37CF4C3726CE496000E58736 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendShaderCollectionView.swift; sourceTree = "<group>"; };
 		37D7AA8926B2AEB70028F67E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 			children = (
 				37D9E62C271D400700209110 /* GeoDialog.swift */,
 				37D9E62E271D4D4600209110 /* StatementDialog.swift */,
+				37BA8263272F84A200EFADFD /* GeoDialog+Helper.swift */,
 			);
 			path = Dialog;
 			sourceTree = "<group>";
@@ -1001,6 +1004,7 @@
 				37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */,
 				37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */,
 				378CB02426BFC50800C7BD13 /* MainDailyCardCell.swift in Sources */,
+				37BA8264272F84A200EFADFD /* GeoDialog+Helper.swift in Sources */,
 				377647EA26F1CB3D00B82BB2 /* SettingsCellViews.swift in Sources */,
 				3789E27826ADA713005C3C06 /* MainRepository.swift in Sources */,
 				3766725026CFEF9B00C34188 /* MainAirQualityCardCell.swift in Sources */,
@@ -1240,7 +1244,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1251,7 +1255,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1274,7 +1278,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeometricWeather/GeometricWeather.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1285,7 +1289,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

@@ -71,7 +71,7 @@ class MainViewController: UIViewController,
     
     let weatherViewController = ThemeManager.shared.weatherThemeDelegate.getWeatherViewController()
     lazy var managementViewController: ManagementViewController = {
-        return ManagementViewController(self.viewModel)
+        return ManagementViewController(param: self.viewModel)
     }()
     
     let dragSwitchView = DragSwitchView(frame: .zero)
@@ -81,9 +81,7 @@ class MainViewController: UIViewController,
         effect: UIBlurEffect(style: .systemUltraThinMaterial)
     )
     let indicator = DotPagerIndicator(frame: .zero)
-    
-    let alertViewController = AlertViewController()
-    
+        
     // MARK: - life cycle.
 
     override func viewDidLoad() {
@@ -107,9 +105,7 @@ class MainViewController: UIViewController,
         
         // observe theme changed.
         
-        ThemeManager.shared.homeOverrideUIStyle.observeValue(
-            self
-        ) { newValue in
+        ThemeManager.shared.homeOverrideUIStyle.addObserver(self) { newValue in
             self.overrideUserInterfaceStyle = newValue
             self.updateNavigationBarTintColor()
             
@@ -120,76 +116,82 @@ class MainViewController: UIViewController,
             ? UIColor.black.withAlphaComponent(0.2).cgColor
             : UIColor.white.withAlphaComponent(0.2).cgColor
         }
-        ThemeManager.shared.daylight.observeValue(
-            self
-        ) { _ in
+        ThemeManager.shared.daylight.addObserver(self) { _ in
             self.updatePreviewableSubviews()
         }
         
         // observe live data.
         
-        self.viewModel.currentLocation.observeValue(
-            self
-        ) { newValue in
-            self.updatePreviewableSubviews()
-            self.updateTableView()
+        self.viewModel.currentLocation.addObserver(self) { [weak self] newValue in
+            self?.updatePreviewableSubviews()
+            self?.updateTableView()
         }
-        self.viewModel.loading.observeValue(
-            self
-        ) { newValue in
-            self.updateTableViewRefreshControl(refreshing: newValue)
+        self.viewModel.loading.addObserver(self) { [weak self] newValue in
+            self?.updateTableViewRefreshControl(refreshing: newValue)
         }
-        self.viewModel.indicator.observeValue(
-            self
-        ) { newValue in
-            if self.indicator.selectedIndex != newValue.index {
-                self.indicator.selectedIndex = newValue.index
+        self.viewModel.indicator.addObserver(self) { [weak self] newValue in
+            if self?.indicator.selectedIndex != newValue.index {
+                self?.indicator.selectedIndex = newValue.index
             }
-            if self.indicator.totalIndex != newValue.total {
-                self.indicator.totalIndex = newValue.total
+            if self?.indicator.totalIndex != newValue.total {
+                self?.indicator.totalIndex = newValue.total
             }
             
-            self.dragSwitchView.dragEnabled = newValue.total > 1
+            self?.dragSwitchView.dragEnabled = newValue.total > 1
+        }
+        
+        self.viewModel.toastMessage.addObserver(self) { [weak self] newValue in
+            if let message = newValue {
+                self?.responseToastMessage(message)
+            }
         }
         
         // register notification observers.
         
-        NotificationCenter.default.addObserver(
+        EventBus.shared.register(
             self,
-            selector: #selector(self.onBackgroundUpdate(_:)),
-            name: .backgroundUpdate,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
+            for: BackgroundUpdateEvent.self
+        ) { [weak self] event in
+            self?.viewModel.updateLocationFromBackground(
+                location: event.location
+            )
+        }
+        EventBus.shared.register(
             self,
-            selector: #selector(self.updateTableView),
-            name: .settingChanged,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
+            for: SettingsChangedEvent.self
+        ) { [weak self] _ in
+            self?.updateTableView()
+        }
+        EventBus.shared.register(
             self,
-            selector: #selector(self.responseAlertNotificationAction),
-            name: .alertNotificationAction,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
+            for: DailyTrendCellTapAction.self
+        ) { [weak self] event in
+            self?.responseDailyTrendCellTapAction(event.index)
+        }
+        EventBus.shared.stickyRegister(
             self,
-            selector: #selector(self.responseForecastNotificationAction),
-            name: .forecastNotificationAction,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
+            for: AlertNotificationAction.self
+        ) { [weak self] event in
+            if let _ = event {
+                self?.responseAlertNotificationAction()
+            }
+        }
+        EventBus.shared.stickyRegister(
             self,
-            selector: #selector(self.responseAppShortcutItemAction(_:)),
-            name: .appShortcutItemAction,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
+            for: ForecastNotificationAction.self
+        ) { [weak self] event in
+            if let _ = event {
+                self?.responseForecastNotificationAction()
+            }
+        }
+        EventBus.shared.stickyRegister(
             self,
-            selector: #selector(self.responseDailyTrendCellTapAction(_:)),
-            name: .dailyTrendCellTapAction,
-            object: nil
-        )
+            for: AppShortcutItemAction.self
+        ) { [weak self] event in
+            if let id = event?.formattedId {
+                self?.responseAppShortcutItemAction(id)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -240,16 +242,6 @@ class MainViewController: UIViewController,
         )
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        
-        ThemeManager.shared.homeOverrideUIStyle.stopObserve(self)
-        ThemeManager.shared.daylight.stopObserve(self)
-        
-        self.viewModel.currentLocation.stopObserve(self)
-        self.viewModel.loading.stopObserve(self)
-    }
-    
     override func viewWillTransition(
         to size: CGSize,
         with coordinator: UIViewControllerTransitionCoordinator
@@ -268,12 +260,6 @@ class MainViewController: UIViewController,
         // stop the indicator animation when app enter to background.
         // otherwise we will find an error animation on indicator.
         self.updateTableViewRefreshControl(refreshing: false)
-    }
-    
-    @objc private func onBackgroundUpdate(_ notification: NSNotification) {
-        if let location = (notification.object as? Location) {
-            self.viewModel.updateLocationFromBackground(location: location)
-        }
     }
     
     // MARK: - UI.
@@ -349,7 +335,7 @@ class MainViewController: UIViewController,
     
     @objc private func onSettingsButtonClicked() {
         self.navigationController?.pushViewController(
-            SettingsViewController(),
+            SettingsViewController(param: ()),
             animated: true
         )
     }
@@ -401,9 +387,10 @@ class MainViewController: UIViewController,
         if self.navigationController?.presentedViewController != nil {
             return
         }
-        self.alertViewController.alertList = self.viewModel.currentLocation.value.weather?.alerts ?? []
         self.navigationController?.present(
-            alertViewController,
+            AlertViewController(
+                param: self.viewModel.currentLocation.value.weather?.alerts ?? []
+            ),
             animated: true,
             completion: nil
         )

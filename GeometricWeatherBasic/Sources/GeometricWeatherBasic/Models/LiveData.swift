@@ -7,6 +7,17 @@
 
 import Foundation
 
+// MARK: - wrap.
+
+private class CallbackWrapper<T> {
+    
+    let callback: (T) -> Void
+    
+    init(_ callback: @escaping (T) -> Void) {
+        self.callback = callback
+    }
+}
+
 // MARK: - live data.
 
 public class LiveData<T> {
@@ -15,20 +26,30 @@ public class LiveData<T> {
     
     public var value: T {
         willSet {
-            guard Thread.isMainThread else {
-                fatalError("You need update value in main thread.")
-            }
+            self.checkMainThread()
         }
         didSet {
             DispatchQueue.main.async {
-                for callback in self.callbackMap.values {
-                    callback(self.value)
+                guard let values = self.observerCallbackMap.objectEnumerator()?.allObjects as? [CallbackWrapper<T>] else {
+                    return
+                }
+                values.forEach { wrapper in
+                    wrapper.callback(self.value)
                 }
             }
         }
     }
     
-    fileprivate var callbackMap = Dictionary<AnyHashable, (T) -> Void>()
+    fileprivate var observerCallbackMap = NSMapTable<AnyObject, CallbackWrapper<T>>(
+        keyOptions: .weakMemory,
+        valueOptions: .strongMemory
+    )
+    
+    var observerCount: Int {
+        get {
+            return self.observerCallbackMap.count
+        }
+    }
     
     // life cycle.
     
@@ -37,41 +58,56 @@ public class LiveData<T> {
     }
     
     deinit {
-        self.callbackMap.removeAll()
+        self.observerCallbackMap.removeAllObjects()
     }
     
     // observer.
     
-    public func observeValue(_ key: AnyHashable, callback: @escaping (T) -> Void) {
-        guard Thread.isMainThread else {
-            fatalError("You need register a callback in main thread.")
-        }
+    public func addObserver(
+        _ observer: AnyObject,
+        to callback: @escaping (T) -> Void
+    ) {
+        self.addNonStickyObserver(observer, to: callback)
         
-        // register callback.
-        callbackMap[key] = callback
         // invoke callback at first register.
         DispatchQueue.main.async {
             callback(self.value)
         }
     }
     
-    public func syncObserveValue(_ key: AnyHashable, callback: @escaping (T) -> Void) {
-        guard Thread.isMainThread else {
-            fatalError("You need register a callback in main thread.")
-        }
+    public func syncAddObserver(
+        _ observer: AnyObject,
+        to callback: @escaping (T) -> Void
+    ) {
+        self.addNonStickyObserver(observer, to: callback)
         
-        // register callback.
-        callbackMap[key] = callback
         // invoke callback at first register.
         callback(self.value)
     }
     
-    public func stopObserve(_ key: AnyHashable) {
-        guard Thread.isMainThread else {
-            fatalError("You need register a callback in main thread.")
-        }
+    public func addNonStickyObserver(
+        _ observer: AnyObject,
+        to callback: @escaping (T) -> Void
+    ) {
+        self.checkMainThread()
         
-        callbackMap.removeValue(forKey: key)
+        // register callback.
+        self.observerCallbackMap.setObject(
+            CallbackWrapper(callback),
+            forKey: observer
+        )
+    }
+    
+    public func removeObserver(_ observer: AnyObject) {
+        self.checkMainThread()
+        
+        self.observerCallbackMap.removeObject(forKey: observer)
+    }
+    
+    fileprivate func checkMainThread() {
+        guard Thread.isMainThread else {
+            fatalError("You need update value in main thread.")
+        }
     }
 }
 
@@ -91,14 +127,15 @@ public class EqualtableLiveData<T: Equatable>: LiveData<T> {
     }
     private var innerValue: T {
         willSet {
-            guard Thread.isMainThread else {
-                fatalError("You need update value in main thread.")
-            }
+            self.checkMainThread()
         }
         didSet {
             DispatchQueue.main.async {
-                for callback in self.callbackMap.values {
-                    callback(self.value)
+                guard let values = self.observerCallbackMap.objectEnumerator()?.allObjects as? [CallbackWrapper<T>] else {
+                    return
+                }
+                values.forEach { wrapper in
+                    wrapper.callback(self.innerValue)
                 }
             }
         }

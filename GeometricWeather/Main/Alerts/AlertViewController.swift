@@ -12,7 +12,7 @@ private let cellReuseId = "AlertTableViewCell"
 
 private let topInset = 56.0
 
-class AlertViewController: GeoViewController,
+class AlertViewController: GeoViewController<[WeatherAlert]>,
                             UITableViewDataSource,
                             UITableViewDelegate {
     
@@ -27,14 +27,6 @@ class AlertViewController: GeoViewController,
     private let titleLabel = UILabel(frame: .zero)
     private let divider = UIView(frame: .zero)
     private let tableView = UITableView(frame: .zero, style: .plain)
-    
-    // data & controllers.
-    
-    var alertList = [WeatherAlert]() {
-        didSet {
-            self.tableView.reloadData()
-        }
-    }
     
     // MARK: - life cycle.
     
@@ -109,7 +101,7 @@ class AlertViewController: GeoViewController,
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return self.alertList.count
+        return self.param.count
     }
     
     func tableView(
@@ -121,7 +113,7 @@ class AlertViewController: GeoViewController,
             for: indexPath
         )
         (cell as? AlertTableViewCell)?.bindData(
-            self.alertList[indexPath.row]
+            self.param[indexPath.row]
         )
         return cell
     }

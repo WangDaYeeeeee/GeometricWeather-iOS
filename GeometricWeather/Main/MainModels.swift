@@ -23,3 +23,10 @@ struct SelectableLocationArray {
     var locations: [Location] // valid locations.
     let selectedId: String?
 }
+
+enum MainToastMessage {
+    
+    case backgroundUpdate
+    case locationFailed
+    case weatherRequestFailed
+}

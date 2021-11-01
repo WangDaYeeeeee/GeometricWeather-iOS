@@ -10,7 +10,7 @@ import GeometricWeatherBasic
 
 private let topInset = 56.0
 
-class DailyViewController: GeoViewController,
+class DailyViewController: GeoViewController<(location: Location, initIndex: Int)>,
                             UIPageViewControllerDataSource,
                             UIPageViewControllerDelegate {
     
@@ -33,28 +33,32 @@ class DailyViewController: GeoViewController,
     
     // MARK: - data.
     
-    var initData: (location: Location, initIndex: Int)? {
-        didSet {
-            self.pageList = []
-            guard let weather = self.initData?.location.weather else {
-                return
-            }
-            
-            for i in 0 ..< weather.dailyForecasts.count {
-                self.pageList.append(
-                    DailyPageController(
-                        weather: weather,
-                        index: i,
-                        timezone: self.initData?.location.timezone ?? .current
-                    )
-                )
-            }
-        }
-    }
     private var currentIndex = 0
     private var nextIndex = 0
     
     // MARK: - life cycle.
+    
+    override init(param: (location: Location, initIndex: Int)) {
+        super.init(param: param)
+        
+        guard let weather = self.param.location.weather else {
+            return
+        }
+        
+        for i in 0 ..< weather.dailyForecasts.count {
+            self.pageList.append(
+                DailyPageController(
+                    weather: weather,
+                    index: i,
+                    timezone: self.param.location.timezone
+                )
+            )
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +67,7 @@ class DailyViewController: GeoViewController,
         self.view.addSubview(self.blurBackground)
         
         self.pageViewController.setViewControllers(
-            [self.pageList[self.initData?.initIndex ?? 0]],
+            [self.pageList[self.param.initIndex]],
             direction: .forward,
             animated: true,
             completion: nil
@@ -74,12 +78,12 @@ class DailyViewController: GeoViewController,
         self.addChild(self.pageViewController)
         self.blurBackground.contentView.addSubview(self.pageViewController.view)
         
-        self.updateTitle(self.initData?.initIndex ?? 0)
+        self.updateTitle(self.param.initIndex)
         self.titleLabel.font = titleFont
         self.titleLabel.textColor = .label
         self.titleContainer.addSubview(self.titleLabel)
         
-        self.updateIndicator(self.initData?.initIndex ?? 0)
+        self.updateIndicator(self.param.initIndex)
         self.indicatorLabel.font = miniCaptionFont
         self.indicatorLabel.textColor = .label
         self.titleContainer.addSubview(self.indicatorLabel)
@@ -125,7 +129,7 @@ class DailyViewController: GeoViewController,
     // MARK: - ui.
     
     private func updateTitle(_ index: Int) {
-        self.titleLabel.text = self.initData?.location.weather?.dailyForecasts[
+        self.titleLabel.text = self.param.location.weather?.dailyForecasts[
             index
         ].getDate(
             format: NSLocalizedString("date_format_widget_long", comment: "")
@@ -133,7 +137,7 @@ class DailyViewController: GeoViewController,
     }
     
     private func updateIndicator(_ index: Int) {
-        self.indicatorLabel.text = "\(index + 1)/\(self.initData?.location.weather?.dailyForecasts.count ?? 0)"
+        self.indicatorLabel.text = "\(index + 1)/\(self.param.location.weather?.dailyForecasts.count ?? 0)"
     }
     
     // MARK: - data source.

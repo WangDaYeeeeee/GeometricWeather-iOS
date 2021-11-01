@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GeometricWeatherBasic
 
 // MARK: - swift UI bridge.
 
@@ -18,11 +19,15 @@ private class InnerSettingsViewController: UIHostingController<SettingsView> {
     @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        printLog(keyword: "testing", content: "de init")
+    }
 }
 
 // MARK: - interface.
 
-class SettingsViewController: GeoViewController {
+class SettingsViewController: GeoViewController<Void> {
     
     private let innerViewController = InnerSettingsViewController()
     
@@ -52,7 +57,7 @@ class SettingsViewController: GeoViewController {
     
     @objc private func onAboutButtonClicked() {
         self.navigationController?.pushViewController(
-            AboutViewController(),
+            AboutViewController(param: ()),
             animated: true
         )
     }

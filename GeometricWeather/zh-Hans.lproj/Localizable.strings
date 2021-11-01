@@ -85,6 +85,7 @@
 "weather_light_rain" = "小雨";
 "weather_moderate_rain" = "中雨";
 "weather_heavy_rain" = "大雨";
+"weather_hail" = "冰雹";
 "weather_fog" = "雾";
 "weather_haze" = "霾";
 "weather_light_snow" = "小雪";
@@ -107,6 +108,23 @@
 "wind_10" = "十级";
 "wind_11" = "十一级";
 "wind_12" = "灾害级";
+
+"wind_direction_n" = "北";
+"wind_direction_nne" = "北东北";
+"wind_direction_ne" = "东北";
+"wind_direction_ene" = "东东北";
+"wind_direction_e" = "东";
+"wind_direction_ese" = "东东南";
+"wind_direction_se" = "东南";
+"wind_direction_sse" = "南东南";
+"wind_direction_s" = "南";
+"wind_direction_ssw" = "南西南";
+"wind_direction_sw" = "西南";
+"wind_direction_wsw" = "西西南";
+"wind_direction_w" = "西";
+"wind_direction_wnw" = "西西北";
+"wind_direction_nw" = "西北";
+"wind_direction_nnw" = "北西北";
 
 "precipitation_light" = "小雨";
 "precipitation_middle" = "中雨";

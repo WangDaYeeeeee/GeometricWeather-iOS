@@ -13,7 +13,8 @@ private let hourlyTrendViewHeight = 216.0
 private let minutelyTrendViewHeight = 56.0
 
 class MainHourlyCardCell: MainTableViewCell,
-                            UICollectionViewDataSource {
+                            UICollectionViewDataSource,
+                            UICollectionViewDelegateFlowLayout {
     
     // MARK: - data.
     
@@ -59,22 +60,12 @@ class MainHourlyCardCell: MainTableViewCell,
         self.summaryLabel.lineBreakMode = .byWordWrapping
         self.vstack.addArrangedSubview(self.summaryLabel)
         
+        self.hourlyCollectionView.delegate = self
         self.hourlyCollectionView.dataSource = self
         self.hourlyCollectionView.register(
             HourlyTrendCollectionViewCell.self,
             forCellWithReuseIdentifier: trendReuseIdentifier
         )
-        self.hourlyCollectionView.itemSelected = { [weak self] index in
-            if let weather = self?.weather,
-                let timezone = self?.timezone,
-                let view = UIApplication.shared.keyWindowInCurrentScene {
-                HourlyDialog(
-                    weather: weather,
-                    timezone: timezone,
-                    index: index.row
-                ).showOn(view)
-            }
-        }
         self.hourlyTrendGroupView.addSubview(self.hourlyCollectionView)
         
         self.hourlyBackgroundView.isUserInteractionEnabled = false
@@ -245,10 +236,21 @@ class MainHourlyCardCell: MainTableViewCell,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(
-            width: collectionView.frame.width / CGFloat(getTrenItemDisplayCount()),
-            height: collectionView.frame.height
-        )
+        return self.hourlyCollectionView.cellSize
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        if let weather = self.weather,
+            let timezone = self.timezone {
+            HourlyDialog(
+                weather: weather,
+                timezone: timezone,
+                index: indexPath.row
+            ).showSelf()
+        }
     }
     
     // data source.

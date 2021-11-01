@@ -11,17 +11,14 @@ import GeometricWeatherBasic
 private let trendReuseIdentifier = "daily_trend_cell"
 private let dailyTrendViewHeight = 324
 
-extension Notification.Name {
+struct DailyTrendCellTapAction {
     
-    // send notifications with index.
-    static let dailyTrendCellTapAction = Notification.Name(
-        "com.wangdaye.geometricweather.dailyTrendCellTapAction"
-    )
+    let index: Int
 }
 
 class MainDailyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
-                            UICollectionViewDelegate {
+                            UICollectionViewDelegateFlowLayout {
     
     // MARK: - data.
     
@@ -62,17 +59,12 @@ class MainDailyCardCell: MainTableViewCell,
         self.summaryLabel.lineBreakMode = .byWordWrapping
         self.cardContainer.contentView.addSubview(self.summaryLabel)
         
+        self.dailyCollectionView.delegate = self
         self.dailyCollectionView.dataSource = self
         self.dailyCollectionView.register(
             DailyTrendCollectionViewCell.self,
             forCellWithReuseIdentifier: trendReuseIdentifier
         )
-        self.dailyCollectionView.itemSelected = { index in
-            NotificationCenter.default.post(
-                name: .dailyTrendCellTapAction,
-                object: index.row
-            )
-        }
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         
         self.dailyBackgroundView.isUserInteractionEnabled = false
@@ -177,9 +169,69 @@ class MainDailyCardCell: MainTableViewCell,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(
-            width: collectionView.frame.width / CGFloat(getTrenItemDisplayCount()),
-            height: collectionView.frame.height
+        return self.dailyCollectionView.cellSize
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        EventBus.shared.post(
+            DailyTrendCellTapAction(index: indexPath.row)
+        )
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard
+            let weather = self.weather,
+            let timezone = self.timezone
+        else {
+            return nil
+        }
+        
+        return UIContextMenuConfiguration(
+            identifier: NSNumber(value: indexPath.row)
+        ) {
+            return DailyPageController(
+                weather: weather,
+                index: indexPath.row,
+                timezone: timezone
+            )
+        } actionProvider: { _ in
+            return nil
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let row = (configuration.identifier as? NSNumber)?.intValue else {
+            return nil
+        }
+        guard let cell = collectionView.cellForItem(
+            at: IndexPath(row: row, section: 0)
+        ) else {
+            return nil
+        }
+        
+        let params = UIPreviewParameters()
+        params.backgroundColor = .clear
+        
+        return UITargetedPreview(view: cell, parameters: params)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return self.collectionView(
+            collectionView,
+            previewForHighlightingContextMenuWithConfiguration: configuration
         )
     }
     

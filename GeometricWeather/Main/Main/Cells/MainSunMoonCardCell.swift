@@ -71,6 +71,7 @@ class MainSunMoonCardCell: MainTableViewCell {
         self.cardContainer.contentView.addSubview(self.moonIcon)
         
         self.moonLabel.font = miniCaptionFont
+        self.moonLabel.textAlignment = isRtl ? .left : .right
         self.moonLabel.textColor = .secondaryLabel
         self.moonLabel.numberOfLines = 2
         self.cardContainer.contentView.addSubview(self.moonLabel)

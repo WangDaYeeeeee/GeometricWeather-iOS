@@ -76,6 +76,20 @@ class ToastWrapperView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
+            self
+        ) { [weak self] newValue in
+            self?.overrideUserInterfaceStyle = newValue
+        }
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        ThemeManager.shared.globalOverrideUIStyle.removeObserver(self)
+    }
+    
     // MARK: - action.
     
     @objc private func onDrag(gesture: UIPanGestureRecognizer) {

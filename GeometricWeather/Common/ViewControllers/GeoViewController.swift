@@ -8,7 +8,20 @@
 import Foundation
 import GeometricWeatherBasic
 
-class GeoViewController: UIViewController {
+class GeoViewController<T>: UIViewController {
+    
+    // MARK: - parameter.
+    
+    let param: T
+    
+    init(param: T) {
+        self.param = param
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - status bar.
     
@@ -27,7 +40,7 @@ class GeoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        ThemeManager.shared.globalOverrideUIStyle.syncObserveValue(
+        ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
             self
         ) { newValue in
             self.overrideUserInterfaceStyle = newValue
@@ -53,13 +66,5 @@ class GeoViewController: UIViewController {
                 : .lightContent
             }
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        ThemeManager.shared.globalOverrideUIStyle.stopObserve(
-            self.description
-        )
     }
 }

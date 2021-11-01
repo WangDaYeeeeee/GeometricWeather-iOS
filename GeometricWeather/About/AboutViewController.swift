@@ -22,7 +22,7 @@ private class InnerAboutViewController: UIHostingController<AboutView> {
 
 // MARK: - interface.
 
-class AboutViewController: GeoViewController {
+class AboutViewController: GeoViewController<Void> {
     
     private let innerViewController = InnerAboutViewController()
     

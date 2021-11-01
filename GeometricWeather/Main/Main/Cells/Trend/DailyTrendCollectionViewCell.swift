@@ -332,9 +332,11 @@ class DailyTrendCellBackgroundView: UIView {
         weather: Weather,
         temperatureRange: TemperatureRange
     ) {
-        guard let yesterday = weather.yesterday,
-              let daytimeTemp = yesterday.daytimeTemperature,
-              let nighttimeTemp = yesterday.nighttimeTemperature else {
+        guard
+            let yesterday = weather.yesterday,
+            let daytimeTemp = yesterday.daytimeTemperature,
+            let nighttimeTemp = yesterday.nighttimeTemperature
+        else {
             self.horizontalLinesView.highValue = nil
             self.horizontalLinesView.lowValue = nil
             return

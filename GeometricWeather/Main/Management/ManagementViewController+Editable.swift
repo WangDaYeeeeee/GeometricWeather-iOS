@@ -27,18 +27,22 @@ extension ManagementViewController {
                         WithAction: NSLocalizedString("learn_more", comment: ""),
                         andDuration: longToastInterval
                     ) {
-                        if let view = UIApplication.shared.keyWindowInCurrentScene {
-                            StatementDialog(
-                                title: NSLocalizedString("feedback_resident_location", comment: ""),
-                                content: NSLocalizedString("feedback_resident_location_description", comment: "")
-                            ).showOn(view)
-                        }
+                        StatementDialog(
+                            title: NSLocalizedString(
+                                "feedback_resident_location",
+                                comment: ""
+                            ),
+                            content: NSLocalizedString(
+                                "feedback_resident_location_description",
+                                comment: ""
+                            )
+                        ).showSelf()
                     } completion: { didTap in
                         // do nothing.
                     }
                 }
                 
-                self?.viewModel.updateLocation(
+                self?.param.updateLocation(
                     location: location.copyOf(
                         residentPosition: !location.residentPosition
                     )
@@ -61,7 +65,7 @@ extension ManagementViewController {
                 NSLocalizedString("feedback_delete_succeed", comment: "")
             )
             
-            self?.viewModel.deleteLocation(position: indexPath.row)
+            self?.param.deleteLocation(position: indexPath.row)
             handler(true)
         }
         delete.image = UIImage(systemName: "delete.backward.fill")
@@ -98,7 +102,7 @@ extension ManagementViewController {
         endMoveCellAt indexPath: IndexPath!
     ) {
         if let beginAt = self.moveBeginIndex {
-            self.viewModel.moveLocation(
+            self.param.moveLocation(
                 from: beginAt.row,
                 to: indexPath.row
             )

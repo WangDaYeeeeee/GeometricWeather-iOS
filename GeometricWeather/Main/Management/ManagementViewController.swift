@@ -16,18 +16,14 @@ struct LocationItem {
     let selected: Bool
 }
 
-class ManagementViewController: GeoViewController,
+class ManagementViewController: GeoViewController<MainViewModel>,
                                     UISearchBarDelegate,
                                     JXMovableCellTableViewDataSource,
                                     JXMovableCellTableViewDelegate,
-                                SearchViewDelegate {
+                                    SearchViewDelegate {
     
     
     // MARK: - properties.
-    
-    // vm.
-    
-    let viewModel: MainViewModel
     
     // inner data.
     
@@ -54,15 +50,6 @@ class ManagementViewController: GeoViewController,
     }()
     
     // MARK: - life cycle.
-    
-    init(_ viewModel: MainViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +114,7 @@ class ManagementViewController: GeoViewController,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel.selectableTotalLocations.observeValue(
+        self.param.selectableTotalLocations.addObserver(
             self
         ) { newValue in
             self.updateLocationList(newValue)
@@ -138,7 +125,7 @@ class ManagementViewController: GeoViewController,
                 }
             ) == nil
         }
-        self.searching.observeValue(self) { newValue in
+        self.searching.addObserver(self) { newValue in
             self.searchBar.setShowsCancelButton(
                 newValue,
                 animated: true
@@ -160,9 +147,6 @@ class ManagementViewController: GeoViewController,
     // reset state of view when it become invisible.
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-                
-        self.viewModel.selectableTotalLocations.stopObserve(self)
-        self.searching.stopObserve(self)
         
         self.searching.value = false
         self.itemList.removeAll()
@@ -329,7 +313,7 @@ class ManagementViewController: GeoViewController,
         self.searchBar.text = ""
         self.searching.value = false
         
-        if self.viewModel.addLocation(location: Location.buildLocal()) {
+        if self.param.addLocation(location: Location.buildLocal()) {
             ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: "")
             )
@@ -383,7 +367,7 @@ class ManagementViewController: GeoViewController,
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        self.viewModel.setLocation(
+        self.param.setLocation(
             formattedId: self.itemList[indexPath.row].location.formattedId
         )
         self.dismiss(animated: true)
@@ -420,7 +404,7 @@ class ManagementViewController: GeoViewController,
     func selectLocation(
         _ newLocation: Location
     ) -> Bool {
-        if self.viewModel.addLocation(location: newLocation) {
+        if self.param.addLocation(location: newLocation) {
             self.searching.value = false
             return true
         } else {

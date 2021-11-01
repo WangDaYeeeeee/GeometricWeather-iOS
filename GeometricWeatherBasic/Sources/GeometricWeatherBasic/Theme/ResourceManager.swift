@@ -69,7 +69,7 @@ class ResourceManager {
     
     // singleton.
     
-    static var shared = ResourceManager()
+    static let shared = ResourceManager()
     
     private init() {
         // do nothing.
@@ -156,7 +156,7 @@ class SFResourceManager {
     
     // singleton.
     
-    static var shared = SFResourceManager()
+    static let shared = SFResourceManager()
     
     private init() {
         // do nothing.

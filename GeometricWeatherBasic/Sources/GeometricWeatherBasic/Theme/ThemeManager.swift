@@ -47,7 +47,7 @@ public class ThemeManager {
     
     // singleton.
     
-    public static var shared = ThemeManager(
+    public static let shared = ThemeManager(
         darkMode: SettingsManager.shared.darkMode
     )
     

@@ -197,7 +197,54 @@ private func getWeatherText(_ skycon: String) -> String {
 
 // TODO: wind direction description.
 private func getWindDirectionText(_ direction: Double) -> String? {
-    return nil
+    let d = direction.truncatingRemainder(dividingBy: 360.0)
+    
+    if 348.75 < d || d <= 11.25 {
+        return NSLocalizedString("wind_direction_n", comment: "")
+    }
+    if 11.25 < d && d <= 33.75 {
+        return NSLocalizedString("wind_direction_nne", comment: "")
+    }
+    if 33.75 < d && d <= 56.25 {
+        return NSLocalizedString("wind_direction_ne", comment: "")
+    }
+    if 56.25 < d && d <= 78.75 {
+        return NSLocalizedString("wind_direction_ene", comment: "")
+    }
+    if 78.75 < d && d <= 101.25 {
+        return NSLocalizedString("wind_direction_e", comment: "")
+    }
+    if 101.25 < d && d <= 123.75 {
+        return NSLocalizedString("wind_direction_ese", comment: "")
+    }
+    if 123.75 < d && d <= 146.25 {
+        return NSLocalizedString("wind_direction_se", comment: "")
+    }
+    if 146.25 < d && d <= 168.75 {
+        return NSLocalizedString("wind_direction_sse", comment: "")
+    }
+    if 168.75 < d && d <= 191.25 {
+        return NSLocalizedString("wind_direction_s", comment: "")
+    }
+    if 191.25 < d && d <= 213.75 {
+        return NSLocalizedString("wind_direction_ssw", comment: "")
+    }
+    if 213.75 < d && d <= 236.25 {
+        return NSLocalizedString("wind_direction_sw", comment: "")
+    }
+    if 236.25 < d && d <= 258.75 {
+        return NSLocalizedString("wind_direction_wsw", comment: "")
+    }
+    if 258.75 < d && d <= 281.25 {
+        return NSLocalizedString("wind_direction_w", comment: "")
+    }
+    if 281.25 < d && d <= 303.75 {
+        return NSLocalizedString("wind_direction_wnw", comment: "")
+    }
+    if 303.75 < d && d <= 326.25 {
+        return NSLocalizedString("wind_direction_nw", comment: "")
+    }
+    return NSLocalizedString("wind_direction_nnw", comment: "")
 }
 
 private func getWeatherCode(_ skycon: String) -> WeatherCode {
@@ -234,8 +281,8 @@ private func getWeatherCode(_ skycon: String) -> WeatherCode {
     if skycon.contains("SNOW") {
         return .snow(.heavy)
     }
-    if skycon.contains("DUST") || skycon.contains("SAND") {
-        return .hail
+    if skycon.contains("DUST") {
+        return .haze
     }
     return .wind
 }

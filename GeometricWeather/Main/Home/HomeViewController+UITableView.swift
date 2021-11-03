@@ -1,5 +1,5 @@
 //
-//  MainViewController+UITableView.swift
+//  HomeViewController+UITableView.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/8/8.
@@ -16,11 +16,15 @@ private let cellKeyAllergen = "allergen"
 private let cellKeySunMoon = "sun_moon"
 private let cellKeyDetails = "details"
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - interfaces.
     
     @objc func updateTableView() {
+        guard let location = self.vmWeakRef.vm?.currentLocation.value else {
+            return
+        }
+        
         if self.tableView.numberOfSections != 0
             && self.tableView.numberOfRows(inSection: 0) != 0 {
             self.tableView.scrollToRow(
@@ -35,12 +39,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             forSection: 0
         )
         
-        self.cellKeyList = self.prepareCellKeyList(
-            location: self.viewModel.currentLocation.value
-        )
+        self.cellKeyList = self.prepareCellKeyList(location: location)
         self.cellAnimationHelper.reset()
         self.tableView.reloadData()
-        self.bindDataForHeaderAndCells(self.viewModel.currentLocation.value)
+        self.bindDataForHeaderAndCells(location)
         
         self.tableView(
             self.tableView,
@@ -58,7 +60,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             cellKeySunMoon: MainSunMoonCardCell(style: .default, reuseIdentifier: cellKeySunMoon),
             cellKeyDetails: MainDetailsCardCell(style: .default, reuseIdentifier: cellKeyDetails),
         ]
-        (dict[cellKeyDaily] as? MainDailyCardCell)?.mainTimeBarDelegate = self
         return dict
     }
     
@@ -155,17 +156,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         heightForHeaderInSection section: Int
     ) -> CGFloat {
-        if let cache = self.cellHeightCache[cellKeyHeader] {
-            if cache > 0 {
-                return cache
-            }
-        }
-        
-        let height = ThemeManager.shared.weatherThemeDelegate.getHeaderHeight(
+        return ThemeManager.shared.weatherThemeDelegate.getHeaderHeight(
             tableView.frame.height
         ) - self.view.safeAreaInsets.top
-        self.cellHeightCache[cellKeyHeader] = height
-        return height
     }
     
     func tableView(

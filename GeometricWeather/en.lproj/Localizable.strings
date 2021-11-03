@@ -290,7 +290,7 @@
 
 "action_home" = "Home";
 "action_alert" = "Alert";
-"action_manage" = "Manage";
+"action_manage" = "Management";
 "action_search" = "Search";
 "action_settings" = "Settings";
 "action_preview" = "Preview";

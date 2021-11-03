@@ -10,16 +10,7 @@ import GeometricWeatherBasic
 
 private let cellReuseId = "SearchTableViewCell"
 
-protocol SearchViewDelegate: NSObjectProtocol {
-    
-    // return true if we can collect this location to location list.
-    func selectLocation(
-        _ location: Location
-    ) -> Bool
-    func hideKeyboard(withEmptyList: Bool)
-}
-
-class SearchViewController: UIViewController,
+class SearchResultController: UIViewController,
                                 UITableViewDataSource,
                                 UITableViewDelegate {
     
@@ -29,12 +20,15 @@ class SearchViewController: UIViewController,
     
     private let weatherApi = getWeatherApi(SettingsManager.shared.weatherSource)
     private var cancelToken: CancelToken?
-    
-    private weak var delegate: SearchViewDelegate?
-    
+        
     // inner data.
     
     private var locationList = [Location]()
+    var locationCount: Int {
+        get {
+            return self.locationList.count
+        }
+    }
     
     let requesting = EqualtableLiveData(false)
     
@@ -44,15 +38,6 @@ class SearchViewController: UIViewController,
     private let progressView = UIActivityIndicatorView(style: .large)
     
     // MARK: - life cycle.
-    
-    init(delegate: SearchViewDelegate) {
-        self.delegate = delegate
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,25 +55,24 @@ class SearchViewController: UIViewController,
         self.tableView.separatorInset = .zero
         self.tableView.rowHeight = locationCellHeight
         self.tableView.register(
-            LocationTableViewCell.self,
+            SearchTableViewCell.self,
             forCellReuseIdentifier: cellReuseId
         )
-        self.tableView.hideKeyboardExecutor = { [weak self] in
-            self?.delegate?.hideKeyboard(
-                withEmptyList: self?.locationList.isEmpty ?? true
-            )
+        self.tableView.hideKeyboardExecutor = {
+            EventBus.shared.post(HideKeyboardEvent())
         }
         self.view.addSubview(self.tableView)
         
         self.progressView.color = .label
         self.progressView.startAnimating()
+        self.progressView.layoutMargins = .zero
         self.view.addSubview(self.progressView)
         
         self.tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         self.progressView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
@@ -163,7 +147,7 @@ class SearchViewController: UIViewController,
             withIdentifier: cellReuseId,
             for: indexPath
         )
-        (cell as? LocationTableViewCell)?.bindData(
+        (cell as? SearchTableViewCell)?.bindData(
             location: self.locationList[indexPath.row],
             selected: false
         )
@@ -175,23 +159,13 @@ class SearchViewController: UIViewController,
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        if let delegate = self.delegate {
-            if delegate.selectLocation(self.locationList[indexPath.row]) {
-                ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_succeed", comment: "")
-                )
-            } else {
-                ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_failed", comment: "")
-                )
-            }
-        }
+
+        EventBus.shared.post(AddLocationEvent(
+            location: self.locationList[indexPath.row])
+        )
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.delegate?.hideKeyboard(
-            withEmptyList: self.locationList.isEmpty
-        )
+        EventBus.shared.post(HideKeyboardEvent())
     }
 }

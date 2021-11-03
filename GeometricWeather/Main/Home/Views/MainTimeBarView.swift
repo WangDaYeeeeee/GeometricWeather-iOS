@@ -9,23 +9,9 @@ import UIKit
 import SnapKit
 import GeometricWeatherBasic
 
-@objc protocol MainTimeBarDelegate {
-    
-    func reactManagementAction();
-    func reactAlertAction();
-}
+struct TimeBarManagementAction {}
+struct TimeBarAlertAction {}
 
-// VStack/Self {
-//     HStack {
-//         leadingIcon
-//         VStack {
-//             updateTime
-//             timezoneTime
-//         }
-//     }
-//     alerts
-//     divider
-// }
 class MainTimeBarView: UIStackView {
     
     // MARK: - properties.
@@ -46,10 +32,6 @@ class MainTimeBarView: UIStackView {
     
     private var timezone: TimeZone = .current
     private var timer: Timer?
-    
-    // delegate.
-    
-    weak var delegate: MainTimeBarDelegate?
     
     // MARK: - life cycle.
     
@@ -206,10 +188,10 @@ class MainTimeBarView: UIStackView {
     // MARK: - actions.
     
     @objc private func managementAction() {
-        self.delegate?.reactManagementAction()
+        EventBus.shared.post(TimeBarManagementAction())
     }
     
     @objc private func alertAction() {
-        self.delegate?.reactAlertAction()
+        EventBus.shared.post(TimeBarAlertAction())
     }
 }

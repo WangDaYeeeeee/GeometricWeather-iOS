@@ -16,11 +16,20 @@ struct LocationItem {
     let selected: Bool
 }
 
-class ManagementViewController: GeoViewController<MainViewModel>,
+struct HideKeyboardEvent {
+    // nothing.
+}
+struct AddLocationEvent {
+    
+    let location: Location
+}
+
+class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, split: Bool)>,
+                                    UISearchControllerDelegate,
+                                    UISearchResultsUpdating,
                                     UISearchBarDelegate,
                                     JXMovableCellTableViewDataSource,
-                                    JXMovableCellTableViewDelegate,
-                                    SearchViewDelegate {
+                                    JXMovableCellTableViewDelegate {
     
     
     // MARK: - properties.
@@ -32,42 +41,40 @@ class ManagementViewController: GeoViewController<MainViewModel>,
     )
     var itemList = [LocationItem]()
     
-    private let searching = EqualtableLiveData(false)
-    
     var moveBeginIndex: IndexPath?
     
     // subviews.
     
-    private let blurBackground = UIVisualEffectView(
-        effect: UIBlurEffect(style: .prominent)
-    )
-    
-    private let searchBar = UISearchBar(frame: .zero)
-    private let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
-    
-    private lazy var searchViewController = {
-        return SearchViewController(delegate: self)
+    private lazy var searchController = {
+        return UISearchController(searchResultsController: self.resultController)
     }()
+    private let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
+    private let resultController = SearchResultController(nibName: nil, bundle: nil)
     
     // MARK: - life cycle.
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .clear
+        self.view.backgroundColor = .systemBackground
         
-        self.view.addSubview(self.blurBackground)
+        self.navigationItem.title = NSLocalizedString("action_manage", comment: "")
         
-        self.searchBar.placeholder = NSLocalizedString(
+        self.searchController.searchBar.placeholder = NSLocalizedString(
             "feedback_search_location",
             comment: ""
         )
-        self.searchBar.setImage(
+        self.searchController.searchBar.setImage(
             UIImage(systemName: "location.circle"),
             for: .bookmark,
             state: .normal
         )
-        self.searchBar.delegate = self
-        self.blurBackground.contentView.addSubview(self.searchBar)
+        self.searchController.automaticallyShowsScopeBar = true
+        self.searchController.automaticallyShowsCancelButton = true
+        self.searchController.automaticallyShowsSearchResultsController = false
+        self.searchController.delegate = self
+        self.searchController.searchResultsUpdater = self
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.searchController = self.searchController
         
         self.tableView.backgroundColor = .clear
         self.tableView.cellLayoutMarginsFollowReadableWidth = true
@@ -86,60 +93,47 @@ class ManagementViewController: GeoViewController<MainViewModel>,
             LocationTableViewCell.self,
             forCellReuseIdentifier: cellReuseId
         )
-        self.blurBackground.contentView.addSubview(self.tableView)
+        self.view.addSubview(self.tableView)
         
-        self.addChild(self.searchViewController)
-        self.searchViewController.view.alpha = 0.0
-        self.blurBackground.contentView.addSubview(self.searchViewController.view)
-        
-        self.blurBackground.snp.makeConstraints { make in
-            make.size.equalToSuperview()
-        }
-        self.searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
         self.tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.searchBar.snp.bottom)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-        self.searchViewController.view.snp.makeConstraints { make in
-            make.edges.equalTo(self.tableView)
+        
+        EventBus.shared.register(self, for: HideKeyboardEvent.self) { [weak self] event in
+            if (self?.resultController.locationCount ?? 0) == 0 && (
+                self?.searchController.searchBar.text?.isEmpty ?? true
+            ) {
+                self?.searchController.dismiss(animated: true, completion: nil)
+            } else {
+                self?.searchController.searchBar.endEditing(true)
+            }
+        }
+        EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
+            if self?.param.ref.vm?.addLocation(location: event.location) ?? false {
+                self?.searchController.dismiss(animated: true, completion: nil)
+                
+                ToastHelper.showToastMessage(
+                    NSLocalizedString("feedback_collect_succeed", comment: "")
+                )
+            } else {
+                ToastHelper.showToastMessage(
+                    NSLocalizedString("feedback_collect_failed", comment: "")
+                )
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.param.selectableTotalLocations.addObserver(
-            self
-        ) { newValue in
+        self.param.ref.vm?.selectableTotalLocations.addObserver(self) { newValue in
             self.updateLocationList(newValue)
             
-            self.searchBar.showsBookmarkButton = self.itemList.first(
-                where: { item in
-                    item.location.currentPosition
-                }
-            ) == nil
-        }
-        self.searching.addObserver(self) { newValue in
-            self.searchBar.setShowsCancelButton(
-                newValue,
-                animated: true
-            )
-            if !newValue {
-                self.searchBar.text = ""
-                self.view.endEditing(true)
+            let showBookmarkButton = !self.itemList.contains { item in
+                item.location.currentPosition
             }
-            
-            self.searchViewController.requesting.value = false
-            self.searchViewController.resetList()
-            
-            UIView.animate(withDuration: 0.3) {
-                self.searchViewController.view.alpha = newValue ? 1.0 : 0.0
+            if self.searchController.searchBar.showsBookmarkButton != showBookmarkButton {
+                self.searchController.searchBar.showsBookmarkButton = showBookmarkButton
             }
         }
     }
@@ -148,7 +142,7 @@ class ManagementViewController: GeoViewController<MainViewModel>,
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.searching.value = false
+        self.searchController.dismiss(animated: false, completion: nil)
         self.itemList.removeAll()
     }
     
@@ -292,37 +286,52 @@ class ManagementViewController: GeoViewController<MainViewModel>,
         return 0
     }
     
-    // MARK: - search bar delegate.
+    // MARK: - search controller delegate.
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.searching.value = true
+    func willPresentSearchController(_ searchController: UISearchController) {
+        self.resultController.requesting.value = false
+        self.resultController.resetList()
     }
     
+    func willDismissSearchController(_ searchController: UISearchController) {
+        searchController.showsSearchResultsController = false
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        searchController.showsSearchResultsController = false
+        searchController.searchBar.text = ""
+        
+        self.resultController.requesting.value = false
+        self.resultController.resetList()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        searchController.showsSearchResultsController = true
+    }
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
             if text == "" {
                 return
             }
             
-            self.searchViewController.search(text)
-            self.view.endEditing(true)
+            self.searchController.searchBar.endEditing(true)
+            self.resultController.search(text)
         }
     }
-    
+
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.text = ""
-        self.searching.value = false
-        
-        if self.param.addLocation(location: Location.buildLocal()) {
+        self.searchController.searchBar.text = ""
+
+        if self.param.ref.vm?.addLocation(
+            location: Location.buildLocal(
+                weatherSource: SettingsManager.shared.weatherSource
+            )
+        ) ?? false {
             ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: "")
             )
         }
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.text = ""
-        self.searching.value = false
     }
     
     // MARK: - table view delegate & data source.
@@ -367,10 +376,12 @@ class ManagementViewController: GeoViewController<MainViewModel>,
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        self.param.setLocation(
+        self.param.ref.vm?.setLocation(
             formattedId: self.itemList[indexPath.row].location.formattedId
         )
-        self.dismiss(animated: true)
+        if !self.param.split {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     // staggerd.
@@ -380,6 +391,9 @@ class ManagementViewController: GeoViewController<MainViewModel>,
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
+        if self.param.split {
+            return
+        }
         self.staggeredHelper.tableView(
             tableView,
             willDisplay: cell,
@@ -392,31 +406,13 @@ class ManagementViewController: GeoViewController<MainViewModel>,
         didEndDisplaying cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
+        if self.param.split {
+            return
+        }
         self.staggeredHelper.tableView(
             tableView,
             didEndDisplaying: cell,
             forRowAt: indexPath
         )
-    }
-    
-    // MARK: - search view delegate.
-    
-    func selectLocation(
-        _ newLocation: Location
-    ) -> Bool {
-        if self.param.addLocation(location: newLocation) {
-            self.searching.value = false
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func hideKeyboard(withEmptyList: Bool) {
-        if withEmptyList {
-            self.searching.value = false
-        } else {
-            self.view.endEditing(true)
-        }
     }
 }

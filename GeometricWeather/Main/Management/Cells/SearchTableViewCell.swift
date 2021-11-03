@@ -1,20 +1,19 @@
 //
-//  ManagementTableViewCell.swift
+//  SearchTableViewCell.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2021/8/27.
+//  Created by 王大爷 on 2021/11/3.
 //
 
 import UIKit
 import GeometricWeatherBasic
 
-let locationCellHeight = 96.0
 private let iconSize = 24.0
 
-private let normalBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
-private let selectedBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
+private let normalBackgroundColor = UIColor.systemBackground
+private let selectedBackgroundColor = UIColor.secondarySystemBackground
 
-class LocationTableViewCell: UITableViewCell {
+class SearchTableViewCell: UITableViewCell {
     
     // MARK: - subviews.
     
@@ -23,11 +22,7 @@ class LocationTableViewCell: UITableViewCell {
     private let titleLabel = UILabel(frame: .zero)
     private let subtitleLabel = UILabel(frame: .zero)
     
-    private let currentTemperatureLabel = UILabel(frame: .zero)
-    
     private let weatherSourceLabel = UILabel(frame: .zero)
-    
-    private let dailyTemperatureLabel = UILabel(frame: .zero)
     
     // MARK: - life cycle.
     
@@ -45,48 +40,26 @@ class LocationTableViewCell: UITableViewCell {
         self.subtitleLabel.font = miniCaptionFont
         self.highlightEffectContainer.addSubview(self.subtitleLabel)
         
-        self.currentTemperatureLabel.textColor = .label
-        self.currentTemperatureLabel.font = .systemFont(ofSize: 36.0, weight: .regular)
-        self.highlightEffectContainer.addSubview(self.currentTemperatureLabel)
-        
         self.weatherSourceLabel.textColor = .tertiaryLabel
         self.weatherSourceLabel.font = miniCaptionFont
         self.highlightEffectContainer.addSubview(self.weatherSourceLabel)
         
-        self.dailyTemperatureLabel.textColor = .secondaryLabel
-        self.dailyTemperatureLabel.font = bodyFont
-        self.highlightEffectContainer.addSubview(self.dailyTemperatureLabel)
-        
         self.highlightEffectContainer.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-        self.currentTemperatureLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(littleMargin)
-            make.trailing.equalToSuperview().offset(-littleMargin)
-        }
-        self.dailyTemperatureLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-littleMargin)
-            make.bottom.equalToSuperview().offset(-littleMargin)
         }
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(littleMargin)
             make.leading.equalToSuperview().offset(littleMargin)
-            make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
-            )
+            make.trailing.equalToSuperview().offset(-littleMargin)
         }
         self.subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(2.0)
             make.leading.equalToSuperview().offset(littleMargin)
-            make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
-            )
+            make.trailing.equalToSuperview().offset(-littleMargin)
         }
         self.weatherSourceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(littleMargin)
-            make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
-            )
+            make.trailing.equalToSuperview().offset(-littleMargin)
             make.bottom.equalToSuperview().offset(-littleMargin)
         }
     }
@@ -151,28 +124,6 @@ class LocationTableViewCell: UITableViewCell {
         
         self.weatherSourceLabel.text = "Powered by \(location.weatherSource.url)"
         self.weatherSourceLabel.textColor = .colorFromRGB(location.weatherSource.color)
-        
-        if let weather = location.weather {
-            let tempUnit = SettingsManager.shared.temperatureUnit
-            
-            self.currentTemperatureLabel.text = tempUnit.formatValueWithUnit(
-                weather.current.temperature.temperature,
-                unit: "°"
-            )
-            self.dailyTemperatureLabel.text = getDayNightTemperatureText(
-                daytimeTemperature: weather.dailyForecasts[0].day.temperature.temperature,
-                nighttimeTemperature: weather.dailyForecasts[0].night.temperature.temperature,
-                unit: tempUnit,
-                reverseDayNightPosition: false,
-                seperator: "/"
-            )
-            
-            self.currentTemperatureLabel.alpha = 1.0
-            self.dailyTemperatureLabel.alpha = 1.0
-        } else {
-            self.currentTemperatureLabel.alpha = 0.0
-            self.dailyTemperatureLabel.alpha = 0.0
-        }
     }
     
     // MARK: - selection.

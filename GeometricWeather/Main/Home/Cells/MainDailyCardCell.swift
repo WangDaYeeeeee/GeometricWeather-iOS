@@ -22,15 +22,6 @@ class MainDailyCardCell: MainTableViewCell,
     
     // MARK: - data.
     
-    var mainTimeBarDelegate: MainTimeBarDelegate? {
-        get {
-            return self.timeBar.delegate
-        }
-        set {
-            self.timeBar.delegate = newValue
-        }
-    }
-    
     private var weather: Weather?
     private var timezone: TimeZone?
     private var temperatureRange: TemperatureRange?

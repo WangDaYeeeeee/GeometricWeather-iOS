@@ -1,5 +1,5 @@
 //
-//  MainViewController+PageIndicator.swift
+//  HomeViewController+PageIndicator.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/10/8.
@@ -20,7 +20,7 @@ private enum AnimationStatus: Int {
     case executingHideAnimation
 }
 
-extension MainViewController {
+extension HomeViewController {
     
     // true:   executing show animation.
     // false:  executing hide animation.
@@ -82,7 +82,7 @@ extension MainViewController {
             timeInterval: hideIndicatorDelay,
             repeats: false
         ) { [weak self] _ in
-            self?.hideIndicatorTimer = nil
+            self?.cancelDelayHideAnimation()
             
             self?.animationStatus = .executingHideAnimation
             

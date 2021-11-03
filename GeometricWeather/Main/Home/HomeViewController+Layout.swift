@@ -1,5 +1,5 @@
 //
-//  MainViewController+Layout.swift
+//  HomeViewController+Layout.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/10/10.
@@ -8,7 +8,7 @@
 import Foundation
 import GeometricWeatherBasic
 
-extension MainViewController {
+extension HomeViewController {
     
     func initSubviewsAndLayoutThem() {
         self.weatherViewController.view.backgroundColor = .clear
@@ -34,6 +34,9 @@ extension MainViewController {
             action: #selector(self.onPullRefresh),
             for: .valueChanged
         )
+        self.tableView.hideKeyboardExecutor = {
+            EventBus.shared.post(HideKeyboardEvent())
+        }
         self.dragSwitchView.contentView.addSubview(self.tableView)
         
         self.navigationBarBackground.alpha = 0

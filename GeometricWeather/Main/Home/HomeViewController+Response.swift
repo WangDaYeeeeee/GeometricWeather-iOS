@@ -1,5 +1,5 @@
 //
-//  MainViewController+Response.swift
+//  HomeViewController+Response.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/10/14.
@@ -7,10 +7,14 @@
 
 import Foundation
 
-extension MainViewController {
+extension HomeViewController {
     
     func responseAlertNotificationAction() {
-        self.viewModel.setLocation(index: 0)
+        guard let vm = self.vmWeakRef.vm else {
+            return
+        }
+        
+        vm.setLocation(index: 0)
         
         self.navigationController?.popToViewController(self, animated: true)
         
@@ -18,7 +22,7 @@ extension MainViewController {
             presentedVC.dismiss(animated: true) {
                 self.navigationController?.present(
                     AlertViewController(
-                        param: self.viewModel.currentLocation.value.weather?.alerts ?? []
+                        param: vm.currentLocation.value.weather?.alerts ?? []
                     ),
                     animated: true,
                     completion: nil
@@ -29,7 +33,7 @@ extension MainViewController {
         
         self.navigationController?.present(
             AlertViewController(
-                param: self.viewModel.currentLocation.value.weather?.alerts ?? []
+                param: vm.currentLocation.value.weather?.alerts ?? []
             ),
             animated: true,
             completion: nil
@@ -37,7 +41,11 @@ extension MainViewController {
     }
     
     func responseForecastNotificationAction() {
-        self.viewModel.setLocation(index: 0)
+        guard let vm = self.vmWeakRef.vm else {
+            return
+        }
+        
+        vm.setLocation(index: 0)
         self.navigationController?.popToViewController(
             self,
             animated: true
@@ -49,7 +57,11 @@ extension MainViewController {
     }
     
     func responseAppShortcutItemAction(_ formattedId: String) {
-        self.viewModel.setLocation(formattedId: formattedId)
+        guard let vm = self.vmWeakRef.vm else {
+            return
+        }
+        
+        vm.setLocation(formattedId: formattedId)
         
         self.navigationController?.popToViewController(
             self,
@@ -62,13 +74,17 @@ extension MainViewController {
     }
     
     func responseDailyTrendCellTapAction(_ index: Int) {
+        guard let vm = self.vmWeakRef.vm else {
+            return
+        }
+        
         if self.navigationController?.presentedViewController != nil {
             return
         }
                 
         self.navigationController?.present(
             DailyViewController(
-                param: (self.viewModel.currentLocation.value, index)
+                param: (vm.currentLocation.value, index)
             ),
             animated: true,
             completion: nil

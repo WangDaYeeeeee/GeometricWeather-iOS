@@ -22,9 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window = UIWindow(windowScene: scene as! UIWindowScene)
-        window?.rootViewController = GeoNavigationController(
-            rootViewController: MainViewController()
-        )
+        window?.rootViewController = MainViewController()
         window?.makeKeyAndVisible()
         
         if let item = connectionOptions.shortcutItem {

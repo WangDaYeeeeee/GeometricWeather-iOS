@@ -111,7 +111,11 @@ public class DatabaseHelper {
                 locations = GeometricWeatherBasic.readLocations(context: context)
                 
                 if locations.isEmpty {
-                    locations.append(Location.buildLocal())
+                    locations.append(
+                        Location.buildLocal(
+                            weatherSource: SettingsManager.shared.weatherSource
+                        )
+                    )
                     GeometricWeatherBasic.writeLocations(context: context, locations: locations)
                 }
             }

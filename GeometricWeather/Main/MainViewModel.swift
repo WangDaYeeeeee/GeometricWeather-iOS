@@ -8,7 +8,7 @@
 import Foundation
 import GeometricWeatherBasic
 
-class MainViewModel {
+class MainViewModel: NSObject, UIStateRestoring {
     
     // state.
     let currentLocation: EqualtableLiveData<Location>
@@ -27,7 +27,7 @@ class MainViewModel {
     
     // MARK: - life cycle.
     
-    init() {
+    override init() {
         let data = repository.initLocations()
         
         // init inner data at first.
@@ -55,6 +55,8 @@ class MainViewModel {
         
         self.toastMessage = LiveData(nil)
         
+        super.init()
+        
         // update theme.
         ThemeManager.shared.update(location: data.valid[0])
                 
@@ -70,6 +72,16 @@ class MainViewModel {
     
     deinit {
         self.cancelRequest()
+    }
+    
+    func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(self.currentLocation.value.formattedId, forKey: "formattedId")
+    }
+    
+    func decodeRestorableState(with coder: NSCoder) {
+        if let id = coder.decodeObject(forKey: "formattedId") as? String {
+            self.setLocation(formattedId: id)
+        }
     }
     
     // MARK: - inner methods.

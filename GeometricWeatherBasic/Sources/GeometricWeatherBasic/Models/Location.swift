@@ -86,7 +86,9 @@ public struct Location: Equatable {
         self.residentPosition = residentPosition
     }
     
-    public static func buildLocal() -> Location {
+    public static func buildLocal(
+        weatherSource: WeatherSource
+    ) -> Location {
         return Location(
             cityId: Self.nullId,
             latitude: 0,
@@ -97,7 +99,7 @@ public struct Location: Equatable {
             city: "",
             district: "",
             weather: nil,
-            weatherSource: WeatherSource[0],
+            weatherSource: weatherSource,
             currentPosition: true,
             residentPosition: false
         )

@@ -1,6 +1,6 @@
 //
-//  ViewController.swift
-//  Demo
+//  HomeViewController.swift
+//  GeometricWeather
 //
 //  Created by 王大爷 on 2021/8/1.
 //
@@ -8,18 +8,19 @@
 import UIKit
 import GeometricWeatherBasic
 
-class MainViewController: UIViewController,
+class HomeViewController: UIViewController,
                             DragSwitchDelegate,
-                            MainTimeBarDelegate,
                             UIScrollViewDelegate {
         
     // MARK: - view models.
 
-    let viewModel = MainViewModel()
+    let vmWeakRef: MainViewModelWeakRef
     
     // MARK: - inner data.
     
     // state values.
+    
+    let splitView: Bool
     
     var previewOffset = 0 {
         didSet {
@@ -40,7 +41,7 @@ class MainViewController: UIViewController,
             self.updateNavigationBarTintColor()
             
             self.navigationBarBackground.layer.removeAllAnimations()
-            let targetAlpha = blurNavigationBar ? 1.0 : 0.0
+            let targetAlpha = self.blurNavigationBar ? 1.0 : 0.0
             UIView.animate(
                 withDuration: 0.3,
                 delay: 0,
@@ -70,12 +71,9 @@ class MainViewController: UIViewController,
     // MARK: - subviews.
     
     let weatherViewController = ThemeManager.shared.weatherThemeDelegate.getWeatherViewController()
-    lazy var managementViewController: ManagementViewController = {
-        return ManagementViewController(param: self.viewModel)
-    }()
     
     let dragSwitchView = DragSwitchView(frame: .zero)
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    let tableView = AutoHideKeyboardTableView(frame: .zero, style: .grouped)
     
     let navigationBarBackground = UIVisualEffectView(
         effect: UIBlurEffect(style: .systemUltraThinMaterial)
@@ -83,17 +81,30 @@ class MainViewController: UIViewController,
     let indicator = DotPagerIndicator(frame: .zero)
         
     // MARK: - life cycle.
-
+    
+    init(vmWeakRef: MainViewModelWeakRef, splitView: Bool) {
+        self.vmWeakRef = vmWeakRef
+        self.splitView = splitView
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "building.2.crop.circle"),
-            style: .plain,
-            target: self,
-            action: #selector(self.onManagementButtonClicked)
-        )
+        if !splitView {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "building.2.crop.circle"),
+                style: .plain,
+                target: self,
+                action: #selector(self.onManagementButtonClicked)
+            )
+        }
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "gear"),
             style: .plain,
@@ -122,14 +133,14 @@ class MainViewController: UIViewController,
         
         // observe live data.
         
-        self.viewModel.currentLocation.addObserver(self) { [weak self] newValue in
+        self.vmWeakRef.vm?.currentLocation.addObserver(self) { [weak self] newValue in
             self?.updatePreviewableSubviews()
             self?.updateTableView()
         }
-        self.viewModel.loading.addObserver(self) { [weak self] newValue in
+        self.vmWeakRef.vm?.loading.addObserver(self) { [weak self] newValue in
             self?.updateTableViewRefreshControl(refreshing: newValue)
         }
-        self.viewModel.indicator.addObserver(self) { [weak self] newValue in
+        self.vmWeakRef.vm?.indicator.addObserver(self) { [weak self] newValue in
             if self?.indicator.selectedIndex != newValue.index {
                 self?.indicator.selectedIndex = newValue.index
             }
@@ -140,19 +151,19 @@ class MainViewController: UIViewController,
             self?.dragSwitchView.dragEnabled = newValue.total > 1
         }
         
-        self.viewModel.toastMessage.addObserver(self) { [weak self] newValue in
+        self.vmWeakRef.vm?.toastMessage.addObserver(self) { [weak self] newValue in
             if let message = newValue {
                 self?.responseToastMessage(message)
             }
         }
         
-        // register notification observers.
+        // register event observers.
         
         EventBus.shared.register(
             self,
             for: BackgroundUpdateEvent.self
         ) { [weak self] event in
-            self?.viewModel.updateLocationFromBackground(
+            self?.vmWeakRef.vm?.updateLocationFromBackground(
                 location: event.location
             )
         }
@@ -167,6 +178,25 @@ class MainViewController: UIViewController,
             for: DailyTrendCellTapAction.self
         ) { [weak self] event in
             self?.responseDailyTrendCellTapAction(event.index)
+        }
+        EventBus.shared.register(self, for: TimeBarManagementAction.self) { [weak self] _ in
+            if self?.splitView ?? false {
+                return
+            }
+            
+            self?.onManagementButtonClicked()
+        }
+        EventBus.shared.register(self, for: TimeBarAlertAction.self) { [weak self] _ in
+            if self?.navigationController?.presentedViewController != nil {
+                return
+            }
+            self?.navigationController?.present(
+                AlertViewController(
+                    param: self?.vmWeakRef.vm?.currentLocation.value.weather?.alerts ?? []
+                ),
+                animated: true,
+                completion: nil
+            )
         }
         EventBus.shared.stickyRegister(
             self,
@@ -199,7 +229,9 @@ class MainViewController: UIViewController,
         self.viewIsAppeared = true
         
         // start the indicator animation when this view enter to foreground if app is loading.
-        self.updateTableViewRefreshControl(refreshing: self.viewModel.loading.value)
+        if let loading = self.vmWeakRef.vm?.loading.value {
+            self.updateTableViewRefreshControl(refreshing: loading)
+        }
         
         self.updatePreviewableSubviews()
         self.updateNavigationBarTintColor()
@@ -252,14 +284,26 @@ class MainViewController: UIViewController,
     
     @objc private func viewWillEnterForeground() {
         // start the indicator animation when app enter to foreground if app is loading.
-        self.updateTableViewRefreshControl(refreshing: self.viewModel.loading.value)
-        self.viewModel.checkToUpdate()
+        if let loading = self.vmWeakRef.vm?.loading.value {
+            self.updateTableViewRefreshControl(refreshing: loading)
+        }
+        self.vmWeakRef.vm?.checkToUpdate()
     }
     
     @objc private func viewWillEnterBackground() {
         // stop the indicator animation when app enter to background.
         // otherwise we will find an error animation on indicator.
         self.updateTableViewRefreshControl(refreshing: false)
+    }
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        self.vmWeakRef.vm?.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        self.vmWeakRef.vm?.decodeRestorableState(with: coder)
     }
     
     // MARK: - UI.
@@ -269,9 +313,12 @@ class MainViewController: UIViewController,
     }
     
     private func updatePreviewableSubviews() {
-        let location = self.viewModel.getValidLocation(
+        guard let location = self.vmWeakRef.vm?.getValidLocation(
             offset: self.previewOffset
-        )
+        ) else {
+            return
+        }
+        
         let daylight = self.previewOffset == 0
         ? ThemeManager.shared.daylight.value
         : isDaylight(location: location)
@@ -293,7 +340,7 @@ class MainViewController: UIViewController,
             uiStyle = self.view.traitCollection.userInterfaceStyle
         }
         
-        let darkContent = blurNavigationBar && uiStyle == .light
+        let darkContent = self.blurNavigationBar && uiStyle == .light
         
         self.statusBarStyle = darkContent ? .darkContent : .lightContent
         let color: UIColor = darkContent ? .black : .white
@@ -323,13 +370,14 @@ class MainViewController: UIViewController,
     // MARK: - actions.
     
     @objc private func onManagementButtonClicked() {
-        if self.navigationController?.presentedViewController != nil {
-            return
-        }
-        self.navigationController?.present(
-            self.managementViewController,
-            animated: true,
-            completion: nil
+        self.navigationController?.pushViewController(
+            ManagementViewController(
+                param: (
+                    MainViewModelWeakRef(vm: self.vmWeakRef.vm),
+                    false
+                )
+            ),
+            animated: true
         )
     }
     
@@ -341,7 +389,7 @@ class MainViewController: UIViewController,
     }
     
     @objc func onPullRefresh() {
-        self.viewModel.updateWithUpdatingChecking()
+        self.vmWeakRef.vm?.updateWithUpdatingChecking()
     }
     
     // MARK: - delegates.
@@ -366,8 +414,12 @@ class MainViewController: UIViewController,
         self.previewOffset = 0
         
         self.hideHeaderAndCells()
-        if !self.viewModel.offsetLocation(offset: indexOffset) {
-            updateTableView()
+        if !(
+            self.vmWeakRef.vm?.offsetLocation(
+                offset: indexOffset
+            ) ?? false
+        ) {
+            self.updateTableView()
         }
         
         self.delayHidePageIndicator()
@@ -377,29 +429,11 @@ class MainViewController: UIViewController,
         self.delayHidePageIndicator()
     }
     
-    // main time bar.
-    
-    func reactManagementAction() {
-        self.onManagementButtonClicked()
-    }
-
-    func reactAlertAction() {
-        if self.navigationController?.presentedViewController != nil {
-            return
-        }
-        self.navigationController?.present(
-            AlertViewController(
-                param: self.viewModel.currentLocation.value.weather?.alerts ?? []
-            ),
-            animated: true,
-            completion: nil
-        )
-    }
-    
     // scroll.
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.showPageIndicator()
+        EventBus.shared.post(HideKeyboardEvent())
     }
     
     func scrollViewDidEndDragging(

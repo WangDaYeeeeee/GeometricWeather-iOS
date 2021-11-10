@@ -8,6 +8,8 @@
 import UIKit
 import GeometricWeatherBasic
 
+private let blurStyle = UIBlurEffect.Style.prominent
+
 protocol AbstractMainItem {
     
     func bindData(location: Location)
@@ -16,12 +18,12 @@ protocol AbstractMainItem {
 class MainTableViewCell: UITableViewCell, AbstractMainItem {
     
     let cardContainer = UIVisualEffectView(
-        effect: UIBlurEffect(style: .prominent)
+        effect: UIBlurEffect(style: blurStyle)
     )
     
     let titleVibrancyContainer = UIVisualEffectView(
         effect: UIVibrancyEffect(
-            blurEffect: UIBlurEffect(style: .prominent)
+            blurEffect: UIBlurEffect(style: blurStyle)
         )
     )
     let cardTitle = UILabel(frame: .zero)
@@ -32,11 +34,6 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
         
         self.cardContainer.layer.cornerRadius = cardRadius
         self.cardContainer.layer.masksToBounds = true
-        self.cardContainer.contentView.backgroundColor = UIColor { trait in
-            return .systemBackground.withAlphaComponent(
-                trait.userInterfaceStyle == .light ? 0.2 : 0.0
-            )
-        }
         self.contentView.addSubview(self.cardContainer)
         
         self.cardTitle.font = titleFont
@@ -66,6 +63,21 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location) {
-        // do nothing.
+        self.cardContainer.contentView.backgroundColor = UIColor { trait in
+            let weatherCode = location.weather?.current.weatherCode ?? .clear
+            
+            if weatherCode == .partlyCloudy {
+                return .systemBackground.withAlphaComponent(
+                    trait.userInterfaceStyle == .light ? 0.2 : 0.0
+                )
+            }
+            if weatherCode == .clear {
+                return .systemBackground.withAlphaComponent(
+                    trait.userInterfaceStyle == .light ? 0.1 : 0.0
+                )
+            }
+            
+            return .clear
+        }
     }
 }

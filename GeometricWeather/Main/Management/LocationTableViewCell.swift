@@ -14,6 +14,9 @@ private let iconSize = 24.0
 private let normalBackgroundColor = UIColor.systemBackground
 private let selectedBackgroundColor = UIColor.secondarySystemBackground
 
+private let transNormalBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
+private let transSelectedBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
+
 class LocationTableViewCell: UITableViewCell {
     
     // MARK: - subviews.
@@ -95,14 +98,18 @@ class LocationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(location: Location, selected: Bool) {
+    func bindData(location: Location, selected: Bool, trans: Bool) {
         if (selected) {
             UIView.animate(withDuration: 0.2) {
-                self.backgroundColor = selectedBackgroundColor
+                self.backgroundColor = trans
+                ? transSelectedBackgroundColor
+                : selectedBackgroundColor
             }
         } else {
             UIView.animate(withDuration: 0.2) {
-                self.backgroundColor = normalBackgroundColor
+                self.backgroundColor = trans
+                ? transNormalBackgroundColor
+                : normalBackgroundColor
             }
         }
         

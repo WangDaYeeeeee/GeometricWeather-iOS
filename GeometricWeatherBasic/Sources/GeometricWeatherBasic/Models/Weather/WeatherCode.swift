@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WeatherCode: Codable {
+public enum WeatherCode: Codable, Equatable {
     
     case clear
     case partlyCloudy

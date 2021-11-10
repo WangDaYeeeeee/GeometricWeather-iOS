@@ -11,34 +11,18 @@ import GeometricWeatherBasic
 
 private let cellReuseId = "ManagementTableViewCell"
 
-struct LocationItem {
-    let location: Location
-    let selected: Bool
-}
-
-struct HideKeyboardEvent {
-    // nothing.
-}
-struct AddLocationEvent {
-    
-    let location: Location
-}
-
-class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, split: Bool)>,
-                                    UISearchControllerDelegate,
-                                    UISearchResultsUpdating,
-                                    UISearchBarDelegate,
-                                    JXMovableCellTableViewDataSource,
-                                    JXMovableCellTableViewDelegate {
+class SplitManagementViewController: GeoViewController<MainViewModelWeakRef>,
+                                        UISearchControllerDelegate,
+                                        UISearchResultsUpdating,
+                                        UISearchBarDelegate,
+                                        JXMovableCellTableViewDataSource,
+                                        JXMovableCellTableViewDelegate {
     
     
     // MARK: - properties.
     
     // inner data.
     
-    private let staggeredHelper = StaggeredCellAnimationHelper(
-        initOffset: CGSize(width: 0.0, height: 256.0)
-    )
     var itemList = [LocationItem]()
     
     var moveBeginIndex: IndexPath?
@@ -109,7 +93,8 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
             }
         }
         EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
-            if self?.param.ref.vm?.addLocation(location: event.location) ?? false {
+            if self?.param.vm?.addLocation(location: event.location) ?? false {
+                self?.searchController.searchBar.text = ""
                 self?.searchController.dismiss(animated: true, completion: nil)
                 
                 ToastHelper.showToastMessage(
@@ -126,7 +111,7 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.param.ref.vm?.selectableTotalLocations.addObserver(self) { newValue in
+        self.param.vm?.selectableTotalLocations.addObserver(self) { newValue in
             self.updateLocationList(newValue)
             
             let showBookmarkButton = !self.itemList.contains { item in
@@ -153,7 +138,6 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
         // new.
         if self.itemList.isEmpty {
             self.generateItemList(newList, withoutSelectedState: false)
-            self.staggeredHelper.reset()
             self.tableView.reloadData()
             return
         }
@@ -212,12 +196,6 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
                 at: indexPaths,
                 with: self.view.isRtl ? .right : .left
             )
-            self.staggeredHelper.changeLastIndexPath(
-                IndexPath(
-                    row: self.itemList.count - 1,
-                    section: 0
-                )
-            )
         }
         
         var locationDict = [String: Location]()
@@ -240,7 +218,8 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
                     ) {
                         (cell as? LocationTableViewCell)?.bindData(
                             location: newLocation,
-                            selected: newSelected
+                            selected: newSelected,
+                            trans: false
                         )
                     }
                 }
@@ -299,7 +278,6 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
     
     func didDismissSearchController(_ searchController: UISearchController) {
         searchController.showsSearchResultsController = false
-        searchController.searchBar.text = ""
         
         self.resultController.requesting.value = false
         self.resultController.resetList()
@@ -323,7 +301,7 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         self.searchController.searchBar.text = ""
 
-        if self.param.ref.vm?.addLocation(
+        if self.param.vm?.addLocation(
             location: Location.buildLocal(
                 weatherSource: SettingsManager.shared.weatherSource
             )
@@ -365,7 +343,8 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
         )
         (cell as? LocationTableViewCell)?.bindData(
             location: self.itemList[indexPath.row].location,
-            selected: self.itemList[indexPath.row].selected
+            selected: self.itemList[indexPath.row].selected,
+            trans: false
         )
         return cell
     }
@@ -376,43 +355,8 @@ class ManagementViewController: GeoViewController<(ref: MainViewModelWeakRef, sp
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        self.param.ref.vm?.setLocation(
+        self.param.vm?.setLocation(
             formattedId: self.itemList[indexPath.row].location.formattedId
-        )
-        if !self.param.split {
-            self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    // staggerd.
-    
-    func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        if self.param.split {
-            return
-        }
-        self.staggeredHelper.tableView(
-            tableView,
-            willDisplay: cell,
-            forRowAt: indexPath
-        )
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        didEndDisplaying cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        if self.param.split {
-            return
-        }
-        self.staggeredHelper.tableView(
-            tableView,
-            didEndDisplaying: cell,
-            forRowAt: indexPath
         )
     }
 }

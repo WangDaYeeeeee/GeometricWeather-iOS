@@ -127,7 +127,7 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         } else if weatherKind == .fog {
             return UIColor.colorFromRGB(0x4f5d68)
         } else if weatherKind == .haze {
-            return UIColor.colorFromRGB(0x424242)
+            return UIColor.colorFromRGB(0x9c8f7f)
         } else if (weatherKind == .lightRainy
                    || weatherKind == .middleRainy
                    || weatherKind == .haveyRainy) && daylight {

@@ -253,6 +253,60 @@ class MainHourlyCardCell: MainTableViewCell,
         }
     }
     
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard
+            let weather = self.weather,
+            let timezone = self.timezone
+        else {
+            return nil
+        }
+        
+        return UIContextMenuConfiguration(
+            identifier: NSNumber(value: indexPath.row)
+        ) {
+            let vc = HourlyViewController(
+                param: (weather, timezone, indexPath.row)
+            )
+            vc.measureAndSetPreferredContentSize()
+            return vc
+        } actionProvider: { _ in
+            return nil
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let row = (configuration.identifier as? NSNumber)?.intValue else {
+            return nil
+        }
+        guard let cell = collectionView.cellForItem(
+            at: IndexPath(row: row, section: 0)
+        ) else {
+            return nil
+        }
+        
+        let params = UIPreviewParameters()
+        params.backgroundColor = .clear
+        
+        return UITargetedPreview(view: cell, parameters: params)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return self.collectionView(
+            collectionView,
+            previewForHighlightingContextMenuWithConfiguration: configuration
+        )
+    }
+    
     // data source.
     
     func collectionView(

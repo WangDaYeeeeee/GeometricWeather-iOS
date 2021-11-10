@@ -23,11 +23,8 @@ class MainViewController: UISplitViewController {
         if isTablet() {
             self.setViewController(
                 GeoNavigationController(
-                    rootViewController: ManagementViewController(
-                        param: (
-                            MainViewModelWeakRef(vm: self.viewModel),
-                            true
-                        )
+                    rootViewController: SplitManagementViewController(
+                        param: MainViewModelWeakRef(vm: self.viewModel)
                     )
                 ),
                 for: .primary

@@ -75,9 +75,11 @@ class HomeViewController: UIViewController,
     let dragSwitchView = DragSwitchView(frame: .zero)
     let tableView = AutoHideKeyboardTableView(frame: .zero, style: .grouped)
     
+    let navigationBarTitleView = MainNavigationBarTitleView(frame: .zero)
     let navigationBarBackground = UIVisualEffectView(
         effect: UIBlurEffect(style: .systemUltraThinMaterial)
     )
+    
     let indicator = DotPagerIndicator(frame: .zero)
         
     // MARK: - life cycle.
@@ -97,7 +99,7 @@ class HomeViewController: UIViewController,
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        if !splitView {
+        if !self.splitView {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(
                 image: UIImage(systemName: "building.2.crop.circle"),
                 style: .plain,
@@ -111,6 +113,11 @@ class HomeViewController: UIViewController,
             target: self,
             action: #selector(self.onSettingsButtonClicked)
         )
+        self.navigationItem.title = NSLocalizedString(
+            "action_home",
+            comment: ""
+        )
+        self.navigationItem.titleView = self.navigationBarTitleView
         
         self.initSubviewsAndLayoutThem()
         
@@ -138,7 +145,7 @@ class HomeViewController: UIViewController,
             self?.updateTableView()
         }
         self.vmWeakRef.vm?.loading.addObserver(self) { [weak self] newValue in
-            self?.updateTableViewRefreshControl(refreshing: newValue)
+            self?.navigationBarTitleView.loading = newValue
         }
         self.vmWeakRef.vm?.indicator.addObserver(self) { [weak self] newValue in
             if self?.indicator.selectedIndex != newValue.index {
@@ -228,11 +235,6 @@ class HomeViewController: UIViewController,
         super.viewDidAppear(animated)
         self.viewIsAppeared = true
         
-        // start the indicator animation when this view enter to foreground if app is loading.
-        if let loading = self.vmWeakRef.vm?.loading.value {
-            self.updateTableViewRefreshControl(refreshing: loading)
-        }
-        
         self.updatePreviewableSubviews()
         self.updateNavigationBarTintColor()
         
@@ -243,33 +245,16 @@ class HomeViewController: UIViewController,
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.viewWillEnterBackground),
-            name: UIApplication.willResignActiveNotification,
-            object: nil
-        )
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.viewIsAppeared = false
         
-        // stop the indicator animation when this view enter to background.
-        // otherwise we will find an error animation on indicator.
-        self.updateTableViewRefreshControl(refreshing: false)
-        
-        self.navigationItem.title = NSLocalizedString("action_home", comment: "")
-        
         // remove enter and exit foreground listener.
         NotificationCenter.default.removeObserver(
             self,
             name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIApplication.willResignActiveNotification,
             object: nil
         )
     }
@@ -283,17 +268,7 @@ class HomeViewController: UIViewController,
     }
     
     @objc private func viewWillEnterForeground() {
-        // start the indicator animation when app enter to foreground if app is loading.
-        if let loading = self.vmWeakRef.vm?.loading.value {
-            self.updateTableViewRefreshControl(refreshing: loading)
-        }
         self.vmWeakRef.vm?.checkToUpdate()
-    }
-    
-    @objc private func viewWillEnterBackground() {
-        // stop the indicator animation when app enter to background.
-        // otherwise we will find an error animation on indicator.
-        self.updateTableViewRefreshControl(refreshing: false)
     }
     
     override func encodeRestorableState(with coder: NSCoder) {
@@ -304,6 +279,15 @@ class HomeViewController: UIViewController,
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
         self.vmWeakRef.vm?.decodeRestorableState(with: coder)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        if let titleView = self.navigationItem.titleView {
+            self.navigationItem.titleView = nil
+            self.navigationItem.titleView = titleView
+        }
     }
     
     // MARK: - UI.
@@ -323,9 +307,8 @@ class HomeViewController: UIViewController,
         ? ThemeManager.shared.daylight.value
         : isDaylight(location: location)
         
-        if self.viewIsAppeared {
-            self.navigationItem.title = getLocationText(location: location)
-        }
+        self.navigationBarTitleView.title = getLocationText(location: location)
+        self.navigationBarTitleView.showCurrentPositionIcon = location.currentPosition
         self.weatherViewController.update(
             weatherKind: weatherCodeToWeatherKind(
                 code: location.weather?.current.weatherCode ?? .clear
@@ -355,29 +338,22 @@ class HomeViewController: UIViewController,
             for: .default
         )
         self.navigationController?.navigationBar.shadowImage = UIImage()
-    }
-    
-    private func updateTableViewRefreshControl(refreshing: Bool) {
-        if let refreshControl = self.tableView.refreshControl {
-            if refreshing && !refreshControl.isRefreshing {
-                refreshControl.beginRefreshing()
-            } else if !refreshing && refreshControl.isRefreshing {
-                refreshControl.endRefreshing()
-            }
-        }
+        self.navigationBarTitleView.tintColor = color
     }
     
     // MARK: - actions.
     
     @objc private func onManagementButtonClicked() {
-        self.navigationController?.pushViewController(
-            ManagementViewController(
-                param: (
-                    MainViewModelWeakRef(vm: self.vmWeakRef.vm),
-                    false
-                )
+        if self.navigationController?.presentedViewController != nil {
+            return
+        }
+        
+        self.navigationController?.present(
+            PresentManagementViewController(
+                param: MainViewModelWeakRef(vm: self.vmWeakRef.vm)
             ),
-            animated: true
+            animated: true,
+            completion: nil
         )
     }
     
@@ -390,6 +366,10 @@ class HomeViewController: UIViewController,
     
     @objc func onPullRefresh() {
         self.vmWeakRef.vm?.updateWithUpdatingChecking()
+
+        if let refreshControl = self.tableView.refreshControl {
+            refreshControl.endRefreshing()
+        }
     }
     
     // MARK: - delegates.

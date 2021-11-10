@@ -8,7 +8,7 @@
 import Foundation
 import GeometricWeatherBasic
 
-extension ManagementViewController {
+extension PresentManagementViewController {
     
     // swipe reaction.
     
@@ -42,7 +42,7 @@ extension ManagementViewController {
                     }
                 }
                 
-                self?.param.ref.vm?.updateLocation(
+                self?.param.vm?.updateLocation(
                     location: location.copyOf(
                         residentPosition: !location.residentPosition
                     )
@@ -65,7 +65,7 @@ extension ManagementViewController {
                 NSLocalizedString("feedback_delete_succeed", comment: "")
             )
             
-            self?.param.ref.vm?.deleteLocation(position: indexPath.row)
+            self?.param.vm?.deleteLocation(position: indexPath.row)
             handler(true)
         }
         delete.image = UIImage(systemName: "delete.backward.fill")
@@ -102,7 +102,7 @@ extension ManagementViewController {
         endMoveCellAt indexPath: IndexPath!
     ) {
         if let beginAt = self.moveBeginIndex {
-            self.param.ref.vm?.moveLocation(
+            self.param.vm?.moveLocation(
                 from: beginAt.row,
                 to: indexPath.row
             )

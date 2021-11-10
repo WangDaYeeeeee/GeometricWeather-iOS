@@ -50,28 +50,28 @@ private let partlyCloudyColors = [
 private let cloudyColors = [
     [
         Color(
-            red: 107 / 255.0,
-            green: 129 / 255.0,
-            blue: 143 / 255.0,
-            opacity: 0.7
-        ),
-        Color(
-            red: 117 / 255.0,
-            green: 135 / 255.0,
-            blue: 147 / 255.0,
-            opacity: 0.7
-        )
-    ], [
-        Color(
-            red: 16 / 255.0,
-            green: 32 / 255.0,
-            blue: 39 / 255.0,
+            red: 160 / 255.0,
+            green: 179 / 255.0,
+            blue: 191 / 255.0,
             opacity: 0.3
         ),
         Color(
-            red: 16 / 255.0,
-            green: 32 / 255.0,
-            blue: 39 / 255.0,
+            red: 160 / 255.0,
+            green: 179 / 255.0,
+            blue: 191 / 255.0,
+            opacity: 0.3
+        )
+    ], [
+        Color(
+            red: 95 / 255.0,
+            green: 104 / 255.0,
+            blue: 108 / 255.0,
+            opacity: 0.3
+        ),
+        Color(
+            red: 95 / 255.0,
+            green: 104 / 255.0,
+            blue: 108 / 255.0,
             opacity: 0.3
         )
     ], [
@@ -112,22 +112,22 @@ private let fogColors = [
         )
     ], [
         Color(
-            red: 57 / 255.0,
-            green: 57 / 255.0,
-            blue: 57 / 255.0,
-            opacity: 0.8
+            red: 179 / 255.0,
+            green: 158 / 255.0,
+            blue: 132 / 255.0,
+            opacity: 0.3
         ),
         Color(
-            red: 48 / 255.0,
-            green: 48 / 255.0,
-            blue: 48 / 255.0,
-            opacity: 0.8
+            red: 179 / 255.0,
+            green: 158 / 255.0,
+            blue: 132 / 255.0,
+            opacity: 0.3
         ),
         Color(
-            red: 44 / 255.0,
-            green: 44 / 255.0,
-            blue: 44 / 255.0,
-            opacity: 0.8
+            red: 179 / 255.0,
+            green: 158 / 255.0,
+            blue: 132 / 255.0,
+            opacity: 0.3
         )
     ]
 ]
@@ -177,8 +177,8 @@ private let fogBackgroundColors = [
     Color.ColorFromRGB(0x1c232d)
 ]
 private let hazeBackgroundColors = [
-    Color.ColorFromRGB(0x424242),
-    Color.ColorFromRGB(0x000000)
+    Color.ColorFromRGB(0x6c5c49),
+    Color.ColorFromRGB(0x434343)
 ]
 
 private let topPadding = 80.0
@@ -425,65 +425,65 @@ private class CloudModel: ObservableObject {
             let colorIndex = type == .fog ? 0 : 1
             
             clouds.append((
-                0.9388, // cx.
-                0.9388 * 0.6101 + 0.1500, // cy.
-                0.3166, // init radius.
-                1.15, // scale ratio.
-                Double.random(in: 1 ... 1.8), // offset factor.
+                1.0699, // cx.
+                1.1900 * 0.2286 + 0.11, // cy.
+                0.4694 * 0.9, // init radius.
+                1.10, // scale ratio.
+                Double.random(in: 1.3 ... 1.8), // offset factor.
                 fogColors[colorIndex][0], // color.
                 9.0 // duration.
             ))
             clouds.append((
-                0.4833, // cx.
-                0.4833 * 1.0727 + 0.1500, // cy.
-                0.3166, // init radius.
-                1.15, // scale ratio.
-                Double.random(in: 1 ... 1.8), // offset factor.
+                0.4866, // cx.
+                0.4866 * 0.6064 + 0.085, // cy.
+                0.3946 * 0.9, // init radius.
+                1.10, // scale ratio.
+                Double.random(in: 1.3 ... 1.8), // offset factor.
                 fogColors[colorIndex][0], // color.
                 10.5 // duration.
             ))
             clouds.append((
-                0.0388, // cx.
-                0.0388 * 14.3333 + 0.1500, // cy.
-                0.3166, // init radius.
-                1.15, // scale ratio.
-                Double.random(in: 1 ... 1.8), // offset factor.
+                0.0351, // cx.
+                0.1701 * 1.4327 + 0.11, // cy.
+                0.4627 * 0.9, // init radius.
+                1.10, // scale ratio.
+                Double.random(in: 1.3 ... 1.8), // offset factor.
                 fogColors[colorIndex][0], // color.
-                8.7 // duration.
+                9.0 // duration.
             ))
             clouds.append((
-                1.0000, // cx.
-                1.0000 * 0.3046 + 0.1500, // cy.
-                0.3166, // init radius.
+                0.8831, // cx.
+                1.0270 * 0.1671 + 0.07, // cy.
+                0.3238 * 0.9, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.4 ... 2.2), // offset factor.
+                Double.random(in: 1.6 ... 2), // offset factor.
                 fogColors[colorIndex][1], // color.
                 7.0 // duration.
             ))
             clouds.append((
-                0.5444, // cx.
-                0.5444 * 0.4880 + 0.1500, // cy.
-                0.3166, // init radius.
+                0.4663, // cx.
+                0.4663 * 0.3520 + 0.050, // cy.
+                0.2906 * 0.9, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.4 ... 2.2), // offset factor.
+                Double.random(in: 1.6 ... 2), // offset factor.
                 fogColors[colorIndex][1], // color.
                 8.5 // duration.
             ))
             clouds.append((
-                0.1000, // cx.
-                0.1000 * 3.0462 + 0.1500, // cy.
-                0.3166, // init radius.
+                0.1229, // cx.
+                0.0234 * 5.7648 + 0.07, // cy.
+                0.2972 * 0.9, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.4 ... 2.2), // offset factor.
+                Double.random(in: 1.6 ... 2), // offset factor.
                 fogColors[colorIndex][1], // color.
-                7.3 // duration.
+                7.0 // duration.
             ))
             clouds.append((
                 0.9250, // cx.
                 0.9250 * 0.0249 + 0.1500, // cy.
                 0.3166, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.8 ... 2.6), // offset factor.
+                Double.random(in: 1.8 ... 2.2), // offset factor.
                 fogColors[colorIndex][2], // color.
                 7.0 // duration.
             ))
@@ -492,7 +492,7 @@ private class CloudModel: ObservableObject {
                 0.4694 * 0.0489 + 0.1500, // cy.
                 0.3166, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.8 ... 2.6), // offset factor.
+                Double.random(in: 1.8 ... 2.2), // offset factor.
                 fogColors[colorIndex][2], // color.
                 8.2 // duration.
             ))
@@ -501,7 +501,7 @@ private class CloudModel: ObservableObject {
                 0.0250 * 0.6820 + 0.1500, // cy.
                 0.3166, // init radius.
                 1.15, // scale ratio.
-                Double.random(in: 1.8 ... 2.6), // offset factor.
+                Double.random(in: 1.8 ... 2.2), // offset factor.
                 fogColors[colorIndex][2], // color.
                 7.7 // duration.
             ))

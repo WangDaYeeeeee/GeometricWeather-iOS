@@ -67,4 +67,26 @@ class GeoViewController<T>: UIViewController {
             }
         }
     }
+    
+    // MARK: - split view controller compat.
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        if let titleView = self.navigationItem.titleView {
+            self.navigationItem.titleView = nil
+            self.navigationItem.titleView = titleView
+        }
+        
+        self.statusBarStyle = self.view.traitCollection.userInterfaceStyle == .light
+        ? .darkContent
+        : .lightContent
+        
+        let titleColor = self.view.traitCollection.userInterfaceStyle == .light
+        ? UIColor.black
+        : UIColor.white
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: titleColor
+        ]
+    }
 }

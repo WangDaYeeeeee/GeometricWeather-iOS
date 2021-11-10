@@ -24,7 +24,7 @@
 		3749A0FF26E25B0500EEA6A3 /* PollingBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A0FE26E25B0500EEA6A3 /* PollingBackgroundTask.swift */; };
 		3749A10626E456D300EEA6A3 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10526E456D300EEA6A3 /* AlertTableViewCell.swift */; };
 		3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10726E4595700EEA6A3 /* AlertViewController.swift */; };
-		3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10926E46B3C00EEA6A3 /* ManagementViewController+Editable.swift */; };
+		3749A10A26E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10926E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift */; };
 		3749A10C26E4762800EEA6A3 /* Toast-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10B26E4762800EEA6A3 /* Toast-Swift.swift */; };
 		3749A11126E47A8A00EEA6A3 /* ToastViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A11026E47A8A00EEA6A3 /* ToastViews.swift */; };
 		3749A11326E4950E00EEA6A3 /* CornerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A11226E4950E00EEA6A3 /* CornerButton.swift */; };
@@ -89,6 +89,9 @@
 		3799F51326D2802E00B49D20 /* MainAllergenCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3799F51226D2802E00B49D20 /* MainAllergenCardCell.swift */; };
 		3799F51626D282BB00B49D20 /* AllergenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3799F51526D282BB00B49D20 /* AllergenCollectionViewCell.swift */; };
 		37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */; };
+		37A897932733D7A1000B42FF /* MainNavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A897922733D7A1000B42FF /* MainNavigationBarTitleView.swift */; };
+		37A897CB273B5A19000B42FF /* HourlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A897CA273B5A19000B42FF /* HourlyViewController.swift */; };
+		37A897CD273B5A22000B42FF /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A897CC273B5A22000B42FF /* HourlyView.swift */; };
 		37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */; };
 		37AA5E7726DA3C4900DBA181 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7626DA3C4900DBA181 /* SearchResultController.swift */; };
 		37AA5E8026DB744E00DBA181 /* JXMovableCellTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AA5E7F26DB744E00DBA181 /* JXMovableCellTableView.m */; };
@@ -101,7 +104,7 @@
 		37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF4C3726CE496000E58736 /* CircularProgressView.swift */; };
 		37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */; };
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
-		37D92A4226D9266D00A13C63 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D92A4126D9266D00A13C63 /* ManagementViewController.swift */; };
+		37D92A4226D9266D00A13C63 /* SplitManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D92A4126D9266D00A13C63 /* SplitManagementViewController.swift */; };
 		37D92A4626D92D4D00A13C63 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */; };
 		37D9E60E2718454100209110 /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E60D2718454100209110 /* ToastHelper.swift */; };
 		37D9E61127185AFE00209110 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D9E61027185AFE00209110 /* AboutView.swift */; };
@@ -121,6 +124,9 @@
 		37E5D42D271433630052A690 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42C271433630052A690 /* Contants.swift */; };
 		37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42E27145A210052A690 /* AppNotificationHelper.swift */; };
 		37E5D4312717FEAD0052A690 /* HomeViewController+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D4302717FEAD0052A690 /* HomeViewController+Response.swift */; };
+		37FFA2BE273B72DE00220AE4 /* PresentManagementViewController+Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2BC273B72DE00220AE4 /* PresentManagementViewController+Editable.swift */; };
+		37FFA2BF273B72DE00220AE4 /* PresentManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2BD273B72DE00220AE4 /* PresentManagementViewController.swift */; };
+		37FFA2C1273B732600220AE4 /* ManagementCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2C0273B732600220AE4 /* ManagementCommon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,7 +192,7 @@
 		3749A0FE26E25B0500EEA6A3 /* PollingBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingBackgroundTask.swift; sourceTree = "<group>"; };
 		3749A10526E456D300EEA6A3 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
 		3749A10726E4595700EEA6A3 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		3749A10926E46B3C00EEA6A3 /* ManagementViewController+Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagementViewController+Editable.swift"; sourceTree = "<group>"; };
+		3749A10926E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplitManagementViewController+Editable.swift"; sourceTree = "<group>"; };
 		3749A10B26E4762800EEA6A3 /* Toast-Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Toast-Swift.swift"; sourceTree = "<group>"; };
 		3749A11026E47A8A00EEA6A3 /* ToastViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViews.swift; sourceTree = "<group>"; };
 		3749A11226E4950E00EEA6A3 /* CornerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerButton.swift; sourceTree = "<group>"; };
@@ -252,6 +258,9 @@
 		37A35F6226F4B45300431565 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		37A35F6426F4B45300431565 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		37A35F7926F5957B00431565 /* GeometricWeatherBasic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GeometricWeatherBasic; sourceTree = "<group>"; };
+		37A897922733D7A1000B42FF /* MainNavigationBarTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationBarTitleView.swift; sourceTree = "<group>"; };
+		37A897CA273B5A19000B42FF /* HourlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyViewController.swift; sourceTree = "<group>"; };
+		37A897CC273B5A22000B42FF /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
 		37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewEffect.swift; sourceTree = "<group>"; };
 		37AA5E7626DA3C4900DBA181 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		37AA5E7E26DB744E00DBA181 /* JXMovableCellTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXMovableCellTableView.h; sourceTree = "<group>"; };
@@ -265,7 +274,7 @@
 		37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendShaderCollectionView.swift; sourceTree = "<group>"; };
 		37D7AA8926B2AEB70028F67E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		37D7AA8B26B2AEB90028F67E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		37D92A4126D9266D00A13C63 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
+		37D92A4126D9266D00A13C63 /* SplitManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitManagementViewController.swift; sourceTree = "<group>"; };
 		37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		37D9E60D2718454100209110 /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
 		37D9E61027185AFE00209110 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -285,6 +294,9 @@
 		37E5D42C271433630052A690 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
 		37E5D42E27145A210052A690 /* AppNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationHelper.swift; sourceTree = "<group>"; };
 		37E5D4302717FEAD0052A690 /* HomeViewController+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewController+Response.swift"; sourceTree = "<group>"; };
+		37FFA2BC273B72DE00220AE4 /* PresentManagementViewController+Editable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PresentManagementViewController+Editable.swift"; sourceTree = "<group>"; };
+		37FFA2BD273B72DE00220AE4 /* PresentManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentManagementViewController.swift; sourceTree = "<group>"; };
+		37FFA2C0273B732600220AE4 /* ManagementCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementCommon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -412,15 +424,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		372D4A282732A478002F4F17 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */,
-				372D4A262732A470002F4F17 /* SearchTableViewCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		3739F27926C0D84300EAE90A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +431,7 @@
 				3739F27726C0D83B00EAE90A /* MainTimeBarView.swift */,
 				3799F51026D2561C00B49D20 /* MainDetailItemView.swift */,
 				37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */,
+				37A897922733D7A1000B42FF /* MainNavigationBarTitleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -522,7 +526,9 @@
 		37543A7A27224E2200BA2A14 /* Hourly */ = {
 			isa = PBXGroup;
 			children = (
+				37A897CC273B5A22000B42FF /* HourlyView.swift */,
 				37543A7B27224E3900BA2A14 /* HourlyDialog.swift */,
+				37A897CA273B5A19000B42FF /* HourlyViewController.swift */,
 			);
 			path = Hourly;
 			sourceTree = "<group>";
@@ -692,10 +698,11 @@
 		37AA5E7226DA39CC00DBA181 /* Management */ = {
 			isa = PBXGroup;
 			children = (
-				372D4A282732A478002F4F17 /* Cells */,
-				37D92A4126D9266D00A13C63 /* ManagementViewController.swift */,
-				3749A10926E46B3C00EEA6A3 /* ManagementViewController+Editable.swift */,
-				37AA5E7626DA3C4900DBA181 /* SearchResultController.swift */,
+				37D92A4526D92D4D00A13C63 /* LocationTableViewCell.swift */,
+				37FFA2C0273B732600220AE4 /* ManagementCommon.swift */,
+				37FFA2BB273B72B200220AE4 /* Present */,
+				37FFA2BA273B71F400220AE4 /* Split */,
+				37FFA2B9273B71D400220AE4 /* Result */,
 			);
 			path = Management;
 			sourceTree = "<group>";
@@ -773,6 +780,33 @@
 				37E5D428271402710052A690 /* DailyWidget2.swift */,
 			);
 			path = Daily2;
+			sourceTree = "<group>";
+		};
+		37FFA2B9273B71D400220AE4 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				37AA5E7626DA3C4900DBA181 /* SearchResultController.swift */,
+				372D4A262732A470002F4F17 /* SearchTableViewCell.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		37FFA2BA273B71F400220AE4 /* Split */ = {
+			isa = PBXGroup;
+			children = (
+				37D92A4126D9266D00A13C63 /* SplitManagementViewController.swift */,
+				3749A10926E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift */,
+			);
+			path = Split;
+			sourceTree = "<group>";
+		};
+		37FFA2BB273B72B200220AE4 /* Present */ = {
+			isa = PBXGroup;
+			children = (
+				37FFA2BD273B72DE00220AE4 /* PresentManagementViewController.swift */,
+				37FFA2BC273B72DE00220AE4 /* PresentManagementViewController+Editable.swift */,
+			);
+			path = Present;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -965,6 +999,7 @@
 				3789E20426AADA32005C3C06 /* AccuApi.swift in Sources */,
 				3740707F26C94FEF0067BB78 /* TrendUtils.swift in Sources */,
 				378CB01826BF7EEA00C7BD13 /* HomeViewController+UITableView.swift in Sources */,
+				37A897932733D7A1000B42FF /* MainNavigationBarTitleView.swift in Sources */,
 				3799F51326D2802E00B49D20 /* MainAllergenCardCell.swift in Sources */,
 				37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */,
 				377647E826F1C7E600B82BB2 /* SettingsTextViews.swift in Sources */,
@@ -974,13 +1009,14 @@
 				377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */,
 				37852BC326CA7C0F0058E353 /* MainHourlyCardCell.swift in Sources */,
 				37E5D4202712FCE20052A690 /* HomeViewController+Layout.swift in Sources */,
+				37A897CB273B5A19000B42FF /* HourlyViewController.swift in Sources */,
 				37D9E62F271D4D4600209110 /* StatementDialog.swift in Sources */,
 				37E5D42327130BA80052A690 /* AppExtensionHelper.swift in Sources */,
 				3740708126C950390067BB78 /* HorizontalLinesBackgroundView.swift in Sources */,
 				3789E27426AD9984005C3C06 /* MainViewModel.swift in Sources */,
 				3799F51126D2561C00B49D20 /* MainDetailItemView.swift in Sources */,
 				3789E21726ABA9FF005C3C06 /* AccuConvert.swift in Sources */,
-				37D92A4226D9266D00A13C63 /* ManagementViewController.swift in Sources */,
+				37D92A4226D9266D00A13C63 /* SplitManagementViewController.swift in Sources */,
 				37543A76272028F100BA2A14 /* CaiYunJson.swift in Sources */,
 				3799F51626D282BB00B49D20 /* AllergenCollectionViewCell.swift in Sources */,
 				378CB01626BF7DED00C7BD13 /* MainTableViewHeaderView.swift in Sources */,
@@ -1013,12 +1049,14 @@
 				37AA5E7726DA3C4900DBA181 /* SearchResultController.swift in Sources */,
 				377647E526F1988800B82BB2 /* SettingsView.swift in Sources */,
 				37543A742720164C00BA2A14 /* CaiYunApi.swift in Sources */,
+				37FFA2C1273B732600220AE4 /* ManagementCommon.swift in Sources */,
 				37D9E61127185AFE00209110 /* AboutView.swift in Sources */,
 				37E5D4312717FEAD0052A690 /* HomeViewController+Response.swift in Sources */,
 				378CB00B26BD80DD00C7BD13 /* DragSwitchView.swift in Sources */,
 				37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */,
 				37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */,
 				378CB02426BFC50800C7BD13 /* MainDailyCardCell.swift in Sources */,
+				37FFA2BE273B72DE00220AE4 /* PresentManagementViewController+Editable.swift in Sources */,
 				37BA8264272F84A200EFADFD /* GeoDialog+Helper.swift in Sources */,
 				377647EA26F1CB3D00B82BB2 /* SettingsCellViews.swift in Sources */,
 				3789E27826ADA713005C3C06 /* MainRepository.swift in Sources */,
@@ -1032,13 +1070,15 @@
 				3749A11326E4950E00EEA6A3 /* CornerButton.swift in Sources */,
 				377B1D6926B6BCA700E7E07E /* HomeViewController.swift in Sources */,
 				37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */,
-				3749A10A26E46B3C00EEA6A3 /* ManagementViewController+Editable.swift in Sources */,
+				3749A10A26E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift in Sources */,
 				37BA82602729684B00EFADFD /* DailyPageController.swift in Sources */,
 				37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
 				37D9E62D271D400700209110 /* GeoDialog.swift in Sources */,
 				37D9E60E2718454100209110 /* ToastHelper.swift in Sources */,
+				37A897CD273B5A22000B42FF /* HourlyView.swift in Sources */,
 				3749A10C26E4762800EEA6A3 /* Toast-Swift.swift in Sources */,
+				37FFA2BF273B72DE00220AE4 /* PresentManagementViewController.swift in Sources */,
 				3799F50F26D255C300B49D20 /* MainDetailsCardCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1260,7 +1300,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1271,7 +1311,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1294,7 +1334,7 @@
 				CODE_SIGN_ENTITLEMENTS = GeometricWeather/GeometricWeather.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1305,7 +1345,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 1.1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

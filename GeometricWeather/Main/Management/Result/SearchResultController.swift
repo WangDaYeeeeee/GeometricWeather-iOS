@@ -64,8 +64,8 @@ class SearchResultController: UIViewController,
         self.view.addSubview(self.tableView)
         
         self.progressView.color = .label
+        self.progressView.alpha = 0.0
         self.progressView.startAnimating()
-        self.progressView.layoutMargins = .zero
         self.view.addSubview(self.progressView)
         
         self.tableView.snp.makeConstraints { make in
@@ -77,18 +77,18 @@ class SearchResultController: UIViewController,
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.requesting.addObserver(self) { newValue in
+        self.requesting.addObserver(self) { [weak self] newValue in
             if newValue {
                 UIView.animate(withDuration: 0.3) {
-                    self.tableView.alpha = 0.0
-                    self.progressView.alpha = 1.0
+                    self?.tableView.alpha = 0.0
+                    self?.progressView.alpha = 1.0
                 }
             } else {
-                self.cancelRequest()
+                self?.cancelRequest()
                 
                 UIView.animate(withDuration: 0.3) {
-                    self.tableView.alpha = 1.0
-                    self.progressView.alpha = 0.0
+                    self?.tableView.alpha = 1.0
+                    self?.progressView.alpha = 0.0
                 }
             }
         }
@@ -100,9 +100,7 @@ class SearchResultController: UIViewController,
         self.cancelRequest()
         self.requesting.value = true
         
-        self.cancelToken = self.weatherApi.getLocation(
-            text
-        ) { [weak self] locations in
+        self.cancelToken = self.weatherApi.getLocation(text) { [weak self] locations in
             if locations.isEmpty {
                 ToastHelper.showToastMessage(
                     NSLocalizedString("feedback_search_nothing", comment: "")
@@ -160,8 +158,10 @@ class SearchResultController: UIViewController,
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        EventBus.shared.post(AddLocationEvent(
-            location: self.locationList[indexPath.row])
+        EventBus.shared.post(
+            AddLocationEvent(
+                location: self.locationList[indexPath.row]
+            )
         )
     }
     

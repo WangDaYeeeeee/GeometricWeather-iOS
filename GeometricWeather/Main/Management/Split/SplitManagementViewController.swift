@@ -33,7 +33,7 @@ class SplitManagementViewController: GeoViewController<MainViewModelWeakRef>,
         return UISearchController(searchResultsController: self.resultController)
     }()
     private let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
-    private let resultController = SearchResultController(nibName: nil, bundle: nil)
+    private let resultController = SearchResultController(param: true)
     
     // MARK: - life cycle.
     

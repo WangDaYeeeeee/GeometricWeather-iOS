@@ -11,11 +11,6 @@ import RxMoya
 import RxSwift
 import GeometricWeatherBasic
 
-private let ACCU_WEATHER_KEY = ""
-private let ACCU_CURRENT_KEY = ""
-private let ACCU_AQI_KEY = ""
-private let ACCU_WEATHER_BASE_URL = "https://api.accuweather.com/"
-
 // MARK: - implementation.
 
 private let provider = MoyaProvider<AccuService>(

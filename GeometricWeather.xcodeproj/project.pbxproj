@@ -20,6 +20,8 @@
 		3740708126C950390067BB78 /* HorizontalLinesBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3740708026C950390067BB78 /* HorizontalLinesBackgroundView.swift */; };
 		3742CBD026C76130001CDCED /* DailyTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742CBCF26C76130001CDCED /* DailyTrendCollectionViewCell.swift */; };
 		3742CBEC26C8DB76001CDCED /* PolylineAndHistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742CBEB26C8DB76001CDCED /* PolylineAndHistogramView.swift */; };
+		3749731127BB91B5009D8AD5 /* WeatherKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749731027BB91B5009D8AD5 /* WeatherKeywords.swift */; };
+		3749731527BBB407009D8AD5 /* UIRefreshControlExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749731427BBB407009D8AD5 /* UIRefreshControlExt.swift */; };
 		3749A0FD26E1F7C700EEA6A3 /* DotPagerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A0FC26E1F7C700EEA6A3 /* DotPagerIndicator.swift */; };
 		3749A0FF26E25B0500EEA6A3 /* PollingBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A0FE26E25B0500EEA6A3 /* PollingBackgroundTask.swift */; };
 		3749A10626E456D300EEA6A3 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3749A10526E456D300EEA6A3 /* AlertTableViewCell.swift */; };
@@ -123,7 +125,7 @@
 		37E5D42B2714030B0052A690 /* CurrentSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42A2714030B0052A690 /* CurrentSquareView.swift */; };
 		37E5D42D271433630052A690 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42C271433630052A690 /* Contants.swift */; };
 		37E5D42F27145A210052A690 /* AppNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42E27145A210052A690 /* AppNotificationHelper.swift */; };
-		37E5D4312717FEAD0052A690 /* HomeViewController+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D4302717FEAD0052A690 /* HomeViewController+Response.swift */; };
+		37E5D4312717FEAD0052A690 /* HomeViewController+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D4302717FEAD0052A690 /* HomeViewController+Events.swift */; };
 		37FFA2BE273B72DE00220AE4 /* PresentManagementViewController+Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2BC273B72DE00220AE4 /* PresentManagementViewController+Editable.swift */; };
 		37FFA2BF273B72DE00220AE4 /* PresentManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2BD273B72DE00220AE4 /* PresentManagementViewController.swift */; };
 		37FFA2C1273B732600220AE4 /* ManagementCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA2C0273B732600220AE4 /* ManagementCommon.swift */; };
@@ -188,6 +190,8 @@
 		3740708026C950390067BB78 /* HorizontalLinesBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalLinesBackgroundView.swift; sourceTree = "<group>"; };
 		3742CBCF26C76130001CDCED /* DailyTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		3742CBEB26C8DB76001CDCED /* PolylineAndHistogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineAndHistogramView.swift; sourceTree = "<group>"; };
+		3749731027BB91B5009D8AD5 /* WeatherKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherKeywords.swift; sourceTree = "<group>"; };
+		3749731427BBB407009D8AD5 /* UIRefreshControlExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRefreshControlExt.swift; sourceTree = "<group>"; };
 		3749A0FC26E1F7C700EEA6A3 /* DotPagerIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotPagerIndicator.swift; sourceTree = "<group>"; };
 		3749A0FE26E25B0500EEA6A3 /* PollingBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingBackgroundTask.swift; sourceTree = "<group>"; };
 		3749A10526E456D300EEA6A3 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
@@ -293,7 +297,7 @@
 		37E5D42A2714030B0052A690 /* CurrentSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSquareView.swift; sourceTree = "<group>"; };
 		37E5D42C271433630052A690 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
 		37E5D42E27145A210052A690 /* AppNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationHelper.swift; sourceTree = "<group>"; };
-		37E5D4302717FEAD0052A690 /* HomeViewController+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewController+Response.swift"; sourceTree = "<group>"; };
+		37E5D4302717FEAD0052A690 /* HomeViewController+Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewController+Events.swift"; sourceTree = "<group>"; };
 		37FFA2BC273B72DE00220AE4 /* PresentManagementViewController+Editable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PresentManagementViewController+Editable.swift"; sourceTree = "<group>"; };
 		37FFA2BD273B72DE00220AE4 /* PresentManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentManagementViewController.swift; sourceTree = "<group>"; };
 		37FFA2C0273B732600220AE4 /* ManagementCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementCommon.swift; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 				37543A722720163100BA2A14 /* CaiYun */,
 				3789E20226AADA21005C3C06 /* Accu */,
 				3789E20526AAEEA4005C3C06 /* WeatherApi.swift */,
+				3749731027BB91B5009D8AD5 /* WeatherKeywords.swift */,
 				3789E21A26ABD9A1005C3C06 /* ConvertUtils.swift */,
 			);
 			path = Weather;
@@ -612,6 +617,7 @@
 				378CB02526BFE43500C7BD13 /* StaggeredCellAnimation.swift */,
 				37AA5E6F26DA235A00DBA181 /* UIViewEffect.swift */,
 				3749A11226E4950E00EEA6A3 /* CornerButton.swift */,
+				3749731427BBB407009D8AD5 /* UIRefreshControlExt.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -690,7 +696,7 @@
 				37E5D41F2712FCE20052A690 /* HomeViewController+Layout.swift */,
 				378CB01726BF7EEA00C7BD13 /* HomeViewController+UITableView.swift */,
 				37E5D41D271094A10052A690 /* HomeViewController+PageIndicator.swift */,
-				37E5D4302717FEAD0052A690 /* HomeViewController+Response.swift */,
+				37E5D4302717FEAD0052A690 /* HomeViewController+Events.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1051,7 +1057,7 @@
 				37543A742720164C00BA2A14 /* CaiYunApi.swift in Sources */,
 				37FFA2C1273B732600220AE4 /* ManagementCommon.swift in Sources */,
 				37D9E61127185AFE00209110 /* AboutView.swift in Sources */,
-				37E5D4312717FEAD0052A690 /* HomeViewController+Response.swift in Sources */,
+				37E5D4312717FEAD0052A690 /* HomeViewController+Events.swift in Sources */,
 				378CB00B26BD80DD00C7BD13 /* DragSwitchView.swift in Sources */,
 				37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */,
 				37AA5E7026DA235A00DBA181 /* UIViewEffect.swift in Sources */,
@@ -1065,6 +1071,7 @@
 				37852BC526CA815C0058E353 /* HourlyTrendCollectionViewCell.swift in Sources */,
 				378CB01E26BF966500C7BD13 /* MainTableViewCell.swift in Sources */,
 				3789E27626AD9A0C005C3C06 /* MainModels.swift in Sources */,
+				3749731527BBB407009D8AD5 /* UIRefreshControlExt.swift in Sources */,
 				37BA825E272956F200EFADFD /* DailyView.swift in Sources */,
 				3749A10626E456D300EEA6A3 /* AlertTableViewCell.swift in Sources */,
 				3749A11326E4950E00EEA6A3 /* CornerButton.swift in Sources */,
@@ -1073,6 +1080,7 @@
 				3749A10A26E46B3C00EEA6A3 /* SplitManagementViewController+Editable.swift in Sources */,
 				37BA82602729684B00EFADFD /* DailyPageController.swift in Sources */,
 				37543A7C27224E3900BA2A14 /* HourlyDialog.swift in Sources */,
+				3749731127BB91B5009D8AD5 /* WeatherKeywords.swift in Sources */,
 				3749A10826E4595700EEA6A3 /* AlertViewController.swift in Sources */,
 				37D9E62D271D400700209110 /* GeoDialog.swift in Sources */,
 				37D9E60E2718454100209110 /* ToastHelper.swift in Sources */,

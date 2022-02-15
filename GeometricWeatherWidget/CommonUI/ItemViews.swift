@@ -122,11 +122,11 @@ struct DailyItemView: View {
                     unit: "°"
                 )
             ).font(
-                Font(miniCaptionFont).weight(.light)
+                Font(miniCaptionFont).weight(.bold)
             ).foregroundColor(
                 .white
-            )
-            
+            ).opacity(secondaryTextOpacity)
+
             if let uiImage = UIImage.getWeatherIcon(
                 weatherCode: self.weather.dailyForecasts[index].night.weatherCode,
                 daylight: false
@@ -203,11 +203,11 @@ struct HorizontalDailyItemView: View {
                     unit: "°"
                 )
             ).font(
-                Font(miniCaptionFont).weight(.light)
+                Font(miniCaptionFont).weight(.bold)
             ).foregroundColor(
                 .white
-            )
-            
+            ).opacity(secondaryTextOpacity)
+
             GeometryReader { proxy in
                 ZStack {
                     Path { path in

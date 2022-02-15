@@ -11,6 +11,28 @@ import GeometricWeatherBasic
 extension HomeViewController {
     
     func initSubviewsAndLayoutThem() {
+        self.view.backgroundColor = .systemBackground
+        
+        if !self.splitView {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "building.2.crop.circle"),
+                style: .plain,
+                target: self,
+                action: #selector(self.onManagementButtonClicked)
+            )
+        }
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gear"),
+            style: .plain,
+            target: self,
+            action: #selector(self.onSettingsButtonClicked)
+        )
+        self.navigationItem.title = NSLocalizedString(
+            "action_home",
+            comment: ""
+        )
+        self.navigationItem.titleView = self.navigationBarTitleView
+        
         self.weatherViewController.view.backgroundColor = .clear
         self.addChild(self.weatherViewController)
         self.view.addSubview(self.weatherViewController.view)

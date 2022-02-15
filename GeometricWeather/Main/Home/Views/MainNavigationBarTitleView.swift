@@ -14,7 +14,6 @@ class MainNavigationBarTitleView: UIView {
     
     // MARK: - subviews.
     
-    private let progressView = UIActivityIndicatorView(style: .medium)
     private let titleLabel = UILabel(frame: .zero)
     private let currentPositionIcon = UIImageView(
         image: UIImage(systemName: "location.fill")
@@ -22,21 +21,6 @@ class MainNavigationBarTitleView: UIView {
     
     // MARK: - properties.
     
-    var loading: Bool {
-        get {
-            return self.progressView.isAnimating
-        }
-        set {
-            if self.progressView.isAnimating == newValue {
-                return
-            }
-            if newValue {
-                self.progressView.startAnimating()
-            } else {
-                self.progressView.stopAnimating()
-            }
-        }
-    }
     var title: String {
         get {
             return self.titleLabel.text ?? ""
@@ -66,7 +50,6 @@ class MainNavigationBarTitleView: UIView {
         set {
             super.tintColor = newValue
             
-            self.progressView.color = newValue
             self.titleLabel.textColor = newValue
             self.currentPositionIcon.tintColor = newValue
         }
@@ -79,17 +62,11 @@ class MainNavigationBarTitleView: UIView {
         
         self.titleLabel.font = titleFont
         
-        self.addSubview(self.progressView)
         self.addSubview(self.titleLabel)
         self.addSubview(self.currentPositionIcon)
         
         self.titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
-        }
-        self.progressView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.lessThanOrEqualToSuperview().offset(littleMargin)
-            make.trailing.equalTo(self.titleLabel.snp.leading).offset(-8.0)
         }
         self.currentPositionIcon.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

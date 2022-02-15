@@ -92,10 +92,10 @@ struct WeatherWidgetMediumHeaderView: View {
                                 unit: "°"
                             )
                         ).font(
-                            Font(miniCaptionFont).weight(.light)
+                            Font(miniCaptionFont).weight(.bold)
                         ).foregroundColor(
                             .white
-                        )
+                        ).opacity(secondaryTextOpacity)
                     }.offset(x: -4.0, y: 0.0)
                 }
                 

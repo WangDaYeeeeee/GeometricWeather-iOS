@@ -10,7 +10,7 @@ import GeometricWeatherBasic
 
 private let cellReuseId = "SearchTableViewCell"
 
-class SearchResultController: UIViewController,
+class SearchResultController: GeoViewController<Bool>,
                                 UITableViewDataSource,
                                 UITableViewDelegate {
     
@@ -72,7 +72,9 @@ class SearchResultController: UIViewController,
             make.edges.equalToSuperview()
         }
         self.progressView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            // fucking stupid inner margins what the hell?
+            make.centerX.equalToSuperview().offset(self.param ? 48 : 0)
+            make.centerY.equalToSuperview()
         }
     }
     

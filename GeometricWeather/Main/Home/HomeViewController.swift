@@ -53,9 +53,7 @@ class HomeViewController: UIViewController,
             }
         }
     }
-    
-    var viewIsAppeared = false
-    
+        
     // cells.
     
     var cellKeyList = [String]()
@@ -97,28 +95,7 @@ class HomeViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemBackground
-        
-        if !self.splitView {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                image: UIImage(systemName: "building.2.crop.circle"),
-                style: .plain,
-                target: self,
-                action: #selector(self.onManagementButtonClicked)
-            )
-        }
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "gear"),
-            style: .plain,
-            target: self,
-            action: #selector(self.onSettingsButtonClicked)
-        )
-        self.navigationItem.title = NSLocalizedString(
-            "action_home",
-            comment: ""
-        )
-        self.navigationItem.titleView = self.navigationBarTitleView
-        
+
         self.initSubviewsAndLayoutThem()
         
         // observe theme changed.
@@ -145,7 +122,14 @@ class HomeViewController: UIViewController,
             self?.updateTableView()
         }
         self.vmWeakRef.vm?.loading.addObserver(self) { [weak self] newValue in
-            self?.navigationBarTitleView.loading = newValue
+            if newValue == self?.tableView.refreshControl?.isRefreshing {
+                return
+            }
+            if newValue {
+                self?.tableView.refreshControl?.beginRefreshingWithOffset()
+            } else {
+                self?.tableView.refreshControl?.endRefreshing()
+            }
         }
         self.vmWeakRef.vm?.indicator.addObserver(self) { [weak self] newValue in
             if self?.indicator.selectedIndex != newValue.index {
@@ -160,103 +144,29 @@ class HomeViewController: UIViewController,
         
         self.vmWeakRef.vm?.toastMessage.addObserver(self) { [weak self] newValue in
             if let message = newValue {
-                self?.responseToastMessage(message)
+                self?.showToastMessage(message)
             }
         }
         
-        // register event observers.
+        // observe app enter foreground.
         
-        EventBus.shared.register(
-            self,
-            for: BackgroundUpdateEvent.self
-        ) { [weak self] event in
-            self?.vmWeakRef.vm?.updateLocationFromBackground(
-                location: event.location
-            )
-        }
-        EventBus.shared.register(
-            self,
-            for: SettingsChangedEvent.self
-        ) { [weak self] _ in
-            self?.updateTableView()
-        }
-        EventBus.shared.register(
-            self,
-            for: DailyTrendCellTapAction.self
-        ) { [weak self] event in
-            self?.responseDailyTrendCellTapAction(event.index)
-        }
-        EventBus.shared.register(self, for: TimeBarManagementAction.self) { [weak self] _ in
-            if self?.splitView ?? false {
-                return
-            }
-            
-            self?.onManagementButtonClicked()
-        }
-        EventBus.shared.register(self, for: TimeBarAlertAction.self) { [weak self] _ in
-            if self?.navigationController?.presentedViewController != nil {
-                return
-            }
-            self?.navigationController?.present(
-                AlertViewController(
-                    param: self?.vmWeakRef.vm?.currentLocation.value.weather?.alerts ?? []
-                ),
-                animated: true,
-                completion: nil
-            )
-        }
-        EventBus.shared.stickyRegister(
-            self,
-            for: AlertNotificationAction.self
-        ) { [weak self] event in
-            if let _ = event {
-                self?.responseAlertNotificationAction()
-            }
-        }
-        EventBus.shared.stickyRegister(
-            self,
-            for: ForecastNotificationAction.self
-        ) { [weak self] event in
-            if let _ = event {
-                self?.responseForecastNotificationAction()
-            }
-        }
-        EventBus.shared.stickyRegister(
-            self,
-            for: AppShortcutItemAction.self
-        ) { [weak self] event in
-            if let id = event?.formattedId {
-                self?.responseAppShortcutItemAction(id)
-            }
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.viewIsAppeared = true
-        
-        self.updatePreviewableSubviews()
-        self.updateNavigationBarTintColor()
-        
-        // register app enter and exit foreground listener.
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.viewWillEnterForeground),
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+        
+        // register event observers.
+        
+        self.registerEventObservers()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.viewIsAppeared = false
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        // remove enter and exit foreground listener.
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
+        self.updatePreviewableSubviews()
+        self.updateNavigationBarTintColor()
     }
     
     override func viewWillTransition(
@@ -341,9 +251,33 @@ class HomeViewController: UIViewController,
         self.navigationBarTitleView.tintColor = color
     }
     
+    // MARK: - toast.
+    
+    func showToastMessage(_ message: MainToastMessage) {
+        switch message {
+        case .backgroundUpdate:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_updated_in_background", comment: "")
+            )
+            return
+            
+        case .locationFailed:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_location_failed", comment: "")
+            )
+            return
+            
+        case .weatherRequestFailed:
+            ToastHelper.showToastMessage(
+                NSLocalizedString("feedback_get_weather_failed", comment: "")
+            )
+            return
+        }
+    }
+    
     // MARK: - actions.
     
-    @objc private func onManagementButtonClicked() {
+    @objc func onManagementButtonClicked() {
         if self.navigationController?.presentedViewController != nil {
             return
         }
@@ -357,7 +291,7 @@ class HomeViewController: UIViewController,
         )
     }
     
-    @objc private func onSettingsButtonClicked() {
+    @objc func onSettingsButtonClicked() {
         self.navigationController?.pushViewController(
             SettingsViewController(param: ()),
             animated: true

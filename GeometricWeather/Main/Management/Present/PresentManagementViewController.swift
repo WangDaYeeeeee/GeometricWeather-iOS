@@ -38,10 +38,7 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
     private let searchBar = UISearchBar(frame: .zero)
     private let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
     
-    private let searchViewController = SearchResultController(
-        nibName: nil,
-        bundle: nil
-    )
+    private let searchViewController = SearchResultController(param: false)
     
     // MARK: - life cycle.
     

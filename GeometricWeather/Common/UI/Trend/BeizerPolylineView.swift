@@ -11,6 +11,8 @@ import GeometricWeatherBasic
 private let paddingTop = 0.0
 private let paddingHorizontal = normalMargin
 
+private let tickMarkCount = 5
+
 class BeizerPolylineView: UIView {
     
     // MARK: - data.
@@ -76,6 +78,7 @@ class BeizerPolylineView: UIView {
     
     private var polylineShapes = [CAShapeLayer]()
     private let baselineShape = CAShapeLayer()
+    private var tickMarkShapes = [CAShapeLayer]()
     
     // MARK: - life cycle.
     
@@ -105,6 +108,12 @@ class BeizerPolylineView: UIView {
             NSNumber(value: 4.0)
         ]
         self.baselineShape.zPosition = trendTimelineZ
+        
+        for _ in 0 ..< tickMarkCount {
+            let layer = CAShapeLayer()
+            layer.zPosition = trendTimelineZ
+            self.tickMarkShapes.append(layer)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -119,11 +128,14 @@ class BeizerPolylineView: UIView {
         
         // remove all shape layers.
         
+        self.baselineShape.removeFromSuperlayer()
+        self.tickMarkShapes.forEach { item in
+            item.removeFromSuperlayer()
+        }
         self.polylineShapes.forEach { item in
             item.removeFromSuperlayer()
         }
         self.polylineShapes.removeAll()
-        self.baselineShape.removeFromSuperlayer()
         
         // add shape layers.
         
@@ -145,6 +157,24 @@ class BeizerPolylineView: UIView {
         )
         self.baselineShape.path = path.cgPath
         self.layer.addSublayer(self.baselineShape)
+        
+        // tick mark.
+        for i in 0 ..< tickMarkCount {
+            let shape = self.tickMarkShapes[i]
+            shape.strokeColor = UIColor.clear.cgColor
+            shape.fillColor = self.polylineColor.cgColor
+            shape.path = UIBezierPath(
+                arcCenter: CGPoint(
+                    x: self.rtlX(CGFloat(i) / CGFloat(tickMarkCount - 1)),
+                    y: self.y(0.0) + trendHistogramWidth / 2.0 + 2.0
+                ),
+                radius: trendHistogramWidth / 4.0,
+                startAngle: 0,
+                endAngle: .pi * 2,
+                clockwise: true
+            ).cgPath
+            self.layer.addSublayer(shape)
+        }
         
         // polyline.
         if self.polylineValues.count > 1 {

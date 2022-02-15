@@ -22,3 +22,5 @@ let aqiWindCornerRadius = 4.0
 
 let histogramBackground = Color.white.opacity(0.2)
 let histogramForeground = Color.white.opacity(0.5)
+
+let secondaryTextOpacity = 0.7

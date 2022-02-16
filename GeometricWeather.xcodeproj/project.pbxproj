@@ -102,7 +102,6 @@
 		37BA8262272968F400EFADFD /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA8261272968F400EFADFD /* DailyViewController.swift */; };
 		37BA8264272F84A200EFADFD /* GeoDialog+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA8263272F84A200EFADFD /* GeoDialog+Helper.swift */; };
 		37BA826A2730D1EC00EFADFD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BA82692730D1EC00EFADFD /* MainViewController.swift */; };
-		37CCA445271FBB880034D247 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 37CCA444271FBB880034D247 /* Then */; };
 		37CF4C3826CE496000E58736 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF4C3726CE496000E58736 /* CircularProgressView.swift */; };
 		37D237B126EF53FE00C8AFB8 /* MainTrendShaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D237B026EF53FD00C8AFB8 /* MainTrendShaderCollectionView.swift */; };
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
@@ -311,7 +310,6 @@
 				3789E1FD26AADA14005C3C06 /* Moya in Frameworks */,
 				3789E1FA26AAD85A005C3C06 /* Reachability in Frameworks */,
 				37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */,
-				37CCA445271FBB880034D247 /* Then in Frameworks */,
 				3789E20126AADA14005C3C06 /* RxMoya in Frameworks */,
 				3789E1FF26AADA14005C3C06 /* ReactiveMoya in Frameworks */,
 				3739F27626C0C7DA00EAE90A /* SnapKit in Frameworks */,
@@ -840,7 +838,6 @@
 				3789E20026AADA14005C3C06 /* RxMoya */,
 				3739F27526C0C7DA00EAE90A /* SnapKit */,
 				37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */,
-				37CCA444271FBB880034D247 /* Then */,
 			);
 			productName = GeometricWeather;
 			productReference = 370BA594269C398D006BB1CE /* GeometricWeather.app */;
@@ -1325,6 +1322,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "GeometricWeather/GeometricWeather-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1360,6 +1358,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ENABLE_BATCH_MODE = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "GeometricWeather/GeometricWeather-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1630,11 +1629,6 @@
 		37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GeometricWeatherBasic;
-		};
-		37CCA444271FBB880034D247 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 37CCA443271FBB880034D247 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

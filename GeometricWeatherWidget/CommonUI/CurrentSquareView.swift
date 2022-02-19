@@ -54,7 +54,7 @@ struct CurrentSquareView: View {
                     Text(
                         self.getBottomBodyText()
                     ).font(
-                        Font(captionFont)
+                        Font(captionFont).weight(.bold)
                     ).foregroundColor(
                         .white
                     )

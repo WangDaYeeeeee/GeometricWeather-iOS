@@ -74,7 +74,7 @@ struct WeatherWidgetMediumHeaderView: View {
                 )
                 
                 if let weather = self.location.weather {
-                    VStack(alignment: .leading, spacing: 2.0) {
+                    VStack(alignment: .trailing, spacing: 2.0) {
                         Text(
                             SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                                 weather.dailyForecasts[0].day.temperature.temperature,
@@ -105,7 +105,7 @@ struct WeatherWidgetMediumHeaderView: View {
                     Text(
                         self.getBottomBodyText()
                     ).font(
-                        Font(captionFont)
+                        Font(captionFont).weight(.bold)
                     ).foregroundColor(
                         .white
                     )

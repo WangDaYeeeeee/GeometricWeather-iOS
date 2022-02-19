@@ -165,8 +165,8 @@ struct ClearWidgetBackgroundView: View {
     var body: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                Color.ColorFromRGB(0xf8d849),
-                Color.ColorFromRGB(0xffa400),
+                Color.ColorFromRGB(0xb6e3e7),
+                Color.ColorFromRGB(0x75becb),
             ]),
             startPoint: .top,
             endPoint: .bottom

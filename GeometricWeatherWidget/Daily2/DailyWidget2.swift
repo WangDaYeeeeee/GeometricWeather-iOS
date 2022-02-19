@@ -28,17 +28,31 @@ struct DailyWidget2EntryView : View {
             HStack {
                 CurrentSquareView(
                     location: self.entry.location
-                ).padding(
-                    .vertical
-                )
+                ).padding(.vertical)
                                 
                 HorizontalDailyView(
                     location: self.entry.location
                 )
-            }.padding(
-                .horizontal
-            )
+            }.padding(.horizontal)
         }
+    }
+}
+
+private struct PaddingDailyView: View {
+    
+    let location: Location
+    
+    var body: some View {
+        HorizontalDailyView(
+            location: self.location
+        ).padding(
+            EdgeInsets(
+                top: littleMargin,
+                leading: 0,
+                bottom: littleMargin,
+                trailing: 0
+            )
+        )
     }
 }
 

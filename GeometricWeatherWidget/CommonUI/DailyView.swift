@@ -8,6 +8,8 @@
 import SwiftUI
 import GeometricWeatherBasic
 
+// MARK: - daily view.
+
 struct DailyView: View {
     
     let location: Location
@@ -40,28 +42,21 @@ struct DailyView: View {
     
     var body: some View {
         if let weather = self.location.weather {
-            HStack(alignment: .center) {
-                Spacer()
-
-                ForEach(0 ..< 2 * itemCount - 1) { i in
-                    if i % 2 != 0 {
-                        Spacer()
-                    } else {
-                        DailyItemView(
-                            weather: weather,
-                            timezone: self.location.timezone,
-                            index: i / 2,
-                            temperatureRagne: self.temperatureRange
-                        )
-                    }
+            HStack(alignment: .center, spacing: 0) {
+                ForEach(0 ..< self.itemCount) { i in
+                    DailyItemView(
+                        weather: weather,
+                        timezone: self.location.timezone,
+                        index: i,
+                        temperatureRagne: self.temperatureRange
+                    )
                 }
-                Spacer()
             }
         } else {
             HStack(alignment: .center) {
                 Spacer()
 
-                ForEach(0 ..< 2 * itemCount - 1) { i in
+                ForEach(0 ..< self.itemCount) { i in
                     if i % 2 != 0 {
                         Spacer()
                     } else {
@@ -79,6 +74,8 @@ struct DailyView: View {
         }
     }
 }
+
+// MARK: - horizontal daily view.
 
 struct HorizontalDailyView: View {
     
@@ -112,22 +109,48 @@ struct HorizontalDailyView: View {
     
     var body: some View {
         if let weather = self.location.weather {
-            VStack(alignment: .center) {
-                Spacer()
-
-                ForEach(0 ..< 2 * itemCount - 1) { i in
-                    if i % 2 != 0 {
-                        Spacer()
-                    } else {
-                        HorizontalDailyItemView(
-                            weather: weather,
-                            timezone: self.location.timezone,
-                            index: i / 2,
-                            temperatureRagne: self.temperatureRange
-                        )
-                    }
-                }
-                Spacer()
+            HStack(alignment: .center, spacing: 0) {
+                // week name.
+                VerticalWeekNameView(
+                    weather: weather,
+                    timezone: self.location.timezone,
+                    itemCount: self.itemCount
+                )
+                
+                // night icon.
+                VerticalIconView(
+                    weather: weather,
+                    itemCount: self.itemCount,
+                    daytime: false
+                )
+                
+                // night temperature.
+                VerticalTemperatureView(
+                    weather: weather,
+                    itemCount: self.itemCount,
+                    daytime: false
+                )
+                
+                // histogram.
+                VerticalHistogramView(
+                    weather: weather,
+                    itemCount: self.itemCount,
+                    temperatureRange: self.temperatureRange
+                )
+                
+                // day temperature.
+                VerticalTemperatureView(
+                    weather: weather,
+                    itemCount: self.itemCount,
+                    daytime: true
+                )
+                
+                // day icon.
+                VerticalIconView(
+                    weather: weather,
+                    itemCount: self.itemCount,
+                    daytime: true
+                )
             }
         } else {
             HStack(alignment: .center) {
@@ -149,5 +172,195 @@ struct HorizontalDailyView: View {
                 Spacer()
             }
         }
+    }
+}
+
+// MARK: - vertical week name view.
+
+private struct VerticalWeekNameView: View {
+    
+    let weather: Weather
+    let timezone: TimeZone
+    let itemCount: Int
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ForEach(0 ..< self.itemCount) { i in
+                VStack {
+                    Spacer()
+                    
+                    Text(
+                        getWeekText(
+                            week: self.weather.dailyForecasts[i].getWeek(
+                                timezone: self.timezone
+                            )
+                        )
+                    ).font(
+                        Font(miniCaptionFont).weight(.bold)
+                    ).foregroundColor(
+                        .white
+                    )
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - vertical icon view.
+
+private struct VerticalIconView: View {
+    
+    let weather: Weather
+    let itemCount: Int
+    let daytime: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ForEach(0 ..< self.itemCount) { i in
+                VStack {
+                    Spacer()
+                    
+                    if let uiImage = UIImage.getWeatherIcon(
+                        weatherCode: self.daytime
+                        ? self.weather.dailyForecasts[i].day.weatherCode
+                        : self.weather.dailyForecasts[i].night.weatherCode,
+                        daylight: self.daytime
+                    )?.scaleToSize(
+                        CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+                    ) {
+                        Image(uiImage: uiImage)
+                    }
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - vertical temperature view.
+
+private struct VerticalTemperatureView: View {
+    
+    let weather: Weather
+    let itemCount: Int
+    let daytime: Bool
+    
+    var body: some View {
+        VStack(alignment: .trailing) {
+            ForEach(0 ..< self.itemCount) { i in
+                VStack {
+                    Spacer()
+                    
+                    Text(
+                        SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                            self.daytime
+                            ? self.weather.dailyForecasts[i].day.temperature.temperature
+                            : self.weather.dailyForecasts[i].night.temperature.temperature,
+                            unit: "°"
+                        )
+                    ).font(
+                        Font(miniCaptionFont).weight(.bold)
+                    ).foregroundColor(
+                        .white
+                    ).opacity(
+                        self.daytime ? 1.0 : secondaryTextOpacity
+                    )
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - vertical histogram view.
+
+private struct VerticalHistogramView: View {
+    
+    let weather: Weather
+    let itemCount: Int
+    let temperatureRange: (min: Int, max: Int)
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ForEach(0 ..< self.itemCount) { i in
+                VStack {
+                    Spacer()
+                    
+                    GeometryReader { proxy in
+                        ZStack {
+                            Path { path in
+                                path.move(
+                                    to: CGPoint(
+                                        x: 6.0,
+                                        y: proxy.size.height * 0.5
+                                    )
+                                )
+                                path.addLine(
+                                    to: CGPoint(
+                                        x: proxy.size.width - 6.0,
+                                        y: proxy.size.height * 0.5
+                                    )
+                                )
+                            }.stroke(
+                                histogramBackground,
+                                style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                            ).frame(
+                                width: proxy.size.width,
+                                height: proxy.size.height,
+                                alignment: .center
+                            )
+                            
+                            Path { path in
+                                path.move(
+                                    to: CGPoint(
+                                        x: 6.0 + self.getTemperaturePercent(
+                                            self.weather.dailyForecasts[
+                                                i
+                                            ].night.temperature.temperature
+                                        ) * (
+                                            proxy.size.width - 12.0
+                                        ),
+                                        y: proxy.size.height * 0.5
+                                    )
+                                )
+                                path.addLine(
+                                    to: CGPoint(
+                                        x: 6.0 + self.getTemperaturePercent(
+                                            self.weather.dailyForecasts[
+                                                i
+                                            ].day.temperature.temperature
+                                        ) * (
+                                            proxy.size.width - 12.0
+                                        ),
+                                        y: proxy.size.height * 0.5
+                                    )
+                                )
+                            }.stroke(
+                                histogramForeground,
+                                style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                            ).frame(
+                                width: proxy.size.width,
+                                height: proxy.size.height,
+                                alignment: .center
+                            )
+                        }
+                    }.frame(height: normalMargin)
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+    
+    private func getTemperaturePercent(_ temperature: Int) -> Double {
+        return Double(
+            temperature - self.temperatureRange.min
+        ) / Double(
+            self.temperatureRange.max - self.temperatureRange.min
+        )
     }
 }

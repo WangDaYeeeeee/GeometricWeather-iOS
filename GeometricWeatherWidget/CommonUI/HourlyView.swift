@@ -16,10 +16,8 @@ struct HourlyView: View {
     
     var body: some View {
         HStack(alignment: .center) {
-            ForEach(0 ..< 2 * itemCount - 1) { i in
-                if i % 2 != 0 {
-                    Spacer()
-                } else if let weather = self.location.weather {
+            ForEach(0 ..< self.itemCount) { i in
+                if let weather = self.location.weather {
                     HourlyItemView(
                         weather: weather,
                         timezone: self.location.timezone,

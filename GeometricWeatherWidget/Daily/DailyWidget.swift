@@ -30,9 +30,9 @@ struct DailyWidgetEntryView : View {
             ).padding(
                 EdgeInsets(
                     top: littleMargin,
-                    leading: 0,
+                    leading: littleMargin,
                     bottom: littleMargin,
-                    trailing: 0
+                    trailing: littleMargin
                 )
             )
         }

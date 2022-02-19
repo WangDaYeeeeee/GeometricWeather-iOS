@@ -40,13 +40,25 @@ struct WeatherWidgetLargeView: View {
             Color.white.opacity(0.0).frame(width: 1.0, height: 12.0, alignment: .center)
             DailyView(
                 location: self.location
+            ).padding(
+                EdgeInsets(
+                    top: 0,
+                    leading: littleMargin,
+                    bottom: 0,
+                    trailing: littleMargin
+                )
             )
             
             Color.white.opacity(0.0).frame(width: 1.0, height: 18.0, alignment: .center)
             HourlyView(
                 location: self.location
             ).padding(
-                [.bottom, .leading, .trailing]
+                EdgeInsets(
+                    top: 0,
+                    leading: littleMargin,
+                    bottom: littleMargin,
+                    trailing: littleMargin
+                )
             )
         }
     }

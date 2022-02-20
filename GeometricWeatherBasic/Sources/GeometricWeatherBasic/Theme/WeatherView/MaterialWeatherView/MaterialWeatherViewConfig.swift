@@ -9,5 +9,5 @@ import Foundation
 
 class MaterialWeatherViewConfig {
     
-    static let useClear2 = true
+    static let useClear2 = false
 }

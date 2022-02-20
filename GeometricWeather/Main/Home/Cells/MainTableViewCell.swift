@@ -65,7 +65,7 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     func bindData(location: Location) {
         self.cardContainer.contentView.backgroundColor = UIColor { trait in
             return .systemBackground.withAlphaComponent(
-                trait.userInterfaceStyle == .light ? 0.1 : 0.0
+                trait.userInterfaceStyle == .light ? 0.125 : 0.0
             )
         }
     }

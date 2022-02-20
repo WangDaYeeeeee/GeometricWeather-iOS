@@ -7,14 +7,12 @@
 
 import SwiftUI
 
-private let sunColor = Color.ColorFromRGB(0xfd5411)
-
-private let backgroundColor1 = Color.ColorFromRGB(0xfdbc4c)
-private let backgroundColor2 = Color.ColorFromRGB(0xff8300)
+private let backgroundColor1 = Color.ColorFromRGB(0xa3d2d8)
+private let backgroundColor2 = Color.ColorFromRGB(0x119cbf)
 
 // MARK: - foreground.
 
-struct ClearForegroundView: View {
+struct ClearForegroundView2: View {
     
     private let width: CGFloat
     private let height: CGFloat
@@ -46,13 +44,13 @@ struct ClearForegroundView: View {
             SunLayer(
                 period: 3.0,
                 width: 0.47 * shortWidth,
-                color: sunColor.opacity(0.4)
+                color: .white.opacity(0.06)
             )
             // 2.
             SunLayer(
                 period: 4.0,
                 width: 0.47 * shortWidth * 1.7794,
-                color: sunColor.opacity(0.16)
+                color: .white.opacity(0.06)
             ).offset(
                 x: 0.1 * getDeltaX(),
                 y: 0.1 * getDeltaY()
@@ -61,7 +59,7 @@ struct ClearForegroundView: View {
             SunLayer(
                 period: 5.0,
                 width: 0.47 * shortWidth * 3.0594,
-                color: sunColor.opacity(0.08)
+                color: .white.opacity(0.06)
             ).offset(
                 x: 0.2 * getDeltaX(),
                 y: 0.2 * getDeltaY()
@@ -146,7 +144,7 @@ private struct SunLayer: View {
 
 // MARK: - background.
 
-struct ClearBackgroundView: View {
+struct ClearBackgroundView2: View {
     
     var body: some View {
         LinearGradient(
@@ -160,7 +158,7 @@ struct ClearBackgroundView: View {
     }
 }
 
-struct ClearWidgetBackgroundView: View {
+struct ClearWidgetBackgroundView2: View {
     
     var body: some View {
         LinearGradient(
@@ -176,7 +174,7 @@ struct ClearWidgetBackgroundView: View {
 
 // MARK: - preview.
 
-struct Clear_Previews: PreviewProvider {
+struct Clear_Previews2: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
             ClearForegroundView(

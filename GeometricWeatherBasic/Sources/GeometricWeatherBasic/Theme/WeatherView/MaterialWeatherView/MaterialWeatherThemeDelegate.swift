@@ -111,7 +111,9 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         daylight: Bool
     ) -> UIColor {
         if weatherKind == .clear && daylight {
-            return UIColor.colorFromRGB(0xfdbc4c)
+            return MaterialWeatherViewConfig.useClear2
+            ? UIColor.colorFromRGB(0x119cbf)
+            : UIColor.colorFromRGB(0xfdbc4c)
         } else if weatherKind == .clear {
             return UIColor.colorFromRGB(0x141b2c)
         } else if weatherKind == .cloud && daylight {

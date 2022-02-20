@@ -64,20 +64,9 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     
     func bindData(location: Location) {
         self.cardContainer.contentView.backgroundColor = UIColor { trait in
-            let weatherCode = location.weather?.current.weatherCode ?? .clear
-            
-            if weatherCode == .partlyCloudy {
-                return .systemBackground.withAlphaComponent(
-                    trait.userInterfaceStyle == .light ? 0.2 : 0.0
-                )
-            }
-            if weatherCode == .clear {
-                return .systemBackground.withAlphaComponent(
-                    trait.userInterfaceStyle == .light ? 0.1 : 0.0
-                )
-            }
-            
-            return .clear
+            return .systemBackground.withAlphaComponent(
+                trait.userInterfaceStyle == .light ? 0.1 : 0.0
+            )
         }
     }
 }

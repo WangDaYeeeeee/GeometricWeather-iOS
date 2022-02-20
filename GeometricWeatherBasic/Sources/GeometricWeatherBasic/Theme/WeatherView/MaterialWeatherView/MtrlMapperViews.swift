@@ -41,13 +41,23 @@ struct MtrlForegroundMapperView: View {
     @ViewBuilder
     var body: some View {
         if weatherKind == .clear && daylight {
-            ClearForegroundView(
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                paddingTop: paddingTop
-            )
+            if MaterialWeatherViewConfig.useClear2 {
+                ClearForegroundView2(
+                    width: width,
+                    height: height,
+                    rotation2D: rotation2D,
+                    rotation3D: rotation3D,
+                    paddingTop: paddingTop
+                )
+            } else {
+                ClearForegroundView(
+                    width: width,
+                    height: height,
+                    rotation2D: rotation2D,
+                    rotation3D: rotation3D,
+                    paddingTop: paddingTop
+                )
+            }
         } else if weatherKind == .clear {
             MetroShowerForegroundView(
                 width: width,
@@ -244,7 +254,11 @@ struct MtrlBackgroundMapperView: View {
     @ViewBuilder
     public var body: some View {
         if weatherKind == .clear && daylight {
-            ClearBackgroundView()
+            if MaterialWeatherViewConfig.useClear2 {
+                ClearBackgroundView2()
+            } else {
+                ClearBackgroundView()
+            }
         } else if weatherKind == .clear {
             MetroShowerBackgroundView()
         } else if weatherKind == .cloud && daylight {
@@ -295,7 +309,11 @@ public struct MtrlWidgetBackgroundView: View {
     @ViewBuilder
     public var body: some View {
         if self.weatherKind == .clear && self.daylight {
-            ClearWidgetBackgroundView()
+            if MaterialWeatherViewConfig.useClear2 {
+                ClearWidgetBackgroundView2()
+            } else {
+                ClearWidgetBackgroundView()
+            }
         } else {
             MtrlBackgroundMapperView(
                 weatherKind: self.weatherKind,

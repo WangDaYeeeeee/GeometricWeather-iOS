@@ -69,7 +69,7 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         prev: Hourly?,
         hourly: Hourly,
         next: Hourly?,
-        temperatureRange: TemperatureRange,
+        temperatureRange: ClosedRange<Int>,
         weatherCode: WeatherCode,
         timezone: TimeZone,
         histogramType: HourlyHistogramType
@@ -96,20 +96,20 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
                 value: Double(
                     (prev?.temperature.temperature ?? 0) + hourly.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             center: getY(
                 value: Double(hourly.temperature.temperature),
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             end: next == nil ? nil : getY(
                 value: Double(
                     (next?.temperature.temperature ?? 0) + hourly.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             )
         )
         
@@ -231,7 +231,7 @@ class HourlyTrendCellBackgroundView: UIView {
     
     func bindData(
         weather: Weather,
-        temperatureRange: TemperatureRange
+        temperatureRange: ClosedRange<Int>
     ) {
         guard
             let yesterday = weather.yesterday,
@@ -245,13 +245,13 @@ class HourlyTrendCellBackgroundView: UIView {
         
         self.horizontalLinesView.highValue = getY(
             value: Double(daytimeTemp),
-            min: Double(temperatureRange.min),
-            max: Double(temperatureRange.max)
+            min: Double(temperatureRange.lowerBound),
+            max: Double(temperatureRange.upperBound)
         )
         self.horizontalLinesView.lowValue = getY(
             value: Double(nighttimeTemp),
-            min: Double(temperatureRange.min),
-            max: Double(temperatureRange.max)
+            min: Double(temperatureRange.lowerBound),
+            max: Double(temperatureRange.upperBound)
         )
         
         self.horizontalLinesView.highLineColor = .gray
@@ -267,4 +267,3 @@ class HourlyTrendCellBackgroundView: UIView {
         )
     }
 }
-

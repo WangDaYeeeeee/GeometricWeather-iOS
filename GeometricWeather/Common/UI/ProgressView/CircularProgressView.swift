@@ -133,7 +133,7 @@ class CircularProgressView: UIView {
         )
         self.progressDescriptionLabel.frame.origin = CGPoint(
             x: self.progressDescriptionLabel.frame.origin.x,
-            y: self.frame.height - 3 * innerMargin - self.progressDescriptionLabel.frame.height
+            y: self.frame.height - innerMargin - self.progressDescriptionLabel.frame.height
         )
     }
     

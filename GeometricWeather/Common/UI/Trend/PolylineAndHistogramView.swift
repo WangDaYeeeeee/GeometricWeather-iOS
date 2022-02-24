@@ -178,7 +178,7 @@ class PolylineAndHistogramView: UIView {
         self.histogramShape.lineWidth = trendHistogramWidth
         self.histogramShape.strokeColor = UIColor.systemYellow.cgColor
         self.histogramShape.fillColor = UIColor.clear.cgColor
-        self.lowPolylineShape.zPosition = trendHistogramZ
+        self.histogramShape.zPosition = trendHistogramZ
         
         self.timelineShape.lineCap = .round
         self.timelineShape.lineWidth = trendTimelineWidth

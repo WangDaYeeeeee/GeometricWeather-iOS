@@ -56,12 +56,12 @@ class DragSwitchView: UIView {
         
         self.addSubview(self.contentView)
         
-        self.addGestureRecognizer(
-            UIPanGestureRecognizer(
-                target: self,
-                action: #selector(self.onDrag(gesture:))
-            )
+        let dragRecognizer = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(self.onDrag(gesture:))
         )
+        dragRecognizer.allowedScrollTypesMask = .continuous
+        self.addGestureRecognizer(dragRecognizer)
     }
     
     required init?(coder: NSCoder) {

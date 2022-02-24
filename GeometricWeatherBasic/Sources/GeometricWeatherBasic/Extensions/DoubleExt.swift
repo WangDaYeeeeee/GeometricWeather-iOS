@@ -18,6 +18,10 @@ public extension Double {
     }
     
     func toString(_ decimal: Int) -> String {
+        if self.isZero {
+            return "0"
+        }
+        
         let truncated = trunc(self * 10) / 10
         var str = String(format: "%.\(decimal)f", truncated)
         

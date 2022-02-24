@@ -20,6 +20,23 @@ extension UserDefaults {
     }
 }
 
+private let prefixSync = "syncable-"
+
+private let keyAlertEnabled = "alert_enabled"
+private let keyPrecipitationAlertEnabled = "precipitation_alert_enabled"
+private let keyUpdateInterval = "update_interval"
+private let keyDarkMode = "dark_mode"
+private let keyWeatherSource = prefixSync + "weather_source"
+private let keyTemperatureUnit = prefixSync + "temperature_unit"
+private let keyPrecipitationUnit = prefixSync + "precipitation_unit"
+private let keySpeedUnit = prefixSync + "speed_unit"
+private let keyPressureUnit = prefixSync + "pressure_unit"
+private let keyDistanceUnit = prefixSync + "distance_unit"
+private let keyTodayForecastEnabled = "today_forecast_enabled"
+private let keyTodayForecastTime = "today_forecast_time"
+private let keyTomorrowForecastEnabled = "tomorrow_forecast_enabled"
+private let keyTomorrowForecastTime = "tomorrow_forecast_time"
+
 public class SettingsManager {
     
     // MARK: - singleton.
@@ -27,21 +44,23 @@ public class SettingsManager {
     public static let shared = SettingsManager()
 
     private init() {
+        SettingsSync.start(withPrefix: prefixSync)
+        
         UserDefaults.shared.register(defaults: [
-            "alert_enabled": true,
-            "precipitation_alert_enabled": false,
-            "update_interval": "update_interval_2",
-            "dark_mode": "dark_mode_auto",
-            "weather_source": "weather_source_accu",
-            "temperature_unit": "temperature_unit_c",
-            "precipitation_unit": "precipitation_unit_mm",
-            "speed_unit": "speed_unit_kph",
-            "pressure_unit": "pressure_unit_mb",
-            "distance_unit": "distance_unit_km",
-            "today_forecast_enabled": true,
-            "today_forecast_time": "08:00",
-            "tomorrow_forecast_enabled": true,
-            "tomorrow_forecast_time": "20:00",
+            keyAlertEnabled: true,
+            keyPrecipitationAlertEnabled: false,
+            keyUpdateInterval: "update_interval_2",
+            keyDarkMode: "dark_mode_auto",
+            keyWeatherSource: "weather_source_accu",
+            keyTemperatureUnit: "temperature_unit_c",
+            keyPrecipitationUnit: "precipitation_unit_mm",
+            keySpeedUnit: "speed_unit_kph",
+            keyPressureUnit: "pressure_unit_mb",
+            keyDistanceUnit: "distance_unit_km",
+            keyTodayForecastEnabled: true,
+            keyTodayForecastTime: "08:00",
+            keyTomorrowForecastEnabled: true,
+            keyTomorrowForecastTime: "20:00",
         ])
     }
     
@@ -49,10 +68,10 @@ public class SettingsManager {
     
     public var alertEnabled: Bool {
         get {
-            return UserDefaults.shared.bool(forKey: "alert_enabled")
+            return UserDefaults.shared.bool(forKey: keyAlertEnabled)
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "alert_enabled")
+            UserDefaults.shared.set(newValue, forKey: keyAlertEnabled)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(AlertEnabledChanged(newValue))
@@ -61,10 +80,10 @@ public class SettingsManager {
     
     public var precipitationAlertEnabled: Bool {
         get {
-            return UserDefaults.shared.bool(forKey: "precipitation_alert_enabled")
+            return UserDefaults.shared.bool(forKey: keyPrecipitationAlertEnabled)
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "precipitation_alert_enabled")
+            UserDefaults.shared.set(newValue, forKey: keyPrecipitationAlertEnabled)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(PrecipitationAlertEnabledChanged(newValue))
@@ -74,12 +93,12 @@ public class SettingsManager {
     public var updateInterval: UpdateInterval {
         get {
             return UpdateInterval[
-                UserDefaults.shared.string(forKey: "update_interval")
+                UserDefaults.shared.string(forKey: keyUpdateInterval)
                 ?? "update_interval_2"
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "update_interval")
+            UserDefaults.shared.set(newValue.key, forKey: keyUpdateInterval)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(UpdateIntervalChanged(newValue))
@@ -91,12 +110,12 @@ public class SettingsManager {
     public var darkMode: DarkMode {
         get {
             return DarkMode[
-                UserDefaults.shared.string(forKey: "dark_mode")
+                UserDefaults.shared.string(forKey: keyDarkMode)
                 ?? "dark_mode_auto"
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "dark_mode")
+            UserDefaults.shared.set(newValue.key, forKey: keyDarkMode)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(DarkModeChanged(newValue))
@@ -109,12 +128,12 @@ public class SettingsManager {
         get {
             return .caiYun
 //            return WeatherSource[
-//                UserDefaults.shared.string(forKey: "weather_source")
+//                UserDefaults.shared.string(forKey: keyWeatherSource)
 //                ?? "weather_source_accu"
 //            ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "weather_source")
+            UserDefaults.shared.set(newValue.key, forKey: keyWeatherSource)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(WeatherSourceChanged(newValue))
@@ -126,11 +145,11 @@ public class SettingsManager {
     public var temperatureUnit: TemperatureUnit {
         get {
             return TemperatureUnit[
-                UserDefaults.shared.string(forKey: "temperature_unit") ?? ""
+                UserDefaults.shared.string(forKey: keyTemperatureUnit) ?? ""
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "temperature_unit")
+            UserDefaults.shared.set(newValue.key, forKey: keyTemperatureUnit)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(TemperatureUnitChanged(newValue))
@@ -140,11 +159,11 @@ public class SettingsManager {
     public var precipitationUnit: PrecipitationUnit {
         get {
             return PrecipitationUnit[
-                UserDefaults.shared.string(forKey: "precipitation_unit") ?? ""
+                UserDefaults.shared.string(forKey: keyPrecipitationUnit) ?? ""
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "precipitation_unit")
+            UserDefaults.shared.set(newValue.key, forKey: keyPrecipitationUnit)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(PrecipitationUnitChanged(newValue))
@@ -164,11 +183,11 @@ public class SettingsManager {
     public var speedUnit: SpeedUnit {
         get {
             return SpeedUnit[
-                UserDefaults.shared.string(forKey: "speed_unit") ?? ""
+                UserDefaults.shared.string(forKey: keySpeedUnit) ?? ""
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "speed_unit")
+            UserDefaults.shared.set(newValue.key, forKey: keySpeedUnit)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(SpeedUnitChanged(newValue))
@@ -178,11 +197,11 @@ public class SettingsManager {
     public var pressureUnit: PressureUnit {
         get {
             return PressureUnit[
-                UserDefaults.shared.string(forKey: "pressure_unit") ?? ""
+                UserDefaults.shared.string(forKey: keyPressureUnit) ?? ""
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "pressure_unit")
+            UserDefaults.shared.set(newValue.key, forKey: keyPressureUnit)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(PressureUnitChanged(newValue))
@@ -192,11 +211,11 @@ public class SettingsManager {
     public var distanceUnit: DistanceUnit {
         get {
             return DistanceUnit[
-                UserDefaults.shared.string(forKey: "distance_unit") ?? ""
+                UserDefaults.shared.string(forKey: keyDistanceUnit) ?? ""
             ]
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: "distance_unit")
+            UserDefaults.shared.set(newValue.key, forKey: keyDistanceUnit)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(DistanceUnitChanged(newValue))
@@ -207,10 +226,10 @@ public class SettingsManager {
     
     public var todayForecastEnabled: Bool {
         get {
-            return UserDefaults.shared.bool(forKey: "today_forecast_enabled")
+            return UserDefaults.shared.bool(forKey: keyTodayForecastEnabled)
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "today_forecast_enabled")
+            UserDefaults.shared.set(newValue, forKey: keyTodayForecastEnabled)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(TodayForecastEnabledChanged(newValue))
@@ -219,10 +238,10 @@ public class SettingsManager {
     
     public var todayForecastTime: String {
         get {
-            return UserDefaults.shared.string(forKey: "today_forecast_time") ?? "08:00"
+            return UserDefaults.shared.string(forKey: keyTodayForecastTime) ?? "08:00"
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "today_forecast_time")
+            UserDefaults.shared.set(newValue, forKey: keyTodayForecastTime)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(TodayForecastTimeChanged(newValue))
@@ -246,10 +265,10 @@ public class SettingsManager {
     
     public var tomorrowForecastEnabled: Bool {
         get {
-            return UserDefaults.shared.bool(forKey: "tomorrow_forecast_enabled")
+            return UserDefaults.shared.bool(forKey: keyTomorrowForecastEnabled)
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "tomorrow_forecast_enabled")
+            UserDefaults.shared.set(newValue, forKey: keyTomorrowForecastEnabled)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(TomorrowForecastEnabledChanged(newValue))
@@ -258,10 +277,10 @@ public class SettingsManager {
     
     public var tomorrowForecastTime: String {
         get {
-            return UserDefaults.shared.string(forKey: "tomorrow_forecast_time") ?? "20:00"
+            return UserDefaults.shared.string(forKey: keyTomorrowForecastTime) ?? "20:00"
         }
         set {
-            UserDefaults.shared.set(newValue, forKey: "tomorrow_forecast_time")
+            UserDefaults.shared.set(newValue, forKey: keyTomorrowForecastTime)
             
             EventBus.shared.post(SettingsChangedEvent())
             EventBus.shared.post(TomorrowForecastTimeChanged(newValue))

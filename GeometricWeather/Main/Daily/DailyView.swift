@@ -84,13 +84,15 @@ struct DailyView: View {
                         )
                     }
                 }
-                DailyValueItemView(
-                    title: NSLocalizedString("wind", comment: ""),
-                    content: getWindText(
-                        wind: self.weather.dailyForecasts[index].day.wind,
-                        unit: SettingsManager.shared.speedUnit
+                if let wind = self.weather.dailyForecasts[index].day.wind {
+                    DailyValueItemView(
+                        title: NSLocalizedString("wind", comment: ""),
+                        content: getWindText(
+                            wind: wind,
+                            unit: SettingsManager.shared.speedUnit
+                        )
                     )
-                )
+                }
             }
             
             Section(
@@ -149,18 +151,30 @@ struct DailyView: View {
                         )
                     }
                 }
-                DailyValueItemView(
-                    title: NSLocalizedString("wind", comment: ""),
-                    content: getWindText(
-                        wind: self.weather.dailyForecasts[index].night.wind,
-                        unit: SettingsManager.shared.speedUnit
+                if let wind = self.weather.dailyForecasts[index].night.wind {
+                    DailyValueItemView(
+                        title: NSLocalizedString("wind", comment: ""),
+                        content: getWindText(
+                            wind: wind,
+                            unit: SettingsManager.shared.speedUnit
+                        )
                     )
-                )
+                }
             }
             
             Section(
                 header: DailySectionTitleView(key: "daily_overview")
             ) {
+                if let wind = self.weather.dailyForecasts[index].wind {
+                    DailyValueItemView(
+                        title: NSLocalizedString("wind", comment: ""),
+                        content: getWindText(
+                            wind: wind,
+                            unit: SettingsManager.shared.speedUnit
+                        )
+                    )
+                }
+                
                 if self.weather.dailyForecasts[index].airQuality.isValid() {
                     DailyAirQualityItemView(
                         aqi: self.weather.dailyForecasts[index].airQuality

@@ -59,22 +59,39 @@ class MainDetailsCardCell: MainTableViewCell {
             // generate detial item views.
             
             // wind.
-            self.vstack.addArrangedSubview(
-                self.generateDetailItemView(
-                    iconName: "wind",
-                    title: NSLocalizedString("live", comment: "") + ": " + getWindText(
-                        wind: weather.current.wind,
-                        unit: SettingsManager.shared.speedUnit
-                    ),
-                    body: NSLocalizedString("daytime", comment: "") + ": " + getWindText(
-                        wind: weather.dailyForecasts[0].day.wind,
-                        unit: SettingsManager.shared.speedUnit
-                    ) + "\n" + NSLocalizedString("nighttime", comment: "") + ": " + getWindText(
-                        wind: weather.dailyForecasts[0].night.wind,
-                        unit: SettingsManager.shared.speedUnit
+            if let wind = weather.dailyForecasts.get(0)?.wind {
+                self.vstack.addArrangedSubview(
+                    self.generateDetailItemView(
+                        iconName: "wind",
+                        title: NSLocalizedString("live", comment: "") + ": " + getWindText(
+                            wind: weather.current.wind,
+                            unit: SettingsManager.shared.speedUnit
+                        ),
+                        body: NSLocalizedString("today", comment: "") + ": " + getWindText(
+                            wind: wind,
+                            unit: SettingsManager.shared.speedUnit
+                        )
                     )
                 )
-            )
+            } else if let daytime = weather.dailyForecasts.get(0)?.day.wind,
+                      let nighttime = weather.dailyForecasts.get(0)?.night.wind {
+                self.vstack.addArrangedSubview(
+                    self.generateDetailItemView(
+                        iconName: "wind",
+                        title: NSLocalizedString("live", comment: "") + ": " + getWindText(
+                            wind: weather.current.wind,
+                            unit: SettingsManager.shared.speedUnit
+                        ),
+                        body: NSLocalizedString("daytime", comment: "") + ": " + getWindText(
+                            wind: daytime,
+                            unit: SettingsManager.shared.speedUnit
+                        ) + "\n" + NSLocalizedString("nighttime", comment: "") + ": " + getWindText(
+                            wind: nighttime,
+                            unit: SettingsManager.shared.speedUnit
+                        )
+                    )
+                )
+            }
             
             // humidity.
             if let humidity = weather.current.relativeHumidity {

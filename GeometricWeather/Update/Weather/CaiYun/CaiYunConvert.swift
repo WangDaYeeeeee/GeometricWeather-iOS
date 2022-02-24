@@ -317,19 +317,7 @@ private func getDailyList(
                     precipitationTotal: nil,
                     precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
                     precipitationProbability: nil,
-                    wind: Wind(
-                        direction: getWindDirectionText(
-                            weatherResult.result.daily.wind[i].avg.direction
-                        ),
-                        degree: WindDegree(
-                            degree: weatherResult.result.daily.wind[i].avg.direction,
-                            noDirection: false
-                        ),
-                        speed: weatherResult.result.daily.wind[i].avg.speed,
-                        level: getWindLevelInt(
-                            speed: weatherResult.result.daily.wind[i].avg.speed
-                        )
-                    ),
+                    wind: nil,
                     cloudCover: nil
                 ),
                 night: HalfDay(
@@ -348,19 +336,7 @@ private func getDailyList(
                     precipitationTotal: nil,
                     precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
                     precipitationProbability: nil,
-                    wind: Wind(
-                        direction: getWindDirectionText(
-                            weatherResult.result.daily.wind[i].avg.direction
-                        ),
-                        degree: WindDegree(
-                            degree: weatherResult.result.daily.wind[i].avg.direction,
-                            noDirection: false
-                        ),
-                        speed: weatherResult.result.daily.wind[i].avg.speed,
-                        level: getWindLevelInt(
-                            speed: weatherResult.result.daily.wind[i].avg.speed
-                        )
-                    ),
+                    wind: nil,
                     cloudCover: nil
                 ),
                 sun: Astro(
@@ -390,6 +366,19 @@ private func getDailyList(
                 moonPhase: MoonPhase(
                     angle: getMoonPhaseAngle(phase: forecast?.moon?.phase ?? ""),
                     description: forecast?.moon?.phase
+                ),
+                wind: Wind(
+                    direction: getWindDirectionText(
+                        weatherResult.result.daily.wind[i].avg.direction
+                    ),
+                    degree: WindDegree(
+                        degree: weatherResult.result.daily.wind[i].avg.direction,
+                        noDirection: false
+                    ),
+                    speed: weatherResult.result.daily.wind[i].avg.speed,
+                    level: getWindLevelInt(
+                        speed: weatherResult.result.daily.wind[i].avg.speed
+                    )
                 ),
                 airQuality: AirQuality(
                     aqiLevel: weatherResult.result.daily.airQuality.aqi[i].avg.usa == 0

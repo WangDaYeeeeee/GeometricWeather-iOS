@@ -55,12 +55,12 @@ class GeoDialog: UIView {
                 action: #selector(self.onTap)
             )
         )
-        self.background.addGestureRecognizer(
-            UIPanGestureRecognizer(
-                target: self,
-                action: #selector(self.onDrag(gesture:))
-            )
+        let backgroundDragRecognizer = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(self.onDrag(gesture:))
         )
+        backgroundDragRecognizer.allowedScrollTypesMask = .continuous
+        self.background.addGestureRecognizer(backgroundDragRecognizer)
         
         self.foreground.alpha = 0.0
         self.foreground.transform = CGAffineTransform(
@@ -75,12 +75,12 @@ class GeoDialog: UIView {
                 action: #selector(self.onTap)
             )
         )
-        self.foreground.addGestureRecognizer(
-            UIPanGestureRecognizer(
-                target: self,
-                action: #selector(self.onDrag(gesture:))
-            )
+        let foregroundDragRecognizer = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(self.onDrag(gesture:))
         )
+        foregroundDragRecognizer.allowedScrollTypesMask = .continuous
+        self.foreground.addGestureRecognizer(foregroundDragRecognizer)
         
         content.layer.cornerRadius = cardRadius
         content.clipsToBounds = true

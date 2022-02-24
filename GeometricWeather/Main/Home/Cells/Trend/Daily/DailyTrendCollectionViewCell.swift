@@ -95,7 +95,7 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         prev: Daily?,
         daily: Daily,
         next: Daily?,
-        temperatureRange: TemperatureRange,
+        temperatureRange: ClosedRange<Int>,
         weatherCode: WeatherCode,
         timezone: TimeZone,
         histogramType: DailyHistogramType
@@ -132,20 +132,20 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
                 value: Double(
                     (prev?.day.temperature.temperature ?? 0) + daily.day.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             center: getY(
                 value: Double(daily.day.temperature.temperature),
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             end: next == nil ? nil : getY(
                 value: Double(
                     (next?.day.temperature.temperature ?? 0) + daily.day.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             )
         )
         self.trendView.lowPolylineTrend = (
@@ -153,20 +153,20 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
                 value: Double(
                     (prev?.night.temperature.temperature ?? 0) + daily.night.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             center: getY(
                 value: Double(daily.night.temperature.temperature),
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             ),
             end: next == nil ? nil : getY(
                 value: Double(
                     (next?.night.temperature.temperature ?? 0) + daily.night.temperature.temperature
                 ) / 2.0,
-                min: Double(temperatureRange.min),
-                max: Double(temperatureRange.max)
+                min: Double(temperatureRange.lowerBound),
+                max: Double(temperatureRange.upperBound)
             )
         )
         
@@ -330,7 +330,7 @@ class DailyTrendCellBackgroundView: UIView {
     
     func bindData(
         weather: Weather,
-        temperatureRange: TemperatureRange
+        temperatureRange: ClosedRange<Int>
     ) {
         guard
             let yesterday = weather.yesterday,
@@ -344,13 +344,13 @@ class DailyTrendCellBackgroundView: UIView {
         
         self.horizontalLinesView.highValue = getY(
             value: Double(daytimeTemp),
-            min: Double(temperatureRange.min),
-            max: Double(temperatureRange.max)
+            min: Double(temperatureRange.lowerBound),
+            max: Double(temperatureRange.upperBound)
         )
         self.horizontalLinesView.lowValue = getY(
             value: Double(nighttimeTemp),
-            min: Double(temperatureRange.min),
-            max: Double(temperatureRange.max)
+            min: Double(temperatureRange.lowerBound),
+            max: Double(temperatureRange.upperBound)
         )
         
         self.horizontalLinesView.highLineColor = .gray

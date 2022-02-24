@@ -8,8 +8,15 @@
 import UIKit
 import GeometricWeatherBasic
 
-private let trendReuseIdentifier = "daily_trend_cell"
-private let dailyTrendViewHeight = 324
+private let dailyTrendViewHeight = 286
+
+private enum DailyTag: String {
+    
+    case temperature = "daily_temperature"
+    case wind = "daily_wind"
+    case aqi = "daily_aqi"
+    case uv = "daily_uv"
+}
 
 struct DailyTrendCellTapAction {
     
@@ -18,22 +25,33 @@ struct DailyTrendCellTapAction {
 
 class MainDailyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
-                            UICollectionViewDelegateFlowLayout {
+                            UICollectionViewDelegateFlowLayout,
+                            MainSelectableTagDelegate {
     
     // MARK: - data.
     
     private var weather: Weather?
     private var timezone: TimeZone?
-    private var temperatureRange: TemperatureRange?
+    
+    private var temperatureRange: ClosedRange<Int>?
+    private var maxWindSpeed: Double?
+    private var maxAqiIndex: Int?
+    private var maxUVIndex: Int?
+    
     private var source: WeatherSource?
+    
+    private var tagList = [(tag: DailyTag, title: String)]()
+    private var currentTag = DailyTag.temperature
     
     // MARK: - subviews.
     
     private let timeBar = MainTimeBarView()
     private let summaryLabel = UILabel(frame: .zero)
     
-    private let dailyBackgroundView = DailyTrendCellBackgroundView(frame: .zero)
+    private let dailyTagView = MainSelectableTagView(frame: .zero)
+    
     private let dailyCollectionView = MainTrendShaderCollectionView(frame: .zero)
+    private var dailyBackgroundView = DailyTrendCellBackgroundView(frame: .zero)
     
     // MARK: - life cycle.
     
@@ -50,11 +68,26 @@ class MainDailyCardCell: MainTableViewCell,
         self.summaryLabel.lineBreakMode = .byWordWrapping
         self.cardContainer.contentView.addSubview(self.summaryLabel)
         
+        self.dailyTagView.tagDelegate = self
+        self.cardContainer.contentView.addSubview(self.dailyTagView)
+        
         self.dailyCollectionView.delegate = self
         self.dailyCollectionView.dataSource = self
         self.dailyCollectionView.register(
             DailyTrendCollectionViewCell.self,
-            forCellWithReuseIdentifier: trendReuseIdentifier
+            forCellWithReuseIdentifier: DailyTag.temperature.rawValue
+        )
+        self.dailyCollectionView.register(
+            DailySingleWindCollectionViewCell.self,
+            forCellWithReuseIdentifier: DailyTag.wind.rawValue
+        )
+        self.dailyCollectionView.register(
+            DailyAirQualityCollectionViewCell.self,
+            forCellWithReuseIdentifier: DailyTag.aqi.rawValue
+        )
+        self.dailyCollectionView.register(
+            DailyUVCollectionViewCell.self,
+            forCellWithReuseIdentifier: DailyTag.uv.rawValue
         )
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         
@@ -76,8 +109,14 @@ class MainDailyCardCell: MainTableViewCell,
             make.leading.equalToSuperview().offset(normalMargin)
             make.trailing.equalToSuperview().offset(-normalMargin)
         }
-        self.dailyBackgroundView.snp.makeConstraints { make in
+        self.dailyTagView.snp.makeConstraints { make in
             make.top.equalTo(self.summaryLabel.snp.bottom).offset(littleMargin)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+        self.dailyBackgroundView.snp.makeConstraints { make in
+            make.top.equalTo(self.dailyTagView.snp.bottom)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.height.equalTo(dailyTrendViewHeight)
@@ -104,6 +143,9 @@ class MainDailyCardCell: MainTableViewCell,
             
             var maxTemp = weather.yesterday?.daytimeTemperature ?? Int.min
             var minTemp = weather.yesterday?.nighttimeTemperature ?? Int.max
+            var maxWind = 0.0
+            var maxAqi = 0
+            var maxUV = 0
             for daily in weather.dailyForecasts {
                 if maxTemp < daily.day.temperature.temperature {
                     maxTemp = daily.day.temperature.temperature
@@ -111,8 +153,21 @@ class MainDailyCardCell: MainTableViewCell,
                 if minTemp > daily.night.temperature.temperature {
                     minTemp = daily.night.temperature.temperature
                 }
+                if maxWind < daily.wind?.speed ?? 0.0 {
+                    maxWind = daily.wind?.speed ?? 0.0
+                }
+                if maxAqi < daily.airQuality.aqiIndex ?? 0 {
+                    maxAqi = daily.airQuality.aqiIndex ?? 0
+                }
+                if maxUV < daily.uv.index ?? 0 {
+                    maxUV = daily.uv.index ?? 0
+                }
             }
-            self.temperatureRange = (minTemp, maxTemp)
+            self.temperatureRange = minTemp...maxTemp
+            self.maxWindSpeed = maxWind
+            self.maxAqiIndex = maxAqi
+            self.maxUVIndex = maxUV
+            
             self.source = location.weatherSource
             
             self.timeBar.register(
@@ -122,18 +177,12 @@ class MainDailyCardCell: MainTableViewCell,
             
             self.summaryLabel.text = weather.current.dailyForecast
             
-            self.dailyBackgroundView.bindData(
-                weather: weather,
-                temperatureRange: self.temperatureRange ?? (0, 0)
-            )
+            self.buildTagList()
             
-            self.dailyCollectionView.scrollToItem(
-                at: IndexPath(row: 0, section: 0),
-                at: .left,
-                animated: false
-            )
-            self.dailyCollectionView.collectionViewLayout.invalidateLayout()
-            self.dailyCollectionView.reloadData()
+            if let weather = self.weather,
+               let range = self.temperatureRange {
+                self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
+            }
         }
     }
     
@@ -149,6 +198,51 @@ class MainDailyCardCell: MainTableViewCell,
                 self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
             }
         }
+    }
+    
+    // MARK: - ui.
+    
+    private func buildTagList() {
+        var tags = [(DailyTag.temperature, NSLocalizedString("temperature", comment: ""))]
+        
+        // wind.
+        for daily in (self.weather?.dailyForecasts ?? []) {
+            if daily.wind != nil {
+                tags.append(
+                    (DailyTag.wind, NSLocalizedString("wind", comment: ""))
+                )
+                break
+            }
+        }
+        
+        // aqi.
+        for daily in (self.weather?.dailyForecasts ?? []) {
+            if daily.airQuality.isValid() {
+                tags.append(
+                    (DailyTag.aqi, NSLocalizedString("air_quality", comment: ""))
+                )
+                break
+            }
+        }
+        
+        // uv.
+        for daily in (self.weather?.dailyForecasts ?? []) {
+            if daily.uv.isValid() {
+                tags.append(
+                    (DailyTag.uv, NSLocalizedString("uv_index", comment: ""))
+                )
+                break
+            }
+        }
+        
+        self.tagList = tags
+        
+        var titles = [String]()
+        for tagPair in self.tagList {
+            titles.append(tagPair.title)
+        }
+        
+        self.dailyTagView.tagList = titles
     }
     
     // MARK: - delegates.
@@ -240,33 +334,91 @@ class MainDailyCardCell: MainTableViewCell,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         let cell = self.dailyCollectionView.dequeueReusableCell(
-            withReuseIdentifier: trendReuseIdentifier,
+            withReuseIdentifier: self.currentTag.rawValue,
             for: indexPath
         )
-        if let weather = self.weather,
-            let dailies = self.weather?.dailyForecasts {
-            
-            var histogramType = DailyHistogramType.none
-            if self.source?.hasDailyPrecipitationProb ?? false {
-                histogramType = .precipitationProb
+        
+        switch self.currentTag {
+        case .temperature:
+            if let weather = self.weather,
+                let dailies = self.weather?.dailyForecasts {
+                
+                var histogramType = DailyHistogramType.none
+                if self.source?.hasDailyPrecipitationProb ?? false {
+                    histogramType = .precipitationProb
+                }
+                if self.source?.hasDailyPrecipitationTotal ?? false {
+                    histogramType = .precipitationTotal
+                }
+                if self.source?.hasDailyPrecipitationIntensity ?? false {
+                    histogramType = .precipitationIntensity
+                }
+                
+                (cell as? DailyTrendCollectionViewCell)?.bindData(
+                    prev: indexPath.row == 0 ? nil : dailies[indexPath.row - 1],
+                    daily: dailies[indexPath.row],
+                    next: indexPath.row == dailies.count - 1 ? nil : dailies[indexPath.row + 1],
+                    temperatureRange: self.temperatureRange ?? 0...0,
+                    weatherCode: weather.current.weatherCode,
+                    timezone: self.timezone ?? .current,
+                    histogramType: histogramType
+                )
             }
-            if self.source?.hasDailyPrecipitationTotal ?? false {
-                histogramType = .precipitationTotal
+        case .wind:
+            if let dailies = self.weather?.dailyForecasts {
+                (cell as? DailySingleWindCollectionViewCell)?.bindData(
+                    daily: dailies[indexPath.row],
+                    maxWindSpeed: self.maxWindSpeed ?? 0.0,
+                    timezone: self.timezone ?? .current
+                )
             }
-            if self.source?.hasDailyPrecipitationIntensity ?? false {
-                histogramType = .precipitationIntensity
+        case .aqi:
+            if let dailies = self.weather?.dailyForecasts {
+                (cell as? DailyAirQualityCollectionViewCell)?.bindData(
+                    daily: dailies[indexPath.row],
+                    maxAqiIndex: self.maxAqiIndex ?? 0,
+                    timezone: self.timezone ?? .current
+                )
             }
-            
-            (cell as? DailyTrendCollectionViewCell)?.bindData(
-                prev: indexPath.row == 0 ? nil : dailies[indexPath.row - 1],
-                daily: dailies[indexPath.row],
-                next: indexPath.row == dailies.count - 1 ? nil : dailies[indexPath.row + 1],
-                temperatureRange: self.temperatureRange ?? (0, 0),
-                weatherCode: weather.current.weatherCode,
-                timezone: self.timezone ?? .current,
-                histogramType: histogramType
-            )
+        case .uv:
+            if let dailies = self.weather?.dailyForecasts {
+                (cell as? DailyUVCollectionViewCell)?.bindData(
+                    daily: dailies[indexPath.row],
+                    maxAqiIndex: self.maxUVIndex ?? 0,
+                    timezone: self.timezone ?? .current
+                )
+            }
         }
+        
         return cell
+    }
+    
+    // selectable tag view.
+    
+    func getSelectedColor() -> UIColor {
+        return .systemBlue
+    }
+    
+    func getUnselectedColor() -> UIColor {
+        return ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+            weatherKind: weatherCodeToWeatherKind(
+                code: self.weather?.current.weatherCode ?? .clear
+            ),
+            daylight: ThemeManager.shared.daylight.value,
+            lightTheme: self.traitCollection.userInterfaceStyle == .light
+        ).main
+    }
+    
+    func onSelectedChanged(newSelectedIndex: Int) {
+        self.currentTag = self.tagList[newSelectedIndex].tag
+        self.dailyBackgroundView.isHidden = self.tagList[newSelectedIndex].tag != .temperature
+        
+        self.dailyCollectionView.scrollToItem(
+            at: IndexPath(row: 0, section: 0),
+            at: .left,
+            animated: false
+        )
+        self.dailyCollectionView.collectionViewLayout.invalidateLayout()
+        self.dailyCollectionView.reloadData()
     }
 }

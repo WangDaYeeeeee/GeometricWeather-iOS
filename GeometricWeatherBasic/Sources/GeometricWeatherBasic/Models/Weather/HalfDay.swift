@@ -17,7 +17,7 @@ public struct HalfDay: Codable {
     public let precipitationTotal: Double?
     public let precipitationIntensity: Double?
     public let precipitationProbability: Double?
-    public let wind: Wind
+    public let wind: Wind?
     
     public let cloudCover: Int?
     
@@ -29,7 +29,7 @@ public struct HalfDay: Codable {
         precipitationTotal: Double?,
         precipitationIntensity: Double?,
         precipitationProbability: Double?,
-        wind: Wind,
+        wind: Wind?,
         cloudCover: Int?
     ) {
         self.weatherText = weatherText

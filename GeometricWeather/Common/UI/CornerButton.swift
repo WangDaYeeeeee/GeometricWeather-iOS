@@ -12,16 +12,23 @@ private let touchDownAnimDuration = 0.4
 private let touchUpAnimDuration = 0.6
 
 private let touchDownAlpha = 0.5
-private let touchDownScale = 1.1
+private let touchDownScale = 0.95
 
 class CornerButton: UIButton {
+    
+    // MARK: - inner data.
     
     private var intrinsicContentSizeCache: CGSize?
     
     override var intrinsicContentSize: CGSize {
         get {
             let superSize = super.intrinsicContentSize
-            let size = CGSize(
+            let size = self.isLittleMargins
+            ? CGSize(
+                width: superSize.width + 16.0,
+                height: superSize.height + 2.0
+            )
+            : CGSize(
                 width: superSize.width + 2 * littleMargin,
                 height: superSize.height + littleMargin
             )
@@ -35,9 +42,20 @@ class CornerButton: UIButton {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    private var isLittleMargins: Bool
+    
+    // MARK: - life cycles.
+    
+    init(frame: CGRect, littleMargin: Bool = false) {
+        self.isLittleMargins = littleMargin
+        super.init(frame: frame)
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - life cycles.
     
     override func touchesBegan(
         _ touches: Set<UITouch>,

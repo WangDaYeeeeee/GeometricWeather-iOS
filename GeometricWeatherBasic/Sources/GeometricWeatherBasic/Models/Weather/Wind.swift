@@ -50,8 +50,8 @@ public struct Wind: Codable {
 
 public struct WindDegree: Codable {
     
-    let degree: Double
-    let noDirection: Bool
+    public let degree: Double
+    public let noDirection: Bool
     
     public init(degree: Double, noDirection: Bool) {
         self.degree = degree

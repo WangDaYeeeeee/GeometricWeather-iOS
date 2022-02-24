@@ -10,8 +10,7 @@ import GeometricWeatherBasic
 
 let mainTrendInnerMargin = littleMargin / 2
 let mainTrendIconSize = 32.0
-
-typealias TemperatureRange = (min: Int, max: Int)
+let mainWindIconSize = 16.0
 
 func getY(
     value: Double,

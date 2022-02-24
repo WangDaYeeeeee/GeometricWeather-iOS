@@ -19,6 +19,9 @@ let trendPrecipitationAlpha = 0.35
 let trendTimelineAlpha = 0.1
 let trendHorizontalLineAlpha = 0.2
 
+let trendHistogramBackgroundAlpha = 0.1
+let trendHistogramForegroundAlpha = 0.8
+
 let trendTimelineZ = -1.0
 let trendShadowZ = 0.0
 let trendHistogramZ = 1.0

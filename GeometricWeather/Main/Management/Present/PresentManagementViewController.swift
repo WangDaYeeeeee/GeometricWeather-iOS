@@ -130,31 +130,43 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.param.vm?.selectableTotalLocations.addObserver(self) { newValue in
-            self.updateLocationList(newValue)
+        self.param.vm?.selectableTotalLocations.addObserver(
+            self
+        ) { [weak self] newValue in
+            guard let strongSelf = self else {
+                return
+            }
             
-            let showBookmarkButton = !self.itemList.contains { item in
+            strongSelf.updateLocationList(newValue)
+            
+            let showBookmarkButton = !strongSelf.itemList.contains { item in
                 item.location.currentPosition
             }
-            if self.searchBar.showsBookmarkButton != showBookmarkButton {
-                self.searchBar.showsBookmarkButton = showBookmarkButton
+            if strongSelf.searchBar.showsBookmarkButton != showBookmarkButton {
+                strongSelf.searchBar.showsBookmarkButton = showBookmarkButton
             }
         }
-        self.searching.addObserver(self) { newValue in
-            self.searchBar.setShowsCancelButton(
+        self.searching.addObserver(
+            self
+        ) { [weak self] newValue in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.searchBar.setShowsCancelButton(
                 newValue,
                 animated: true
             )
             if !newValue {
-                self.searchBar.text = ""
-                self.view.endEditing(true)
+                strongSelf.searchBar.text = ""
+                strongSelf.view.endEditing(true)
             }
             
-            self.searchViewController.requesting.value = false
-            self.searchViewController.resetList()
+            strongSelf.searchViewController.requesting.value = false
+            strongSelf.searchViewController.resetList()
             
             UIView.animate(withDuration: 0.3) {
-                self.searchViewController.view.alpha = newValue ? 1.0 : 0.0
+                strongSelf.searchViewController.view.alpha = newValue ? 1.0 : 0.0
             }
         }
     }

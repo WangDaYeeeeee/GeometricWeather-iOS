@@ -29,6 +29,10 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
     
     private let trendView = PolylineAndHistogramView(frame: .zero)
     
+    // MARK: - inner data.
+    
+    private var weatherCode: WeatherCode?
+    
     // MARK: - cell life cycle.
     
     override init(frame: CGRect) {
@@ -85,6 +89,17 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.nighttimeIcon.snp.top)
         }
+        
+        ThemeManager.shared.daylight.addNonStickyObserver(self) { daylight in
+            if self.weatherCode == nil {
+                return
+            }
+            
+            self.updateTrendColors(
+                weatherCode: self.weatherCode ?? .clear,
+                daylight: daylight
+            )
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -100,6 +115,8 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         timezone: TimeZone,
         histogramType: DailyHistogramType
     ) {
+        self.weatherCode = weatherCode
+        
         self.weekLabel.text = daily.isToday(timezone: timezone)
         ? NSLocalizedString("today", comment: "")
         : getWeekText(week: daily.getWeek(timezone: timezone))
@@ -230,15 +247,10 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             self.trendView.histogramValue = nil
         }
         
-        let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
-            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
-            daylight: ThemeManager.shared.daylight.value,
-            lightTheme: self.traitCollection.userInterfaceStyle == .light
+        self.updateTrendColors(
+            weatherCode: weatherCode,
+            daylight: ThemeManager.shared.daylight.value
         )
-        self.trendView.highPolylineColor = themeColors.daytime
-        self.trendView.lowPolylineColor = themeColors.nighttime
-        self.trendView.histogramColor = themeColors.daytime
-        self.trendView.histogramLabel.textColor = precipitationProbabilityColor
         
         let tempUnit = SettingsManager.shared.temperatureUnit
         self.trendView.highPolylineDescription = tempUnit.formatValueWithUnit(
@@ -249,6 +261,17 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             daily.night.temperature.temperature,
             unit: "°"
         )
+    }
+    
+    private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
+        let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
+            daylight: daylight
+        )
+        self.trendView.highPolylineColor = themeColors.daytime
+        self.trendView.lowPolylineColor = themeColors.nighttime
+        self.trendView.histogramColor = themeColors.daytime
+        self.trendView.histogramLabel.textColor = precipitationProbabilityColor
     }
     
     // MARK: - cell selection.

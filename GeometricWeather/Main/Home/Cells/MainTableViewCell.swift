@@ -63,10 +63,11 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location) {
-        self.cardContainer.contentView.backgroundColor = UIColor { trait in
-            return .systemBackground.withAlphaComponent(
-                trait.userInterfaceStyle == .light ? 0.125 : 0.0
-            )
-        }
+        self.cardContainer.contentView.backgroundColor = ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
+            weatherKind: weatherCodeToWeatherKind(
+                code: location.weather?.current.weatherCode ?? .clear
+            ),
+            daylight: ThemeManager.shared.daylight.value
+        )
     }
 }

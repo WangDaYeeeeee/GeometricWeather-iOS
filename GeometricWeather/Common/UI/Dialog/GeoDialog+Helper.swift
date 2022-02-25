@@ -5,7 +5,7 @@
 //  Created by 王大爷 on 2021/11/1.
 //
 
-import Foundation
+import UIKit
 
 extension GeoDialog {
     

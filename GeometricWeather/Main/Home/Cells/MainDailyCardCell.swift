@@ -404,9 +404,8 @@ class MainDailyCardCell: MainTableViewCell,
             weatherKind: weatherCodeToWeatherKind(
                 code: self.weather?.current.weatherCode ?? .clear
             ),
-            daylight: ThemeManager.shared.daylight.value,
-            lightTheme: self.traitCollection.userInterfaceStyle == .light
-        ).main
+            daylight: ThemeManager.shared.daylight.value
+        ).main.withAlphaComponent(0.33)
     }
     
     func onSelectedChanged(newSelectedIndex: Int) {

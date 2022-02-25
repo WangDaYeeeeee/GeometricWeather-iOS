@@ -223,8 +223,7 @@ class MainHourlyCardCell: MainTableViewCell,
             
             self.minutelyView.polylineColor = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
                 weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
-                daylight: ThemeManager.shared.daylight.value,
-                lightTheme: self.traitCollection.userInterfaceStyle == .light
+                daylight: ThemeManager.shared.daylight.value
             ).daytime
             self.minutelyView.polylineValues = getPrecipitationIntensityInPercentage(
                 intensityInRadarStandard: minutely.precipitationIntensityInPercentage
@@ -430,9 +429,8 @@ class MainHourlyCardCell: MainTableViewCell,
             weatherKind: weatherCodeToWeatherKind(
                 code: self.weather?.current.weatherCode ?? .clear
             ),
-            daylight: ThemeManager.shared.daylight.value,
-            lightTheme: self.traitCollection.userInterfaceStyle == .light
-        ).main
+            daylight: ThemeManager.shared.daylight.value
+        ).main.withAlphaComponent(0.33)
     }
     
     func onSelectedChanged(newSelectedIndex: Int) {

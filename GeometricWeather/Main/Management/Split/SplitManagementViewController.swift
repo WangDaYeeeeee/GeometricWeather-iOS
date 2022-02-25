@@ -111,14 +111,18 @@ class SplitManagementViewController: GeoViewController<MainViewModelWeakRef>,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.param.vm?.selectableTotalLocations.addObserver(self) { newValue in
-            self.updateLocationList(newValue)
+        self.param.vm?.selectableTotalLocations.addObserver(self) { [weak self] newValue in
+            guard let strongSelf = self else {
+                return
+            }
             
-            let showBookmarkButton = !self.itemList.contains { item in
+            strongSelf.updateLocationList(newValue)
+            
+            let showBookmarkButton = !strongSelf.itemList.contains { item in
                 item.location.currentPosition
             }
-            if self.searchController.searchBar.showsBookmarkButton != showBookmarkButton {
-                self.searchController.searchBar.showsBookmarkButton = showBookmarkButton
+            if strongSelf.searchController.searchBar.showsBookmarkButton != showBookmarkButton {
+                strongSelf.searchController.searchBar.showsBookmarkButton = showBookmarkButton
             }
         }
     }

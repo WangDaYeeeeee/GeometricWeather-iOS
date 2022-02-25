@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
 
 class GeoNavigationController: UINavigationController {
         

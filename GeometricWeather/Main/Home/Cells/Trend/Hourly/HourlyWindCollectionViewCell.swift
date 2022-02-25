@@ -8,6 +8,10 @@
 import UIKit
 import GeometricWeatherBasic
 
+private func toRadians(_ degrees: Double) -> Double {
+    return degrees * .pi / 180.0
+}
+
 // MARK: - cell.
 
 class HourlyWindCollectionViewCell: UICollectionViewCell {
@@ -73,7 +77,7 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         
         if !(hourly.wind?.degree.noDirection ?? true) {
             self.hourlyIcon.image = UIImage(
-                systemName: "arrow.up"
+                systemName: "arrow.down"
             )?.withTintColor(
                 .label
             ).scaleToSize(
@@ -83,7 +87,7 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
                 )
             )
             self.hourlyIcon.transform = CGAffineTransform(
-                rotationAngle: hourly.wind?.degree.degree ?? 0.0
+                rotationAngle: toRadians(hourly.wind?.degree.degree ?? 0.0)
             )
         } else {
             self.hourlyIcon.image = UIImage(
@@ -108,7 +112,7 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         let speedUnit = SettingsManager.shared.speedUnit
         self.histogramView.histogramDescription = speedUnit.formatValueWithUnit(
             hourly.wind?.speed ?? 0.0,
-            unit: NSLocalizedString(speedUnit.key, comment: "")
+            unit: ""
         )
         self.histogramView.histogramColor = getLevelColor(
             hourly.wind?.getWindLevel() ?? 1

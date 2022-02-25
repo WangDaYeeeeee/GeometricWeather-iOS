@@ -86,7 +86,7 @@ extension HomeViewController {
             )
         }
         
-        // re-opened from alert notification.
+        // opened from alert notification.
         
         EventBus.shared.stickyRegister(
             self,

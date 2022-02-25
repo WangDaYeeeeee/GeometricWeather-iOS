@@ -42,26 +42,30 @@ class GeoViewController<T>: UIViewController {
         
         ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
             self
-        ) { newValue in
-            self.overrideUserInterfaceStyle = newValue
+        ) { [weak self] newValue in
+            guard let strongSelf = self else {
+                return
+            }
             
-            if !self.isBeingPresented {
-                let titleColor = self.view.traitCollection.userInterfaceStyle == .light
+            strongSelf.overrideUserInterfaceStyle = newValue
+            
+            if !strongSelf.isBeingPresented {
+                let titleColor = strongSelf.view.traitCollection.userInterfaceStyle == .light
                 ? UIColor.black
                 : UIColor.white
                 
-                self.navigationController?.navigationBar.isTranslucent = true
-                self.navigationController?.navigationBar.tintColor = .systemBlue
-                self.navigationController?.navigationBar.titleTextAttributes = [
+                strongSelf.navigationController?.navigationBar.isTranslucent = true
+                strongSelf.navigationController?.navigationBar.tintColor = .systemBlue
+                strongSelf.navigationController?.navigationBar.titleTextAttributes = [
                     NSAttributedString.Key.foregroundColor: titleColor
                 ]
-                self.navigationController?.navigationBar.setBackgroundImage(
+                strongSelf.navigationController?.navigationBar.setBackgroundImage(
                     nil,
                     for: .default
                 )
-                self.navigationController?.navigationBar.shadowImage = nil
+                strongSelf.navigationController?.navigationBar.shadowImage = nil
                 
-                self.statusBarStyle = self.view.traitCollection.userInterfaceStyle == .light
+                strongSelf.statusBarStyle = strongSelf.view.traitCollection.userInterfaceStyle == .light
                 ? .darkContent
                 : .lightContent
             }

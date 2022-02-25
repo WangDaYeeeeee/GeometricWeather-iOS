@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
 
 private let defaultDotRadius = 4.0
 private let defaultDotCenterMargin = defaultDotRadius * 2 + 6.0

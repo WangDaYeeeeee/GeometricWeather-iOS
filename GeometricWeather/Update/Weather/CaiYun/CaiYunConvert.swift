@@ -401,9 +401,9 @@ private func getDailyList(
                 pollen: getDailyPollen(array: forecast?.airAndPollen ?? []),
                 uv: UV(
                     index: Int(
-                        weatherResult.result.daily.lifeIndex.ultraviolet[0].index
+                        weatherResult.result.daily.lifeIndex.ultraviolet[i].index
                     ),
-                    level: weatherResult.result.daily.lifeIndex.ultraviolet[0].desc,
+                    level: weatherResult.result.daily.lifeIndex.ultraviolet[i].desc,
                     description: nil
                 ),
                 hoursOfSun: nil

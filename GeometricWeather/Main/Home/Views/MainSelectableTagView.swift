@@ -35,11 +35,16 @@ class MainSelectableTagView: UICollectionView,
     }
     private(set) var selectedIndex = 0 {
         didSet {
-            self.selectItem(
-                at: IndexPath(row: self.selectedIndex, section: 0),
-                animated: false,
-                scrollPosition: .centeredVertically
-            )
+            if let cell = self.cellForItem(
+                at: IndexPath(row: oldValue, section: 0)
+            ) as? TagCell {
+                cell.isSelectedCell = false
+            }
+            if let cell = self.cellForItem(
+                at: IndexPath(row: self.selectedIndex, section: 0)
+            ) as? TagCell {
+                cell.isSelectedCell = true
+            }
             
             self.tagDelegate?.onSelectedChanged(
                 newSelectedIndex: self.selectedIndex
@@ -54,9 +59,9 @@ class MainSelectableTagView: UICollectionView,
     init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = littleMargin
-        layout.sectionInset = UIEdgeInsets(top: 0, left: littleMargin, bottom: 0, right: littleMargin)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: littleMargin)
         
         super.init(frame: frame, collectionViewLayout: layout)
         self.backgroundColor = .clear
@@ -92,9 +97,8 @@ class MainSelectableTagView: UICollectionView,
             for: indexPath
         ) as! TagCell
         
-        cell.delegate = self
-        cell.title = self.tagList.get(indexPath.row)
-        cell.isSelected = self.selectedIndex == indexPath.row
+        cell.bindData(title: self.tagList.get(indexPath.row) ?? "", delegate: self)
+        cell.isSelectedCell = self.selectedIndex == indexPath.row
         
         return cell
     }
@@ -109,7 +113,7 @@ class MainSelectableTagView: UICollectionView,
             for: indexPath
         ) as! TagCell
         
-        cell.title = self.tagList.get(indexPath.row)
+        cell.bindData(title: self.tagList.get(indexPath.row) ?? "", delegate: self)
         
         return cell.systemLayoutSizeFitting(.zero)
     }
@@ -143,27 +147,11 @@ private class TagCell: UICollectionViewCell {
     
     // MARK: - cell subviews.
     
-    let tagView = CornerButton(frame: .zero, littleMargin: true)
+    private let tagView = CornerButton(frame: .zero, littleMargin: true)
     
-    var title: String? {
-        set {
-            self.tagView.setTitle(newValue, for: .normal)
-        }
-        get {
-            return self.tagView.title(for: .normal)
-        }
-    }
-    
-    override var isSelected: Bool {
-        willSet {
-            if newValue {
-                self.tagView.backgroundColor = self.delegate?.getSelectedColor() ?? .systemBlue
-                self.tagView.setTitleColor(.white, for: .normal)
-            } else {
-                self.tagView.backgroundColor = self.delegate?.getUnselectedColor() ?? .systemYellow
-                self.tagView.setTitleColor(.label, for: .normal)
-            }
-            self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
+    var isSelectedCell: Bool = false {
+        didSet {
+            self.updateColors(selected: self.isSelectedCell)
         }
     }
     
@@ -186,12 +174,46 @@ private class TagCell: UICollectionViewCell {
         self.contentView.addSubview(self.tagView)
         
         self.tagView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview().offset(littleMargin)
+            make.right.equalToSuperview()
+        }
+        
+        ThemeManager.shared.daylight.addNonStickyObserver(
+            self
+        ) { [weak self] daylight in
+            self?.updateColors(selected: self?.isSelectedCell ?? false)
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bindData(title: String, delegate: TagCellDelegate) {
+        self.delegate = delegate
+        self.tagView.setTitle(title, for: .normal)
+    }
+    
+    override func traitCollectionDidChange(
+        _ previousTraitCollection: UITraitCollection?
+    ) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        DispatchQueue.main.async {
+            self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
+        }
+    }
+    
+    private func updateColors(selected: Bool) {
+        if selected {
+            self.tagView.backgroundColor = self.delegate?.getSelectedColor() ?? .systemBlue
+            self.tagView.setTitleColor(.white, for: .normal)
+        } else {
+            self.tagView.backgroundColor = self.delegate?.getUnselectedColor() ?? .systemYellow
+            self.tagView.setTitleColor(.label, for: .normal)
+        }
+        self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
     }
     
     @objc private func onTap() {

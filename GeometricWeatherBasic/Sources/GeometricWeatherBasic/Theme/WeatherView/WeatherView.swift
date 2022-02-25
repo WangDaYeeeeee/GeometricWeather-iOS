@@ -151,11 +151,15 @@ public protocol WeatherThemeDelegate {
     // )
     func getThemeColors(
         weatherKind: WeatherKind,
-        daylight: Bool,
-        lightTheme: Bool
+        daylight: Bool
     ) -> (main: UIColor, daytime: UIColor, nighttime: UIColor)
     
     func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat
+    
+    func getCardBackgroundColor(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> UIColor
 }
 
 public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
@@ -171,8 +175,7 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
     
     private let getThemeColorsFunc: (
         _ weatherKind: WeatherKind,
-        _ daylight: Bool,
-        _ lightTheme: Bool
+        _ daylight: Bool
     ) -> (
         main: UIColor,
         daytime: UIColor,
@@ -183,6 +186,11 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
         _ viewHeight: CGFloat
     ) -> CGFloat
     
+    private let getCardBackgroundColorFunc: (
+        _ weatherKind: WeatherKind,
+        _ daylight: Bool
+    ) -> UIColor
+    
     // life cycle.
     
     init<Impl: WeatherThemeDelegate>(
@@ -191,8 +199,9 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
         
         self.getWeatherViewControllerFunc = impl.getWeatherViewController
         self.getWidgetBackgroundViewFunc = impl.getWidgetBackgroundView(weatherKind:daylight:)
-        self.getThemeColorsFunc = impl.getThemeColors(weatherKind:daylight:lightTheme:)
+        self.getThemeColorsFunc = impl.getThemeColors(weatherKind:daylight:)
         self.getHeaderHeightFunc = impl.getHeaderHeight(_:)
+        self.getCardBackgroundColorFunc = impl.getCardBackgroundColor(weatherKind:daylight:)
     }
     
     // override methods.
@@ -215,17 +224,23 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
     // )
     public func getThemeColors(
         weatherKind: WeatherKind,
-        daylight: Bool,
-        lightTheme: Bool
+        daylight: Bool
     ) -> (
         main: UIColor,
         daytime: UIColor,
         nighttime: UIColor
     ) {
-        return self.getThemeColorsFunc(weatherKind, daylight, lightTheme)
+        return self.getThemeColorsFunc(weatherKind, daylight)
     }
     
     public func getHeaderHeight(_ viewHeight: CGFloat) -> CGFloat {
         return self.getHeaderHeightFunc(viewHeight)
+    }
+    
+    public func getCardBackgroundColor(
+        weatherKind: WeatherKind,
+        daylight: Bool
+    ) -> UIColor {
+        return self.getCardBackgroundColorFunc(weatherKind, daylight)
     }
 }

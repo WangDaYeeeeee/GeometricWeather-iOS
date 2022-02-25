@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
 
 extension PresentManagementViewController {
     

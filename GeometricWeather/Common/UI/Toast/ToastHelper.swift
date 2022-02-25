@@ -5,7 +5,7 @@
 //  Created by 王大爷 on 2021/10/14.
 //
 
-import Foundation
+import UIKit
 
 class ToastHelper {
     

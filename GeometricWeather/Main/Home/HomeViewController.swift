@@ -100,19 +100,21 @@ class HomeViewController: UIViewController,
         
         // observe theme changed.
         
-        ThemeManager.shared.homeOverrideUIStyle.addObserver(self) { newValue in
-            self.overrideUserInterfaceStyle = newValue
-            self.updateNavigationBarTintColor()
+        ThemeManager.shared.homeOverrideUIStyle.addObserver(
+            self
+        ) { [weak self] newValue in
+            self?.overrideUserInterfaceStyle = newValue
+            self?.updateNavigationBarTintColor()
             
-            self.indicator.selectedColor = newValue == .light
+            self?.indicator.selectedColor = newValue == .light
             ? UIColor.black.cgColor
             : UIColor.white.cgColor
-            self.indicator.unselectedColor = newValue == .light
+            self?.indicator.unselectedColor = newValue == .light
             ? UIColor.black.withAlphaComponent(0.2).cgColor
             : UIColor.white.withAlphaComponent(0.2).cgColor
         }
-        ThemeManager.shared.daylight.addObserver(self) { _ in
-            self.updatePreviewableSubviews()
+        ThemeManager.shared.daylight.addObserver(self) { [weak self] _ in
+            self?.updatePreviewableSubviews()
         }
         
         // observe live data.

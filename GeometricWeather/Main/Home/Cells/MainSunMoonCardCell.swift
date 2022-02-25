@@ -116,6 +116,19 @@ class MainSunMoonCardCell: MainTableViewCell {
             make.trailing.equalTo(self.moonIcon.snp.leading).offset(-innerMargin)
             make.centerY.equalTo(self.moonIcon.snp.centerY)
         }
+        
+        ThemeManager.shared.daylight.addNonStickyObserver(
+            self
+        ) { [weak self] daylight in
+            guard let weather = self?.weather else {
+                return
+            }
+            
+            self?.updateThemeColors(
+                weatherCode: weather.current.weatherCode,
+                daylight: daylight
+            )
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -129,14 +142,6 @@ class MainSunMoonCardCell: MainTableViewCell {
             self.weather = weather
             self.timezone = location.timezone
             
-            let colors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: weather.current.weatherCode
-                ),
-                daylight: ThemeManager.shared.daylight.value,
-                lightTheme: self.traitCollection.userInterfaceStyle == .light
-            )
-            
             // moon phase.
             
             if let angle = weather.dailyForecasts[0].moonPhase.angle,
@@ -146,10 +151,6 @@ class MainSunMoonCardCell: MainTableViewCell {
                 
                 self.moonPhaseView.angle = Double(angle)
                 self.moonPhaseView.lightColor = .white
-                self.moonPhaseView.darkColor = colors.main
-                self.moonPhaseView.borderColor = self.traitCollection.userInterfaceStyle == .light
-                ? self.moonPhaseView.darkColor
-                : self.moonPhaseView.lightColor
                 
                 self.moonPhaseLabel.text = NSLocalizedString(
                     weather.dailyForecasts[0].moonPhase.getMoonPhaseKey(),
@@ -162,9 +163,6 @@ class MainSunMoonCardCell: MainTableViewCell {
             
             // sun moon path view.
         
-            self.sunMoonPathView.sunColor = colors.daytime
-            self.sunMoonPathView.moonColor = colors.nighttime
-            self.sunMoonPathView.backgroundLineColor = colors.main
             self.sunMoonPathView.setProgress(
                 (0.0, 0.0),
                 withAnimationDuration: (0.0, 0.0)
@@ -207,6 +205,13 @@ class MainSunMoonCardCell: MainTableViewCell {
                 self.moonIcon.alpha = 0.0
                 self.moonLabel.alpha = 0.0
             }
+            
+            // theme colors.
+            
+            self.updateThemeColors(
+                weatherCode: weather.current.weatherCode,
+                daylight: ThemeManager.shared.daylight.value
+            )
         }
     }
     
@@ -214,22 +219,31 @@ class MainSunMoonCardCell: MainTableViewCell {
         _ previousTraitCollection: UITraitCollection?
     ) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
         DispatchQueue.main.async {
-            self.moonPhaseView.borderColor = self.traitCollection.userInterfaceStyle == .light
-            ? self.moonPhaseView.darkColor
-            : self.moonPhaseView.lightColor
-            
-            let colors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: self.weather?.current.weatherCode ?? .clear
-                ),
-                daylight: ThemeManager.shared.daylight.value,
-                lightTheme: self.traitCollection.userInterfaceStyle == .light
-            )
-            self.sunMoonPathView.sunColor = colors.daytime
-            self.sunMoonPathView.moonColor = colors.nighttime
-            self.sunMoonPathView.backgroundLineColor = colors.main
+            if let weatherCode = self.weather?.current.weatherCode {
+                self.updateThemeColors(
+                    weatherCode: weatherCode,
+                    daylight: ThemeManager.shared.daylight.value
+                )
+            }
         }
+    }
+    
+    private func updateThemeColors(weatherCode: WeatherCode, daylight: Bool) {
+        let colors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
+            daylight: daylight
+        )
+        
+        self.moonPhaseView.darkColor = colors.main
+        self.moonPhaseView.borderColor = self.traitCollection.userInterfaceStyle == .light
+        ? self.moonPhaseView.darkColor
+        : self.moonPhaseView.lightColor
+        
+        self.sunMoonPathView.sunColor = colors.daytime
+        self.sunMoonPathView.moonColor = colors.nighttime
+        self.sunMoonPathView.backgroundLineColor = colors.main
     }
     
     override func staggeredScrollIntoScreen(atFirstTime: Bool) {

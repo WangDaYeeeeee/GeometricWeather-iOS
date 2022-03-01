@@ -65,16 +65,16 @@ struct SettingsView: View {
                     titleKey: "settings_title_precipitation_notification_switch",
                     toggleOn: self.$precipitationAlertEnabled
                 )
-                SettingsListCellView(
-                    titleKey: "settings_title_refresh_rate",
-                    keys: [
-                        "update_interval_1",
-                        "update_interval_2",
-                        "update_interval_3",
-                        "update_interval_4",
-                    ],
-                    selectedKey: self.$updateInterval
-                )
+//                SettingsListCellView(
+//                    titleKey: "settings_title_refresh_rate",
+//                    keys: [
+//                        "update_interval_1",
+//                        "update_interval_2",
+//                        "update_interval_3",
+//                        "update_interval_4",
+//                    ],
+//                    selectedKey: self.$updateInterval
+//                )
             }
             
             Section(

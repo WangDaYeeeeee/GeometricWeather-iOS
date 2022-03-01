@@ -8,6 +8,8 @@
 import Foundation
 import GeometricWeatherBasic
 
+private let backgroundPollingValidInterval = 0.25 // 15 minutes.
+
 class UpdateHelper {
     
     private let locator = LocationHelper()
@@ -37,7 +39,7 @@ class UpdateHelper {
         cancel()
         
         if inBackground && target.weather?.isValid(
-            pollingIntervalHours: SettingsManager.shared.updateInterval.hours
+            pollingIntervalHours: backgroundPollingValidInterval
         ) ?? false {
             DispatchQueue.main.async {
                 callback(target, target.currentPosition ? true : nil, true)

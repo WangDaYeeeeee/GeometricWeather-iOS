@@ -31,6 +31,10 @@ class AppDelegate: UIResponder,
         updateAppExtensions()
         registerPollingBackgroundTask()
         
+        EventBus.shared.register(self, for: UpdateIntervalChanged.self) { event in
+            registerPollingBackgroundTask()
+        }
+        
         // register forecast pending notifications.
         DispatchQueue.global(qos: .background).async {
             if let weather = DatabaseHelper.shared.readWeather(

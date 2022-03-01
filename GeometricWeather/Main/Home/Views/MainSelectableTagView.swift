@@ -147,7 +147,7 @@ private class TagCell: UICollectionViewCell {
     
     // MARK: - cell subviews.
     
-    private let tagView = CornerButton(frame: .zero, littleMargin: true)
+    private let tagView = CornerButton(frame: .zero, useLittleMargin: true)
     
     var isSelectedCell: Bool = false {
         didSet {

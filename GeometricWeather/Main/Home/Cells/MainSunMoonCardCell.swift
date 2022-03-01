@@ -91,10 +91,10 @@ class MainSunMoonCardCell: MainTableViewCell {
             make.trailing.equalTo(self.moonPhaseView.snp.leading).offset(-innerMargin)
         }
         self.sunMoonPathView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(normalMargin + littleMargin)
+            make.top.equalTo(self.titleVibrancyContainer.snp.bottom).offset(littleMargin)
             make.leading.equalToSuperview().offset(littleMargin)
             make.trailing.equalToSuperview().offset(-littleMargin)
-            make.width.equalTo(self.sunMoonPathView.snp.height).multipliedBy(2.0)
+            make.height.equalTo(136)
         }
         self.sunIcon.snp.makeConstraints { make in
             make.top.equalTo(self.sunMoonPathView.snp.bottom).offset(normalMargin)
@@ -135,8 +135,8 @@ class MainSunMoonCardCell: MainTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func bindData(location: Location) {
-        super.bindData(location: location)
+    override func bindData(location: Location, timeBar: MainTimeBarView?) {
+        super.bindData(location: location, timeBar: timeBar)
         
         if let weather = location.weather {
             self.weather = weather

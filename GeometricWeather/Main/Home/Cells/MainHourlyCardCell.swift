@@ -11,7 +11,7 @@ import GeometricWeatherBasic
 private let hourlyTrendViewHeight = 198.0
 private let minutelyTrendViewHeight = 56.0
 
-private enum HourlyTag: String {
+enum HourlyTag: String {
     
     case temperature = "hourly_temperature"
     case wind = "hourly_wind"
@@ -159,8 +159,8 @@ class MainHourlyCardCell: MainTableViewCell,
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func bindData(location: Location) {
-        super.bindData(location: location)
+    override func bindData(location: Location, timeBar: MainTimeBarView?) {
+        super.bindData(location: location, timeBar: timeBar)
         
         self.minutelyTitleVibrancyContainer.removeFromSuperview()
         self.minutelyView.removeFromSuperview()
@@ -189,7 +189,12 @@ class MainHourlyCardCell: MainTableViewCell,
 
             self.summaryLabel.text = weather.current.hourlyForecast
             
-            self.buildTagList()
+            self.tagList = self.buildTagList(weather: weather)
+            var titles = [String]()
+            for tagPair in self.tagList {
+                titles.append(tagPair.title)
+            }
+            self.hourlyTagView.tagList = titles
             
             self.hourlyBackgroundView.bindData(
                 weather: weather,
@@ -257,31 +262,6 @@ class MainHourlyCardCell: MainTableViewCell,
                 self.hourlyBackgroundView.bindData(weather: weather, temperatureRange: range)
             }
         }
-    }
-    
-    // MARK: - ui.
-    
-    private func buildTagList() {
-        var tags = [(HourlyTag.temperature, NSLocalizedString("temperature", comment: ""))]
-        
-        // wind.
-        for hourly in (self.weather?.hourlyForecasts ?? []) {
-            if hourly.wind != nil {
-                tags.append(
-                    (HourlyTag.wind, NSLocalizedString("wind", comment: ""))
-                )
-                break
-            }
-        }
-        
-        self.tagList = tags
-        
-        var titles = [String]()
-        for tagPair in self.tagList {
-            titles.append(tagPair.title)
-        }
-        
-        self.hourlyTagView.tagList = titles
     }
     
     // MARK: - delegates.
@@ -377,45 +357,16 @@ class MainHourlyCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = self.hourlyCollectionView.dequeueReusableCell(
-            withReuseIdentifier: self.currentTag.rawValue,
-            for: indexPath
+        return self.buildCell(
+            collectionView: self.hourlyCollectionView,
+            currentTag: self.currentTag,
+            indexPath: indexPath,
+            weather: self.weather,
+            source: self.source,
+            timezone: self.timezone ?? .current,
+            temperatureRange: self.temperatureRange ?? 0...0,
+            maxWindSpeed: self.maxWindSpeed ?? 0
         )
-        
-        switch self.currentTag {
-        case .temperature:
-            if let weather = self.weather,
-                let hourlies = self.weather?.hourlyForecasts {
-                
-                var histogramType = HourlyHistogramType.none
-                if self.source?.hasHourlyPrecipitationProb ?? false {
-                    histogramType = .precipitationProb
-                }
-                if self.source?.hasHourlyPrecipitationIntensity ?? false {
-                    histogramType = .precipitationIntensity
-                }
-                
-                (cell as? HourlyTrendCollectionViewCell)?.bindData(
-                    prev: indexPath.row == 0 ? nil : hourlies[indexPath.row - 1],
-                    hourly: hourlies[indexPath.row],
-                    next: indexPath.row == hourlies.count - 1 ? nil : hourlies[indexPath.row + 1],
-                    temperatureRange: self.temperatureRange ?? 0...0,
-                    weatherCode: weather.current.weatherCode,
-                    timezone: self.timezone ?? .current,
-                    histogramType: histogramType
-                )
-            }
-        case .wind:
-            if let hourlies = self.weather?.hourlyForecasts {
-                (cell as? HourlyWindCollectionViewCell)?.bindData(
-                    hourly: hourlies[indexPath.row],
-                    maxWindSpeed: self.maxWindSpeed ?? 0.0,
-                    timezone: self.timezone ?? .current
-                )
-            }
-        }
-        
-        return cell
     }
     
     // selectable tag view.

@@ -10,8 +10,6 @@ import BackgroundTasks
 import GeometricWeatherBasic
 import SwiftUI
 
-let pollingIntervalInHours = 1.0
-
 private let identifier = "com.wangdaye.geometricweather.polling"
 
 // MARK: - event.
@@ -39,7 +37,7 @@ func schedulePollingBackgroundTask() {
     do {
         let request = BGAppRefreshTaskRequest(identifier: identifier)
         request.earliestBeginDate = Date(
-            timeIntervalSinceNow: pollingIntervalInHours * 60 * 60
+            timeIntervalSinceNow: SettingsManager.shared.updateInterval.hours * 60 * 60
         )
         try BGTaskScheduler.shared.submit(request)
         printLog(

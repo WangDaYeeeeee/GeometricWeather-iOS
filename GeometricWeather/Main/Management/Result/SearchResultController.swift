@@ -53,7 +53,7 @@ class SearchResultController: GeoViewController<Bool>,
         self.tableView.separatorStyle = .singleLine
         self.tableView.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
         self.tableView.separatorInset = .zero
-        self.tableView.rowHeight = locationCellHeight
+        self.tableView.rowHeight = SearchTableViewCell.locationCellHeight
         self.tableView.register(
             SearchTableViewCell.self,
             forCellReuseIdentifier: cellReuseId

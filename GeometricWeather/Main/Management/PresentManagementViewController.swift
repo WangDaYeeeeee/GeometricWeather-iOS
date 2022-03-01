@@ -10,10 +10,8 @@ import GeometricWeatherBasic
 
 private let cellReuseId = "ManagementTableViewCell"
 
-class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
-                                        UISearchBarDelegate,
-                                        JXMovableCellTableViewDataSource,
-                                        JXMovableCellTableViewDelegate {
+class PresentManagementViewController: BaseManagementController,
+                                        UISearchBarDelegate {
     
     
     // MARK: - properties.
@@ -23,21 +21,15 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
     private let staggeredHelper = StaggeredCellAnimationHelper(
         initOffset: CGSize(width: 0.0, height: 256.0)
     )
-    var itemList = [LocationItem]()
     
     private let searching = EqualtableLiveData(false)
-    
-    var moveBeginIndex: IndexPath?
-    
+        
     // subviews.
     
     private let blurBackground = UIVisualEffectView(
         effect: UIBlurEffect(style: .prominent)
     )
-    
     private let searchBar = UISearchBar(frame: .zero)
-    private let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
-    
     private let searchViewController = SearchResultController(param: false)
     
     // MARK: - life cycle.
@@ -72,7 +64,7 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
         self.tableView.separatorStyle = .singleLine
         self.tableView.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
         self.tableView.separatorInset = .zero
-        self.tableView.rowHeight = locationCellHeight
+        self.tableView.rowHeight = LocationTableViewCell.locationCellHeight
         self.tableView.register(
             LocationTableViewCell.self,
             forCellReuseIdentifier: cellReuseId
@@ -137,7 +129,7 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
                 return
             }
             
-            strongSelf.updateLocationList(newValue)
+            let _ = strongSelf.updateLocationList(newValue)
             
             let showBookmarkButton = !strongSelf.itemList.contains { item in
                 item.location.currentPosition
@@ -181,143 +173,29 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
     
     // MARK: - interfaces.
     
-    private func updateLocationList(_ newList: SelectableLocationArray) {
+    override func updateLocationList(
+        _ newList: SelectableLocationArray
+    ) -> BaseManagementController.UpdateLocationListResult {
         
-        // new.
-        if self.itemList.isEmpty {
-            self.generateItemList(newList, withoutSelectedState: false)
+        let result = super.updateLocationList(newList)
+        
+        switch result {
+        case .new:
             self.staggeredHelper.reset()
-            self.tableView.reloadData()
-            return
-        }
-        
-        let itemCountChanged = self.itemList.count != newList.locations.count
-        
-        if self.itemList.count < newList.locations.count {
-            // add.
-            let oldCount = self.itemList.count
-            let newCount = newList.locations.count
-            
-            self.generateItemList(newList, withoutSelectedState: true)
-            
-            var indexPaths = [IndexPath]()
-            for i in oldCount ..< newCount {
-                indexPaths.append(
-                    IndexPath(row: i, section: 0)
-                )
-            }
-            
-            self.tableView.insertRows(
-                at: indexPaths,
-                with: .none
-            )
-        } else if self.itemList.count > newList.locations.count {
-            // delete.
-            
-            var indexPaths = [IndexPath]()
-            
-            var oldIndex = 0
-            var newIndex = 0
-            while oldIndex < self.itemList.count
-                    && newIndex < newList.locations.count {
-                
-                if self.itemList[oldIndex].location.formattedId
-                    == newList.locations[newIndex].formattedId {
-                    oldIndex += 1
-                    newIndex += 1
-                    continue
-                }
-                
-                indexPaths.append(
-                    IndexPath(row: oldIndex, section: 0)
-                )
-                oldIndex += 1
-            }
-            for i in oldIndex ..< self.itemList.count {
-                indexPaths.append(
-                    IndexPath(row: i, section: 0)
-                )
-            }
-            
-            self.generateItemList(newList, withoutSelectedState: true)
-            
-            self.tableView.deleteRows(
-                at: indexPaths,
-                with: self.view.isRtl ? .right : .left
-            )
+            break
+        case .deleted:
             self.staggeredHelper.changeLastIndexPath(
                 IndexPath(
                     row: self.itemList.count - 1,
                     section: 0
                 )
             )
+            break
+        default:
+            break
         }
         
-        var locationDict = [String: Location]()
-        for location in newList.locations {
-            locationDict[location.formattedId] = location
-        }
-        
-        // update item.
-        for (i, item) in self.itemList.enumerated() {
-            if let newLocation = locationDict[item.location.formattedId] {
-                let newSelected = item.location.formattedId == newList.selectedId
-                
-                if item.location != newLocation || item.selected != newSelected {
-                    self.itemList[i] = LocationItem(
-                        location: newLocation,
-                        selected: newSelected
-                    )
-                    if let cell = self.tableView.cellForRow(
-                        at: IndexPath(row: i, section: 0)
-                    ) {
-                        (cell as? LocationTableViewCell)?.bindData(
-                            location: newLocation,
-                            selected: newSelected,
-                            trans: true
-                        )
-                    }
-                }
-            }
-        }
-        
-        if !itemCountChanged {
-            // move.
-            self.generateItemList(newList, withoutSelectedState: false)
-        }
-    }
-    
-    private func generateItemList(
-        _ newList: SelectableLocationArray,
-        withoutSelectedState: Bool
-    ) {
-        self.itemList.removeAll()
-        
-        for location in newList.locations {
-            self.itemList.append(
-                LocationItem(
-                    location: location,
-                    selected: !withoutSelectedState
-                    && location.formattedId == newList.selectedId
-                )
-            )
-        }
-    }
-    
-    private func indexLocation(
-        locations: [Location],
-        formattedId: String?
-    ) -> Int {
-        if let id = formattedId {
-            for (i, location) in locations.enumerated() {
-                if location.formattedId == id {
-                    return i
-                }
-            }
-            return 0
-        }
-        
-        return 0
+        return result
     }
     
     // MARK: - search bar delegate.
@@ -357,54 +235,7 @@ class PresentManagementViewController: GeoViewController<MainViewModelWeakRef>,
         self.searching.value = false
     }
     
-    // MARK: - table view delegate & data source.
-    
-    // data source.
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int {
-        return self.itemList.count
-    }
-    
-    func dataSourceArray(in tableView: JXMovableCellTableView!) -> NSMutableArray! {
-        let outer = NSMutableArray(capacity: 1)
-        outer.add(NSMutableArray(array: itemList))
-        return outer
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: cellReuseId,
-            for: indexPath
-        )
-        (cell as? LocationTableViewCell)?.bindData(
-            location: self.itemList[indexPath.row].location,
-            selected: self.itemList[indexPath.row].selected,
-            trans: true
-        )
-        return cell
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        self.param.vm?.setLocation(
-            formattedId: self.itemList[indexPath.row].location.formattedId
-        )
-        self.dismiss(animated: true)
-    }
+    // MARK: - staggerd animation.
     
     // staggerd.
         

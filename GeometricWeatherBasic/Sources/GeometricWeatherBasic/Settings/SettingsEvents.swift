@@ -1,5 +1,5 @@
 //
-//  SettingsNotifications.swift
+//  SettingsEvents.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/9/15.
@@ -33,6 +33,7 @@ public class UpdateIntervalChanged: SettingsValueEvent<UpdateInterval> {}
 // MARK: - appearance.
 
 public class DarkModeChanged: SettingsValueEvent<DarkMode> {}
+public class mainCardsChanged: SettingsValueEvent<[MainCard]> {}
 public class ExchangeDayNightTemperatureChanged: SettingsValueEvent<Bool> {}
 
 // MARK: - service provider.

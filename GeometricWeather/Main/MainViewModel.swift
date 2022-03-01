@@ -212,7 +212,7 @@ class MainViewModel: NSObject, UIStateRestoring {
     
     private func currentLocationIsValid() -> Bool {
         return currentLocation.value.weather?.isValid(
-            pollingIntervalHours: 2.0
+            pollingIntervalHours: SettingsManager.shared.updateInterval.hours
         ) ?? false
     }
     

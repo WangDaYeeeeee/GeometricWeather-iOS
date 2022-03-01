@@ -66,13 +66,13 @@ public class DatabaseHelper {
     public func writeLocation(location: Location) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
-                if GeometricWeatherBasic.readLocations(
+                if DAOs.readLocations(
                     context: context,
                     formattedId: location.formattedId
                 ).isEmpty {
-                    GeometricWeatherBasic.writeLocation(context: context, location: location)
+                    DAOs.writeLocation(context: context, location: location)
                 } else {
-                    GeometricWeatherBasic.updateLocation(context: context, location: location)
+                    DAOs.updateLocation(context: context, location: location)
                 }
             }
         }
@@ -81,21 +81,21 @@ public class DatabaseHelper {
     public func writeLocations(locations: [Location]) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
-                GeometricWeatherBasic.deleteLocations(context: context)
-                GeometricWeatherBasic.writeLocations(context: context, locations: locations)
+                DAOs.deleteLocations(context: context)
+                DAOs.writeLocations(context: context, locations: locations)
             }
         }
     }
     
     public func deleteLocation(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
-            GeometricWeatherBasic.deleteLocation(context: context, formattedId: formattedId)
+            DAOs.deleteLocation(context: context, formattedId: formattedId)
         }
     }
     
     public func readLocation(formattedId: String) -> Location? {
         if let context = self.persistentContainer?.viewContext {
-            return GeometricWeatherBasic.readLocations(
+            return DAOs.readLocations(
                 context: context,
                 formattedId: formattedId
             ).first
@@ -108,7 +108,7 @@ public class DatabaseHelper {
         
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
-                locations = GeometricWeatherBasic.readLocations(context: context)
+                locations = DAOs.readLocations(context: context)
                 
                 if locations.isEmpty {
                     locations.append(
@@ -116,7 +116,7 @@ public class DatabaseHelper {
                             weatherSource: SettingsManager.shared.weatherSource
                         )
                     )
-                    GeometricWeatherBasic.writeLocations(context: context, locations: locations)
+                    DAOs.writeLocations(context: context, locations: locations)
                 }
             }
         }
@@ -132,11 +132,11 @@ public class DatabaseHelper {
     ) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
-                GeometricWeatherBasic.deleteWeather(
+                DAOs.deleteWeather(
                     context: context,
                     formattedId: formattedId
                 )
-                GeometricWeatherBasic.writeWeather(
+                DAOs.writeWeather(
                     context: context,
                     weather: weather,
                     formattedId: formattedId
@@ -147,13 +147,13 @@ public class DatabaseHelper {
     
     public func deleteWeather(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
-            GeometricWeatherBasic.deleteWeather(context: context, formattedId: formattedId)
+            DAOs.deleteWeather(context: context, formattedId: formattedId)
         }
     }
     
     public func readWeather(formattedId: String) -> Weather? {
         if let context = self.persistentContainer?.viewContext {
-            return GeometricWeatherBasic.readWeather(context: context, formattedId: formattedId)
+            return DAOs.readWeather(context: context, formattedId: formattedId)
         }
         return nil
     }

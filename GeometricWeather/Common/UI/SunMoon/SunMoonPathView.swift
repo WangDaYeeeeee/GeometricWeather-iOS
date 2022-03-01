@@ -180,14 +180,22 @@ class SunMoonPathView: UIView {
         self.sunProgress = progress.sun
         self.moonProgress = progress.moon
         
+        let validWidth = self.frame.width - 2 * innerMargin
+        let validHeight = self.frame.height - innerMargin
+        let swipeAngle = .pi - 2 * asin(
+            (validWidth / 2.0 - validHeight) / (validWidth / 2.0)
+        )
         let arcPath = UIBezierPath(
             arcCenter: CGPoint(
-                x: self.frame.width / 2.0,
-                y: self.frame.height
+                x: validWidth / 2.0 + innerMargin,
+                y: max(
+                    validWidth / 2.0 + innerMargin,
+                    validHeight + innerMargin
+                )
             ),
-            radius: self.frame.width / 2.0 - innerMargin,
-            startAngle: .pi,
-            endAngle: 2.0 * .pi,
+            radius: validWidth / 2.0,
+            startAngle: 1.5 * .pi - swipeAngle * 0.5,
+            endAngle: 1.5 * .pi + swipeAngle * 0.5,
             clockwise: true
         )
         self.setProgress(
@@ -217,14 +225,15 @@ class SunMoonPathView: UIView {
             forKey: moonAnimationKey,
             forIcon: self.moonIcon
         )
-        
+
         arcPath.addLine(
             to: CGPoint(
-                x: innerMargin,
+                x: validWidth / 2.0 - sqrt(
+                    pow(validWidth / 2.0, 2.0) - pow(validWidth / 2.0 - validHeight, 2.0)
+                ) + innerMargin,
                 y: self.frame.height
             )
         )
-        
         self.backgroundShape.path = arcPath.cgPath
         self.backgroundShape.strokeStart = 0.0
         self.backgroundShape.strokeEnd = 1.0
@@ -291,13 +300,21 @@ class SunMoonPathView: UIView {
     }
     
     private func getAnimationPath(for progress: Double) -> UIBezierPath {
+        let validWidth = self.frame.width - 2 * innerMargin
+        let validHeight = self.frame.height - innerMargin
+        let swipeAngle = (
+            .pi - 2 * asin(
+                (validWidth / 2.0 - validHeight) / (validWidth / 2.0)
+            )
+        ) * 180.0 / .pi
+                
         let path = UIBezierPath()
         
         path.move(to: self.getIconPoint(for: 0))
-        if Int(180 * progress) <= 1 {
+        if Int(swipeAngle * progress) <= 1 {
             path.addLine(to: self.getIconPoint(for: 1))
         } else {
-            for angle in 1 ... Int(180 * progress) {
+            for angle in 1 ... Int(swipeAngle * progress) {
                 path.addLine(to: self.getIconPoint(for: angle))
             }
         }
@@ -306,27 +323,40 @@ class SunMoonPathView: UIView {
     }
     
     private func getIconPoint(for angle: Int) -> CGPoint {
-        let radius = self.frame.width / 2.0 - innerMargin
+        
+        let validWidth = self.frame.width - 2 * innerMargin
+        let validHeight = self.frame.height - innerMargin
+        let swipeAngle = (
+            .pi - 2 * asin(
+                (validWidth / 2.0 - validHeight) / (validWidth / 2.0)
+            )
+        ) * 180.0 / .pi
+        let currentAngle = 90 - Int(swipeAngle * 0.5) + angle
+        
+        let radius = validWidth / 2.0
         let center = CGPoint(
-            x: self.frame.width / 2.0,
-            y: self.frame.height
+            x: validWidth / 2.0 + innerMargin,
+            y: max(
+                validWidth / 2.0 + innerMargin,
+                validHeight + innerMargin
+            )
         )
         
-        if angle < 90 {
+        if currentAngle < 90 {
             return CGPoint(
-                x: center.x - radius * cos(Double(angle) * .pi / 180.0),
-                y: center.y - radius * sin(Double(angle) * .pi / 180.0)
+                x: center.x - radius * cos(Double(currentAngle) * .pi / 180.0),
+                y: center.y - radius * sin(Double(currentAngle) * .pi / 180.0)
             )
         }
-        if angle == 90 {
+        if currentAngle == 90 {
             return CGPoint(
                 x: center.x,
                 y: center.y - radius
             )
         }
         return CGPoint(
-            x: center.x + radius * cos(Double(180 - angle) * .pi / 180.0),
-            y: center.y - radius * sin(Double(180 - angle) * .pi / 180.0)
+            x: center.x + radius * cos(Double(180 - currentAngle) * .pi / 180.0),
+            y: center.y - radius * sin(Double(180 - currentAngle) * .pi / 180.0)
         )
     }
 }

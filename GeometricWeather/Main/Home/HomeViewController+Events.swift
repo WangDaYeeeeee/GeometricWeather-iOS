@@ -86,6 +86,18 @@ extension HomeViewController {
             )
         }
         
+        // edit button tapped.
+        
+        EventBus.shared.register(
+            self,
+            for: MainFooterEditButtonTapAction.self
+        ) { [weak self] _ in
+            self?.navigationController?.pushViewController(
+                EditViewController(param: ()),
+                animated: true
+            )
+        }
+        
         // opened from alert notification.
         
         EventBus.shared.stickyRegister(

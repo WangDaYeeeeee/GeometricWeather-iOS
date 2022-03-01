@@ -12,7 +12,7 @@ private let blurStyle = UIBlurEffect.Style.prominent
 
 protocol AbstractMainItem {
     
-    func bindData(location: Location)
+    func bindData(location: Location, timeBar: MainTimeBarView?)
 }
 
 class MainTableViewCell: UITableViewCell, AbstractMainItem {
@@ -62,12 +62,42 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(location: Location) {
+    func bindData(location: Location, timeBar: MainTimeBarView?) {
+        
         self.cardContainer.contentView.backgroundColor = ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
             weatherKind: weatherCodeToWeatherKind(
                 code: location.weather?.current.weatherCode ?? .clear
             ),
             daylight: ThemeManager.shared.daylight.value
         )
+        
+        if let timeBar = timeBar {
+            timeBar.removeFromSuperview()
+            self.cardContainer.contentView.addSubview(timeBar)
+            
+            if let weather = location.weather {
+                timeBar.register(
+                    weather: weather,
+                    andTimezone: location.timezone
+                )
+            }
+            
+            timeBar.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.leading.equalToSuperview()
+                make.trailing.equalToSuperview()
+            }
+            self.titleVibrancyContainer.snp.remakeConstraints { make in
+                make.top.equalTo(timeBar.snp.bottom).offset(littleMargin)
+                make.leading.equalToSuperview().offset(normalMargin)
+                make.trailing.equalToSuperview().offset(-normalMargin)
+            }
+        } else {
+            self.titleVibrancyContainer.snp.remakeConstraints { make in
+                make.top.equalToSuperview().offset(normalMargin)
+                make.leading.equalToSuperview().offset(normalMargin)
+                make.trailing.equalToSuperview().offset(-normalMargin)
+            }
+        }
     }
 }

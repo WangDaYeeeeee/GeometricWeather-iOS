@@ -9,12 +9,13 @@ import UIKit
 import GeometricWeatherBasic
 
 private let cellKeyHeader = "header"
-private let cellKeyDaily = "daily"
-private let cellKeyHourly = "hourly"
-private let cellKeyAirQuality = "air_quality"
-private let cellKeyAllergen = "allergen"
-private let cellKeySunMoon = "sun_moon"
-private let cellKeyDetails = "details"
+private let cellKeyDaily = MainCard.daily.key
+private let cellKeyHourly = MainCard.hourly.key
+private let cellKeyAirQuality = MainCard.airQuality.key
+private let cellKeyAllergen = MainCard.allergen.key
+private let cellKeySunMoon = MainCard.sunMoon.key
+private let cellKeyDetails = MainCard.details.key
+private let cellKeyFooter = "footer"
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -51,67 +52,50 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         )
     }
     
-    func prepareCellCache() -> Dictionary<String, MainTableViewCell> {
-        let dict = [
-            cellKeyDaily: MainDailyCardCell(style: .default, reuseIdentifier: cellKeyDaily),
-            cellKeyHourly: MainHourlyCardCell(style: .default, reuseIdentifier: cellKeyHourly),
-            cellKeyAirQuality: MainAirQualityCardCell(style: .default, reuseIdentifier: cellKeyAirQuality),
-            cellKeyAllergen: MainAllergenCardCell(style: .default, reuseIdentifier: cellKeyAllergen),
-            cellKeySunMoon: MainSunMoonCardCell(style: .default, reuseIdentifier: cellKeySunMoon),
-            cellKeyDetails: MainDetailsCardCell(style: .default, reuseIdentifier: cellKeyDetails),
-        ]
+    func prepareCellCache() -> Dictionary<String, AbstractMainItem> {
+        var dict = Dictionary<String, AbstractMainItem>()
+        
+        dict[cellKeyDaily] = MainDailyCardCell(style: .default, reuseIdentifier: cellKeyDaily)
+        dict[cellKeyHourly] = MainHourlyCardCell(style: .default, reuseIdentifier: cellKeyHourly)
+        dict[cellKeyAirQuality] = MainAirQualityCardCell(style: .default, reuseIdentifier: cellKeyAirQuality)
+        dict[cellKeyAllergen] = MainAllergenCardCell(style: .default, reuseIdentifier: cellKeyAllergen)
+        dict[cellKeySunMoon] = MainSunMoonCardCell(style: .default, reuseIdentifier: cellKeySunMoon)
+        dict[cellKeyDetails] = MainDetailsCardCell(style: .default, reuseIdentifier: cellKeyDetails)
+        dict[cellKeyFooter] = MainFooterCell(style: .default, reuseIdentifier: cellKeyFooter)
+        
         return dict
     }
     
     func prepareCellKeyList(location: Location) -> [String] {
-        if let weather = location.weather {
-            var keyList = [String]()
-            
-            if weather.dailyForecasts.count > 0 {
-                keyList.append(cellKeyDaily)
-            }
-            if weather.hourlyForecasts.count > 0 {
-                keyList.append(cellKeyHourly)
-            }
-            if weather.current.airQuality.aqiLevel != nil
-                && weather.current.airQuality.aqiIndex != nil
-                && (weather.current.airQuality.pm25 != nil
-                    || weather.current.airQuality.pm10 != nil
-                    || weather.current.airQuality.so2 != nil
-                    || weather.current.airQuality.no2 != nil
-                    || weather.current.airQuality.o3 != nil
-                    || weather.current.airQuality.co != nil) {
-                keyList.append(cellKeyAirQuality)
-            }
-            if weather.dailyForecasts.count > 0
-                && weather.dailyForecasts[0].pollen.isValid() {
-                keyList.append(cellKeyAllergen)
-            }
-            if weather.dailyForecasts.count > 0
-                && weather.dailyForecasts[0].sun.isValid() {
-                keyList.append(cellKeySunMoon)
-            }
-            keyList.append(cellKeyDetails)
-            
-            return keyList
+        guard let weather = location.weather else {
+            return [String]()
         }
         
-        return [String]()
+        var keys = SettingsManager.shared.mainCards.filter { card in
+            return card.validator(weather)
+        }.map { card in
+            return card.key
+        }
+        keys.append(cellKeyFooter)
+        return keys
     }
     
     func hideHeaderAndCells() {
         self.headerCache.alpha = 0.0
         
         for cell in self.cellCache.values {
-            cell.alpha = 0.0
+            (cell as? UIView)?.alpha = 0.0
         }
     }
     
     func bindDataForHeaderAndCells(_ location: Location) {
-        self.headerCache.bindData(location: location)
+        self.headerCache.bindData(location: location, timeBar: nil)
         
-        for cell in self.cellCache.values {
-            cell.bindData(location: location)
+        for item in self.cellCache {
+            item.value.bindData(
+                location: location,
+                timeBar: item.key == self.cellKeyList.get(0) ? self.timeBarCache : nil
+            )
         }
         
         self.cellHeightCache.removeAll()
@@ -216,19 +200,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        let height = cellCache[
+        let height = (cellCache[
             cellKeyList[indexPath.row]
-        ]!.contentView.systemLayoutSizeFitting(
+        ] as? UITableViewCell)?.contentView.systemLayoutSizeFitting(
             CGSize(
                 width: getTabletAdaptiveWidth(
                     maxWidth: tableView.frame.width
                 ),
                 height: 0.0
             )
-        ).height
+        ).height ?? 0.0
+        
         self.cellHeightCache[
             cellKeyList[indexPath.row]
         ] = height
+        
         return height
     }
     
@@ -244,19 +230,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        let height = cellCache[
+        let height = (cellCache[
             cellKeyList[indexPath.row]
-        ]!.contentView.systemLayoutSizeFitting(
+        ] as? UITableViewCell)?.contentView.systemLayoutSizeFitting(
             CGSize(
                 width: getTabletAdaptiveWidth(
                     maxWidth: tableView.frame.width
                 ),
                 height: 0.0
             )
-        ).height
+        ).height ?? 0.0
+        
         self.cellHeightCache[
             cellKeyList[indexPath.row]
         ] = height
+        
         return height
     }
     
@@ -301,6 +289,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> UITableViewCell {
         return cellCache[
             cellKeyList[indexPath.row]
-        ]!
+        ] as! UITableViewCell
     }
 }

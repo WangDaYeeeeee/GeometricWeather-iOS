@@ -26,6 +26,7 @@ private let keyAlertEnabled = "alert_enabled"
 private let keyPrecipitationAlertEnabled = "precipitation_alert_enabled"
 private let keyUpdateInterval = "update_interval"
 private let keyDarkMode = "dark_mode"
+private let keyMainCards = "main_cards"
 private let keyWeatherSource = prefixSync + "weather_source"
 private let keyTemperatureUnit = prefixSync + "temperature_unit"
 private let keyPrecipitationUnit = prefixSync + "precipitation_unit"
@@ -50,6 +51,9 @@ public class SettingsManager {
             keyAlertEnabled: true,
             keyPrecipitationAlertEnabled: false,
             keyUpdateInterval: "update_interval_2",
+            keyMainCards: MainCard.all.map({ card in
+                return card.key
+            }),
             keyDarkMode: "dark_mode_auto",
             keyWeatherSource: "weather_source_accu",
             keyTemperatureUnit: "temperature_unit_c",
@@ -92,20 +96,52 @@ public class SettingsManager {
     
     public var updateInterval: UpdateInterval {
         get {
-            return UpdateInterval[
-                UserDefaults.shared.string(forKey: keyUpdateInterval)
-                ?? "update_interval_2"
-            ]
+//            return UpdateInterval[
+//                UserDefaults.shared.string(forKey: keyUpdateInterval)
+//                ?? "update_interval_2"
+//            ]
+            return UpdateInterval.twoHour
         }
         set {
-            UserDefaults.shared.set(newValue.key, forKey: keyUpdateInterval)
-            
-            EventBus.shared.post(SettingsChangedEvent())
-            EventBus.shared.post(UpdateIntervalChanged(newValue))
+            // do nothing.
+//            UserDefaults.shared.set(newValue.key, forKey: keyUpdateInterval)
+//
+//            EventBus.shared.post(SettingsChangedEvent())
+//            EventBus.shared.post(UpdateIntervalChanged(newValue))
         }
     }
     
     // MARK: - appearance.
+    
+    public var mainCards: [MainCard] {
+        get {
+            guard let keys = UserDefaults.shared.stringArray(
+                forKey: keyMainCards
+            ) else {
+                return MainCard.all
+            }
+            
+            return keys.map { key in
+                return MainCard[key]
+            }
+        }
+        set {
+            var keys = [String]()
+            for card in newValue {
+                keys.append(card.key)
+            }
+            
+            UserDefaults.shared.set(
+                newValue.map({ card in
+                    return card.key
+                }),
+                forKey: keyMainCards
+            )
+            
+            EventBus.shared.post(SettingsChangedEvent())
+            EventBus.shared.post(mainCardsChanged(newValue))
+        }
+    }
     
     public var darkMode: DarkMode {
         get {

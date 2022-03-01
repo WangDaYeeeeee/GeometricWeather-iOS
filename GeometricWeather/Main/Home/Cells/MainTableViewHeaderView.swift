@@ -74,7 +74,7 @@ class MainTableViewHeaderView: UIView, AbstractMainItem {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(location: Location) {
+    func bindData(location: Location, timeBar: MainTimeBarView?) {
         if let weather = location.weather {
             let previousTemperature = self.currentTemperature
             self.currentTemperature = SettingsManager.shared.temperatureUnit.getValue(

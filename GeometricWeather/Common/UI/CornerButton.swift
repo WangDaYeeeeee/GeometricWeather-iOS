@@ -7,6 +7,7 @@
 
 import Foundation
 import GeometricWeatherBasic
+import SwiftUI
 
 private let touchDownAnimDuration = 0.4
 private let touchUpAnimDuration = 0.6
@@ -14,12 +15,12 @@ private let touchUpAnimDuration = 0.6
 private let touchDownAlpha = 0.5
 private let touchDownScale = 0.95
 
+// MARK: - ui view.
+
 class CornerButton: UIButton {
     
     // MARK: - inner data.
-    
-    private var intrinsicContentSizeCache: CGSize?
-    
+        
     override var intrinsicContentSize: CGSize {
         get {
             let superSize = super.intrinsicContentSize
@@ -33,11 +34,6 @@ class CornerButton: UIButton {
                 height: superSize.height + littleMargin
             )
             
-            if self.intrinsicContentSizeCache != size {
-                self.intrinsicContentSizeCache = size
-                self.layer.cornerRadius = min(size.width, size.height) / 2.0
-            }
-            
             return size
         }
     }
@@ -46,8 +42,8 @@ class CornerButton: UIButton {
     
     // MARK: - life cycles.
     
-    init(frame: CGRect, littleMargin: Bool = false) {
-        self.isLittleMargins = littleMargin
+    init(frame: CGRect, useLittleMargin: Bool = false) {
+        self.isLittleMargins = useLittleMargin
         super.init(frame: frame)
     }
     
@@ -56,6 +52,15 @@ class CornerButton: UIButton {
     }
     
     // MARK: - life cycles.
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = min(
+            self.frame.size.width,
+            self.frame.size.height
+        ) / 2.0 / self.transform.scale
+    }
     
     override func touchesBegan(
         _ touches: Set<UITouch>,

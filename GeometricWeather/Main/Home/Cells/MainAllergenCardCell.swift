@@ -66,8 +66,8 @@ class MainAllergenCardCell: MainTableViewCell,
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func bindData(location: Location) {
-        super.bindData(location: location)
+    override func bindData(location: Location, timeBar: MainTimeBarView?) {
+        super.bindData(location: location, timeBar: timeBar)
         
         if let weather = location.weather {
             self.weather = weather

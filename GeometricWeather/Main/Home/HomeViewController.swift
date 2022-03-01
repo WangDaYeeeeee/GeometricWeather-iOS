@@ -58,7 +58,8 @@ class HomeViewController: UIViewController,
     
     var cellKeyList = [String]()
     var headerCache = MainTableViewHeaderView(frame: .zero)
-    var cellCache = Dictionary<String, MainTableViewCell>()
+    var timeBarCache = MainTimeBarView(frame: .zero)
+    var cellCache = Dictionary<String, AbstractMainItem>()
     var cellHeightCache = Dictionary<String, CGFloat>()
     var cellAnimationHelper = StaggeredCellAnimationHelper()
     

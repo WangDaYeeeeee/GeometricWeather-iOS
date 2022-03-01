@@ -15,6 +15,8 @@ private let selectedBackgroundColor = UIColor.secondarySystemBackground
 
 class SearchTableViewCell: UITableViewCell {
     
+    static let locationCellHeight = 96.0
+    
     // MARK: - subviews.
     
     private let highlightEffectContainer = UIView(frame: .zero)

@@ -8,7 +8,6 @@
 import UIKit
 import GeometricWeatherBasic
 
-let locationCellHeight = 96.0
 private let iconSize = 24.0
 
 private let normalBackgroundColor = UIColor.systemBackground
@@ -18,6 +17,8 @@ private let transNormalBackgroundColor = UIColor.systemBackground.withAlphaCompo
 private let transSelectedBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
 
 class LocationTableViewCell: UITableViewCell {
+    
+    static let locationCellHeight = 96.0
     
     // MARK: - subviews.
     
@@ -75,20 +76,20 @@ class LocationTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(littleMargin)
             make.leading.equalToSuperview().offset(littleMargin)
             make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
+                -(Self.locationCellHeight + normalMargin)
             )
         }
         self.subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(2.0)
             make.leading.equalToSuperview().offset(littleMargin)
             make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
+                -(Self.locationCellHeight + normalMargin)
             )
         }
         self.weatherSourceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(littleMargin)
             make.trailing.equalToSuperview().offset(
-                -(locationCellHeight + normalMargin)
+                -(Self.locationCellHeight + normalMargin)
             )
             make.bottom.equalToSuperview().offset(-littleMargin)
         }

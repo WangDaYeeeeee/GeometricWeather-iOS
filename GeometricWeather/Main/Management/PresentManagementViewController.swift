@@ -104,16 +104,22 @@ class PresentManagementViewController: BaseManagementController,
             }
         }
         EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
-            if self?.param.vm?.addLocation(location: event.location) ?? false {
-                self?.searchBar.text = ""
-                self?.searching.value = false
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if strongSelf.param.vm?.addLocation(location: event.location) ?? false {
+                strongSelf.searchBar.text = ""
+                strongSelf.searching.value = false
                 
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_succeed", comment: "")
+                    NSLocalizedString("feedback_collect_succeed", comment: ""),
+                    inWindowOfView: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_failed", comment: "")
+                    NSLocalizedString("feedback_collect_failed", comment: ""),
+                    inWindowOfView: strongSelf.view
                 )
             }
         }
@@ -225,7 +231,8 @@ class PresentManagementViewController: BaseManagementController,
             )
         ) ?? false {
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_collect_succeed", comment: "")
+                NSLocalizedString("feedback_collect_succeed", comment: ""),
+                inWindowOfView: self.view
             )
         }
     }

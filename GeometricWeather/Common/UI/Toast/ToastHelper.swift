@@ -11,12 +11,13 @@ class ToastHelper {
     
     static func showToastMessage(
         _ message: String,
+        inWindowOfView view: UIView,
         WithAction action: String? = nil,
         andDuration duration: TimeInterval = shortToastInerval,
         onCallback callback: (() -> Void)? = nil,
         completion: ((_ didTap: Bool) -> Void)? = nil
     ) {
-        UIApplication.shared.keyWindowInCurrentScene?.showToastMessage(
+        view.window?.showToastMessage(
             message,
             WithAction: action,
             andCallback: callback,

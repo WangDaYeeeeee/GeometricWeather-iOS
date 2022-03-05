@@ -286,7 +286,9 @@ class MainHourlyCardCell: MainTableViewCell,
                 weather: weather,
                 timezone: timezone,
                 index: indexPath.row
-            ).showSelf()
+            ).showSelf(
+                inWindowOfView: self
+            )
         }
     }
     

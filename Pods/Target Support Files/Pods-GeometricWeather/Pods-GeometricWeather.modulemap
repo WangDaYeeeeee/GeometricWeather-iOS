@@ -1,0 +1,6 @@
+framework module Pods_GeometricWeather {
+  umbrella header "Pods-GeometricWeather-umbrella.h"
+
+  export *
+  module * { export * }
+}

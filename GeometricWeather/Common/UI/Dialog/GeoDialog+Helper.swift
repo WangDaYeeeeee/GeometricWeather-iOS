@@ -9,9 +9,9 @@ import UIKit
 
 extension GeoDialog {
     
-    func showSelf() {
-        if let view = UIApplication.shared.keyWindowInCurrentScene {
-            self.showOn(view)
+    func showSelf(inWindowOfView view: UIView) {
+        if let window = view.window {
+            self.showOn(window)
         }
     }
 }

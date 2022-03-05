@@ -223,6 +223,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                 if !location.residentPosition {
                     ToastHelper.showToastMessage(
                         NSLocalizedString("feedback_resident_location", comment: ""),
+                        inWindowOfView: view,
                         WithAction: NSLocalizedString("learn_more", comment: ""),
                         andDuration: longToastInterval
                     ) {
@@ -235,7 +236,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                                 "feedback_resident_location_description",
                                 comment: ""
                             )
-                        ).showSelf()
+                        ).showSelf(inWindowOfView: view)
                     } completion: { didTap in
                         // do nothing.
                     }
@@ -261,7 +262,8 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
             title: nil
         ) { [weak self] action, view, handler in
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_delete_succeed", comment: "")
+                NSLocalizedString("feedback_delete_succeed", comment: ""),
+                inWindowOfView: view
             )
             
             self?.param.vm?.deleteLocation(position: indexPath.row)

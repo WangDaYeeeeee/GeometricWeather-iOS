@@ -7,7 +7,6 @@
 
 import Foundation
 import Moya
-import RxMoya
 import RxSwift
 import GeometricWeatherBasic
 

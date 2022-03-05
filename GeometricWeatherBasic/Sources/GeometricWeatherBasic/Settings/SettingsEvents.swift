@@ -34,7 +34,6 @@ public class UpdateIntervalChanged: SettingsValueEvent<UpdateInterval> {}
 
 public class DarkModeChanged: SettingsValueEvent<DarkMode> {}
 public class mainCardsChanged: SettingsValueEvent<[MainCard]> {}
-public class ExchangeDayNightTemperatureChanged: SettingsValueEvent<Bool> {}
 
 // MARK: - service provider.
 

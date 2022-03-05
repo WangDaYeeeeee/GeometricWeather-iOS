@@ -102,17 +102,24 @@ class SearchResultController: GeoViewController<Bool>,
         self.cancelRequest()
         self.requesting.value = true
         
-        self.cancelToken = self.weatherApi.getLocation(text) { [weak self] locations in
+        self.cancelToken = self.weatherApi.getLocation(
+            text
+        ) { [weak self] locations in
+            guard let strongSelf = self else {
+                return
+            }
+            
             if locations.isEmpty {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_search_nothing", comment: "")
+                    NSLocalizedString("feedback_search_nothing", comment: ""),
+                    inWindowOfView: strongSelf.view
                 )
             }
             
-            self?.requesting.value = false
+            strongSelf.requesting.value = false
             
-            self?.locationList = locations
-            self?.tableView.reloadData()
+            strongSelf.locationList = locations
+            strongSelf.tableView.reloadData()
         }
     }
     

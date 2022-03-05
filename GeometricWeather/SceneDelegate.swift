@@ -17,13 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        guard let _ = (scene as? UIWindowScene) else {
+        guard let scene = scene as? UIWindowScene else {
             return
         }
         
-        window = UIWindow(windowScene: scene as! UIWindowScene)
-        window?.rootViewController = MainViewController()
-        window?.makeKeyAndVisible()
+        self.window = UIWindow(windowScene: scene)
+        self.window?.rootViewController = MainViewController()
+        self.window?.makeKeyAndVisible()
         
         if let item = connectionOptions.shortcutItem {
             responseAppShortcutItemAction(item)
@@ -71,4 +71,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         completionHandler(true)
     }
 }
-

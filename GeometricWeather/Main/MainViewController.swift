@@ -48,8 +48,10 @@ class MainViewController: UISplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ThemeManager.shared.globalOverrideUIStyle.addObserver(self) { newValue in
-            self.overrideUserInterfaceStyle = newValue
+        ThemeManager.shared.globalOverrideUIStyle.addObserver(
+            self
+        ) { [weak self] newValue in
+            self?.overrideUserInterfaceStyle = newValue
         }
     }
 }

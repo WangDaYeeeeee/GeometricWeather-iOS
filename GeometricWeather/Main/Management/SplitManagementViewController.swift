@@ -89,16 +89,22 @@ class SplitManagementViewController: BaseManagementController,
             }
         }
         EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
-            if self?.param.vm?.addLocation(location: event.location) ?? false {
-                self?.searchController.searchBar.text = ""
-                self?.searchController.dismiss(animated: true, completion: nil)
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if strongSelf.param.vm?.addLocation(location: event.location) ?? false {
+                strongSelf.searchController.searchBar.text = ""
+                strongSelf.searchController.dismiss(animated: true, completion: nil)
                 
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_succeed", comment: "")
+                    NSLocalizedString("feedback_collect_succeed", comment: ""),
+                    inWindowOfView: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_failed", comment: "")
+                    NSLocalizedString("feedback_collect_failed", comment: ""),
+                    inWindowOfView: strongSelf.view
                 )
             }
         }
@@ -173,7 +179,8 @@ class SplitManagementViewController: BaseManagementController,
             )
         ) ?? false {
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_collect_succeed", comment: "")
+                NSLocalizedString("feedback_collect_succeed", comment: ""),
+                inWindowOfView: self.view
             )
         }
     }

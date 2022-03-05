@@ -260,19 +260,22 @@ class HomeViewController: UIViewController,
         switch message {
         case .backgroundUpdate:
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_updated_in_background", comment: "")
+                NSLocalizedString("feedback_updated_in_background", comment: ""),
+                inWindowOfView: self.view
             )
             return
             
         case .locationFailed:
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_location_failed", comment: "")
+                NSLocalizedString("feedback_location_failed", comment: ""),
+                inWindowOfView: self.view
             )
             return
             
         case .weatherRequestFailed:
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_get_weather_failed", comment: "")
+                NSLocalizedString("feedback_get_weather_failed", comment: ""),
+                inWindowOfView: self.view
             )
             return
         }

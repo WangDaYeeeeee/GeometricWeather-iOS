@@ -8,24 +8,46 @@
 import SwiftUI
 import GeometricWeatherBasic
 
-struct EditView: View {
+class EditViewModel: ObservableObject {
     
-    @State var mainCardList: [MainCard]
-    @State private var deletedList: [MainCard]
+    @Published var mainCardList: [MainCard] {
+        didSet {
+            self.isDefaultMainCardList.value = self.mainCardList.elementsEqual(MainCard.all)
+        }
+    }
+    @Published var deletedList: [MainCard]
+    
+    let isDefaultMainCardList: EqualtableLiveData<Bool>
     
     init() {
         self.mainCardList = SettingsManager.shared.mainCards
 
         let mainCardSet = Set(SettingsManager.shared.mainCards)
         self.deletedList = MainCard.all.filter({ card in
-            return !mainCardSet.contains(card)
+            !mainCardSet.contains(card)
         })
+        
+        self.isDefaultMainCardList = EqualtableLiveData<Bool>(
+            SettingsManager.shared.mainCards.elementsEqual(MainCard.all)
+        )
     }
+    
+    func reset() {
+        withAnimation {
+            self.mainCardList = MainCard.all
+            self.deletedList = [MainCard]()
+        }
+    }
+}
+
+struct EditView: View {
+    
+    @ObservedObject var model: EditViewModel
     
     var body: some View {
         ZStack {
             List {
-                ForEach(self.mainCardList) { card in
+                ForEach(self.model.mainCardList) { card in
                     Text(
                         NSLocalizedString(card.key, comment: "")
                     ).font(
@@ -51,7 +73,7 @@ struct EditView: View {
                     HStack(alignment: .center, spacing: littleMargin) {
                         Spacer(minLength: littleMargin)
                         
-                        ForEach(self.deletedList) { card in
+                        ForEach(self.model.deletedList) { card in
                             MainCardTagView(
                                 title: NSLocalizedString(
                                     card.key,
@@ -72,11 +94,13 @@ struct EditView: View {
                     Color(UIColor.systemBackground)
                 )
             }.opacity(
-                self.deletedList.isEmpty ? 0 : 1
+                self.model.deletedList.isEmpty ? 0 : 1
             )
         }.onDisappear {
-            if !SettingsManager.shared.mainCards.elementsEqual(self.mainCardList) {
-                SettingsManager.shared.mainCards = self.mainCardList
+            if !SettingsManager.shared.mainCards.elementsEqual(
+                self.model.mainCardList
+            ) {
+                SettingsManager.shared.mainCards = self.model.mainCardList
             }
         }
     }
@@ -87,31 +111,31 @@ struct EditView: View {
         }
         
         withAnimation {
-            let card = self.mainCardList.remove(at: index)
-            self.deletedList.append(card)
+            let card = self.model.mainCardList.remove(at: index)
+            self.model.deletedList.append(card)
         }
     }
     
     private func onMove(from indexSet: IndexSet, to destination: Int) {
         withAnimation {
-            self.mainCardList.move(fromOffsets: indexSet, toOffset: destination)
+            self.model.mainCardList.move(fromOffsets: indexSet, toOffset: destination)
         }
     }
     
     private func onAdd(_ card: MainCard) {
-        guard let index = self.deletedList.firstIndex(of: card) else {
+        guard let index = self.model.deletedList.firstIndex(of: card) else {
             return
         }
         
         withAnimation {
-            let card = self.deletedList.remove(at: index)
-            self.mainCardList.append(card)
+            let card = self.model.deletedList.remove(at: index)
+            self.model.mainCardList.append(card)
         }
     }
 }
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        EditView()
+        EditView(model: EditViewModel())
     }
 }

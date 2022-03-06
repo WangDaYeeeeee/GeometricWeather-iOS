@@ -17,25 +17,23 @@ struct DailyWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        ZStack {
+        DailyView(
+            location: self.entry.location
+        ).padding(
+            EdgeInsets(
+                top: littleMargin,
+                leading: littleMargin,
+                bottom: littleMargin,
+                trailing: littleMargin
+            )
+        ).background(
             ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.entry.location.weather?.current.weatherCode ?? .clear
                 ),
                 daylight: self.entry.location.daylight
             )
-            
-            DailyView(
-                location: self.entry.location
-            ).padding(
-                EdgeInsets(
-                    top: littleMargin,
-                    leading: littleMargin,
-                    bottom: littleMargin,
-                    trailing: littleMargin
-                )
-            )
-        }
+        )
     }
 }
 

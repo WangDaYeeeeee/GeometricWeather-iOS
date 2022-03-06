@@ -23,10 +23,6 @@ struct MainCardTagView: UIViewRepresentable {
         )
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
-        button.layer.shadowColor = button.backgroundColor?.cgColor
-        button.layer.cornerRadius = 6.0
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         button.setContentHuggingPriority(.required, for: .vertical)
         button.setContentHuggingPriority(.required, for: .horizontal)
         return button

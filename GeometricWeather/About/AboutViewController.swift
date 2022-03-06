@@ -7,24 +7,7 @@
 
 import SwiftUI
 
-// MARK: - swift UI bridge.
-
-private class InnerAboutViewController: UIHostingController<AboutView> {
-    
-    init() {
-        super.init(rootView: AboutView())
-    }
-    
-    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - interface.
-
 class AboutViewController: GeoViewController<Void> {
-    
-    private let innerViewController = InnerAboutViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +15,13 @@ class AboutViewController: GeoViewController<Void> {
         
         self.navigationItem.title = NSLocalizedString("action_about", comment: "")
         
-        self.addChild(self.innerViewController)
-        self.view.addSubview(self.innerViewController.view)
+        let aboutViewController = UIHostingController<AboutView>(
+            rootView: AboutView()
+        )
+        self.addChild(aboutViewController)
+        self.view.addSubview(aboutViewController.view)
         
-        self.innerViewController.view.snp.makeConstraints { make in
+        aboutViewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

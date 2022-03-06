@@ -17,12 +17,8 @@ struct SettingsToggleCellView: View {
     let toggleOn: Binding<Bool>
     
     var body: some View {
-        HStack {
+        Toggle(isOn: toggleOn) {
             SettingsTitleView(key: titleKey)
-            
-            Spacer()
-            
-            Toggle("", isOn: toggleOn).labelsHidden()
         }.padding(
             EdgeInsets(
                 top: littleMargin / 2.0,
@@ -41,35 +37,18 @@ struct SettingsListCellView: View {
     let titleKey: String
     let keys: [String]
     
-    let selectedKey: Binding<String>
+    let selectedIndex: Binding<Int>
     @State private var showActionSheet = false
     
     var body: some View {
-        let key = self.keys.first { key in
-            self.selectedKey.wrappedValue == key
-        } ?? ""
-        
-        HStack {
-            VStack(alignment: .leading) {
-                SettingsTitleView(key: titleKey)
-                SettingsCaptionView(key: key)
+        Picker(selection: self.selectedIndex) {
+            ForEach(self.keys.indices) { index in
+                Text(
+                    NSLocalizedString(self.keys[index], comment: "")
+                )
             }
-            
-            Spacer()
-            
-            Image(
-                systemName: "chevron.forward"
-            ).foregroundColor(
-                Color(UIColor.label)
-            )
-        }.contentShape(
-            Rectangle()
-        ).onTapGesture {
-            self.showActionSheet = true
-        }.actionSheet(
-            isPresented: self.$showActionSheet
-        ) {
-            return self.getActionSheet()
+        } label: {
+            SettingsTitleView(key: titleKey)
         }.padding(
             EdgeInsets(
                 top: littleMargin / 2.0,
@@ -77,35 +56,6 @@ struct SettingsListCellView: View {
                 bottom: littleMargin / 2.0,
                 trailing: 0.0
             )
-        )
-    }
-    
-    private func getActionSheet() -> ActionSheet {
-        let title = Text(
-            NSLocalizedString(self.titleKey, comment: "")
-        ).font(
-            Font(largeTitleFont)
-        )
-        
-        var buttons = self.keys.map { key in
-            ActionSheet.Button.default(
-                Text(
-                    NSLocalizedString(key, comment: "")
-                ).font(
-                    Font(largeTitleFont)
-                )
-            ) {
-                self.selectedKey.wrappedValue = key
-            }
-        }
-        buttons.append(ActionSheet.Button.cancel {
-            self.showActionSheet = false
-        })
-        
-        return ActionSheet(
-            title: title,
-            message: nil,
-            buttons: buttons
         )
     }
 }
@@ -119,7 +69,10 @@ struct SettingsTimePickerCellView: View {
     let selectedDate: Binding<Date>
     
     var body: some View {
-        HStack {
+        DatePicker(
+            selection: self.selectedDate,
+            displayedComponents: .hourAndMinute
+        ) {
             VStack(alignment: .leading) {
                 SettingsTitleView(key: titleKey)
                 
@@ -134,14 +87,6 @@ struct SettingsTimePickerCellView: View {
                     Color(UIColor.tertiaryLabel)
                 )
             }
-            
-            Spacer()
-            
-            DatePicker(
-                "",
-                selection: self.selectedDate,
-                displayedComponents: .hourAndMinute
-            ).labelsHidden()
         }.padding(
             EdgeInsets(
                 top: littleMargin / 2.0,
@@ -175,7 +120,7 @@ struct SettingsCellViews_Previews: PreviewProvider {
                     "weather_source_owm",
                     "weather_source_mf",
                 ],
-                selectedKey: .constant("weather_source_cn")
+                selectedIndex: .constant(0)
             )
             
             SettingsTimePickerCellView(

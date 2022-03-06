@@ -7,33 +7,41 @@
 
 import SwiftUI
 
-private class EditHostingController: UIHostingController<EditView> {
-    
-    init() {
-        super.init(rootView: EditView())
-    }
-    
-    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class EditViewController: GeoViewController<Void> {
     
-    private let innerViewController = EditHostingController()
-    
+    private let editViewModel = EditViewModel()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
         self.navigationItem.title = NSLocalizedString("settings_title_card_display", comment: "")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.counterclockwise"),
+            style: .plain,
+            target: self,
+            action: #selector(self.onResetButtonTapped)
+        )
         
-        self.addChild(self.innerViewController)
-        self.view.addSubview(self.innerViewController.view)
+        let editViewController = UIHostingController<EditView>(
+            rootView: EditView(model: self.editViewModel)
+        )
+        self.addChild(editViewController)
+        self.view.addSubview(editViewController.view)
         
-        self.innerViewController.view.snp.makeConstraints { make in
+        editViewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        self.editViewModel.isDefaultMainCardList.addObserver(
+            self
+        ) { [weak self] newValue in
+            self?.navigationItem.rightBarButtonItem?.isEnabled = !newValue
+        }
+    }
+    
+    @objc private func onResetButtonTapped() {
+        self.editViewModel.reset()
     }
 }
 

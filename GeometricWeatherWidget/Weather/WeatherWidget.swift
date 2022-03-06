@@ -18,14 +18,7 @@ struct WeatherWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        ZStack {
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: self.entry.location.weather?.current.weatherCode ?? .clear
-                ),
-                daylight: self.entry.location.daylight
-            )
-            
+        Group {
             switch self.family {
             case .systemSmall:
                 WeatherWidgetSmallView(location: self.entry.location)
@@ -34,7 +27,14 @@ struct WeatherWidgetEntryView : View {
             default:
                 WeatherWidgetLargeView(location: self.entry.location)
             }
-        }
+        }.background(
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                weatherKind: weatherCodeToWeatherKind(
+                    code: self.entry.location.weather?.current.weatherCode ?? .clear
+                ),
+                daylight: self.entry.location.daylight
+            )
+        )
     }
 }
 

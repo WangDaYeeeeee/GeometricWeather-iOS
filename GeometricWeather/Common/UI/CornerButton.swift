@@ -21,6 +21,7 @@ class CornerButton: UIButton {
     
     // MARK: - inner data.
         
+    private var intrinsicContentSizeCache = CGSize.zero
     override var intrinsicContentSize: CGSize {
         get {
             let superSize = super.intrinsicContentSize
@@ -34,17 +35,55 @@ class CornerButton: UIButton {
                 height: superSize.height + littleMargin
             )
             
+            if !self.intrinsicContentSizeCache.equalTo(size) {
+                self.intrinsicContentSizeCache = size
+                
+                self.cornerBackgroundLayer.path = UIBezierPath(
+                    roundedRect: CGRect(origin: .zero, size: size),
+                    cornerRadius: min(size.width, size.height) / 2.0
+                ).cgPath
+                self.cornerBackgroundLayer.frame = CGRect(origin: .zero, size: size)
+            }
+            
             return size
         }
     }
     
     private var isLittleMargins: Bool
     
+    private var cornerBackgroundColor: UIColor? {
+        didSet {
+            self.cornerBackgroundLayer.fillColor = self.cornerBackgroundColor?.cgColor
+            self.cornerBackgroundLayer.shadowColor = self.cornerBackgroundColor?.cgColor
+        }
+    }
+    override var backgroundColor: UIColor? {
+        set {
+            self.cornerBackgroundColor = newValue
+        }
+        get {
+            return self.cornerBackgroundColor
+        }
+    }
+    
+    // MARK: - sublayers.
+    
+    private let cornerBackgroundLayer = CAShapeLayer()
+    
     // MARK: - life cycles.
     
     init(frame: CGRect, useLittleMargin: Bool = false) {
         self.isLittleMargins = useLittleMargin
         super.init(frame: frame)
+        
+        self.cornerBackgroundLayer.zPosition = -1
+        self.cornerBackgroundLayer.strokeColor = UIColor.clear.cgColor
+        self.cornerBackgroundLayer.cornerRadius = 6.0
+        self.cornerBackgroundLayer.shadowOpacity = 0.3
+        self.cornerBackgroundLayer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.layer.addSublayer(self.cornerBackgroundLayer)
+        
+        self.backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
@@ -53,13 +92,21 @@ class CornerButton: UIButton {
     
     // MARK: - life cycles.
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         
-        self.layer.cornerRadius = min(
-            self.frame.size.width,
-            self.frame.size.height
-        ) / 2.0 / self.transform.scale
+        self.cornerBackgroundLayer.position = CGPoint(
+            x: layer.frame.width / 2.0,
+            y: layer.frame.height / 2.0
+        )
+    }
+    
+    override func traitCollectionDidChange(
+        _ previousTraitCollection: UITraitCollection?
+    ) {
+        DispatchQueue.main.async { [weak self] in
+            self?.backgroundColor = self?.backgroundColor
+        }
     }
     
     override func touchesBegan(
@@ -75,7 +122,9 @@ class CornerButton: UIButton {
             options: [.allowUserInteraction, .beginFromCurrentState]
         ) {
             self.titleLabel?.alpha = touchDownAlpha
-            self.transform = CGAffineTransform(scaleX: touchDownScale, y: touchDownScale)
+            
+            let transform = CGAffineTransform(scaleX: touchDownScale, y: touchDownScale)
+            self.cornerBackgroundLayer.setAffineTransform(transform)
         } completion: { _ in
             // do nothing.
         }
@@ -94,7 +143,9 @@ class CornerButton: UIButton {
             options: [.allowUserInteraction, .beginFromCurrentState]
         ) {
             self.titleLabel?.alpha = 1.0
-            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            
+            let transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.cornerBackgroundLayer.setAffineTransform(transform)
         } completion: { _ in
             // do nothing.
         }
@@ -113,7 +164,9 @@ class CornerButton: UIButton {
             options: [.allowUserInteraction, .beginFromCurrentState]
         ) {
             self.titleLabel?.alpha = 1.0
-            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            
+            let transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.cornerBackgroundLayer.setAffineTransform(transform)
         } completion: { _ in
             // do nothing.
         }

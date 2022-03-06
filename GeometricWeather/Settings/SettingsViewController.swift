@@ -8,25 +8,8 @@
 import SwiftUI
 import GeometricWeatherBasic
 
-// MARK: - swift UI bridge.
-
-private class InnerSettingsViewController: UIHostingController<SettingsView> {
-    
-    init() {
-        super.init(rootView: SettingsView())
-    }
-    
-    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - interface.
-
 class SettingsViewController: GeoViewController<Void> {
-    
-    private let innerViewController = InnerSettingsViewController()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
@@ -39,10 +22,13 @@ class SettingsViewController: GeoViewController<Void> {
             action: #selector(self.onAboutButtonClicked)
         )
         
-        self.addChild(self.innerViewController)
-        self.view.addSubview(self.innerViewController.view)
+        let settingsViewController = UIHostingController<SettingsView>(
+            rootView: SettingsView()
+        )
+        self.addChild(settingsViewController)
+        self.view.addSubview(settingsViewController.view)
         
-        self.innerViewController.view.snp.makeConstraints { make in
+        settingsViewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

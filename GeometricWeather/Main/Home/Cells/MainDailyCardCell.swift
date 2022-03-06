@@ -7,6 +7,7 @@
 
 import UIKit
 import GeometricWeatherBasic
+import SwiftUI
 
 private let dailyTrendViewHeight = 286
 
@@ -228,10 +229,12 @@ class MainDailyCardCell: MainTableViewCell,
         return UIContextMenuConfiguration(
             identifier: NSNumber(value: indexPath.row)
         ) {
-            return DailyPageController(
-                weather: weather,
-                index: indexPath.row,
-                timezone: timezone
+            return UIHostingController<DailyView>(
+                rootView: DailyView(
+                    weather: weather,
+                    index: indexPath.row,
+                    timezone: timezone
+                )
             )
         } actionProvider: { _ in
             return nil

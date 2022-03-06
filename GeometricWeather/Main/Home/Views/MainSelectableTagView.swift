@@ -163,9 +163,6 @@ private class TagCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.tagView.titleLabel?.font = miniCaptionFont
-        self.tagView.layer.cornerRadius = 6.0
-        self.tagView.layer.shadowOpacity = 0.3
-        self.tagView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         self.tagView.addTarget(
             self,
             action: #selector(self.onTap),
@@ -213,7 +210,6 @@ private class TagCell: UICollectionViewCell {
             self.tagView.backgroundColor = self.delegate?.getUnselectedColor() ?? .systemYellow
             self.tagView.setTitleColor(.label, for: .normal)
         }
-        self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
     }
     
     @objc private func onTap() {

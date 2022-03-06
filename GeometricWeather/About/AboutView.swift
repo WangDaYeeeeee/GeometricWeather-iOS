@@ -85,6 +85,17 @@ struct AboutView: View {
                         completionHandler: nil
                     )
                 }
+                
+                ThanksItem(
+                    title: "JXMovableCellTableView",
+                    content: "The custom tableView which can start moving the cell with a long press gesture. The JXMovableCellTableView which added a UILongPressGestureRecognizer. when gesture started take a snapshot for cell which pressed.Then you can customize movable cell and start move animation."
+                ).onTapGesture {
+                    UIApplication.shared.open(
+                        URL(string: "https://github.com/pujiaxin33/JXMovableCellTableView")!,
+                        options: [:],
+                        completionHandler: nil
+                    )
+                }
             }
         }.listStyle(
             GroupedListStyle()

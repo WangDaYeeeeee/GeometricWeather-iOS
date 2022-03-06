@@ -122,7 +122,7 @@ struct HorizontalDailyView: View {
                     weather: weather,
                     itemCount: self.itemCount,
                     daytime: false
-                )
+                ).padding(.trailing, 4.0)
                 
                 // night temperature.
                 VerticalTemperatureView(
@@ -144,16 +144,16 @@ struct HorizontalDailyView: View {
                     itemCount: self.itemCount,
                     daytime: true
                 )
-                
+
                 // day icon.
                 VerticalIconView(
                     weather: weather,
                     itemCount: self.itemCount,
                     daytime: true
-                )
+                ).padding(.leading, 4.0)
             }
         } else {
-            HStack(alignment: .center) {
+            VStack(alignment: .center) {
                 Spacer()
 
                 ForEach(0 ..< 2 * itemCount - 1) { i in
@@ -169,6 +169,7 @@ struct HorizontalDailyView: View {
                         )
                     }
                 }
+                
                 Spacer()
             }
         }
@@ -228,7 +229,7 @@ private struct VerticalIconView: View {
                         : self.weather.dailyForecasts[i].night.weatherCode,
                         daylight: self.daytime
                     )?.scaleToSize(
-                        CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+                        CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
                     ) {
                         Image(uiImage: uiImage)
                     }
@@ -287,71 +288,61 @@ private struct VerticalHistogramView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(0 ..< self.itemCount) { i in
-                VStack {
-                    Spacer()
-                    
-                    GeometryReader { proxy in
-                        ZStack {
-                            Path { path in
-                                path.move(
-                                    to: CGPoint(
-                                        x: 6.0,
-                                        y: proxy.size.height * 0.5
-                                    )
+                Spacer()
+                
+                GeometryReader { proxy in
+                    ZStack {
+                        Path { path in
+                            path.move(
+                                to: CGPoint(
+                                    x: 6.0,
+                                    y: proxy.size.height * 0.5
                                 )
-                                path.addLine(
-                                    to: CGPoint(
-                                        x: proxy.size.width - 6.0,
-                                        y: proxy.size.height * 0.5
-                                    )
-                                )
-                            }.stroke(
-                                histogramBackground,
-                                style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                            ).frame(
-                                width: proxy.size.width,
-                                height: proxy.size.height,
-                                alignment: .center
                             )
-                            
-                            Path { path in
-                                path.move(
-                                    to: CGPoint(
-                                        x: 6.0 + self.getTemperaturePercent(
-                                            self.weather.dailyForecasts[
-                                                i
-                                            ].night.temperature.temperature
-                                        ) * (
-                                            proxy.size.width - 12.0
-                                        ),
-                                        y: proxy.size.height * 0.5
-                                    )
+                            path.addLine(
+                                to: CGPoint(
+                                    x: proxy.size.width - 6.0,
+                                    y: proxy.size.height * 0.5
                                 )
-                                path.addLine(
-                                    to: CGPoint(
-                                        x: 6.0 + self.getTemperaturePercent(
-                                            self.weather.dailyForecasts[
-                                                i
-                                            ].day.temperature.temperature
-                                        ) * (
-                                            proxy.size.width - 12.0
-                                        ),
-                                        y: proxy.size.height * 0.5
-                                    )
-                                )
-                            }.stroke(
-                                histogramForeground,
-                                style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                            ).frame(
-                                width: proxy.size.width,
-                                height: proxy.size.height,
-                                alignment: .center
                             )
-                        }
-                    }.frame(height: normalMargin)
-                    
-                    Spacer()
-                }
+                        }.stroke(
+                            histogramBackground,
+                            style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                        )
+                        
+                        Path { path in
+                            path.move(
+                                to: CGPoint(
+                                    x: 6.0 + self.getTemperaturePercent(
+                                        self.weather.dailyForecasts[
+                                            i
+                                        ].night.temperature.temperature
+                                    ) * (
+                                        proxy.size.width - 12.0
+                                    ),
+                                    y: proxy.size.height * 0.5
+                                )
+                            )
+                            path.addLine(
+                                to: CGPoint(
+                                    x: 6.0 + self.getTemperaturePercent(
+                                        self.weather.dailyForecasts[
+                                            i
+                                        ].day.temperature.temperature
+                                    ) * (
+                                        proxy.size.width - 12.0
+                                    ),
+                                    y: proxy.size.height * 0.5
+                                )
+                            )
+                        }.stroke(
+                            histogramForeground,
+                            style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                        )
+                    }
+                }.frame(height: 6.0 + 2.0 * 2)
+                
+                Spacer()
             }
         }
     }

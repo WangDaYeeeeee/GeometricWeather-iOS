@@ -7,6 +7,7 @@
 
 import Foundation
 import GeometricWeatherBasic
+import SwiftUI
 
 private let topInset = 56.0
 
@@ -29,7 +30,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         navigationOrientation: .horizontal,
         options: .none
     )
-    private var pageList = [DailyPageController]()
+    private var pageList = [UIHostingController<DailyView>]()
     
     // MARK: - data.
     
@@ -47,10 +48,12 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         
         for i in 0 ..< weather.dailyForecasts.count {
             self.pageList.append(
-                DailyPageController(
-                    weather: weather,
-                    index: i,
-                    timezone: self.param.location.timezone
+                UIHostingController<DailyView>(
+                    rootView: DailyView(
+                        weather: weather,
+                        index: i,
+                        timezone: self.param.location.timezone
+                    )
                 )
             )
         }
@@ -146,7 +149,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard let element = viewController as? DailyPageController else {
+        guard let element = viewController as? UIHostingController<DailyView> else {
             return nil
         }
         guard let index = self.pageList.firstIndex(of: element) else {
@@ -159,7 +162,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let element = viewController as? DailyPageController else {
+        guard let element = viewController as? UIHostingController<DailyView> else {
             return nil
         }
         guard let index = self.pageList.firstIndex(of: element) else {
@@ -174,7 +177,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         _ pageViewController: UIPageViewController,
         willTransitionTo pendingViewControllers: [UIViewController]
     ) {
-        guard let nextPage = pendingViewControllers.first as? DailyPageController else {
+        guard let nextPage = pendingViewControllers.first as? UIHostingController<DailyView> else {
             return
         }
         guard let index = self.pageList.firstIndex(of: nextPage) else {

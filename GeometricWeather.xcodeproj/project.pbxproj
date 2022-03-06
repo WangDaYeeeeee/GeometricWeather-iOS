@@ -63,7 +63,6 @@
 		379A8B4627C8C59000083BFF /* ManagementCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8527C8C59000083BFF /* ManagementCommon.swift */; };
 		379A8B4727C8C59000083BFF /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8727C8C59000083BFF /* DailyView.swift */; };
 		379A8B4827C8C59000083BFF /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8827C8C59000083BFF /* DailyViewController.swift */; };
-		379A8B4927C8C59000083BFF /* DailyPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8927C8C59000083BFF /* DailyPageController.swift */; };
 		379A8B4A27C8C59000083BFF /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8B27C8C59000083BFF /* AlertViewController.swift */; };
 		379A8B4B27C8C59000083BFF /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8C27C8C59000083BFF /* AlertTableViewCell.swift */; };
 		379A8B4C27C8C59000083BFF /* MainRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A8D27C8C59000083BFF /* MainRepository.swift */; };
@@ -162,13 +161,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3756A9BBE41ABEE8DCBF5BCA6972C4DA;
 			remoteInfo = Moya;
-		};
-		37C4E16727D21D4200430086 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 37C4DFBA27D21D4200430086 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 57474CBF008B886BB5B20E7FBCEFD240;
-			remoteInfo = NeedleFoundation;
 		};
 		37C4E16927D21D4200430086 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -291,7 +283,6 @@
 		379A8A8527C8C59000083BFF /* ManagementCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagementCommon.swift; sourceTree = "<group>"; };
 		379A8A8727C8C59000083BFF /* DailyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		379A8A8827C8C59000083BFF /* DailyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
-		379A8A8927C8C59000083BFF /* DailyPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyPageController.swift; sourceTree = "<group>"; };
 		379A8A8B27C8C59000083BFF /* AlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		379A8A8C27C8C59000083BFF /* AlertTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
 		379A8A8D27C8C59000083BFF /* MainRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRepository.swift; sourceTree = "<group>"; };
@@ -1027,7 +1018,6 @@
 			isa = PBXGroup;
 			children = (
 				379A8A8827C8C59000083BFF /* DailyViewController.swift */,
-				379A8A8927C8C59000083BFF /* DailyPageController.swift */,
 				379A8A8727C8C59000083BFF /* DailyView.swift */,
 			);
 			path = Daily;
@@ -1405,7 +1395,6 @@
 				37C4E16227D21D4200430086 /* Alamofire */,
 				37C4E16427D21D4200430086 /* JXMovableCellTableView */,
 				37C4E16627D21D4200430086 /* Moya */,
-				37C4E16827D21D4200430086 /* NeedleFoundation */,
 				37C4E16A27D21D4200430086 /* Pods-GeometricWeather */,
 				37C4E16C27D21D4200430086 /* ReachabilitySwift */,
 				37C4E16E27D21D4200430086 /* ReactiveSwift */,
@@ -2247,14 +2236,6 @@
 			remoteRef = 37C4E16527D21D4200430086 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		37C4E16827D21D4200430086 /* NeedleFoundation */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			name = NeedleFoundation;
-			path = NeedleFoundation.framework;
-			remoteRef = 37C4E16727D21D4200430086 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		37C4E16A27D21D4200430086 /* Pods-GeometricWeather */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2383,7 +2364,6 @@
 				379A8B2B27C8C59000083BFF /* DailyUVCollectionViewCell.swift in Sources */,
 				379A8B6527C8C59100083BFF /* LinearProgressView.swift in Sources */,
 				379A8B2F27C8C59000083BFF /* AllergenCollectionViewCell.swift in Sources */,
-				379A8B4927C8C59000083BFF /* DailyPageController.swift in Sources */,
 				379A8B5E27C8C59000083BFF /* GeoDialog.swift in Sources */,
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,

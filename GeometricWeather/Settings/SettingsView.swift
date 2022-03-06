@@ -20,23 +20,37 @@ struct SettingsView: View {
     
     // MARK: - appearance.
     
-    @State private var darkMode = SettingsManager.shared.darkMode.key
+    @State private var darkModeIndex = DarkMode.all.firstIndex(
+        of: SettingsManager.shared.darkMode
+    ) ?? 0
     
     // MARK: - service provider.
     
-    @State private var weatherSource = SettingsManager.shared.weatherSource.key
+    @State private var weatherSourceIndex = WeatherSource.all.firstIndex(
+        of: SettingsManager.shared.weatherSource
+    ) ?? 0
     
     // MARK: - unit.
     
-    @State private var temperatureUnit = SettingsManager.shared.temperatureUnit.key
+    @State private var temperatureUnitIndex = TemperatureUnit.all.firstIndex(
+        of: SettingsManager.shared.temperatureUnit
+    ) ?? 0
     
-    @State private var precipitationUnit = SettingsManager.shared.precipitationUnit.key
+    @State private var precipitationUnitIndex = PrecipitationUnit.all.firstIndex(
+        of: SettingsManager.shared.precipitationUnit
+    ) ?? 0
     
-    @State private var speedUnit = SettingsManager.shared.speedUnit.key
+    @State private var speedUnitIndex = SpeedUnit.all.firstIndex(
+        of: SettingsManager.shared.speedUnit
+    ) ?? 0
     
-    @State private var pressureUnit = SettingsManager.shared.pressureUnit.key
+    @State private var pressureUnitIndex = PressureUnit.all.firstIndex(
+        of: SettingsManager.shared.pressureUnit
+    ) ?? 0
     
-    @State private var distanceUnit = SettingsManager.shared.distanceUnit.key
+    @State private var distanceUnitIndex = DistanceUnit.all.firstIndex(
+        of: SettingsManager.shared.distanceUnit
+    ) ?? 0
     
     // MARK: - forecast.
     
@@ -67,12 +81,7 @@ struct SettingsView: View {
                 )
 //                SettingsListCellView(
 //                    titleKey: "settings_title_refresh_rate",
-//                    keys: [
-//                        "update_interval_1",
-//                        "update_interval_2",
-//                        "update_interval_3",
-//                        "update_interval_4",
-//                    ],
+//                    keys: UpdateInterval.allKey,
 //                    selectedKey: self.$updateInterval
 //                )
             }
@@ -84,13 +93,8 @@ struct SettingsView: View {
             ) {
                 SettingsListCellView(
                     titleKey: "settings_title_dark_mode",
-                    keys: [
-                        "dark_mode_auto",
-                        "dark_mode_system",
-                        "dark_mode_light",
-                        "dark_mode_dark",
-                    ],
-                    selectedKey: self.$darkMode
+                    keys: DarkMode.allKey,
+                    selectedIndex: self.$darkModeIndex
                 )
             }
             
@@ -101,57 +105,28 @@ struct SettingsView: View {
             ) {
                 SettingsListCellView(
                     titleKey: "settings_title_temperature_unit",
-                    keys: [
-                        "temperature_unit_c",
-                        "temperature_unit_f",
-                        "temperature_unit_k",
-                    ],
-                    selectedKey: self.$temperatureUnit
+                    keys: TemperatureUnit.allKey,
+                    selectedIndex: self.$temperatureUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_distance_unit",
-                    keys: [
-                        "distance_unit_km",
-                        "distance_unit_m",
-                        "distance_unit_mi",
-                        "distance_unit_nmi",
-                        "distance_unit_ft",
-                    ],
-                    selectedKey: self.$distanceUnit
+                    keys: DistanceUnit.allKey,
+                    selectedIndex: self.$distanceUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_precipitation_unit",
-                    keys: [
-                        "precipitation_unit_mm",
-                        "precipitation_unit_cm",
-                        "precipitation_unit_in",
-                        "precipitation_unit_lpsqm",
-                    ],
-                    selectedKey: self.$precipitationUnit
+                    keys: PrecipitationUnit.allKey,
+                    selectedIndex: self.$precipitationUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_pressure_unit",
-                    keys: [
-                        "pressure_unit_mb",
-                        "pressure_unit_kpa",
-                        "pressure_unit_hpa",
-                        "pressure_unit_atm",
-                        "pressure_unit_mmhg",
-                        "pressure_unit_inhg",
-                        "pressure_unit_kgfpsqcm",
-                    ],
-                    selectedKey: self.$pressureUnit
+                    keys: PressureUnit.allKey,
+                    selectedIndex: self.$pressureUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_speed_unit",
-                    keys: [
-                        "speed_unit_kph",
-                        "speed_unit_mps",
-                        "speed_unit_kn",
-                        "speed_unit_mph",
-                        "speed_unit_ftps",
-                    ],
-                    selectedKey: self.$speedUnit
+                    keys: SpeedUnit.allKey,
+                    selectedIndex: self.$speedUnitIndex
                 )
             }
             
@@ -187,28 +162,28 @@ struct SettingsView: View {
             SettingsManager.shared.updateInterval = UpdateInterval[
                 updateInterval
             ]
-        }.onChange(of: self.darkMode) { newValue in
+        }.onChange(of: self.darkModeIndex) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
             ThemeManager.shared.update(darkMode: DarkMode[newValue])
-        }.onChange(of: self.weatherSource) { newValue in
+        }.onChange(of: self.weatherSourceIndex) { newValue in
             SettingsManager.shared.weatherSource = WeatherSource[
                 newValue
             ]
-        }.onChange(of: self.temperatureUnit) { newValue in
+        }.onChange(of: self.temperatureUnitIndex) { newValue in
             SettingsManager.shared.temperatureUnit = TemperatureUnit[
                 newValue
             ]
-        }.onChange(of: self.precipitationUnit) { newValue in
+        }.onChange(of: self.precipitationUnitIndex) { newValue in
             SettingsManager.shared.precipitationUnit = PrecipitationUnit[
                 newValue
             ]
-        }.onChange(of: self.speedUnit) { newValue in
+        }.onChange(of: self.speedUnitIndex) { newValue in
             SettingsManager.shared.speedUnit = SpeedUnit[newValue]
-        }.onChange(of: self.pressureUnit) { newValue in
+        }.onChange(of: self.pressureUnitIndex) { newValue in
             SettingsManager.shared.pressureUnit = PressureUnit[
                 newValue
             ]
-        }.onChange(of: self.distanceUnit) { newValue in
+        }.onChange(of: self.distanceUnitIndex) { newValue in
             SettingsManager.shared.distanceUnit = DistanceUnit[
                 newValue
             ]

@@ -358,10 +358,6 @@ class ActionableToastView: UIVisualEffectView {
         self.actionButton.titleLabel?.font = titleFont
         self.actionButton.setTitleColor(.white, for: .normal)
         self.actionButton.backgroundColor = .systemBlue
-        self.actionButton.layer.shadowColor = UIColor.systemBlue.cgColor
-        self.actionButton.layer.cornerRadius = 6.0
-        self.actionButton.layer.shadowOpacity = 0.3
-        self.actionButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         self.actionButton.addTarget(
             self,
             action: #selector(self.onAction),

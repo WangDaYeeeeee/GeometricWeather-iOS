@@ -22,6 +22,12 @@ public protocol Option: Equatable {
 
 public extension Option {
     
+    static var allKey: [String] {
+        return Self.all.map { item in
+            item.key
+        }
+    }
+    
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.key == rhs.key
     }

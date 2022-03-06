@@ -16,9 +16,10 @@ struct WeatherWidgetSmallView: View {
     let location: Location
     
     var body: some View {
-        CurrentSquareView(
-            location: self.location
-        ).padding()
+        HStack {
+            CurrentSquareView(location: self.location)
+            Spacer()
+        }.padding()
     }
     
     private func getTemperatureTitleText() -> String {

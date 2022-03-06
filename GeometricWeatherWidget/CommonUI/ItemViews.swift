@@ -45,7 +45,9 @@ struct DailyItemView: View {
                 )?.scaleToSize(
                     CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
                 ) {
-                    Image(uiImage: uiImage)
+                    Image(uiImage: uiImage).padding(
+                        .bottom, 2.0
+                    )
                 }
                 
                 Text(
@@ -77,10 +79,6 @@ struct DailyItemView: View {
                         }.stroke(
                             histogramBackground,
                             style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                        ).frame(
-                            width: proxy.size.width,
-                            height: proxy.size.height,
-                            alignment: .center
                         )
                         
                         Path { path in
@@ -111,10 +109,6 @@ struct DailyItemView: View {
                         }.stroke(
                             histogramForeground,
                             style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                        ).frame(
-                            width: proxy.size.width,
-                            height: proxy.size.height,
-                            alignment: .center
                         )
                     }
                 }
@@ -128,7 +122,11 @@ struct DailyItemView: View {
                     Font(miniCaptionFont).weight(.bold)
                 ).foregroundColor(
                     .white
-                ).opacity(secondaryTextOpacity)
+                ).opacity(
+                    secondaryTextOpacity
+                ).padding(
+                    .bottom, 2.0
+                )
 
                 if let uiImage = UIImage.getWeatherIcon(
                     weatherCode: self.weather.dailyForecasts[index].night.weatherCode,

@@ -29,10 +29,6 @@ class MainFooterCell: UITableViewCell, AbstractMainItem {
         self.editButton.titleLabel?.font = miniCaptionFont
         self.editButton.setTitleColor(.white, for: .normal)
         self.editButton.backgroundColor = .white.withAlphaComponent(0.33)
-        self.editButton.layer.shadowColor = self.editButton.backgroundColor?.cgColor
-        self.editButton.layer.cornerRadius = 6.0
-        self.editButton.layer.shadowOpacity = 0.3
-        self.editButton.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         self.editButton.addTarget(
             self,
             action: #selector(self.onEditTapped),

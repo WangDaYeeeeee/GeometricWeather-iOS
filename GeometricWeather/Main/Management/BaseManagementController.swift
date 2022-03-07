@@ -343,6 +343,18 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
     
     func tableView(
         _ tableView: JXMovableCellTableView!,
+        customizeMovalbeCell movableCellsnapshot: UIImageView!
+    ) {
+        movableCellsnapshot.layer.cornerRadius = 0
+        movableCellsnapshot.layer.masksToBounds = false
+        movableCellsnapshot.layer.shadowColor = UIColor.black.cgColor
+        movableCellsnapshot.layer.shadowOpacity = 0.2
+        movableCellsnapshot.layer.shadowOffset = .zero
+        movableCellsnapshot.layer.shadowRadius = 16.0
+    }
+    
+    func tableView(
+        _ tableView: JXMovableCellTableView!,
         willMoveCellAt indexPath: IndexPath!
     ) {
         UIImpactFeedbackGenerator(style: .heavy).impactOccurred()

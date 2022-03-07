@@ -50,7 +50,10 @@ class SearchTableViewCell: UITableViewCell {
         self.highlightEffectContainer.addSubview(self.subtitleLabel)
         
         self.weatherSourceLabel.textColor = .tertiaryLabel
-        self.weatherSourceLabel.font = miniCaptionFont
+        self.weatherSourceLabel.font = UIFont.systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .bold
+        )
         self.highlightEffectContainer.addSubview(self.weatherSourceLabel)
         
         self.highlightEffectContainer.snp.makeConstraints { make in

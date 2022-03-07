@@ -139,6 +139,7 @@ class PresentManagementViewController: BaseManagementController,
                 strongSelf.view.endEditing(true)
                 
                 strongSelf.searchViewController.requesting.value = false
+                strongSelf.searchViewController.resetList()
             }
             
             UIView.animate(withDuration: 0.3) {

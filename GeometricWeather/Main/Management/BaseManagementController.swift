@@ -50,6 +50,9 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         return view
     }()
     
+    private let mediumImpactor = UIImpactFeedbackGenerator(style: .medium)
+    private let lightImpactor = UIImpactFeedbackGenerator(style: .light)
+    
     // MARK: - life cycle.
     
     override func viewDidLoad() {
@@ -357,9 +360,16 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         _ tableView: JXMovableCellTableView!,
         willMoveCellAt indexPath: IndexPath!
     ) {
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        
+        self.mediumImpactor.impactOccurred()
         self.moveBeginIndex = indexPath
+    }
+    
+    func tableView(
+        _ tableView: JXMovableCellTableView!,
+        didMoveCellFrom fromIndexPath: IndexPath!,
+        to toIndexPath: IndexPath!
+    ) {
+        self.lightImpactor.impactOccurred()
     }
     
     func tableView(
@@ -372,5 +382,6 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                 to: indexPath.row
             )
         }
+        self.lightImpactor.impactOccurred()
     }
 }

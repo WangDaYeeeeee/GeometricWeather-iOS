@@ -267,7 +267,7 @@ class SunMoonPathView: UIView {
         pathAnimation.duration = duration
         pathAnimation.fillMode = .forwards
         pathAnimation.isRemovedOnCompletion = false
-        pathAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.05, 0.1, 0.95)
+        pathAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
         layer.add(pathAnimation, forKey: key)
     }
     
@@ -293,7 +293,7 @@ class SunMoonPathView: UIView {
         animationGroup.duration = max(duration, 0.1)
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
-        animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.05, 0.1, 0.95)
+        animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
         animationGroup.animations = [pathAnimation, rotationAnimation]
         
         icon.layer.add(animationGroup, forKey: key)

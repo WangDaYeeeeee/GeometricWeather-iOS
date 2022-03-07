@@ -10,9 +10,7 @@ import SwiftUI
 struct NullForegroundView: View {
     
     var body: some View {
-        Group {
-            // draw nothing.
-        }
+        Color.clear
     }
 }
 

@@ -32,7 +32,30 @@ class EditViewModel: ObservableObject {
         )
     }
     
-    func reset() {
+    func deleteMainCard(at index: Int) {
+        withAnimation {
+            let card = self.mainCardList.remove(at: index)
+            self.deletedList.append(card)
+        }
+    }
+    
+    func moveMainCard(fromOffsets: IndexSet, toOffset: Int) {
+        withAnimation {
+            self.mainCardList.move(
+                fromOffsets: fromOffsets,
+                toOffset: toOffset
+            )
+        }
+    }
+    
+    func addMainCard(withIndexOfDeletedList index: Int) {
+        withAnimation {
+            let card = self.deletedList.remove(at: index)
+            self.mainCardList.append(card)
+        }
+    }
+    
+    func resetToDefault() {
         withAnimation {
             self.mainCardList = MainCard.all
             self.deletedList = [MainCard]()
@@ -110,16 +133,11 @@ struct EditView: View {
             return
         }
         
-        withAnimation {
-            let card = self.model.mainCardList.remove(at: index)
-            self.model.deletedList.append(card)
-        }
+        self.model.deleteMainCard(at: index)
     }
     
     private func onMove(from indexSet: IndexSet, to destination: Int) {
-        withAnimation {
-            self.model.mainCardList.move(fromOffsets: indexSet, toOffset: destination)
-        }
+        self.model.moveMainCard(fromOffsets: indexSet, toOffset: destination)
     }
     
     private func onAdd(_ card: MainCard) {
@@ -127,10 +145,7 @@ struct EditView: View {
             return
         }
         
-        withAnimation {
-            let card = self.model.deletedList.remove(at: index)
-            self.model.mainCardList.append(card)
-        }
+        self.model.addMainCard(withIndexOfDeletedList: index)
     }
 }
 

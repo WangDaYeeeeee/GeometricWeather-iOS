@@ -202,7 +202,7 @@ class CircularProgressView: UIView {
         animationGroup.duration = withAnimationDuration
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
-        animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.05, 0.1, 0.95)
+        animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
         animationGroup.animations = [pathAnimation, colorAnimation]
         self.progressShape.add(animationGroup, forKey: progressAnimationKey)
     }

@@ -233,7 +233,7 @@ struct MtrlForegroundMapperView: View {
                 rotation3D: rotation3D
             )
         } else {
-            
+            NullForegroundView()
         }
     }
 }
@@ -275,9 +275,11 @@ struct MtrlBackgroundMapperView: View {
             CloudBackgroundView(type: .fog)
         } else if weatherKind == .haze {
             CloudBackgroundView(type: .haze)
-        } else if (weatherKind == .lightRainy
-                   || weatherKind == .middleRainy
-                   || weatherKind == .haveyRainy) && daylight {
+        } else if (
+            weatherKind == .lightRainy
+            || weatherKind == .middleRainy
+            || weatherKind == .haveyRainy
+        ) && daylight {
             RainBackgroundView(type: .rainyDay)
         } else if weatherKind == .lightRainy
                     || weatherKind == .middleRainy

@@ -109,7 +109,7 @@ public class ThemeManager {
         daylight: Bool
     ) -> UIUserInterfaceStyle {
         if darkMode.key == "dark_mode_system" {
-            return .unspecified
+            return UIScreen.main.traitCollection.userInterfaceStyle
         } else if darkMode.key == "dark_mode_light" {
             return .light
         } else if darkMode.key == "dark_mode_dark" {
@@ -124,7 +124,7 @@ public class ThemeManager {
         daylight: Bool
     ) -> UIUserInterfaceStyle {
         if darkMode.key == "dark_mode_system" {
-            return .unspecified
+            return UIScreen.main.traitCollection.userInterfaceStyle
         } else if darkMode.key == "dark_mode_light" {
             return .light
         } else if darkMode.key == "dark_mode_dark" {

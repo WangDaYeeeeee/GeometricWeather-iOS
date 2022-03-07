@@ -52,23 +52,6 @@ class PresentManagementViewController: BaseManagementController,
         self.searchBar.delegate = self
         self.blurBackground.contentView.addSubview(self.searchBar)
         
-        self.tableView.backgroundColor = .clear
-        self.tableView.cellLayoutMarginsFollowReadableWidth = true
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.allowsSelection = true
-        self.tableView.allowsMultipleSelection = false
-        self.tableView.allowsSelectionDuringEditing = true
-        self.tableView.separatorStyle = .singleLine
-        self.tableView.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
-        self.tableView.separatorInset = .zero
-        self.tableView.rowHeight = LocationTableViewCell.locationCellHeight
-        self.tableView.register(
-            LocationTableViewCell.self,
-            forCellReuseIdentifier: cellReuseId
-        )
         self.blurBackground.contentView.addSubview(self.tableView)
         
         self.addChild(self.searchViewController)
@@ -123,10 +106,6 @@ class PresentManagementViewController: BaseManagementController,
                 )
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         self.param.vm?.selectableTotalLocations.addObserver(
             self
@@ -158,10 +137,9 @@ class PresentManagementViewController: BaseManagementController,
             if !newValue {
                 strongSelf.searchBar.text = ""
                 strongSelf.view.endEditing(true)
+                
+                strongSelf.searchViewController.requesting.value = false
             }
-            
-            strongSelf.searchViewController.requesting.value = false
-            strongSelf.searchViewController.resetList()
             
             UIView.animate(withDuration: 0.3) {
                 strongSelf.searchViewController.view.alpha = newValue ? 1.0 : 0.0
@@ -172,9 +150,7 @@ class PresentManagementViewController: BaseManagementController,
     // reset state of view when it become invisible.
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         self.searching.value = false
-        self.itemList.removeAll()
     }
     
     // MARK: - interfaces.

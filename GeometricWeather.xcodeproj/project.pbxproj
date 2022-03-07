@@ -123,6 +123,7 @@
 		379A8BD227CDC1D600083BFF /* MainCardTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BD127CDC1D600083BFF /* MainCardTagView.swift */; };
 		379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BD327CDFEC800083BFF /* EditViewController.swift */; };
 		37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */; };
+		37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */; };
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
 		37E5D417271021A00052A690 /* DailyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D416271021A00052A690 /* DailyWidget.swift */; };
 		37E5D419271022550052A690 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D418271022550052A690 /* DailyView.swift */; };
@@ -147,13 +148,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5D797E9A5C5782CE845840781FA1CC81;
 			remoteInfo = Alamofire;
-		};
-		37C4E16327D21D4200430086 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 37C4DFBA27D21D4200430086 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE63825A307A84FF9727CA1140FD5B80;
-			remoteInfo = JXMovableCellTableView;
 		};
 		37C4E16527D21D4200430086 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -203,6 +197,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = E48C0DC1CAF03125EE1F4CFA25F61B6B;
 			remoteInfo = UICountingLabel;
+		};
+		37C6AE3A27D5F3FB00E88738 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37C4DFBA27D21D4200430086 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE63825A307A84FF9727CA1140FD5B80;
+			remoteInfo = JXMovableCellTableView;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -376,16 +377,6 @@
 		37C4DFA627D21D4200430086 /* Observable+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Response.swift"; sourceTree = "<group>"; };
 		37C4DFA727D21D4200430086 /* MoyaProvider+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoyaProvider+Rx.swift"; sourceTree = "<group>"; };
 		37C4DFA827D21D4200430086 /* Single+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Single+Response.swift"; sourceTree = "<group>"; };
-		37C4DFAA27D21D4200430086 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		37C4DFAE27D21D4200430086 /* DependencyProviderRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyProviderRegistry.swift; sourceTree = "<group>"; };
-		37C4DFAF27D21D4200430086 /* Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bootstrap.swift; sourceTree = "<group>"; };
-		37C4DFB227D21D4200430086 /* PluginExtensionProviderRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginExtensionProviderRegistry.swift; sourceTree = "<group>"; };
-		37C4DFB327D21D4200430086 /* NonCoreComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonCoreComponent.swift; sourceTree = "<group>"; };
-		37C4DFB427D21D4200430086 /* PluginizedComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginizedComponent.swift; sourceTree = "<group>"; };
-		37C4DFB527D21D4200430086 /* PluginizedScopeLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginizedScopeLifecycle.swift; sourceTree = "<group>"; };
-		37C4DFB627D21D4200430086 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
-		37C4DFB827D21D4200430086 /* MockComponentPathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockComponentPathBuilder.swift; sourceTree = "<group>"; };
-		37C4DFB927D21D4200430086 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		37C4DFBA27D21D4200430086 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		37C4DFBE27D21D4200430086 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		37C4DFC027D21D4200430086 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
@@ -758,6 +749,7 @@
 		37C4E15427D21D4200430086 /* UICountingLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UICountingLabel.h; sourceTree = "<group>"; };
 		37C4E15527D21D4200430086 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		37C4E15627D21D4200430086 /* UICountingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UICountingLabel.m; sourceTree = "<group>"; };
+		37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPropertyAnimatorExt.swift; sourceTree = "<group>"; };
 		37D7AA8926B2AEB70028F67E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		37D7AA8B26B2AEB90028F67E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		37E5D416271021A00052A690 /* DailyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget.swift; sourceTree = "<group>"; };
@@ -1056,6 +1048,7 @@
 				379A8AAC27C8C59000083BFF /* SunMoon */,
 				379A8AAF27C8C59000083BFF /* ProgressView */,
 				379A8AB227C8C59000083BFF /* UIRefreshControlExt.swift */,
+				37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1229,7 +1222,6 @@
 			isa = PBXGroup;
 			children = (
 				37C4DF8427D21D4200430086 /* Moya */,
-				37C4DFA927D21D4200430086 /* NeedleFoundation */,
 				37C4DFBA27D21D4200430086 /* Pods.xcodeproj */,
 				37C4DFBD27D21D4200430086 /* Alamofire */,
 				37C4DFE527D21D4200430086 /* JXMovableCellTableView */,
@@ -1324,76 +1316,11 @@
 			path = RxMoya;
 			sourceTree = "<group>";
 		};
-		37C4DFA927D21D4200430086 /* NeedleFoundation */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFAA27D21D4200430086 /* README.md */,
-				37C4DFAB27D21D4200430086 /* Sources */,
-				37C4DFB927D21D4200430086 /* LICENSE.txt */,
-			);
-			path = NeedleFoundation;
-			sourceTree = "<group>";
-		};
-		37C4DFAB27D21D4200430086 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFAC27D21D4200430086 /* NeedleFoundation */,
-				37C4DFB727D21D4200430086 /* NeedleFoundationTest */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		37C4DFAC27D21D4200430086 /* NeedleFoundation */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFAD27D21D4200430086 /* Internal */,
-				37C4DFAF27D21D4200430086 /* Bootstrap.swift */,
-				37C4DFB027D21D4200430086 /* Pluginized */,
-				37C4DFB627D21D4200430086 /* Component.swift */,
-			);
-			path = NeedleFoundation;
-			sourceTree = "<group>";
-		};
-		37C4DFAD27D21D4200430086 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFAE27D21D4200430086 /* DependencyProviderRegistry.swift */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		37C4DFB027D21D4200430086 /* Pluginized */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFB127D21D4200430086 /* Internal */,
-				37C4DFB327D21D4200430086 /* NonCoreComponent.swift */,
-				37C4DFB427D21D4200430086 /* PluginizedComponent.swift */,
-				37C4DFB527D21D4200430086 /* PluginizedScopeLifecycle.swift */,
-			);
-			path = Pluginized;
-			sourceTree = "<group>";
-		};
-		37C4DFB127D21D4200430086 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFB227D21D4200430086 /* PluginExtensionProviderRegistry.swift */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		37C4DFB727D21D4200430086 /* NeedleFoundationTest */ = {
-			isa = PBXGroup;
-			children = (
-				37C4DFB827D21D4200430086 /* MockComponentPathBuilder.swift */,
-			);
-			path = NeedleFoundationTest;
-			sourceTree = "<group>";
-		};
 		37C4DFBB27D21D4200430086 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				37C4E16227D21D4200430086 /* Alamofire */,
-				37C4E16427D21D4200430086 /* JXMovableCellTableView */,
+				37C6AE3B27D5F3FB00E88738 /* JXMovableCellTableView */,
 				37C4E16627D21D4200430086 /* Moya */,
 				37C4E16A27D21D4200430086 /* Pods-GeometricWeather */,
 				37C4E16C27D21D4200430086 /* ReachabilitySwift */,
@@ -2220,14 +2147,6 @@
 			remoteRef = 37C4E16127D21D4200430086 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		37C4E16427D21D4200430086 /* JXMovableCellTableView */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			name = JXMovableCellTableView;
-			path = JXMovableCellTableView.framework;
-			remoteRef = 37C4E16327D21D4200430086 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		37C4E16627D21D4200430086 /* Moya */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2282,6 +2201,14 @@
 			name = UICountingLabel;
 			path = UICountingLabel.framework;
 			remoteRef = 37C4E17327D21D4200430086 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		37C6AE3B27D5F3FB00E88738 /* JXMovableCellTableView */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = JXMovableCellTableView;
+			path = JXMovableCellTableView.framework;
+			remoteRef = 37C6AE3A27D5F3FB00E88738 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2383,6 +2310,7 @@
 				379A8BBC27C8C59100083BFF /* AboutViewController.swift in Sources */,
 				379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */,
 				379A8B5527C8C59000083BFF /* HistogramView.swift in Sources */,
+				37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */,
 				379A8B2E27C8C59000083BFF /* MainDetailsCardCell.swift in Sources */,
 				379A8B4A27C8C59000083BFF /* AlertViewController.swift in Sources */,
 				379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */,
@@ -2644,7 +2572,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2655,7 +2583,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2683,7 +2611,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2694,7 +2622,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

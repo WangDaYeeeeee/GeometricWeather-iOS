@@ -56,23 +56,6 @@ class SplitManagementViewController: BaseManagementController,
         self.searchController.searchBar.delegate = self
         self.navigationItem.searchController = self.searchController
         
-        self.tableView.backgroundColor = .clear
-        self.tableView.cellLayoutMarginsFollowReadableWidth = true
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.showsHorizontalScrollIndicator = false
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.allowsSelection = true
-        self.tableView.allowsMultipleSelection = false
-        self.tableView.allowsSelectionDuringEditing = true
-        self.tableView.separatorStyle = .singleLine
-        self.tableView.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
-        self.tableView.separatorInset = .zero
-        self.tableView.rowHeight = LocationTableViewCell.locationCellHeight
-        self.tableView.register(
-            LocationTableViewCell.self,
-            forCellReuseIdentifier: cellReuseId
-        )
         self.view.addSubview(self.tableView)
         
         self.tableView.snp.makeConstraints { make in
@@ -108,10 +91,6 @@ class SplitManagementViewController: BaseManagementController,
                 )
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         self.param.vm?.selectableTotalLocations.addObserver(self) { [weak self] newValue in
             guard let strongSelf = self else {
@@ -127,14 +106,6 @@ class SplitManagementViewController: BaseManagementController,
                 strongSelf.searchController.searchBar.showsBookmarkButton = showBookmarkButton
             }
         }
-    }
-    
-    // reset state of view when it become invisible.
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.searchController.dismiss(animated: false, completion: nil)
-        self.itemList.removeAll()
     }
     
     // MARK: - search controller delegate.

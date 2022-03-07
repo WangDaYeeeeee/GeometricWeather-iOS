@@ -8,9 +8,14 @@
 import Foundation
 import GeometricWeatherBasic
 
-struct LocationItem {
+struct LocationItem: Hashable {
+    
     let location: Location
     let selected: Bool
+    
+    func hash(into hasher: inout Hasher) {
+        return location.formattedId.hash(into: &hasher)
+    }
 }
 
 struct HideKeyboardEvent {

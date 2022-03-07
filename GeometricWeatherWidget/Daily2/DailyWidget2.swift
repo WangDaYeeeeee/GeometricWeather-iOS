@@ -17,18 +17,26 @@ struct DailyWidget2EntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        HStack {
-            CurrentSquareView(
-                location: self.entry.location
-            ).padding()
-            
-            Spacer()
-                            
-            HorizontalDailyView(
-                location: self.entry.location
-            ).padding(
-                .trailing
-            ).padding(.vertical, 2.0)
+        GeometryReader { proxy in
+            HStack {
+                CurrentSquareView(
+                    location: self.entry.location
+                ).padding().frame(
+                    width: proxy.size.width * 0.5,
+                    alignment: .leading
+                )
+                                
+                HorizontalDailyView(
+                    location: self.entry.location
+                ).padding(
+                    .trailing
+                ).padding(
+                    .vertical, 2.0
+                ).frame(
+                    width: proxy.size.width * 0.5,
+                    alignment: .trailing
+                )
+            }
         }.background(
             ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: weatherCodeToWeatherKind(

@@ -41,7 +41,7 @@ class EditViewController: GeoViewController<Void> {
     }
     
     @objc private func onResetButtonTapped() {
-        self.editViewModel.reset()
+        self.editViewModel.resetToDefault()
     }
 }
 

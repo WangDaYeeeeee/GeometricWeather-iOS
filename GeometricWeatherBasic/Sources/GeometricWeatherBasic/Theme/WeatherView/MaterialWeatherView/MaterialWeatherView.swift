@@ -59,7 +59,7 @@ public struct MaterialWeatherView: View, WeatherView {
             
             Group {
                 // foreground 1.
-                if show1hide2progress > 0 {
+                if self.show1hide2progress > 0 {
                     MtrlForegroundMapperView(
                         weatherKind: weatherKind1,
                         daylight: daylight1,
@@ -69,12 +69,12 @@ public struct MaterialWeatherView: View, WeatherView {
                         rotation3D: rotation3D,
                         paddingTop: self.state.paddingTop
                     ).opacity(
-                        show1hide2progress
+                        self.show1hide2progress
                     )
                 }
                 
                 // foreground 2.
-                if show1hide2progress < 1 {
+                if self.show1hide2progress < 1 {
                     MtrlForegroundMapperView(
                         weatherKind: weatherKind2,
                         daylight: daylight2,
@@ -84,7 +84,7 @@ public struct MaterialWeatherView: View, WeatherView {
                         rotation3D: rotation3D,
                         paddingTop: self.state.paddingTop
                     ).opacity(
-                        1 - show1hide2progress
+                        1 - self.show1hide2progress
                     )
                 }
             }.offset(
@@ -95,28 +95,30 @@ public struct MaterialWeatherView: View, WeatherView {
                 ) + self.state.offsetHorizontal,
                 y: 0.0
             )
-        }.background(Group {
-            // background 1.
-            if show1hide2progress > 0 {
-                MtrlBackgroundMapperView(
-                    weatherKind: weatherKind1,
-                    daylight: daylight1
-                ).opacity(
-                    show1hide2progress
-                )
+        }.background(
+            Group {
+                // background 1.
+                if self.show1hide2progress > 0 {
+                    MtrlBackgroundMapperView(
+                        weatherKind: weatherKind1,
+                        daylight: daylight1
+                    ).opacity(
+                        self.show1hide2progress
+                    )
+                }
+                // background 2.
+                if self.show1hide2progress < 1 {
+                    MtrlBackgroundMapperView(
+                        weatherKind: weatherKind2,
+                        daylight: daylight2
+                    ).opacity(
+                        1 - self.show1hide2progress
+                    )
+                }
             }
-            // background 2.
-            if show1hide2progress < 1 {
-                MtrlBackgroundMapperView(
-                    weatherKind: weatherKind2,
-                    daylight: daylight2
-                ).opacity(
-                    1 - show1hide2progress
-                )
-            }
-        }).onRotate { _ in
+        ).onRotate { _ in
             // switch state when interface orientation change.
-            show1hide2.toggle()
+            self.show1hide2.toggle()
             
             self.weatherKind1 = self.state.weatherKind
             self.daylight1 = self.state.daylight
@@ -125,13 +127,13 @@ public struct MaterialWeatherView: View, WeatherView {
             
             // change progress in animation.
             withAnimation(.easeInOut(duration: 0.4)) {
-                show1hide2progress = show1hide2 ? 1 : 0
+                self.show1hide2progress = self.show1hide2 ? 1 : 0
             }
         }.onChange(of: self.state.updateWeatherTime) { _ in
             // we need switch the state to right value when weather data has been update.
-            show1hide2.toggle()
+            self.show1hide2.toggle()
             
-            if show1hide2 {
+            if self.show1hide2 {
                 // let weather view 1 show the current weather,
                 // and weather view 2 show the previous weather.
                 self.weatherKind1 = self.state.weatherKind
@@ -148,16 +150,16 @@ public struct MaterialWeatherView: View, WeatherView {
             
             // change progress in animation.
             withAnimation(.easeInOut(duration: 0.4)) {
-                show1hide2progress = show1hide2 ? 1 : 0
+                self.show1hide2progress = self.show1hide2 ? 1 : 0
             }
         }.onChange(of: self.state.drawable) { newValue in
             // reset interval computers when drawable change.
-            gravityData.resetIntervalComputers()
+            self.gravityData.resetIntervalComputers()
         }.onAppear() {
-            gravityData.startUpdate()
+            self.gravityData.startUpdate()
         }.onDisappear() {
-            gravityData.stopUpdate()
-        }// .drawingGroup()
+            self.gravityData.stopUpdate()
+        } // .drawingGroup()
             .ignoresSafeArea()
     }
 }

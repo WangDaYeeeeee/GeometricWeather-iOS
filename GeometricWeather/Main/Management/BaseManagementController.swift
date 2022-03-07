@@ -10,12 +10,16 @@ import GeometricWeatherBasic
 
 private let cellReuseId = "ManagementTableViewCell"
 
+enum ManagementSection {
+    case locationItems
+}
+
 class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                                     JXMovableCellTableViewDataSource,
                                     JXMovableCellTableViewDelegate {
     
     // MARK: - inner data.
-    
+
     var itemList = [LocationItem]()
     var moveBeginIndex: IndexPath?
     
@@ -24,9 +28,38 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
             return true
         }
     }
-    let tableView = JXMovableCellTableView(frame: .zero, style: .plain)
+    let tableView: JXMovableCellTableView = {
+        let view = JXMovableCellTableView(frame: .zero, style: .plain)
+        
+        view.backgroundColor = .clear
+        view.cellLayoutMarginsFollowReadableWidth = true
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.allowsSelection = true
+        view.allowsMultipleSelection = false
+        view.allowsSelectionDuringEditing = true
+        view.separatorStyle = .singleLine
+        view.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
+        view.separatorInset = .zero
+        view.rowHeight = LocationTableViewCell.cellHeight
+        view.register(
+            LocationTableViewCell.self,
+            forCellReuseIdentifier: cellReuseId
+        )
+        
+        return view
+    }()
+    
+    // MARK: - life cycle.
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+    }
     
     // MARK: - ui.
+    
     enum UpdateLocationListResult {
         case new
         case added
@@ -273,7 +306,9 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         delete.backgroundColor = .systemRed
         
         var actions = [UIContextualAction]()
-        actions.append(delete)
+        if self.itemList.count > 1 {
+            actions.append(delete)
+        }
         if !(
             self.itemList.get(
                 indexPath.row
@@ -288,6 +323,17 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
     }
     
     // drag reaction.
+    
+    func tableView(
+        _ tableView: UITableView,
+        canMoveRowAt indexPath: IndexPath
+    ) -> Bool {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
+            return true
+        }
+        
+        return cell.frame.origin.x == 0
+    }
     
     func tableView(
         _ tableView: JXMovableCellTableView!,

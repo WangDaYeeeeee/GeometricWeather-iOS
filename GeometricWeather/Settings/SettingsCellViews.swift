@@ -38,17 +38,26 @@ struct SettingsListCellView: View {
     let keys: [String]
     
     let selectedIndex: Binding<Int>
-    @State private var showActionSheet = false
-    
+        
     var body: some View {
-        Picker(selection: self.selectedIndex) {
-            ForEach(self.keys.indices) { index in
-                Text(
-                    NSLocalizedString(self.keys[index], comment: "")
-                )
-            }
-        } label: {
+        HStack {
             SettingsTitleView(key: titleKey)
+            
+            Spacer()
+            
+            Picker(selection: self.selectedIndex) {
+                ForEach(self.keys.indices) { index in
+                    Text(
+                        NSLocalizedString(self.keys[index], comment: "")
+                    )
+                }
+            } label: {
+                SettingsTitleView(key: titleKey)
+            }.pickerStyle(
+                .menu
+            ).accentColor(
+                Color(UIColor.systemBlue)
+            )
         }.padding(
             EdgeInsets(
                 top: littleMargin / 2.0,

@@ -13,9 +13,12 @@ private let iconSize = 24.0
 private let normalBackgroundColor = UIColor.systemBackground
 private let selectedBackgroundColor = UIColor.secondarySystemBackground
 
+private let highlightAnimationDuration = 1.0
+private let deHighlightAnimationDuration = 0.25
+
 class SearchTableViewCell: UITableViewCell {
     
-    static let locationCellHeight = 96.0
+    static let cell = 96.0
     
     // MARK: - subviews.
     
@@ -25,6 +28,10 @@ class SearchTableViewCell: UITableViewCell {
     private let subtitleLabel = UILabel(frame: .zero)
     
     private let weatherSourceLabel = UILabel(frame: .zero)
+    
+    // MARK: - inner data.
+    
+    private var highlightAnimator: UIViewPropertyAnimator?
     
     // MARK: - life cycle.
     
@@ -133,23 +140,41 @@ class SearchTableViewCell: UITableViewCell {
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         
-        if (highlighted) {
-            self.highlightEffectContainer.alpha = 0.5
-            
-            UIView.animate(withDuration: 0.2) {
-                self.highlightEffectContainer.transform = CGAffineTransform(
-                    scaleX: 0.98,
-                    y: 0.98
-                )
-            }
-        } else {
-            UIView.animate(withDuration: 0.45) {
-                self.highlightEffectContainer.transform = CGAffineTransform(
-                    scaleX: 1.0,
-                    y: 1.0
-                )
+        self.highlightAnimator?.stopAnimation(false)
+        self.highlightAnimator?.finishAnimation(at: .current)
+        
+        if !highlighted {
+            self.highlightAnimator = UIViewPropertyAnimator(
+                duration: deHighlightAnimationDuration,
+                dampingRatio: 0.66
+            ) {
                 self.highlightEffectContainer.alpha = 1.0
+                self.highlightEffectContainer.transform = .identity
+            }
+            self.highlightAnimator?.addCompletion { [weak self] position in
+                if position == .end {
+                    self?.highlightAnimator = nil
+                }
+            }
+            self.highlightAnimator?.startAnimation()
+            return
+        }
+        
+        let a1 = UIViewPropertyAnimator(
+            duration: highlightAnimationDuration * 0.33,
+            controlPoint1: CGPoint(x: 0.2, y: 0.8),
+            controlPoint2: CGPoint(x: 0.0, y: 1.0)
+        ) {
+            self.highlightEffectContainer.alpha = 0.5
+            self.highlightEffectContainer.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
+        }
+        a1.addCompletion { [weak self] position in
+            if position == .end {
+                self?.highlightAnimator = nil
             }
         }
+        
+        self.highlightAnimator = a1
+        self.highlightAnimator?.startAnimation()
     }
 }

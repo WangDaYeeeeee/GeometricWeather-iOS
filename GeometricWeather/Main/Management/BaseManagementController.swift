@@ -252,11 +252,15 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
             style: .destructive,
             title: nil
         ) { [weak self] action, view, handler in
-            if let location = self?.itemList.get(indexPath.row)?.location {
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if let location = strongSelf.itemList.get(indexPath.row)?.location {
                 if !location.residentPosition {
                     ToastHelper.showToastMessage(
                         NSLocalizedString("feedback_resident_location", comment: ""),
-                        inWindowOfView: view,
+                        inWindowOfView: strongSelf.view,
                         WithAction: NSLocalizedString("learn_more", comment: ""),
                         andDuration: longToastInterval
                     ) {
@@ -269,13 +273,13 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                                 "feedback_resident_location_description",
                                 comment: ""
                             )
-                        ).showSelf(inWindowOfView: view)
+                        ).showSelf(inWindowOfView: strongSelf.view)
                     } completion: { didTap in
                         // do nothing.
                     }
                 }
                 
-                self?.param.vm?.updateLocation(
+                strongSelf.param.vm?.updateLocation(
                     location: location.copyOf(
                         residentPosition: !location.residentPosition
                     )
@@ -294,10 +298,12 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
             style: .normal,
             title: nil
         ) { [weak self] action, view, handler in
-            ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_delete_succeed", comment: ""),
-                inWindowOfView: view
-            )
+            if let view = self?.view {
+                ToastHelper.showToastMessage(
+                    NSLocalizedString("feedback_delete_succeed", comment: ""),
+                    inWindowOfView: view
+                )
+            }
             
             self?.param.vm?.deleteLocation(position: indexPath.row)
             handler(true)

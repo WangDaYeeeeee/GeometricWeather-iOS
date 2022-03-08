@@ -30,8 +30,3 @@ enum MainToastMessage {
     case locationFailed
     case weatherRequestFailed
 }
-
-struct MainViewModelWeakRef {
-    
-    weak var vm: MainViewModel?
-}

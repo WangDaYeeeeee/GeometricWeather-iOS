@@ -1,0 +1,6 @@
+framework module NeedleFoundation {
+  umbrella header "NeedleFoundation-umbrella.h"
+
+  export *
+  module * { export * }
+}

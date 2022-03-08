@@ -91,7 +91,7 @@ class PresentManagementViewController: BaseManagementController,
                 return
             }
             
-            if strongSelf.param.vm?.addLocation(location: event.location) ?? false {
+            if strongSelf.param.addLocation(location: event.location) ?? false {
                 strongSelf.searchBar.text = ""
                 strongSelf.searching.value = false
                 
@@ -107,7 +107,7 @@ class PresentManagementViewController: BaseManagementController,
             }
         }
         
-        self.param.vm?.selectableTotalLocations.addObserver(
+        self.param.selectableTotalLocations.addObserver(
             self
         ) { [weak self] newValue in
             guard let strongSelf = self else {
@@ -202,7 +202,7 @@ class PresentManagementViewController: BaseManagementController,
         self.searchBar.text = ""
         self.searching.value = false
         
-        if self.param.vm?.addLocation(
+        if self.param.addLocation(
             location: Location.buildLocal(
                 weatherSource: SettingsManager.shared.weatherSource
             )

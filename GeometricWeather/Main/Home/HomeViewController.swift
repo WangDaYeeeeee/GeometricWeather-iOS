@@ -14,7 +14,13 @@ class HomeViewController: UIViewController,
         
     // MARK: - view models.
 
-    let vmWeakRef: MainViewModelWeakRef
+    let vm: MainViewModel
+    
+    // MARK: - router.
+    
+    let managementBuilder: ManagementBuilder
+    let editBuilder: EditBuilder
+    let settingsBuilder: SettingsBuilder
     
     // MARK: - inner data.
     
@@ -83,9 +89,18 @@ class HomeViewController: UIViewController,
         
     // MARK: - life cycle.
     
-    init(vmWeakRef: MainViewModelWeakRef, splitView: Bool) {
-        self.vmWeakRef = vmWeakRef
+    init(
+        vm: MainViewModel,
+        splitView: Bool,
+        managementBuilder: ManagementBuilder,
+        editBuilder: EditBuilder,
+        settingsBuilder: SettingsBuilder
+    ) {
+        self.vm = vm
         self.splitView = splitView
+        self.managementBuilder = managementBuilder
+        self.editBuilder = editBuilder
+        self.settingsBuilder = settingsBuilder
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -120,11 +135,11 @@ class HomeViewController: UIViewController,
         
         // observe live data.
         
-        self.vmWeakRef.vm?.currentLocation.addObserver(self) { [weak self] newValue in
+        self.vm.currentLocation.addObserver(self) { [weak self] newValue in
             self?.updatePreviewableSubviews()
             self?.updateTableView()
         }
-        self.vmWeakRef.vm?.loading.addObserver(self) { [weak self] newValue in
+        self.vm.loading.addObserver(self) { [weak self] newValue in
             if newValue == self?.tableView.refreshControl?.isRefreshing {
                 return
             }
@@ -134,7 +149,7 @@ class HomeViewController: UIViewController,
                 self?.tableView.refreshControl?.endRefreshing()
             }
         }
-        self.vmWeakRef.vm?.indicator.addObserver(self) { [weak self] newValue in
+        self.vm.indicator.addObserver(self) { [weak self] newValue in
             if self?.indicator.selectedIndex != newValue.index {
                 self?.indicator.selectedIndex = newValue.index
             }
@@ -145,7 +160,7 @@ class HomeViewController: UIViewController,
             self?.dragSwitchView.dragEnabled = newValue.total > 1
         }
         
-        self.vmWeakRef.vm?.toastMessage.addObserver(self) { [weak self] newValue in
+        self.vm.toastMessage.addObserver(self) { [weak self] newValue in
             if let message = newValue {
                 self?.showToastMessage(message)
             }
@@ -181,17 +196,17 @@ class HomeViewController: UIViewController,
     }
     
     @objc private func viewWillEnterForeground() {
-        self.vmWeakRef.vm?.checkToUpdate()
+        self.vm.checkToUpdate()
     }
     
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
-        self.vmWeakRef.vm?.encodeRestorableState(with: coder)
+        self.vm.encodeRestorableState(with: coder)
     }
     
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
-        self.vmWeakRef.vm?.decodeRestorableState(with: coder)
+        self.vm.decodeRestorableState(with: coder)
     }
     
     override func viewWillLayoutSubviews() {
@@ -210,11 +225,9 @@ class HomeViewController: UIViewController,
     }
     
     private func updatePreviewableSubviews() {
-        guard let location = self.vmWeakRef.vm?.getValidLocation(
+        let location = self.vm.getValidLocation(
             offset: self.previewOffset
-        ) else {
-            return
-        }
+        )
         
         let daylight = self.previewOffset == 0
         ? ThemeManager.shared.daylight.value
@@ -289,9 +302,7 @@ class HomeViewController: UIViewController,
         }
         
         self.navigationController?.present(
-            PresentManagementViewController(
-                param: MainViewModelWeakRef(vm: self.vmWeakRef.vm)
-            ),
+            self.managementBuilder.presentManagementViewController,
             animated: true,
             completion: nil
         )
@@ -299,13 +310,13 @@ class HomeViewController: UIViewController,
     
     @objc func onSettingsButtonClicked() {
         self.navigationController?.pushViewController(
-            SettingsViewController(param: ()),
+            self.settingsBuilder.settingsViewController,
             animated: true
         )
     }
     
     @objc func onPullRefresh() {
-        self.vmWeakRef.vm?.updateWithUpdatingChecking()
+        self.vm.updateWithUpdatingChecking()
 
         if let refreshControl = self.tableView.refreshControl {
             refreshControl.endRefreshing()
@@ -334,10 +345,8 @@ class HomeViewController: UIViewController,
         self.previewOffset = 0
         
         self.hideHeaderAndCells()
-        if !(
-            self.vmWeakRef.vm?.offsetLocation(
-                offset: indexOffset
-            ) ?? false
+        if !self.vm.offsetLocation(
+            offset: indexOffset
         ) {
             self.updateTableView()
         }

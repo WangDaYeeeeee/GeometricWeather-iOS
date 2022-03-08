@@ -18,6 +18,8 @@ class AppDelegate: UIResponder,
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        // register needle for DI.
+        registerProviderFactories()
         
         // request notification authorization and set delegate.
         UNUserNotificationCenter.current().requestAuthorization(

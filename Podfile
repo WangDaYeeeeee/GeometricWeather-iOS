@@ -18,6 +18,9 @@ target 'GeometricWeather' do
   # snapkit.
   pod 'SnapKit', '~> 5.0.0'
   
+  # needle.
+  pod 'NeedleFoundation'
+  
   # ui.
   pod 'JXMovableCellTableView'
   pod 'UICountingLabel'

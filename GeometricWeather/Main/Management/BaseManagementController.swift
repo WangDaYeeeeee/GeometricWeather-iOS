@@ -14,7 +14,7 @@ enum ManagementSection {
     case locationItems
 }
 
-class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
+class BaseManagementController: GeoViewController<MainViewModel>,
                                     JXMovableCellTableViewDataSource,
                                     JXMovableCellTableViewDelegate {
     
@@ -50,8 +50,9 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         return view
     }()
     
-    private let mediumImpactor = UIImpactFeedbackGenerator(style: .medium)
-    private let lightImpactor = UIImpactFeedbackGenerator(style: .light)
+    private let dragBeginImpactor = UIImpactFeedbackGenerator(style: .heavy)
+    private let dragReactionImpactor = UIImpactFeedbackGenerator(style: .rigid)
+    private let dragFailedImpactor = UINotificationFeedbackGenerator()
     
     // MARK: - life cycle.
     
@@ -239,7 +240,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        self.param.vm?.setLocation(
+        self.param.setLocation(
             formattedId: self.itemList[indexPath.row].location.formattedId
         )
         self.dismiss(animated: true)
@@ -282,7 +283,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                     }
                 }
                 
-                strongSelf.param.vm?.updateLocation(
+                strongSelf.param.updateLocation(
                     location: location.copyOf(
                         residentPosition: !location.residentPosition
                     )
@@ -308,7 +309,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
                 )
             }
             
-            self?.param.vm?.deleteLocation(position: indexPath.row)
+            self?.param.deleteLocation(position: indexPath.row)
             handler(true)
         }
         delete.image = UIImage(systemName: "delete.backward.fill")
@@ -346,6 +347,13 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
     
     func tableView(
         _ tableView: JXMovableCellTableView!,
+        tryMoveUnmovableCellAt indexPath: IndexPath!
+    ) {
+        self.dragFailedImpactor.notificationOccurred(.error)
+    }
+    
+    func tableView(
+        _ tableView: JXMovableCellTableView!,
         customizeMovalbeCell movableCellsnapshot: UIImageView!
     ) {
         movableCellsnapshot.layer.cornerRadius = 0
@@ -360,7 +368,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         _ tableView: JXMovableCellTableView!,
         willMoveCellAt indexPath: IndexPath!
     ) {
-        self.mediumImpactor.impactOccurred()
+        self.dragBeginImpactor.impactOccurred()
         self.moveBeginIndex = indexPath
     }
     
@@ -369,7 +377,7 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         didMoveCellFrom fromIndexPath: IndexPath!,
         to toIndexPath: IndexPath!
     ) {
-        self.lightImpactor.impactOccurred()
+        self.dragReactionImpactor.impactOccurred()
     }
     
     func tableView(
@@ -377,11 +385,11 @@ class BaseManagementController: GeoViewController<MainViewModelWeakRef>,
         endMoveCellAt indexPath: IndexPath!
     ) {
         if let beginAt = self.moveBeginIndex {
-            self.param.vm?.moveLocation(
+            self.param.moveLocation(
                 from: beginAt.row,
                 to: indexPath.row
             )
         }
-        self.lightImpactor.impactOccurred()
+        self.dragReactionImpactor.impactOccurred()
     }
 }

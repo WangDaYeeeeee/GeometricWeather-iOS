@@ -124,6 +124,12 @@
 		379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BD327CDFEC800083BFF /* EditViewController.swift */; };
 		37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */; };
 		37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */; };
+		37D3B8BC27D6D76C00191C2A /* MainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8BB27D6D76C00191C2A /* MainComponent.swift */; };
+		37D3B8BE27D6D85600191C2A /* HomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8BD27D6D85600191C2A /* HomeComponent.swift */; };
+		37D3B8C027D6DB3500191C2A /* ManagementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8BF27D6DB3500191C2A /* ManagementComponent.swift */; };
+		37D3B8C627D6F6A500191C2A /* EditComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8C527D6F6A500191C2A /* EditComponent.swift */; };
+		37D3B8C827D6FA0A00191C2A /* NeedleGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */; };
+		37D3B8CA27D6FA5000191C2A /* SettingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8C927D6FA5000191C2A /* SettingsComponent.swift */; };
 		37D7AA8826B2AEB70028F67E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
 		37E5D417271021A00052A690 /* DailyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D416271021A00052A690 /* DailyWidget.swift */; };
 		37E5D419271022550052A690 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D418271022550052A690 /* DailyView.swift */; };
@@ -204,6 +210,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = FE63825A307A84FF9727CA1140FD5B80;
 			remoteInfo = JXMovableCellTableView;
+		};
+		37D3B8B627D6D61700191C2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37C4DFBA27D21D4200430086 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57474CBF008B886BB5B20E7FBCEFD240;
+			remoteInfo = NeedleFoundation;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -750,6 +763,22 @@
 		37C4E15527D21D4200430086 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		37C4E15627D21D4200430086 /* UICountingLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UICountingLabel.m; sourceTree = "<group>"; };
 		37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPropertyAnimatorExt.swift; sourceTree = "<group>"; };
+		37D3B89C27D6D61700191C2A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		37D3B8A027D6D61700191C2A /* DependencyProviderRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyProviderRegistry.swift; sourceTree = "<group>"; };
+		37D3B8A127D6D61700191C2A /* Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bootstrap.swift; sourceTree = "<group>"; };
+		37D3B8A427D6D61700191C2A /* PluginExtensionProviderRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginExtensionProviderRegistry.swift; sourceTree = "<group>"; };
+		37D3B8A527D6D61700191C2A /* NonCoreComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonCoreComponent.swift; sourceTree = "<group>"; };
+		37D3B8A627D6D61700191C2A /* PluginizedComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginizedComponent.swift; sourceTree = "<group>"; };
+		37D3B8A727D6D61700191C2A /* PluginizedScopeLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginizedScopeLifecycle.swift; sourceTree = "<group>"; };
+		37D3B8A827D6D61700191C2A /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		37D3B8AA27D6D61700191C2A /* MockComponentPathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockComponentPathBuilder.swift; sourceTree = "<group>"; };
+		37D3B8AB27D6D61700191C2A /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		37D3B8BB27D6D76C00191C2A /* MainComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainComponent.swift; sourceTree = "<group>"; };
+		37D3B8BD27D6D85600191C2A /* HomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeComponent.swift; sourceTree = "<group>"; };
+		37D3B8BF27D6DB3500191C2A /* ManagementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementComponent.swift; sourceTree = "<group>"; };
+		37D3B8C527D6F6A500191C2A /* EditComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComponent.swift; sourceTree = "<group>"; };
+		37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeedleGenerated.swift; sourceTree = "<group>"; };
+		37D3B8C927D6FA5000191C2A /* SettingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponent.swift; sourceTree = "<group>"; };
 		37D7AA8926B2AEB70028F67E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		37D7AA8B26B2AEB90028F67E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		37E5D416271021A00052A690 /* DailyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget.swift; sourceTree = "<group>"; };
@@ -823,12 +852,12 @@
 			children = (
 				379A8A9027C8C59000083BFF /* Common */,
 				379A8B0727C8C59000083BFF /* Update */,
-				379A8B1827C8C59000083BFF /* About */,
 				379A8B1C27C8C59000083BFF /* Settings */,
 				379A8A5327C8C59000083BFF /* Main */,
 				3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */,
 				377B1D6526B6B93000E7E07E /* AppDelegate.swift */,
 				377B1D6426B6B93000E7E07E /* SceneDelegate.swift */,
+				37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */,
 				3799F4FF26D0AE9C00B49D20 /* GeometricWeather-Bridging-Header.h */,
 				370BA5C2269C5E37006BB1CE /* LaunchScreen.storyboard */,
 				370BA59B269C398F006BB1CE /* Assets.xcassets */,
@@ -886,6 +915,7 @@
 				379A8A8E27C8C59000083BFF /* MainViewModel.swift */,
 				379A8A8D27C8C59000083BFF /* MainRepository.swift */,
 				379A8A8F27C8C59000083BFF /* MainModels.swift */,
+				37D3B8BB27D6D76C00191C2A /* MainComponent.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -910,6 +940,7 @@
 				379A8A6E27C8C59000083BFF /* HomeViewController+UITableView.swift */,
 				379A8A7027C8C59000083BFF /* HomeViewController+PageIndicator.swift */,
 				379A8A6D27C8C59000083BFF /* HomeViewController+Events.swift */,
+				37D3B8BD27D6D85600191C2A /* HomeComponent.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -993,6 +1024,7 @@
 				379A8A7F27C8C59000083BFF /* SplitManagementViewController.swift */,
 				379A8A8427C8C59000083BFF /* LocationTableViewCell.swift */,
 				379A8A8527C8C59000083BFF /* ManagementCommon.swift */,
+				37D3B8BF27D6DB3500191C2A /* ManagementComponent.swift */,
 			);
 			path = Management;
 			sourceTree = "<group>";
@@ -1186,10 +1218,12 @@
 		379A8B1C27C8C59000083BFF /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				379A8B1827C8C59000083BFF /* About */,
 				379A8B2027C8C59000083BFF /* SettingsViewController.swift */,
 				379A8B1E27C8C59000083BFF /* SettingsView.swift */,
 				379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */,
 				379A8B1D27C8C59000083BFF /* SettingsTextViews.swift */,
+				37D3B8C927D6FA5000191C2A /* SettingsComponent.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1200,6 +1234,7 @@
 				379A8BD327CDFEC800083BFF /* EditViewController.swift */,
 				379A8BCF27CDB0A400083BFF /* EditView.swift */,
 				379A8BD127CDC1D600083BFF /* MainCardTagView.swift */,
+				37D3B8C527D6F6A500191C2A /* EditComponent.swift */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -1221,6 +1256,7 @@
 		37C4DF8327D21D4200430086 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				37D3B89B27D6D61700191C2A /* NeedleFoundation */,
 				37C4DF8427D21D4200430086 /* Moya */,
 				37C4DFBA27D21D4200430086 /* Pods.xcodeproj */,
 				37C4DFBD27D21D4200430086 /* Alamofire */,
@@ -1322,6 +1358,7 @@
 				37C4E16227D21D4200430086 /* Alamofire */,
 				37C6AE3B27D5F3FB00E88738 /* JXMovableCellTableView */,
 				37C4E16627D21D4200430086 /* Moya */,
+				37D3B8B727D6D61700191C2A /* NeedleFoundation */,
 				37C4E16A27D21D4200430086 /* Pods-GeometricWeather */,
 				37C4E16C27D21D4200430086 /* ReachabilitySwift */,
 				37C4E16E27D21D4200430086 /* ReactiveSwift */,
@@ -2006,6 +2043,71 @@
 			path = UICountingLabel;
 			sourceTree = "<group>";
 		};
+		37D3B89B27D6D61700191C2A /* NeedleFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B89C27D6D61700191C2A /* README.md */,
+				37D3B89D27D6D61700191C2A /* Sources */,
+				37D3B8AB27D6D61700191C2A /* LICENSE.txt */,
+			);
+			path = NeedleFoundation;
+			sourceTree = "<group>";
+		};
+		37D3B89D27D6D61700191C2A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B89E27D6D61700191C2A /* NeedleFoundation */,
+				37D3B8A927D6D61700191C2A /* NeedleFoundationTest */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		37D3B89E27D6D61700191C2A /* NeedleFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B89F27D6D61700191C2A /* Internal */,
+				37D3B8A127D6D61700191C2A /* Bootstrap.swift */,
+				37D3B8A227D6D61700191C2A /* Pluginized */,
+				37D3B8A827D6D61700191C2A /* Component.swift */,
+			);
+			path = NeedleFoundation;
+			sourceTree = "<group>";
+		};
+		37D3B89F27D6D61700191C2A /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B8A027D6D61700191C2A /* DependencyProviderRegistry.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		37D3B8A227D6D61700191C2A /* Pluginized */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B8A327D6D61700191C2A /* Internal */,
+				37D3B8A527D6D61700191C2A /* NonCoreComponent.swift */,
+				37D3B8A627D6D61700191C2A /* PluginizedComponent.swift */,
+				37D3B8A727D6D61700191C2A /* PluginizedScopeLifecycle.swift */,
+			);
+			path = Pluginized;
+			sourceTree = "<group>";
+		};
+		37D3B8A327D6D61700191C2A /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B8A427D6D61700191C2A /* PluginExtensionProviderRegistry.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		37D3B8A927D6D61700191C2A /* NeedleFoundationTest */ = {
+			isa = PBXGroup;
+			children = (
+				37D3B8AA27D6D61700191C2A /* MockComponentPathBuilder.swift */,
+			);
+			path = NeedleFoundationTest;
+			sourceTree = "<group>";
+		};
 		37E5D415271021840052A690 /* Daily */ = {
 			isa = PBXGroup;
 			children = (
@@ -2060,6 +2162,7 @@
 				370BA592269C398D006BB1CE /* Resources */,
 				37A35F7626F4B45400431565 /* Embed App Extensions */,
 				324C8A959646DF0F8ABDEB33 /* [CP] Embed Pods Frameworks */,
+				37D3B8B827D6D64600191C2A /* Needle */,
 			);
 			buildRules = (
 			);
@@ -2211,6 +2314,14 @@
 			remoteRef = 37C6AE3A27D5F3FB00E88738 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		37D3B8B727D6D61700191C2A /* NeedleFoundation */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = NeedleFoundation;
+			path = NeedleFoundation.framework;
+			remoteRef = 37D3B8B627D6D61700191C2A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2255,6 +2366,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		37D3B8B827D6D64600191C2A /* Needle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Needle;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SOURCEKIT_LOGGING=0 && needle generate $SRCROOT/$TARGETNAME/NeedleGenerated.swift $SRCROOT/$TARGETNAME\n";
+		};
 		5D5C71DD0FE87735A63DFF03 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2289,12 +2418,14 @@
 				379A8B5F27C8C59000083BFF /* CornerButton.swift in Sources */,
 				379A8B6327C8C59100083BFF /* SunMoonPathView.swift in Sources */,
 				379A8B2B27C8C59000083BFF /* DailyUVCollectionViewCell.swift in Sources */,
+				37D3B8CA27D6FA5000191C2A /* SettingsComponent.swift in Sources */,
 				379A8B6527C8C59100083BFF /* LinearProgressView.swift in Sources */,
 				379A8B2F27C8C59000083BFF /* AllergenCollectionViewCell.swift in Sources */,
 				379A8B5E27C8C59000083BFF /* GeoDialog.swift in Sources */,
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,
 				379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */,
+				37D3B8C027D6DB3500191C2A /* ManagementComponent.swift in Sources */,
 				379A8B3D27C8C59000083BFF /* MainTableViewHeaderView.swift in Sources */,
 				379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */,
 				379A8BB627C8C59100083BFF /* AccuJson.swift in Sources */,
@@ -2311,6 +2442,7 @@
 				379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */,
 				379A8B5527C8C59000083BFF /* HistogramView.swift in Sources */,
 				37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */,
+				37D3B8C827D6FA0A00191C2A /* NeedleGenerated.swift in Sources */,
 				379A8B2E27C8C59000083BFF /* MainDetailsCardCell.swift in Sources */,
 				379A8B4A27C8C59000083BFF /* AlertViewController.swift in Sources */,
 				379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */,
@@ -2361,6 +2493,7 @@
 				374BA60826FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,
 				379A8BB127C8C59100083BFF /* CaiYunJson.swift in Sources */,
 				379A8BB427C8C59100083BFF /* AccuConvert.swift in Sources */,
+				37D3B8C627D6F6A500191C2A /* EditComponent.swift in Sources */,
 				379A8BB727C8C59100083BFF /* WeatherApi.swift in Sources */,
 				379A8B5327C8C59000083BFF /* BeizerPolylineView.swift in Sources */,
 				379A8B3327C8C59000083BFF /* HomeViewController+Events.swift in Sources */,
@@ -2369,6 +2502,7 @@
 				379A8B5D27C8C59000083BFF /* StatementDialog.swift in Sources */,
 				379A8BC527C91D1000083BFF /* BaseManagementController.swift in Sources */,
 				379A8BBB27C8C59100083BFF /* AboutItemViews.swift in Sources */,
+				37D3B8BC27D6D76C00191C2A /* MainComponent.swift in Sources */,
 				379A8B2327C8C59000083BFF /* HourlyDialog.swift in Sources */,
 				379A8B3827C8C59000083BFF /* MainDetailItemView.swift in Sources */,
 				379A8B6027C8C59000083BFF /* UIViewEffect.swift in Sources */,
@@ -2382,6 +2516,7 @@
 				379A8B4627C8C59000083BFF /* ManagementCommon.swift in Sources */,
 				379A8B4D27C8C59000083BFF /* MainViewModel.swift in Sources */,
 				379A8BB927C8C59100083BFF /* PollingBackgroundTask.swift in Sources */,
+				37D3B8BE27D6D85600191C2A /* HomeComponent.swift in Sources */,
 				379A8B4F27C8C59000083BFF /* StaggeredCellAnimation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2572,7 +2707,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2583,7 +2718,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.3.7;
+				MARKETING_VERSION = 1.3.9;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2611,7 +2746,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2622,7 +2757,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.3.7;
+				MARKETING_VERSION = 1.3.9;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

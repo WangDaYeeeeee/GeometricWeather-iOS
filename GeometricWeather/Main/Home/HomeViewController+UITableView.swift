@@ -22,9 +22,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - interfaces.
     
     @objc func updateTableView() {
-        guard let location = self.vmWeakRef.vm?.currentLocation.value else {
-            return
-        }
+        let location = self.vm.currentLocation.value
         
         if self.tableView.numberOfSections != 0
             && self.tableView.numberOfRows(inSection: 0) != 0 {

@@ -10,32 +10,30 @@ import GeometricWeatherBasic
 
 class MainViewController: UISplitViewController {
     
-    private let viewModel = MainViewModel()
-    
     // MARK: - life cycle.
     
-    init() {
+    init(
+        homeBuilder: HomeBuilder,
+        managementBuilder: ManagementBuilder
+    ) {
         super.init(style: .doubleColumn)
         
         self.preferredDisplayMode = isTablet() ? .automatic : .secondaryOnly
         self.presentsWithGesture = true
         
-        if isTablet() {
+        let splitable = isTablet()
+        
+        if splitable {
             self.setViewController(
                 GeoNavigationController(
-                    rootViewController: SplitManagementViewController(
-                        param: MainViewModelWeakRef(vm: self.viewModel)
-                    )
+                    rootViewController: managementBuilder.splitManagementViewController
                 ),
                 for: .primary
             )
         }
         self.setViewController(
             GeoNavigationController(
-                rootViewController: HomeViewController(
-                    vmWeakRef: MainViewModelWeakRef(vm: self.viewModel),
-                    splitView: isTablet()
-                )
+                rootViewController: homeBuilder.homeViewController(isSplitView: splitable)
             ),
             for: .secondary
         )

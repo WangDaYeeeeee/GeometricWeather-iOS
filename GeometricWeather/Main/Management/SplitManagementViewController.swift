@@ -76,7 +76,7 @@ class SplitManagementViewController: BaseManagementController,
                 return
             }
             
-            if strongSelf.param.vm?.addLocation(location: event.location) ?? false {
+            if strongSelf.param.addLocation(location: event.location) ?? false {
                 strongSelf.searchController.searchBar.text = ""
                 strongSelf.searchController.dismiss(animated: true, completion: nil)
                 
@@ -92,7 +92,7 @@ class SplitManagementViewController: BaseManagementController,
             }
         }
         
-        self.param.vm?.selectableTotalLocations.addObserver(self) { [weak self] newValue in
+        self.param.selectableTotalLocations.addObserver(self) { [weak self] newValue in
             guard let strongSelf = self else {
                 return
             }
@@ -144,7 +144,7 @@ class SplitManagementViewController: BaseManagementController,
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         self.searchController.searchBar.text = ""
 
-        if self.param.vm?.addLocation(
+        if self.param.addLocation(
             location: Location.buildLocal(
                 weatherSource: SettingsManager.shared.weatherSource
             )

@@ -18,7 +18,7 @@ extension HomeViewController {
             self,
             for: BackgroundUpdateEvent.self
         ) { [weak self] event in
-            self?.vmWeakRef.vm?.updateLocationFromBackground(
+            self?.vm.updateLocationFromBackground(
                 location: event.location
             )
         }
@@ -38,17 +38,17 @@ extension HomeViewController {
             self,
             for: DailyTrendCellTapAction.self
         ) { [weak self] event in
-            guard let vm = self?.vmWeakRef.vm else {
+            guard let strongSelf = self else {
                 return
             }
             
-            if self?.navigationController?.presentedViewController != nil {
+            if strongSelf.navigationController?.presentedViewController != nil {
                 return
             }
                     
-            self?.navigationController?.present(
+            strongSelf.navigationController?.present(
                 DailyViewController(
-                    param: (vm.currentLocation.value, event.index)
+                    param: (strongSelf.vm.currentLocation.value, event.index)
                 ),
                 animated: true,
                 completion: nil
@@ -79,7 +79,7 @@ extension HomeViewController {
             }
             self?.navigationController?.present(
                 AlertViewController(
-                    param: self?.vmWeakRef.vm?.currentLocation.value.weather?.alerts ?? []
+                    param: self?.vm.currentLocation.value.weather?.alerts ?? []
                 ),
                 animated: true,
                 completion: nil
@@ -92,10 +92,12 @@ extension HomeViewController {
             self,
             for: MainFooterEditButtonTapAction.self
         ) { [weak self] _ in
-            self?.navigationController?.pushViewController(
-                EditViewController(param: ()),
-                animated: true
-            )
+            if let strongSelf = self {
+                strongSelf.navigationController?.pushViewController(
+                    strongSelf.editBuilder.editViewController,
+                    animated: true
+                )
+            }
         }
         
         // opened from alert notification.
@@ -106,13 +108,12 @@ extension HomeViewController {
         ) { [weak self] event in
             guard
                 let strongSelf = self,
-                let vm = self?.vmWeakRef.vm,
                 let _ = event
             else {
                 return
             }
             
-            vm.setLocation(index: 0)
+            strongSelf.vm.setLocation(index: 0)
             
             strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
             
@@ -120,7 +121,7 @@ extension HomeViewController {
                 presentedVC.dismiss(animated: true) {
                     strongSelf.navigationController?.present(
                         AlertViewController(
-                            param: vm.currentLocation.value.weather?.alerts ?? []
+                            param: strongSelf.vm.currentLocation.value.weather?.alerts ?? []
                         ),
                         animated: true,
                         completion: nil
@@ -131,7 +132,7 @@ extension HomeViewController {
             
             strongSelf.navigationController?.present(
                 AlertViewController(
-                    param: vm.currentLocation.value.weather?.alerts ?? []
+                    param: strongSelf.vm.currentLocation.value.weather?.alerts ?? []
                 ),
                 animated: true,
                 completion: nil
@@ -146,13 +147,12 @@ extension HomeViewController {
         ) { [weak self] event in
             guard
                 let strongSelf = self,
-                let vm = self?.vmWeakRef.vm,
                 let _ = event
             else {
                 return
             }
             
-            vm.setLocation(index: 0)
+            strongSelf.vm.setLocation(index: 0)
             strongSelf.navigationController?.popToViewController(
                 strongSelf,
                 animated: true
@@ -171,13 +171,12 @@ extension HomeViewController {
         ) { [weak self] event in
             guard
                 let strongSelf = self,
-                let id = event?.formattedId,
-                let vm = self?.vmWeakRef.vm
+                let id = event?.formattedId
             else {
                 return
             }
             
-            vm.setLocation(formattedId: id)
+            strongSelf.vm.setLocation(formattedId: id)
             
             strongSelf.navigationController?.popToViewController(
                 strongSelf,

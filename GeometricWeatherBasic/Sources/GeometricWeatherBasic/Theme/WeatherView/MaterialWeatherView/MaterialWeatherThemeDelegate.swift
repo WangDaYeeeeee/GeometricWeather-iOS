@@ -25,9 +25,7 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         )
     }
     
-    public func getWeatherView(
-        _ state: WeatherViewState
-    ) -> MaterialWeatherView {
+    public func getWeatherView(state: WeatherViewState) -> MaterialWeatherView {
         return MaterialWeatherView(state: state)
     }
     

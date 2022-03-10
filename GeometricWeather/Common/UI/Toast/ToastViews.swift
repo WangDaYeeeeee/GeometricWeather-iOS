@@ -295,6 +295,11 @@ class MessageToastView: UIVisualEffectView {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.2
+        self.layer.cornerRadius = 24.0
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        
         self.messageLabel.text = message
         self.messageLabel.font = titleFont
         self.messageLabel.textColor = .label
@@ -346,6 +351,11 @@ class ActionableToastView: UIVisualEffectView {
         )
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
+        
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.2
+        self.layer.cornerRadius = 24.0
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         
         self.messageLabel.text = message
         self.messageLabel.font = titleFont

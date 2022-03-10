@@ -42,16 +42,23 @@ struct MetroShowerForegroundView: View {
     private let rotation2D: Double
     private let rotation3D: Double
     
+    private let scrollOffset: CGFloat
+    private let headerHeight: CGFloat
+    
     init(
         width: CGFloat,
         height: CGFloat,
         rotation2D: Double,
-        rotation3D: Double
+        rotation3D: Double,
+        scrollOffset: CGFloat,
+        headerHeight: CGFloat
     ) {
         self.width = width
         self.height = height
         self.rotation2D = rotation2D
         self.rotation3D = rotation3D
+        self.scrollOffset = scrollOffset
+        self.headerHeight = headerHeight
     }
     
     var body: some View {
@@ -91,6 +98,10 @@ struct MetroShowerForegroundView: View {
             ).offset(
                 x: 0.0,
                 y: getDeltaY()
+            ).opacity(
+                Double(
+                    1 - 4 * self.scrollOffset / self.headerHeight
+                ).keepIn(range: 0...1)
             )
         }
     }
@@ -355,7 +366,9 @@ struct MetroShower_Previews: PreviewProvider {
                 width: proxy.size.width,
                 height: proxy.size.height,
                 rotation2D: 0.0,
-                rotation3D: 0.0
+                rotation3D: 0.0,
+                scrollOffset: 0,
+                headerHeight: 1
             )
         }.background(
             MetroShowerBackgroundView()

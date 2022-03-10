@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GeometricWeatherBasic
 
 extension UIView {
     
@@ -18,7 +19,7 @@ extension UIView {
     }
 }
 
-private let defaultStaggeredBaseDuration = 1.0
+private let defaultStaggeredBaseDuration = 3.0
 private let defaultStaggeredInitOffset = CGSize(width: 0, height: 64)
 private let defaultStaggeredInitScale = CGSize(width: 1.1, height: 1.1)
 private let defaultUnitDelay = 0.15
@@ -28,7 +29,7 @@ class StaggeredCellAnimationHelper: NSObject,
                                         UITableViewDelegate,
                                         UICollectionViewDelegate {
     
-    private var lastIndexPath = IndexPath(row: -1, section: -1)
+    var lastIndexPath = IndexPath(row: -1, section: -1)
     private var animatingIndexPaths = Set<IndexPath>()
     
     private let baseDuration: Double
@@ -60,10 +61,6 @@ class StaggeredCellAnimationHelper: NSObject,
     
     // MARK: - interfaces.
     
-    func changeLastIndexPath(_ indexPath: IndexPath) {
-        self.lastIndexPath = indexPath
-    }
-    
     func isShownIndexPath(_ indexPath: IndexPath) -> Bool {
         return indexPath.section < self.lastIndexPath.section || (
             indexPath.section == self.lastIndexPath.section
@@ -71,7 +68,7 @@ class StaggeredCellAnimationHelper: NSObject,
         )
     }
     
-    private func compareIndexPaths(left: IndexPath, right: IndexPath) -> Int {
+    func compareIndexPaths(left: IndexPath, right: IndexPath) -> Int {
         if left.section != right.section {
             return left.section - right.section
         }
@@ -79,7 +76,7 @@ class StaggeredCellAnimationHelper: NSObject,
     }
     
     private func clearViewAnimations(_ view: UIView, indexPath: IndexPath) {
-        animatingIndexPaths.remove(indexPath)
+        self.animatingIndexPaths.remove(indexPath)
         
         view.layer.removeAllAnimations()
         view.alpha = 1
@@ -102,22 +99,22 @@ class StaggeredCellAnimationHelper: NSObject,
             view.layer.removeAllAnimations()
             view.alpha = 0
             view.transform = CGAffineTransform(
-                translationX: initOffset.width,
-                y: initOffset.height
+                translationX: self.initOffset.width,
+                y: self.initOffset.height
             ).concatenating(
                 CGAffineTransform(
-                    scaleX: initScale.width,
-                    y: initScale.height
+                    scaleX: self.initScale.width,
+                    y: self.initScale.height
                 )
             )
             
             let duration = max(
-                baseDuration - self.durationUnitDumping * Double(
+                self.baseDuration - self.durationUnitDumping * Double(
                     self.animatingIndexPaths.count
                 ),
-                baseDuration / 2
+                self.baseDuration / 2
             )
-            let delay = Double(self.animatingIndexPaths.count) * unitDelay
+            let delay = Double(self.animatingIndexPaths.count) * self.unitDelay
             
             self.lastIndexPath = indexPath
             self.animatingIndexPaths.insert(indexPath)
@@ -127,22 +124,20 @@ class StaggeredCellAnimationHelper: NSObject,
                 delay: delay,
                 usingSpringWithDamping: 0.6,
                 initialSpringVelocity: 0.5,
-                options: [.allowUserInteraction]
-            ) { [weak view] in
-                view?.alpha = 1
-                view?.transform = CGAffineTransform(
+                options: [.allowUserInteraction, .beginFromCurrentState]
+            ) {
+                view.alpha = 1
+                view.transform = CGAffineTransform(
                     translationX: 0,
                     y: 0
                 ).concatenating(
                     CGAffineTransform(scaleX: 1, y: 1)
                 )
-            } completion: { [weak self, weak view] finished in
+            } completion: { [weak self] finished in
                 if !finished {
                     return
                 }
-                if let weakView = view {
-                    self?.clearViewAnimations(weakView, indexPath: indexPath)
-                }
+                self?.clearViewAnimations(view, indexPath: indexPath)
             }
             
             view.staggeredScrollIntoScreen(atFirstTime: true)

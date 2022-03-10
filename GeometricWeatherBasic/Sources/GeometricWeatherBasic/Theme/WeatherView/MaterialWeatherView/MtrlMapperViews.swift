@@ -9,34 +9,19 @@ import SwiftUI
 
 struct MtrlForegroundMapperView: View {
     
-    private let weatherKind: WeatherKind
-    private let daylight: Bool
+    let weatherKind: WeatherKind
+    let daylight: Bool
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let paddingTop: Double
+    let paddingTop: Double
     
-    init(
-        weatherKind: WeatherKind,
-        daylight: Bool,
-        width: CGFloat,
-        height: CGFloat,
-        rotation2D: Double,
-        rotation3D: Double,
-        paddingTop: Double
-    ) {
-        self.weatherKind = weatherKind
-        self.daylight = daylight
-        self.width = width
-        self.height = height
-        self.rotation2D = rotation2D
-        self.rotation3D = rotation3D
-        self.paddingTop = paddingTop
-    }
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     @ViewBuilder
     var body: some View {
@@ -63,7 +48,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .cloud && daylight {
             CloudForegroundView(
@@ -135,7 +122,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .lightRainy {
             RainForegroundView(
@@ -144,7 +133,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .middleRainy && daylight {
             RainForegroundView(
@@ -153,7 +144,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .middleRainy {
             RainForegroundView(
@@ -162,7 +155,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .haveyRainy && daylight {
             RainForegroundView(
@@ -171,7 +166,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .haveyRainy {
             RainForegroundView(
@@ -180,7 +177,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .sleet && daylight {
             RainForegroundView(
@@ -189,7 +188,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .sleet {
             RainForegroundView(
@@ -198,7 +199,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .thunderstorm {
             RainForegroundView(
@@ -207,7 +210,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .snow {
             SnowForegroundView(
@@ -215,7 +220,9 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .hail {
             HailForegroundView(
@@ -223,14 +230,18 @@ struct MtrlForegroundMapperView: View {
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .wind {
             WindForegroundView(
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
-                rotation3D: rotation3D
+                rotation3D: rotation3D,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else {
             NullForegroundView()
@@ -335,7 +346,9 @@ struct MtrlMapperViews_Previews: PreviewProvider {
                 height: proxy.size.height,
                 rotation2D: 0.0,
                 rotation3D: 0.0,
-                paddingTop: 0.0
+                paddingTop: 0.0,
+                scrollOffset: 0,
+                headerHeight: 1
             )
         }.background(
             MtrlBackgroundMapperView(

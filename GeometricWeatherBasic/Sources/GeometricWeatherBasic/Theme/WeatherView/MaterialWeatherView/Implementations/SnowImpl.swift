@@ -45,45 +45,53 @@ struct SnowForegroundView: View {
     private let rotation2D: Double
     private let rotation3D: Double
     
+    private let scrollOffset: CGFloat
+    private let headerHeight: CGFloat
+    
     init(
         daylight: Bool,
         width: CGFloat,
         height: CGFloat,
         rotation2D: Double,
-        rotation3D: Double
+        rotation3D: Double,
+        scrollOffset: CGFloat,
+        headerHeight: CGFloat
     ) {
         self.daylight = daylight
         self.width = width
         self.height = height
         self.rotation2D = rotation2D
         self.rotation3D = rotation3D
+        self.scrollOffset = scrollOffset
+        self.headerHeight = headerHeight
     }
     
     var body: some View {
         model.checkToInit(daylight: daylight)
         let canvasSize = sqrt(width * width + height * height)
         
-        return Group {
-            // snow flakes.
-            ForEach(0 ..< model.snowflakes.count) { i in
-                SnowflakeLayer(
-                    model: model,
-                    index: i,
-                    canvasSize: canvasSize
-                )
-            }.frame(
-                width: canvasSize,
-                height: canvasSize
-            ).rotationEffect(
-                Angle(degrees: rotation2D + 180.0 + 8.0)
-            ).offset(
-                x: (width - canvasSize) / 2.0,
-                y: (height - canvasSize) / 2.0
-            ).offset(
-                x: 0.0,
-                y: getDeltaY() * 0.25
+        return ForEach(0 ..< model.snowflakes.count) { i in
+            SnowflakeLayer(
+                model: model,
+                index: i,
+                canvasSize: canvasSize
             )
-        }
+        }.frame(
+            width: canvasSize,
+            height: canvasSize
+        ).rotationEffect(
+            Angle(degrees: rotation2D + 180.0 + 8.0)
+        ).offset(
+            x: (width - canvasSize) / 2.0,
+            y: (height - canvasSize) / 2.0
+        ).offset(
+            x: 0.0,
+            y: getDeltaY() * 0.25
+        ).opacity(
+            Double(
+                1 - 4 * self.scrollOffset / self.headerHeight
+            ).keepIn(range: 0...1)
+        )
     }
     
     private func getDeltaX() -> CGFloat {
@@ -271,7 +279,9 @@ struct Snow_Previews: PreviewProvider {
                 width: proxy.size.width,
                 height: proxy.size.height,
                 rotation2D: 0.0,
-                rotation3D: 0.0
+                rotation3D: 0.0,
+                scrollOffset: 0,
+                headerHeight: 1
             )
         }.background(
             SnowBackgroundView(daylight: true)

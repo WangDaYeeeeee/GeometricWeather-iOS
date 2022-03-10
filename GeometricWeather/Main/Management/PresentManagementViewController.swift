@@ -91,7 +91,7 @@ class PresentManagementViewController: BaseManagementController,
                 return
             }
             
-            if strongSelf.param.addLocation(location: event.location) ?? false {
+            if strongSelf.param.addLocation(location: event.location) {
                 strongSelf.searchBar.text = ""
                 strongSelf.searching.value = false
                 
@@ -156,29 +156,22 @@ class PresentManagementViewController: BaseManagementController,
     
     // MARK: - interfaces.
     
-    override func updateLocationList(
-        _ newList: SelectableLocationArray
-    ) -> BaseManagementController.UpdateLocationListResult {
+    override func updateLocationList(_ newList: SelectableLocationArray) {
         
-        let result = super.updateLocationList(newList)
+        let oldCount = self.itemList.count
         
-        switch result {
-        case .new:
+        if self.itemList.isEmpty {
             self.staggeredHelper.reset()
-            break
-        case .deleted:
-            self.staggeredHelper.changeLastIndexPath(
-                IndexPath(
-                    row: self.itemList.count - 1,
-                    section: 0
-                )
-            )
-            break
-        default:
-            break
         }
         
-        return result
+        super.updateLocationList(newList)
+        
+        if self.itemList.count < oldCount {
+            self.staggeredHelper.lastIndexPath = IndexPath(
+                row: self.itemList.count - 1,
+                section: 0
+            )
+        }
     }
     
     // MARK: - search bar delegate.
@@ -206,7 +199,7 @@ class PresentManagementViewController: BaseManagementController,
             location: Location.buildLocal(
                 weatherSource: SettingsManager.shared.weatherSource
             )
-        ) ?? false {
+        ) {
             ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: ""),
                 inWindowOfView: self.view
@@ -228,11 +221,26 @@ class PresentManagementViewController: BaseManagementController,
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        self.staggeredHelper.tableView(
-            tableView,
-            willDisplay: cell,
-            forRowAt: indexPath
-        )
+        if self.staggeredHelper.compareIndexPaths(
+            left: self.staggeredHelper.lastIndexPath,
+            right: indexPath
+        ) < 0 {
+            cell.alpha = 0
+            
+            DispatchQueue.main.async {
+                self.staggeredHelper.tableView(
+                    tableView,
+                    willDisplay: cell,
+                    forRowAt: indexPath
+                )
+            }
+        } else {
+            self.staggeredHelper.tableView(
+                tableView,
+                willDisplay: cell,
+                forRowAt: indexPath
+            )
+        }
     }
     
     func tableView(

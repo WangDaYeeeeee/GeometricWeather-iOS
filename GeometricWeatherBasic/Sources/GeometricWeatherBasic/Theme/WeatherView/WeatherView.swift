@@ -139,6 +139,8 @@ public protocol WeatherThemeDelegate {
     
     func getWeatherViewController() -> WeatherViewController<WeatherView>
     
+    func getWeatherView(state: WeatherViewState) -> WeatherView
+    
     func getWidgetBackgroundView(
         weatherKind: WeatherKind,
         daylight: Bool
@@ -167,6 +169,8 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
     // method implementations.
     
     private let getWeatherViewControllerFunc: () -> WeatherViewController<V>
+    
+    private let getWeatherViewFunc: (_ state: WeatherViewState) -> V
     
     private let getWidgetBackgroundViewFunc: (
         _ weatherKind: WeatherKind,
@@ -198,6 +202,7 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
     ) where Impl.WeatherView == V, Impl.WidgetBackgroundView == W {
         
         self.getWeatherViewControllerFunc = impl.getWeatherViewController
+        self.getWeatherViewFunc = impl.getWeatherView(state:)
         self.getWidgetBackgroundViewFunc = impl.getWidgetBackgroundView(weatherKind:daylight:)
         self.getThemeColorsFunc = impl.getThemeColors(weatherKind:daylight:)
         self.getHeaderHeightFunc = impl.getHeaderHeight(_:)
@@ -208,6 +213,10 @@ public struct AnyWeatherThemeDelegate<V: View, W: View>: WeatherThemeDelegate {
     
     public func getWeatherViewController() -> WeatherViewController<V> {
         return self.getWeatherViewControllerFunc()
+    }
+    
+    public func getWeatherView(state: WeatherViewState) -> V {
+        return self.getWeatherViewFunc(state)
     }
     
     public func getWidgetBackgroundView(

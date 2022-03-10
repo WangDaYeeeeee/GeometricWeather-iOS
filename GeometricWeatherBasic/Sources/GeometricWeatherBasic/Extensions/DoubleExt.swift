@@ -39,4 +39,14 @@ public extension Double {
         str += "1"
         return str
     }
+    
+    func keepIn(range: ClosedRange<Double>) -> Double {
+        if self < range.lowerBound {
+            return range.lowerBound
+        }
+        if self > range.upperBound {
+            return range.upperBound
+        }
+        return self
+    }
 }

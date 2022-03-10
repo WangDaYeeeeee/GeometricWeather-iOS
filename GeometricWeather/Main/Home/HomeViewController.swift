@@ -73,6 +73,10 @@ class HomeViewController: UIViewController,
     
     var hideIndicatorTimer: Timer?
     
+    // reactor.
+    
+    private let dragSwitchImpactor = UIImpactFeedbackGenerator(style: .rigid)
+    
     // MARK: - subviews.
     
     let weatherViewController = ThemeManager.shared.weatherThemeDelegate.getWeatherViewController()
@@ -330,9 +334,13 @@ class HomeViewController: UIViewController,
     func onSwiped(_ progress: Double, isDragging: Bool) {
         if self.previewOffset != 0 && fabs(progress) <= 1 {
             // cancel preview.
+            self.dragSwitchImpactor.impactOccurred()
+            
             self.previewOffset = 0
         } else if self.previewOffset == 0 && fabs(progress) > 1 {
             // start preview.
+            self.dragSwitchImpactor.impactOccurred()
+            
             self.previewOffset = progress > 0 ? 1 : -1
         }
         

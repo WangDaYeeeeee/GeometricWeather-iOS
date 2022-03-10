@@ -45,14 +45,15 @@ struct SettingsListCellView: View {
             
             Spacer()
             
-            Picker(selection: self.selectedIndex) {
+            Picker(
+                "",
+                selection: self.selectedIndex
+            ) {
                 ForEach(self.keys.indices) { index in
                     Text(
                         NSLocalizedString(self.keys[index], comment: "")
                     )
                 }
-            } label: {
-                SettingsTitleView(key: titleKey)
             }.pickerStyle(
                 .menu
             ).accentColor(

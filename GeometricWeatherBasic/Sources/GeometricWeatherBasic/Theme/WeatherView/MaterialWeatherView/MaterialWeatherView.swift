@@ -8,6 +8,8 @@
 import SwiftUI
 import CoreMotion
 
+private let innerDelegate = MaterialWeatherThemeDelegate()
+
 // MARK: - weather view.
 
 public struct MaterialWeatherView: View, WeatherView {    
@@ -29,7 +31,7 @@ public struct MaterialWeatherView: View, WeatherView {
     
     // life cycle.
     
-    init(state: WeatherViewState) {
+    public init(state: WeatherViewState) {
         self.state = state
         
         self.weatherKind1 = state.weatherKind
@@ -67,7 +69,9 @@ public struct MaterialWeatherView: View, WeatherView {
                         height: height,
                         rotation2D: rotation2D,
                         rotation3D: rotation3D,
-                        paddingTop: self.state.paddingTop
+                        paddingTop: self.state.paddingTop,
+                        scrollOffset: self.state.scrollOffset,
+                        headerHeight: innerDelegate.getHeaderHeight(proxy.size.height)
                     ).opacity(
                         self.show1hide2progress
                     )
@@ -82,7 +86,9 @@ public struct MaterialWeatherView: View, WeatherView {
                         height: height,
                         rotation2D: rotation2D,
                         rotation3D: rotation3D,
-                        paddingTop: self.state.paddingTop
+                        paddingTop: self.state.paddingTop,
+                        scrollOffset: self.state.scrollOffset,
+                        headerHeight: innerDelegate.getHeaderHeight(proxy.size.height)
                     ).opacity(
                         1 - self.show1hide2progress
                     )

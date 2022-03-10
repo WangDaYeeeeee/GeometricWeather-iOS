@@ -259,6 +259,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if self.blurNavigationBar != blur {
             self.blurNavigationBar = blur
         }
+        
+        if scrollView.contentOffset.y <= headerHeight
+            || self.weatherViewController.scrollOffset <= headerHeight {
+            self.weatherViewController.scrollOffset = scrollView.contentOffset.y
+        }
     }
     
     // MARK: - data source.

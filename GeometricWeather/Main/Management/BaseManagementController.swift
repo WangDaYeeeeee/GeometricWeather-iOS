@@ -64,33 +64,19 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     
     // MARK: - ui.
     
-    enum UpdateLocationListResult {
-        case new
-        case added
-        case deleted
-        case others
-    }
-    func updateLocationList(
-        _ newList: SelectableLocationArray
-    ) -> UpdateLocationListResult {
-        var result = UpdateLocationListResult.others
-        
+    func updateLocationList(_ newList: SelectableLocationArray) {
         // new.
         if self.itemList.isEmpty {
-            result = .new
-            
             self.generateItemList(newList, withoutSelectedState: false)
             self.tableView.reloadData()
             
-            return result
+            return
         }
         
         let itemCountChanged = self.itemList.count != newList.locations.count
         
         if self.itemList.count < newList.locations.count {
             // add.
-            result = .added
-            
             let oldCount = self.itemList.count
             let newCount = newList.locations.count
             
@@ -108,9 +94,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
                 with: .none
             )
         } else if self.itemList.count > newList.locations.count {
-            // delete.
-            result = .deleted
-            
+            // delete.            
             var indexPaths = [IndexPath]()
             
             var oldIndex = 0
@@ -175,9 +159,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         if !itemCountChanged {
             // move.
             self.generateItemList(newList, withoutSelectedState: false)
-        }
-        
-        return result
+        }        
     }
     
     private func generateItemList(
@@ -369,6 +351,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         willMoveCellAt indexPath: IndexPath!
     ) {
         self.dragBeginImpactor.impactOccurred()
+        
         self.moveBeginIndex = indexPath
     }
     
@@ -384,12 +367,13 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         _ tableView: JXMovableCellTableView!,
         endMoveCellAt indexPath: IndexPath!
     ) {
+        self.dragReactionImpactor.impactOccurred()
+        
         if let beginAt = self.moveBeginIndex {
             self.param.moveLocation(
                 from: beginAt.row,
                 to: indexPath.row
             )
         }
-        self.dragReactionImpactor.impactOccurred()
     }
 }

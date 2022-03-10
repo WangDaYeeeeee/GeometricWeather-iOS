@@ -19,7 +19,7 @@ extension UIView {
     }
 }
 
-private let defaultStaggeredBaseDuration = 3.0
+private let defaultStaggeredBaseDuration = 1.0
 private let defaultStaggeredInitOffset = CGSize(width: 0, height: 64)
 private let defaultStaggeredInitScale = CGSize(width: 1.1, height: 1.1)
 private let defaultUnitDelay = 0.15

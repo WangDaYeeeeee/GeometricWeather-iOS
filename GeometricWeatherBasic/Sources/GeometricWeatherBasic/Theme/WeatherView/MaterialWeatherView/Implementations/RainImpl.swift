@@ -154,7 +154,7 @@ struct RainForegroundView: View {
                 y: getDeltaY() * 0.25
             ).opacity(
                 Double(
-                    1 - 4 * self.scrollOffset / self.headerHeight
+                    1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
                 ).keepIn(range: 0...1)
             )
         }

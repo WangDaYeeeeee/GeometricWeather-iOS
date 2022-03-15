@@ -50,6 +50,44 @@ public struct Weather: Codable, Equatable {
     }
     
     public func isDaylight(timezone: TimeZone) -> Bool {
-        return true
+        if let riseTime = dailyForecasts[0].sun.riseTime,
+           let setTime = dailyForecasts[0].sun.setTime {
+            
+            let timezoneDate = Date(
+                timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
+                    timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
+                )
+            )
+            let timezoneHourMinutes = Calendar.current.component(
+                .hour, from: timezoneDate
+            ) * 60 + Calendar.current.component(
+                .minute, from: timezoneDate
+            )
+            
+            let sunriseDate = Date(timeIntervalSince1970: riseTime)
+            let sunriseHourMinutes = Calendar.current.component(
+                .hour, from: sunriseDate
+            ) * 60 + Calendar.current.component(
+                .minute, from: sunriseDate
+            )
+            
+            let sunsetDate = Date(timeIntervalSince1970: setTime)
+            let sunsetHourMinutes = Calendar.current.component(
+                .hour, from: sunsetDate
+            ) * 60 + Calendar.current.component(
+                .minute, from: sunsetDate
+            )
+            
+            return sunriseHourMinutes <= timezoneHourMinutes
+                && timezoneHourMinutes < sunsetHourMinutes
+        } else {
+            let timezoneDate = Date(
+                timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
+                    timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
+                )
+            )
+            let hour = Calendar.current.component(.hour, from: timezoneDate)
+            return 6 <= hour && hour < 18;
+        }
     }
 }

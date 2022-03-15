@@ -24,7 +24,6 @@ struct WeatherWidgetLargeView: View {
             )
             
             if !(self.location.weather?.alerts.isEmpty ?? true) {
-                Color.white.opacity(0.0).frame(width: 1.0, height: 4.0, alignment: .center)
                 Text(
                     self.location.weather!.alerts[0].description
                 ).font(
@@ -34,7 +33,6 @@ struct WeatherWidgetLargeView: View {
                 ).padding(
                     [.leading, .trailing]
                 )
-                Color.white.opacity(0.0).frame(width: 1.0, height: 4.0, alignment: .center)
             }
             
             Color.white.opacity(0.0).frame(width: 1.0, height: 12.0, alignment: .center)

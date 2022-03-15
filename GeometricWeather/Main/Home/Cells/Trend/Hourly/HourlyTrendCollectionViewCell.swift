@@ -177,13 +177,13 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
-        let themeColors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+        let themeColor = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
             weatherKind: weatherCodeToWeatherKind(code: weatherCode),
             daylight: daylight
         )
-        self.trendView.highPolylineColor = themeColors.daytime
-        self.trendView.lowPolylineColor = themeColors.nighttime
-        self.trendView.histogramColor = themeColors.daytime
+        self.trendView.highPolylineColor = themeColor
+        self.trendView.lowPolylineColor = themeColor
+        self.trendView.histogramColor = themeColor
         self.trendView.histogramLabel.textColor = precipitationProbabilityColor
     }
     

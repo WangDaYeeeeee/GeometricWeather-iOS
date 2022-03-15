@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreMotion
 
 private let innerDelegate = MaterialWeatherThemeDelegate()
 

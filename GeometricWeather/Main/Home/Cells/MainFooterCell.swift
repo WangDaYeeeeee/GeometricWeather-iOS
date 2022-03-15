@@ -26,7 +26,10 @@ class MainFooterCell: UITableViewCell, AbstractMainItem {
         self.titleLabel.textColor = .white
         self.contentView.addSubview(self.titleLabel)
         
-        self.editButton.titleLabel?.font = miniCaptionFont
+        self.editButton.titleLabel?.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .semibold
+        )
         self.editButton.setTitleColor(.white, for: .normal)
         self.editButton.backgroundColor = .white.withAlphaComponent(0.33)
         self.editButton.addTarget(

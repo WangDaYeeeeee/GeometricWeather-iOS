@@ -11,6 +11,9 @@
 		370BA59F269C398F006BB1CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370BA59E269C398F006BB1CE /* Preview Assets.xcassets */; };
 		370BA5C3269C5E37006BB1CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C2269C5E37006BB1CE /* LaunchScreen.storyboard */; };
 		370BA5C6269C6091006BB1CE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C8269C6091006BB1CE /* InfoPlist.strings */; };
+		3732D84927DB939700F5DC81 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732D84827DB939700F5DC81 /* TrendView.swift */; };
+		3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */; };
+		3741445427DB6C8D00E55800 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741445327DB6C8D00E55800 /* VisualEffectView.swift */; };
 		374BA5FE26FC78E00080B5CA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6226F4B45300431565 /* WidgetKit.framework */; };
 		374BA5FF26FC78E00080B5CA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6426F4B45300431565 /* SwiftUI.framework */; };
 		374BA60226FC78E00080B5CA /* GeometricWeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA60126FC78E00080B5CA /* GeometricWeatherWidget.swift */; };
@@ -244,6 +247,9 @@
 		370BA5C7269C6091006BB1CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		370BA5C9269C609B006BB1CE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeometricWeather.entitlements; sourceTree = "<group>"; };
+		3732D84827DB939700F5DC81 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
+		3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionModifier.swift; sourceTree = "<group>"; };
+		3741445327DB6C8D00E55800 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeometricWeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		374BA60126FC78E00080B5CA /* GeometricWeatherWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricWeatherWidget.swift; sourceTree = "<group>"; };
 		374BA60326FC78E00080B5CA /* GeometricWeatherWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = GeometricWeatherWidget.intentdefinition; sourceTree = "<group>"; };
@@ -746,6 +752,8 @@
 				379A8AAF27C8C59000083BFF /* ProgressView */,
 				379A8AB227C8C59000083BFF /* UIRefreshControlExt.swift */,
 				37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */,
+				3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */,
+				3741445327DB6C8D00E55800 /* VisualEffectView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1126,6 +1134,7 @@
 				37E5D418271022550052A690 /* DailyView.swift */,
 				37E5D41B271022D60052A690 /* HourlyView.swift */,
 				374BA61C26FC89160080B5CA /* ItemViews.swift */,
+				3732D84827DB939700F5DC81 /* TrendView.swift */,
 			);
 			path = CommonUI;
 			sourceTree = "<group>";
@@ -1427,6 +1436,7 @@
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,
 				379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */,
+				3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */,
 				37D3B8C027D6DB3500191C2A /* ManagementComponent.swift in Sources */,
 				379A8B3D27C8C59000083BFF /* MainTableViewHeaderView.swift in Sources */,
 				379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */,
@@ -1505,6 +1515,7 @@
 				379A8BC527C91D1000083BFF /* BaseManagementController.swift in Sources */,
 				379A8BBB27C8C59100083BFF /* AboutItemViews.swift in Sources */,
 				37D3B8BC27D6D76C00191C2A /* MainComponent.swift in Sources */,
+				3741445427DB6C8D00E55800 /* VisualEffectView.swift in Sources */,
 				379A8B2327C8C59000083BFF /* HourlyDialog.swift in Sources */,
 				379A8B3827C8C59000083BFF /* MainDetailItemView.swift in Sources */,
 				379A8B6027C8C59000083BFF /* UIViewEffect.swift in Sources */,
@@ -1539,6 +1550,7 @@
 				374BA62126FC89170080B5CA /* ItemViews.swift in Sources */,
 				37E5D419271022550052A690 /* DailyView.swift in Sources */,
 				37E5D41C271022D60052A690 /* HourlyView.swift in Sources */,
+				3732D84927DB939700F5DC81 /* TrendView.swift in Sources */,
 				374BA60726FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1709,7 +1721,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1720,7 +1732,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1748,7 +1760,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1759,7 +1771,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

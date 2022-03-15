@@ -190,32 +190,19 @@ private let starRadiusRatio = 0.00125
 
 struct CloudForegroundView: View {
     
-    private let type: CloudType
+    let type: CloudType
     @StateObject private var model = CloudModel()
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let paddingTop: Double
+    let paddingTop: Double
     
-    init(
-        type: CloudType,
-        width: CGFloat,
-        height: CGFloat,
-        rotation2D: Double,
-        rotation3D: Double,
-        paddingTop: Double
-    ) {
-        self.type = type
-        self.width = width
-        self.height = height
-        self.rotation2D = rotation2D
-        self.rotation3D = rotation3D
-        self.paddingTop = paddingTop
-    }
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     var body: some View {
         model.checkToInit(type: type)
@@ -260,7 +247,11 @@ struct CloudForegroundView: View {
                         y: (height - proxy.size.height) / 2.0
                     )
                 }
-            }
+            }.opacity(
+                Double(
+                    1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
+                ).keepIn(range: 0...1) * 0.5 + 0.5
+            )
         }
     }
     
@@ -798,7 +789,9 @@ struct Cloud_Previews: PreviewProvider {
                 height: proxy.size.height,
                 rotation2D: 0.0,
                 rotation3D: 0.0,
-                paddingTop: 0.0
+                paddingTop: 0.0,
+                scrollOffset: 0,
+                headerHeight: 1
             )
         }.background(
             CloudBackgroundView(type: type)

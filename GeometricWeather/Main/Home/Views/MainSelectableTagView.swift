@@ -162,7 +162,10 @@ private class TagCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.tagView.titleLabel?.font = miniCaptionFont
+        self.tagView.titleLabel?.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .semibold
+        )
         self.tagView.addTarget(
             self,
             action: #selector(self.onTap),

@@ -36,30 +36,14 @@ struct MetroShowerForegroundView: View {
     
     @StateObject private var model = MetroShowerModel()
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let scrollOffset: CGFloat
-    private let headerHeight: CGFloat
-    
-    init(
-        width: CGFloat,
-        height: CGFloat,
-        rotation2D: Double,
-        rotation3D: Double,
-        scrollOffset: CGFloat,
-        headerHeight: CGFloat
-    ) {
-        self.width = width
-        self.height = height
-        self.rotation2D = rotation2D
-        self.rotation3D = rotation3D
-        self.scrollOffset = scrollOffset
-        self.headerHeight = headerHeight
-    }
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     var body: some View {
         let canvasSize = sqrt(width * width + height * height)

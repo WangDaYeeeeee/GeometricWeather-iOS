@@ -26,23 +26,15 @@ struct MtrlForegroundMapperView: View {
     @ViewBuilder
     var body: some View {
         if weatherKind == .clear && daylight {
-            if MaterialWeatherViewConfig.useClear2 {
-                ClearForegroundView2(
-                    width: width,
-                    height: height,
-                    rotation2D: rotation2D,
-                    rotation3D: rotation3D,
-                    paddingTop: paddingTop
-                )
-            } else {
-                ClearForegroundView(
-                    width: width,
-                    height: height,
-                    rotation2D: rotation2D,
-                    rotation3D: rotation3D,
-                    paddingTop: paddingTop
-                )
-            }
+            ClearForegroundView(
+                width: width,
+                height: height,
+                rotation2D: rotation2D,
+                rotation3D: rotation3D,
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
+            )
         } else if weatherKind == .clear {
             MetroShowerForegroundView(
                 width: width,
@@ -59,7 +51,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .cloud {
             CloudForegroundView(
@@ -68,7 +62,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .cloudy && daylight {
             CloudForegroundView(
@@ -77,7 +73,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .cloudy {
             CloudForegroundView(
@@ -86,7 +84,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .thunder {
             CloudForegroundView(
@@ -95,7 +95,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .fog {
             CloudForegroundView(
@@ -104,7 +106,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .haze {
             CloudForegroundView(
@@ -113,7 +117,9 @@ struct MtrlForegroundMapperView: View {
                 height: height,
                 rotation2D: rotation2D,
                 rotation3D: rotation3D,
-                paddingTop: paddingTop
+                paddingTop: paddingTop,
+                scrollOffset: scrollOffset,
+                headerHeight: headerHeight
             )
         } else if weatherKind == .lightRainy && daylight {
             RainForegroundView(
@@ -265,11 +271,7 @@ struct MtrlBackgroundMapperView: View {
     @ViewBuilder
     public var body: some View {
         if weatherKind == .clear && daylight {
-            if MaterialWeatherViewConfig.useClear2 {
-                ClearBackgroundView2()
-            } else {
-                ClearBackgroundView()
-            }
+            ClearBackgroundView()
         } else if weatherKind == .clear {
             MetroShowerBackgroundView()
         } else if weatherKind == .cloud && daylight {
@@ -322,11 +324,13 @@ public struct MtrlWidgetBackgroundView: View {
     @ViewBuilder
     public var body: some View {
         if self.weatherKind == .clear && self.daylight {
-            if MaterialWeatherViewConfig.useClear2 {
-                ClearWidgetBackgroundView2()
-            } else {
-                ClearWidgetBackgroundView()
-            }
+            ClearWidgetBackgroundView()
+        } else if (
+            self.weatherKind == .lightRainy
+            || self.weatherKind == .middleRainy
+            || self.weatherKind == .haveyRainy
+        ) && self.daylight {
+            RainDayWidgetBackgroundView()
         } else {
             MtrlBackgroundMapperView(
                 weatherKind: self.weatherKind,

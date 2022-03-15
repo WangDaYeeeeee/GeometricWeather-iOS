@@ -36,17 +36,17 @@ private let snowflakeCount = 180
 
 struct SnowForegroundView: View {
     
-    private let daylight: Bool
+    let daylight: Bool
     @StateObject private var model = SnowModel()
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let scrollOffset: CGFloat
-    private let headerHeight: CGFloat
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     init(
         daylight: Bool,
@@ -90,7 +90,7 @@ struct SnowForegroundView: View {
         ).opacity(
             Double(
                 1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
-            ).keepIn(range: 0...1)
+            ).keepIn(range: 0...1) * 0.8 + 0.2
         )
     }
     

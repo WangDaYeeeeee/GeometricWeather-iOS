@@ -39,78 +39,22 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         )
     }
     
-    public func getThemeColors(
+    public func getThemeColor(
         weatherKind: WeatherKind,
         daylight: Bool
-    ) -> (main: UIColor, daytime: UIColor, nighttime: UIColor) {
-        
-        let backgroundColor = getBackgroundColor(
+    ) -> UIColor {
+        return getBackgroundColor(
             weatherKind: weatherKind,
             daylight: daylight
-        )
-        
-        return (
-            backgroundColor * 0.75 + .white * 0.25,
-            backgroundColor * 0.75 + .white * 0.25,
-            backgroundColor * 0.75 + .white * 0.25
-        )
+        ) * 0.75 + .white * 0.25
     }
-    
-//    private func getMainColor(
-//        weatherKind: WeatherKind,
-//        daylight: Bool
-//    ) -> UIColor {
-//        if weatherKind == .clear && daylight {
-//            return .orange
-//        } else if weatherKind == .clear {
-//            return .systemBlue
-//        } else if weatherKind == .cloud && daylight {
-//            return .systemBlue
-//        } else if weatherKind == .cloud {
-//            return .systemBlue
-//        } else if weatherKind == .cloudy && daylight {
-//            return .systemGray
-//        } else if weatherKind == .cloudy {
-//            return .systemGreen
-//        } else if weatherKind == .thunder {
-//            return .systemPurple
-//        } else if weatherKind == .fog {
-//            return .systemGray
-//        } else if weatherKind == .haze {
-//            return .systemGray
-//        } else if (weatherKind == .lightRainy
-//                   || weatherKind == .middleRainy
-//                   || weatherKind == .haveyRainy) && daylight {
-//            return .systemBlue
-//        } else if weatherKind == .lightRainy
-//                    || weatherKind == .middleRainy
-//                    || weatherKind == .haveyRainy {
-//            return .systemBlue
-//        } else if weatherKind == .sleet && daylight {
-//            return .systemBlue
-//        } else if weatherKind == .sleet {
-//            return .systemBlue
-//        } else if weatherKind == .thunderstorm {
-//            return .systemPurple
-//        } else if weatherKind == .snow {
-//            return .systemBlue
-//        } else if weatherKind == .hail {
-//            return .systemBlue
-//        } else if weatherKind == .wind {
-//            return .systemYellow
-//        } else {
-//            return .clear
-//        }
-//    }
     
     private func getBackgroundColor(
         weatherKind: WeatherKind,
         daylight: Bool
     ) -> UIColor {
         if weatherKind == .clear && daylight {
-            return MaterialWeatherViewConfig.useClear2
-            ? UIColor.colorFromRGB(0x119cbf)
-            : UIColor.colorFromRGB(0xfdbc4c)
+            return UIColor.colorFromRGB(0xfdbc4c)
         } else if weatherKind == .clear {
             return UIColor.colorFromRGB(0x141b2c)
         } else if weatherKind == .cloud && daylight {

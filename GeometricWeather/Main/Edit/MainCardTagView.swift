@@ -19,7 +19,7 @@ struct MainCardTagView: UIViewRepresentable {
         button.setTitle(self.title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(
             ofSize: miniCaptionFont.pointSize,
-            weight: .bold
+            weight: .semibold
         )
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue

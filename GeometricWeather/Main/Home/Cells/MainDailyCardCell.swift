@@ -304,12 +304,12 @@ class MainDailyCardCell: MainTableViewCell,
     }
     
     func getUnselectedColor() -> UIColor {
-        return ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+        return ThemeManager.shared.weatherThemeDelegate.getThemeColor(
             weatherKind: weatherCodeToWeatherKind(
                 code: self.weather?.current.weatherCode ?? .clear
             ),
             daylight: ThemeManager.shared.daylight.value
-        ).main.withAlphaComponent(0.33)
+        ).withAlphaComponent(0.33)
     }
     
     func onSelectedChanged(newSelectedIndex: Int) {

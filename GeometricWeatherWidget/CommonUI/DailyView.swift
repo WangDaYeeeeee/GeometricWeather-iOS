@@ -48,7 +48,8 @@ struct DailyView: View {
                         weather: weather,
                         timezone: self.location.timezone,
                         index: i,
-                        temperatureRagne: self.temperatureRange
+                        total: self.itemCount,
+                        temperatureRange: self.temperatureRange
                     )
                 }
             }

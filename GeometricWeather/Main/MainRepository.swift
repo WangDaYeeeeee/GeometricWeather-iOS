@@ -50,14 +50,14 @@ class MainRepository {
     
     func getWeatherCacheForLocations(
         oldList: [Location],
-        formattedId: String,
+        ignoredFormattedId: String,
         callback: @escaping ([Location]) -> Void
     ) {
         dbQueue.async {
             var locations = oldList
                     
-            for i in 0 ..< locations.count {
-                if locations[i].formattedId == formattedId {
+            for i in locations.indices {
+                if locations[i].formattedId == ignoredFormattedId {
                     continue
                 }
                 

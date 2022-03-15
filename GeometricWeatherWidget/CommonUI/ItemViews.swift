@@ -15,137 +15,133 @@ struct DailyItemView: View {
     let weather: Weather
     let timezone: TimeZone
     let index: Int
-    let temperatureRagne: (min: Int, max: Int)
+    let total: Int
+    let temperatureRange: (min: Int, max: Int)
     
     var body: some View {
-        HStack {
-            Spacer()
-            
-            VStack(alignment: .center, spacing: 2.0) {
-                Text(
-                    self.weather.dailyForecasts[index].isToday(
+        VStack(alignment: .center, spacing: 2.0) {
+            Text(
+                self.weather.dailyForecasts[index].isToday(
+                    timezone: self.timezone
+                ) ? NSLocalizedString(
+                    "today",
+                    comment: ""
+                ) : getWeekText(
+                    week: self.weather.dailyForecasts[index].getWeek(
                         timezone: self.timezone
-                    ) ? NSLocalizedString(
-                        "today",
-                        comment: ""
-                    ) : getWeekText(
-                        week: self.weather.dailyForecasts[index].getWeek(
-                            timezone: self.timezone
-                        )
                     )
-                ).font(
-                    Font(miniCaptionFont).weight(.bold)
-                ).foregroundColor(
-                    .white
                 )
-                
-                if let uiImage = UIImage.getWeatherIcon(
-                    weatherCode: self.weather.dailyForecasts[index].day.weatherCode,
-                    daylight: true
-                )?.scaleToSize(
-                    CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
-                ) {
-                    Image(uiImage: uiImage).padding(
-                        .bottom, 2.0
-                    )
-                }
-                
-                Text(
-                    SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                        self.weather.dailyForecasts[index].day.temperature.temperature,
-                        unit: "°"
-                    )
-                ).font(
-                    Font(miniCaptionFont).weight(.bold)
-                ).foregroundColor(
-                    .white
-                )
-                
-                GeometryReader { proxy in
-                    ZStack {
-                        Path { path in
-                            path.move(
-                                to: CGPoint(
-                                    x: proxy.size.width * 0.5,
-                                    y: 6.0
-                                )
-                            )
-                            path.addLine(
-                                to: CGPoint(
-                                    x: proxy.size.width * 0.5,
-                                    y: proxy.size.height - 6.0
-                                )
-                            )
-                        }.stroke(
-                            histogramBackground,
-                            style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                        )
-                        
-                        Path { path in
-                            path.move(
-                                to: CGPoint(
-                                    x: proxy.size.width * 0.5,
-                                    y: proxy.size.height - 6.0 - self.getTemperaturePercent(
-                                        self.weather.dailyForecasts[
-                                            index
-                                        ].day.temperature.temperature
-                                    ) * (
-                                        proxy.size.height - 12.0
-                                    )
-                                )
-                            )
-                            path.addLine(
-                                to: CGPoint(
-                                    x: proxy.size.width * 0.5,
-                                    y: proxy.size.height - 6.0 - self.getTemperaturePercent(
-                                        self.weather.dailyForecasts[
-                                            index
-                                        ].night.temperature.temperature
-                                    ) * (
-                                        proxy.size.height - 12.0
-                                    )
-                                )
-                            )
-                        }.stroke(
-                            histogramForeground,
-                            style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
-                        )
-                    }
-                }
-                
-                Text(
-                    SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                        self.weather.dailyForecasts[index].night.temperature.temperature,
-                        unit: "°"
-                    )
-                ).font(
-                    Font(miniCaptionFont).weight(.bold)
-                ).foregroundColor(
-                    .white
-                ).opacity(
-                    secondaryTextOpacity
-                ).padding(
+            ).font(
+                Font(miniCaptionFont).weight(.bold)
+            ).foregroundColor(
+                .white
+            )
+            
+            if let uiImage = UIImage.getWeatherIcon(
+                weatherCode: self.weather.dailyForecasts[index].day.weatherCode,
+                daylight: true
+            )?.scaleToSize(
+                CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            ) {
+                Image(uiImage: uiImage).padding(
                     .bottom, 2.0
                 )
-
-                if let uiImage = UIImage.getWeatherIcon(
-                    weatherCode: self.weather.dailyForecasts[index].night.weatherCode,
-                    daylight: false
-                )?.scaleToSize(
-                    CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
-                ) {
-                    Image(uiImage: uiImage)
+            }
+            
+            Text(
+                SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                    self.weather.dailyForecasts[index].day.temperature.temperature,
+                    unit: "°"
+                )
+            ).font(
+                Font(miniCaptionFont).weight(.bold)
+            ).foregroundColor(
+                .white
+            )
+            
+            GeometryReader { proxy in
+                ZStack {
+                    Path { path in
+                        path.move(
+                            to: CGPoint(
+                                x: proxy.size.width * 0.5,
+                                y: 6.0
+                            )
+                        )
+                        path.addLine(
+                            to: CGPoint(
+                                x: proxy.size.width * 0.5,
+                                y: proxy.size.height - 6.0
+                            )
+                        )
+                    }.stroke(
+                        histogramBackground,
+                        style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                    )
+                    
+                    Path { path in
+                        path.move(
+                            to: CGPoint(
+                                x: proxy.size.width * 0.5,
+                                y: proxy.size.height - 6.0 - self.getTemperaturePercent(
+                                    self.weather.dailyForecasts[
+                                        index
+                                    ].day.temperature.temperature
+                                ) * (
+                                    proxy.size.height - 12.0
+                                )
+                            )
+                        )
+                        path.addLine(
+                            to: CGPoint(
+                                x: proxy.size.width * 0.5,
+                                y: proxy.size.height - 6.0 - self.getTemperaturePercent(
+                                    self.weather.dailyForecasts[
+                                        index
+                                    ].night.temperature.temperature
+                                ) * (
+                                    proxy.size.height - 12.0
+                                )
+                            )
+                        )
+                    }.stroke(
+                        histogramForeground,
+                        style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                    )
                 }
             }
-            Spacer()
+            
+            Text(
+                SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                    self.weather.dailyForecasts[index].night.temperature.temperature,
+                    unit: "°"
+                )
+            ).font(
+                Font(miniCaptionFont).weight(.bold)
+            ).foregroundColor(
+                .white
+            ).opacity(
+                secondaryTextOpacity
+            ).padding(
+                .bottom, 2.0
+            )
+
+            if let uiImage = UIImage.getWeatherIcon(
+                weatherCode: self.weather.dailyForecasts[index].night.weatherCode,
+                daylight: false
+            )?.scaleToSize(
+                CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            ) {
+                Image(uiImage: uiImage)
+            }
         }
     }
     
     private func getTemperaturePercent(_ temperature: Int) -> Double {
         return Double(
-            temperature - self.temperatureRagne.min
+            temperature - self.temperatureRange.min
         ) / Double(
-            self.temperatureRagne.max - self.temperatureRagne.min
+            self.temperatureRange.max - self.temperatureRange.min
         )
     }
     

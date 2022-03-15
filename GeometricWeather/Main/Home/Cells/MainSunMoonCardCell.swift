@@ -231,19 +231,19 @@ class MainSunMoonCardCell: MainTableViewCell {
     }
     
     private func updateThemeColors(weatherCode: WeatherCode, daylight: Bool) {
-        let colors = ThemeManager.shared.weatherThemeDelegate.getThemeColors(
+        let color = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
             weatherKind: weatherCodeToWeatherKind(code: weatherCode),
             daylight: daylight
         )
         
-        self.moonPhaseView.darkColor = colors.main
+        self.moonPhaseView.darkColor = color
         self.moonPhaseView.borderColor = self.traitCollection.userInterfaceStyle == .light
         ? self.moonPhaseView.darkColor
         : self.moonPhaseView.lightColor
         
-        self.sunMoonPathView.sunColor = colors.daytime
-        self.sunMoonPathView.moonColor = colors.nighttime
-        self.sunMoonPathView.backgroundLineColor = colors.main
+        self.sunMoonPathView.sunColor = color
+        self.sunMoonPathView.moonColor = color
+        self.sunMoonPathView.backgroundLineColor = color
     }
     
     override func staggeredScrollIntoScreen(atFirstTime: Bool) {

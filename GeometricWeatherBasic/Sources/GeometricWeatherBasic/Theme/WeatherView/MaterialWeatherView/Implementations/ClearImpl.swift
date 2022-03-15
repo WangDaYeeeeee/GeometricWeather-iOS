@@ -16,27 +16,16 @@ private let backgroundColor2 = Color.ColorFromRGB(0xff8300)
 
 struct ClearForegroundView: View {
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let paddingTop: Double
+    let paddingTop: Double
     
-    init(
-        width: CGFloat,
-        height: CGFloat,
-        rotation2D: Double,
-        rotation3D: Double,
-        paddingTop: Double
-    ) {
-        self.width = width
-        self.height = height
-        self.rotation2D = rotation2D
-        self.rotation3D = rotation3D
-        self.paddingTop = paddingTop
-    }
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     var body: some View {
         let shortWidth = min(width, height)
@@ -184,7 +173,9 @@ struct Clear_Previews: PreviewProvider {
                 height: proxy.size.height,
                 rotation2D: 0.0,
                 rotation3D: 0.0,
-                paddingTop: 0.0
+                paddingTop: 0.0,
+                scrollOffset: 0,
+                headerHeight: 1
             )
         }.background(
             ClearBackgroundView()

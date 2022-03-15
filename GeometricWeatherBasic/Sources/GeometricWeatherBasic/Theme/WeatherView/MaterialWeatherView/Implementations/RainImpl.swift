@@ -85,38 +85,18 @@ private let rainyRaindropCount = 150
 
 struct RainForegroundView: View {
     
-    private let type: RainType
-    private let level: RainLevel
+    let type: RainType
+    let level: RainLevel
     @StateObject private var model = RainModel()
     
-    private let width: CGFloat
-    private let height: CGFloat
+    let width: CGFloat
+    let height: CGFloat
     
-    private let rotation2D: Double
-    private let rotation3D: Double
+    let rotation2D: Double
+    let rotation3D: Double
     
-    private let scrollOffset: CGFloat
-    private let headerHeight: CGFloat
-    
-    init(
-        type: RainType,
-        level: RainLevel,
-        width: CGFloat,
-        height: CGFloat,
-        rotation2D: Double,
-        rotation3D: Double,
-        scrollOffset: CGFloat,
-        headerHeight: CGFloat
-    ) {
-        self.type = type
-        self.level = level
-        self.width = width
-        self.height = height
-        self.rotation2D = rotation2D
-        self.rotation3D = rotation3D
-        self.scrollOffset = scrollOffset
-        self.headerHeight = headerHeight
-    }
+    let scrollOffset: CGFloat
+    let headerHeight: CGFloat
     
     var body: some View {
         model.checkToInit(type: type, level: level)
@@ -131,6 +111,10 @@ struct RainForegroundView: View {
                 ).offset(
                     x: (width - proxy.size.width) / 2.0,
                     y: (height - proxy.size.height) / 2.0
+                ).opacity(
+                    Double(
+                        1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
+                    ).keepIn(range: 0...1) * 0.8 + 0.2
                 )
             }
             
@@ -155,7 +139,7 @@ struct RainForegroundView: View {
             ).opacity(
                 Double(
                     1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
-                ).keepIn(range: 0...1)
+                ).keepIn(range: 0...1) * 0.8 + 0.2
             )
         }
     }
@@ -403,6 +387,19 @@ struct RainBackgroundView: View {
                 endPoint: .bottom
             )
         }
+    }
+}
+
+struct RainDayWidgetBackgroundView: View {
+    var body: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color.ColorFromRGB(0x4bbcff),
+                Color.ColorFromRGB(0x3a4d80)
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 }
 

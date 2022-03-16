@@ -71,9 +71,11 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
             return UIColor.colorFromRGB(0x4f5d68)
         } else if weatherKind == .haze {
             return UIColor.colorFromRGB(0x9c8f7f)
-        } else if (weatherKind == .lightRainy
-                   || weatherKind == .middleRainy
-                   || weatherKind == .haveyRainy) && daylight {
+        } else if (
+            weatherKind == .lightRainy
+            || weatherKind == .middleRainy
+            || weatherKind == .haveyRainy
+        ) && daylight {
             return UIColor.colorFromRGB(0x4097e7)
         } else if weatherKind == .lightRainy
                     || weatherKind == .middleRainy

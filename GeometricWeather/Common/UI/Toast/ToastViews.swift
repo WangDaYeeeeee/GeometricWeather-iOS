@@ -27,6 +27,7 @@ private enum ToastStatus {
 class ToastWrapperView: UIView {
     
     private let toast: UIView
+    private let shadow: ResizeableShadowView
     
     private var status = ToastStatus.hiding
     private var dragging = false
@@ -42,10 +43,26 @@ class ToastWrapperView: UIView {
     
     init(toast: UIView) {
         self.toast = toast
+        
+        self.shadow = ResizeableShadowView(
+            frame: .zero,
+            shadow: Shadow(
+                offset: CGSize(width: 0.0, height: 4.0),
+                blur: 18.0,
+                color: .black.withAlphaComponent(0.1)
+            ),
+            cornerRadius: ResizeableShadowView.capsuleRadius
+        )
+        
         super.init(frame: .zero)
         self.backgroundColor = .clear
         
+        self.addSubview(self.shadow)
         self.addSubview(self.toast)
+        
+        self.shadow.snp.makeConstraints { make in
+            make.edges.equalTo(self.toast)
+        }
         self.toast.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(normalMargin)
             make.leading.equalToSuperview().offset(normalMargin)
@@ -295,10 +312,7 @@ class MessageToastView: UIVisualEffectView {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.2
         self.layer.cornerRadius = 24.0
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         
         self.messageLabel.text = message
         self.messageLabel.font = titleFont
@@ -352,10 +366,7 @@ class ActionableToastView: UIVisualEffectView {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.2
         self.layer.cornerRadius = 24.0
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         
         self.messageLabel.text = message
         self.messageLabel.font = titleFont

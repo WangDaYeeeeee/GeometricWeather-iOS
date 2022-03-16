@@ -46,6 +46,7 @@ class PolylineAndHistogramView: UIView {
         }
         set {
             self.highPolylineShape.strokeColor = newValue.cgColor
+            self.highPolylineShape.shadowColor = newValue.cgColor
             
             self.sizeCache = .zero
             self.setNeedsLayout()
@@ -61,6 +62,7 @@ class PolylineAndHistogramView: UIView {
         }
         set {
             self.lowPolylineShape.strokeColor = newValue.cgColor
+            self.lowPolylineShape.shadowColor = newValue.cgColor
             
             self.sizeCache = .zero
             self.setNeedsLayout()
@@ -142,16 +144,23 @@ class PolylineAndHistogramView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
+        self.layer.masksToBounds = true
         
         // subviews.
         
         self.highPolylineLabel.textColor = .label
-        self.highPolylineLabel.font = miniCaptionFont
+        self.highPolylineLabel.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .bold
+        )
         self.highPolylineLabel.layer.zPosition = trendSubviewsZ
         self.addSubview(self.highPolylineLabel);
         
-        self.lowPolylineLabel.textColor = .label
-        self.lowPolylineLabel.font = miniCaptionFont
+        self.lowPolylineLabel.textColor = .label.withAlphaComponent(0.5)
+        self.lowPolylineLabel.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .bold
+        )
         self.lowPolylineLabel.layer.zPosition = trendSubviewsZ
         self.addSubview(self.lowPolylineLabel);
         
@@ -167,12 +176,18 @@ class PolylineAndHistogramView: UIView {
         self.highPolylineShape.strokeColor = UIColor.systemBlue.cgColor
         self.highPolylineShape.fillColor = UIColor.clear.cgColor
         self.highPolylineShape.zPosition = trendPolylineZ
+        self.highPolylineShape.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.highPolylineShape.shadowRadius = 2.0
+        self.highPolylineShape.shadowOpacity = 0.5
         
         self.lowPolylineShape.lineCap = .round
         self.lowPolylineShape.lineWidth = trendPolylineWidth
         self.lowPolylineShape.strokeColor = UIColor.systemGreen.cgColor
         self.lowPolylineShape.fillColor = UIColor.clear.cgColor
         self.lowPolylineShape.zPosition = trendPolylineZ
+        self.lowPolylineShape.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.lowPolylineShape.shadowRadius = 2.0
+        self.lowPolylineShape.shadowOpacity = 0.5
         
         self.histogramShape.lineCap = .round
         self.histogramShape.lineWidth = trendHistogramWidth
@@ -279,6 +294,12 @@ class PolylineAndHistogramView: UIView {
         }
         
         layer.path = path.cgPath
+        layer.shadowPath = path.cgPath.copy(
+            strokingWithWidth: layer.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0
+        )
     }
     
     private func setHistogramShapeLayer(layer: CAShapeLayer, value: Double) {

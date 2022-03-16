@@ -44,6 +44,7 @@ class SunMoonPathView: UIView {
         }
         set {
             self.sunProgressShape.strokeColor = newValue.cgColor
+            self.sunProgressShape.shadowColor = newValue.cgColor
         }
     }
     var moonColor: UIColor {
@@ -56,6 +57,7 @@ class SunMoonPathView: UIView {
         }
         set {
             self.moonProgressShape.strokeColor = newValue.cgColor
+            self.moonProgressShape.shadowColor = newValue.cgColor
         }
     }
     var backgroundLineColor: UIColor {
@@ -122,6 +124,9 @@ class SunMoonPathView: UIView {
         self.sunProgressShape.strokeColor = UIColor.systemBlue.cgColor
         self.sunProgressShape.fillColor = UIColor.clear.cgColor
         self.sunProgressShape.zPosition = sunPathProgressZ
+        self.sunProgressShape.shadowOffset = CGSize(width: 0, height: 1.5)
+        self.sunProgressShape.shadowRadius = 3.0
+        self.sunProgressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.sunProgressShape)
         
         self.moonProgressShape.lineCap = .round
@@ -129,6 +134,9 @@ class SunMoonPathView: UIView {
         self.moonProgressShape.strokeColor = UIColor.systemBlue.cgColor
         self.moonProgressShape.fillColor = UIColor.clear.cgColor
         self.moonProgressShape.zPosition = moonPathProgressZ
+        self.moonProgressShape.shadowOffset = CGSize(width: 0, height: 1.5)
+        self.moonProgressShape.shadowRadius = 3.0
+        self.moonProgressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.moonProgressShape)
         
         self.backgroundShape.lineCap = .round
@@ -159,12 +167,7 @@ class SunMoonPathView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {        
-        self.setProgress(
-            (self.sunProgress, self.moonProgress),
-            withAnimationDuration: (0.0, 0.0)
-        )
-        
+    override func layoutSubviews() {
         self.sunIcon.frame.size = CGSize(width: iconSize, height: iconSize)
         self.moonIcon.frame.size = CGSize(width: iconSize, height: iconSize)
     }
@@ -185,31 +188,53 @@ class SunMoonPathView: UIView {
         let swipeAngle = .pi - 2 * asin(
             (validWidth / 2.0 - validHeight) / (validWidth / 2.0)
         )
+        let arcCenter = CGPoint(
+            x: validWidth / 2.0 + innerMargin,
+            y: max(
+                validWidth / 2.0 + innerMargin,
+                validHeight + innerMargin
+            )
+        )
+        let arcRadius = validWidth / 2.0
+        let startAngle = 1.5 * .pi - swipeAngle * 0.5
         let arcPath = UIBezierPath(
-            arcCenter: CGPoint(
-                x: validWidth / 2.0 + innerMargin,
-                y: max(
-                    validWidth / 2.0 + innerMargin,
-                    validHeight + innerMargin
-                )
-            ),
-            radius: validWidth / 2.0,
-            startAngle: 1.5 * .pi - swipeAngle * 0.5,
-            endAngle: 1.5 * .pi + swipeAngle * 0.5,
+            arcCenter: arcCenter,
+            radius: arcRadius,
+            startAngle: startAngle,
+            endAngle: startAngle + swipeAngle,
             clockwise: true
         )
+        
         self.setProgress(
             progress.sun,
             withAnimationDuration: withAnimationDuration.sun,
             forKey: sunAnimationKey,
-            andCGPath: arcPath.cgPath,
+            andCGPaths: (
+                arcPath.cgPath,
+                UIBezierPath(
+                    arcCenter: arcCenter,
+                    radius: arcRadius,
+                    startAngle: startAngle,
+                    endAngle: startAngle + progress.sun * swipeAngle,
+                    clockwise: true
+                ).cgPath
+            ),
             forShapeLayer: self.sunProgressShape
         )
         self.setProgress(
             progress.moon,
             withAnimationDuration: withAnimationDuration.moon,
             forKey: moonAnimationKey,
-            andCGPath: arcPath.cgPath,
+            andCGPaths: (
+                arcPath.cgPath,
+                UIBezierPath(
+                    arcCenter: arcCenter,
+                    radius: arcRadius,
+                    startAngle: startAngle,
+                    endAngle: startAngle + progress.moon * swipeAngle,
+                    clockwise: true
+                ).cgPath
+            ),
             forShapeLayer: self.moonProgressShape
         )
         
@@ -243,32 +268,47 @@ class SunMoonPathView: UIView {
         _ progress: Double,
         withAnimationDuration duration: TimeInterval,
         forKey key: String,
-        andCGPath path: CGPath,
+        andCGPaths paths: (arcPath: CGPath, shadowPath: CGPath),
         forShapeLayer layer: CAShapeLayer
     ) {
-        let actualProgress = max(
-            0,
-            min(progress, 1)
-        )
+        let progress = progress.keepIn(range: 0.01...1)
         
-        layer.path = path
+        layer.path = paths.arcPath
         layer.strokeStart = 0.0
         
         if duration == 0 {
             layer.removeAllAnimations()
-            layer.strokeEnd = actualProgress
+            
+            layer.strokeEnd = progress
+            layer.shadowPath = paths.shadowPath.copy(
+                strokingWithWidth: layer.lineWidth,
+                lineCap: .round,
+                lineJoin: .miter,
+                miterLimit: 0.0
+            )
             return
         }
         
         layer.strokeEnd = 0.0
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        pathAnimation.toValue = actualProgress
-        pathAnimation.duration = duration
-        pathAnimation.fillMode = .forwards
-        pathAnimation.isRemovedOnCompletion = false
-        pathAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
-        layer.add(pathAnimation, forKey: key)
+        pathAnimation.toValue = progress
+        
+        let shadowPathAnimation = CAKeyframeAnimation(keyPath: "shadowPath")
+        shadowPathAnimation.path = self.getAnimationPath(for: progress).cgPath.copy(
+            strokingWithWidth: layer.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.duration = duration
+        animationGroup.fillMode = .forwards
+        animationGroup.isRemovedOnCompletion = false
+        animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
+        animationGroup.animations = [pathAnimation, shadowPathAnimation]
+        layer.add(animationGroup, forKey: key)
     }
     
     private func setProgress(

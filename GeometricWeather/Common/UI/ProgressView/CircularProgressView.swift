@@ -80,6 +80,9 @@ class CircularProgressView: UIView {
         self.progressShape.strokeColor = UIColor.systemBlue.cgColor
         self.progressShape.fillColor = UIColor.clear.cgColor
         self.progressShape.zPosition = circularProgressProgressZ
+        self.progressShape.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.progressShape.shadowRadius = 4.0
+        self.progressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.progressShape)
         
         self.shadowShape.lineCap = .round
@@ -116,14 +119,6 @@ class CircularProgressView: UIView {
             return
         }
         sizeCache = self.frame.size
-        
-        self.setProgress(
-            self.progress,
-            withAnimationDuration: self.durationCache,
-            value: self.progressValue,
-            andDescription: self.progressDescription,
-            betweenColors: self.colors
-        )
         
         self.progressValueLabel.frame = self.bounds
         
@@ -166,6 +161,17 @@ class CircularProgressView: UIView {
             endAngle: 2.25 * .pi,
             clockwise: true
         )
+        let shadowPath = UIBezierPath(
+            arcCenter: CGPoint(
+                x: self.frame.width / 2.0,
+                y: self.frame.height / 2.0
+            ),
+            radius: self.frame.width / 2.0 - innerMargin - circularProgressProgressWidth / 2,
+            startAngle: 0.75 * .pi,
+            endAngle: (0.75 + (2.25 - 0.75) * progress) * .pi,
+            clockwise: true
+        )
+        
         self.shadowShape.path = path.cgPath
         self.shadowShape.strokeStart = 0.0
         self.shadowShape.strokeEnd = 1.0
@@ -181,6 +187,14 @@ class CircularProgressView: UIView {
             
             self.progressShape.strokeEnd = progress
             self.progressShape.strokeColor = betweenColors.to.cgColor
+            
+            self.progressShape.shadowPath = shadowPath.cgPath.copy(
+                strokingWithWidth: self.progressShape.lineWidth,
+                lineCap: .round,
+                lineJoin: .miter,
+                miterLimit: 0.0
+            )
+            self.progressShape.shadowColor = betweenColors.to.cgColor
             return
         }
         
@@ -191,6 +205,7 @@ class CircularProgressView: UIView {
         
         self.progressShape.strokeEnd = 0.0
         self.progressShape.strokeColor = betweenColors.from.cgColor
+        self.progressShape.shadowColor = betweenColors.from.cgColor
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.toValue = progress
@@ -198,12 +213,92 @@ class CircularProgressView: UIView {
         let colorAnimation = CABasicAnimation(keyPath: "strokeColor")
         colorAnimation.toValue = betweenColors.to.cgColor
         
+        let shadowPathAnimation = CAKeyframeAnimation(keyPath: "shadowPath")
+        shadowPathAnimation.path = self.getAnimationPath(for: progress).cgPath.copy(
+            strokingWithWidth: self.progressShape.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        
+        let shadowColorAnimation = CABasicAnimation(keyPath: "shadowColor")
+        shadowColorAnimation.toValue = betweenColors.to.cgColor
+        
         let animationGroup = CAAnimationGroup()
         animationGroup.duration = withAnimationDuration
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
         animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
-        animationGroup.animations = [pathAnimation, colorAnimation]
+        animationGroup.animations = [
+            pathAnimation,
+            colorAnimation,
+            shadowPathAnimation,
+            shadowColorAnimation
+        ]
         self.progressShape.add(animationGroup, forKey: progressAnimationKey)
+    }
+    
+    private func getAnimationPath(for progress: Double) -> UIBezierPath {
+        let path = UIBezierPath()
+        
+        path.move(to: self.getCircularAnimKeyFramePoint(for: 0))
+        if Int(1.5 * 180.0 * progress) <= 1 {
+            path.addLine(to: self.getCircularAnimKeyFramePoint(for: 1))
+        } else {
+            for angle in 1 ... Int(1.5 * 180.0 * progress) {
+                path.addLine(to: self.getCircularAnimKeyFramePoint(for: angle))
+            }
+        }
+        
+        return path
+    }
+    
+    private func getCircularAnimKeyFramePoint(for angle: Int) -> CGPoint {
+        let radius = self.frame.width / 2.0 - innerMargin - circularProgressProgressWidth / 2
+        let center = CGPoint(
+            x: self.frame.width / 2.0,
+            y: self.frame.height / 2.0
+        )
+        
+        if angle < 45 {
+            return CGPoint(
+                x: center.x - radius * cos(Double(45 - angle) * .pi / 180.0),
+                y: center.y + radius * sin(Double(45 - angle) * .pi / 180.0)
+            )
+        }
+        if angle == 45 {
+            return CGPoint(
+                x: center.x - radius,
+                y: center.y
+            )
+        }
+        if angle < 45 + 90 {
+            return CGPoint(
+                x: center.x - radius * cos(Double(angle - 45) * .pi / 180.0),
+                y: center.y - radius * sin(Double(angle - 45) * .pi / 180.0)
+            )
+        }
+        if angle == 45 + 90 {
+            return CGPoint(
+                x: center.x,
+                y: center.y - radius
+            )
+        }
+        if angle < 45 + 90 + 90 {
+            return CGPoint(
+                x: center.x + radius * cos(Double(180 + 45 - angle) * .pi / 180.0),
+                y: center.y - radius * sin(Double(180 + 45 - angle) * .pi / 180.0)
+            )
+        }
+        if angle == 45 + 90 + 90 {
+            return CGPoint(
+                x: center.x + radius,
+                y: center.y
+            )
+        }
+        return CGPoint(
+            x: center.x + radius * cos(Double(angle - 180 - 45) * .pi / 180.0),
+            y: center.y + radius * sin(Double(angle - 180 - 45) * .pi / 180.0)
+        )
     }
 }

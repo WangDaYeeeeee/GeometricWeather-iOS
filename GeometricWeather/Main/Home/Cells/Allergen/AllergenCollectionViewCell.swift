@@ -25,6 +25,12 @@ class AllergenItemView: UIView {
         
         self.icon.image = UIImage(systemName: "circle.fill")
         self.icon.contentMode = .scaleAspectFit
+        self.icon.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.icon.layer.shadowRadius = 4.0
+        self.icon.layer.shadowOpacity = 0.5
+        self.icon.layer.shadowPath = UIBezierPath(
+            ovalIn: CGRect(x: 0.0, y: 0.0, width: iconSize, height: iconSize)
+        ).cgPath
         self.addSubview(self.icon)
         
         self.titleLabel.font = titleFont
@@ -58,6 +64,8 @@ class AllergenItemView: UIView {
     
     func bindData(color: UIColor, title: String, caption: String) {
         self.icon.tintColor = color
+        self.icon.layer.shadowColor = color.cgColor
+        
         self.titleLabel.text = title
         self.captionLabel.text = caption
     }

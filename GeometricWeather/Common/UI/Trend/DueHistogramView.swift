@@ -41,9 +41,8 @@ class DueHistogramView: UIView {
             self.highBackgroundShape.strokeColor = newValue.withAlphaComponent(
                 trendHistogramBackgroundAlpha
             ).cgColor
-            self.highHistogramShape.strokeColor = newValue.withAlphaComponent(
-                trendHistogramForegroundAlpha
-            ).cgColor
+            self.highHistogramShape.strokeColor = newValue.cgColor
+            self.highHistogramShape.shadowColor = newValue.cgColor
             
             self.sizeCache = .zero
             self.setNeedsLayout()
@@ -61,9 +60,8 @@ class DueHistogramView: UIView {
             self.lowBackgroundShape.strokeColor = newValue.withAlphaComponent(
                 trendHistogramBackgroundAlpha
             ).cgColor
-            self.lowHistogramShape.strokeColor = newValue.withAlphaComponent(
-                trendHistogramForegroundAlpha
-            ).cgColor
+            self.lowHistogramShape.strokeColor = newValue.cgColor
+            self.lowHistogramShape.shadowColor = newValue.cgColor
             
             self.sizeCache = .zero
             self.setNeedsLayout()
@@ -148,6 +146,9 @@ class DueHistogramView: UIView {
         ).cgColor
         self.highHistogramShape.fillColor = UIColor.clear.cgColor
         self.highHistogramShape.zPosition = trendHistogramZ
+        self.highHistogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.highHistogramShape.shadowRadius = 4.0
+        self.highHistogramShape.shadowOpacity = 0.5
         
         self.lowBackgroundShape.lineCap = .round
         self.lowBackgroundShape.lineWidth = trendHistogramWidth
@@ -164,6 +165,9 @@ class DueHistogramView: UIView {
         ).cgColor
         self.lowHistogramShape.fillColor = UIColor.clear.cgColor
         self.lowHistogramShape.zPosition = trendHistogramZ
+        self.lowHistogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.lowHistogramShape.shadowRadius = 4.0
+        self.lowHistogramShape.shadowOpacity = 0.5
         
         self.timelineShape.lineCap = .round
         self.timelineShape.lineWidth = trendTimelineWidth
@@ -240,7 +244,14 @@ class DueHistogramView: UIView {
         let path = UIBezierPath()
         path.move(to: CGPoint(x: rtlX(0.5), y: y(0.5) - offset))
         path.addLine(to: CGPoint(x: rtlX(0.5), y: y(value) - offset))
+        
         layer.path = path.cgPath
+        layer.shadowPath = path.cgPath.copy(
+            strokingWithWidth: layer.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0
+        )
     }
     
     private func setLowHistogramShapeLayer(layer: CAShapeLayer, value: Double) {

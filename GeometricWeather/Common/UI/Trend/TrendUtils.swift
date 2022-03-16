@@ -13,7 +13,7 @@ let trendTimelineWidth = 0.5
 let trendHorizontalLineWidth = 0.5
 let trendPaddingTop = 24.0
 let trendPaddingBottom = 36.0
-let trendTextMargin = 4.0
+let trendTextMargin = 6.0
 
 let trendPrecipitationAlpha = 0.35
 let trendTimelineAlpha = 0.1

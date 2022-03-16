@@ -162,11 +162,6 @@ class MainSunMoonCardCell: MainTableViewCell {
             }
             
             // sun moon path view.
-        
-            self.sunMoonPathView.setProgress(
-                (0.0, 0.0),
-                withAnimationDuration: (0.0, 0.0)
-            )
             
             self.sunMoonPathView.sunIconImage = UIImage.getSunIcon()
             self.sunMoonPathView.moonIconImage = UIImage.getMoonIcon()
@@ -207,7 +202,6 @@ class MainSunMoonCardCell: MainTableViewCell {
             }
             
             // theme colors.
-            
             self.updateThemeColors(
                 weatherCode: weather.current.weatherCode,
                 daylight: ThemeManager.shared.daylight.value

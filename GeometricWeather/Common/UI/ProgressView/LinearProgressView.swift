@@ -85,6 +85,9 @@ class LinearProgressView: UIView {
         self.progressShape.strokeColor = UIColor.systemBlue.cgColor
         self.progressShape.fillColor = UIColor.clear.cgColor
         self.progressShape.zPosition = circularProgressProgressZ
+        self.progressShape.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.progressShape.shadowRadius = 2.0
+        self.progressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.progressShape)
         
         self.shadowShape.lineCap = .round
@@ -118,12 +121,6 @@ class LinearProgressView: UIView {
             return
         }
         sizeCache = self.frame.size
-        
-        self.setProgress(
-            self.progress, withAnimationDuration: 0.0,
-            andDescription: (self.topDescription, self.bottomDiscription),
-            betweenColors: self.colors
-        )
         
         self.progressTopLabel.frame.origin = CGPoint(
             x: innerMargin,
@@ -168,6 +165,33 @@ class LinearProgressView: UIView {
             )
         )
         
+        let shadowStartPath = UIBezierPath()
+        shadowStartPath.move(
+            to: CGPoint(
+                x: innerMargin,
+                y: self.frame.height / 2.0
+            )
+        )
+        shadowStartPath.addLine(
+            to: CGPoint(
+                x: innerMargin + 1.0,
+                y: self.frame.height / 2.0
+            )
+        )
+        let shadowEndPath = UIBezierPath()
+        shadowEndPath.move(
+            to: CGPoint(
+                x: innerMargin,
+                y: self.frame.height / 2.0
+            )
+        )
+        shadowEndPath.addLine(
+            to: CGPoint(
+                x: innerMargin + progress * (self.frame.width - 2 * innerMargin),
+                y: self.frame.height / 2.0
+            )
+        )
+        
         self.shadowShape.path = path.cgPath
         self.shadowShape.strokeStart = 0.0
         self.shadowShape.strokeEnd = 1.0
@@ -183,11 +207,20 @@ class LinearProgressView: UIView {
             
             self.progressShape.strokeEnd = progress
             self.progressShape.strokeColor = betweenColors.to.cgColor
+            
+            self.progressShape.shadowPath = shadowEndPath.cgPath.copy(
+                strokingWithWidth: self.progressShape.lineWidth,
+                lineCap: .round,
+                lineJoin: .miter,
+                miterLimit: 0.0
+            )
+            self.progressShape.shadowColor = betweenColors.to.cgColor
             return
         }
         
         self.progressShape.strokeEnd = 0.0
         self.progressShape.strokeColor = betweenColors.from.cgColor
+        self.progressShape.shadowColor = betweenColors.from.cgColor
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.toValue = progress
@@ -195,12 +228,34 @@ class LinearProgressView: UIView {
         let colorAnimation = CABasicAnimation(keyPath: "strokeColor")
         colorAnimation.toValue = betweenColors.to.cgColor
         
+        let shadowPathAnimation = CABasicAnimation(keyPath: "shadowPath")
+        shadowPathAnimation.fromValue = shadowStartPath.cgPath.copy(
+            strokingWithWidth: self.progressShape.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        shadowPathAnimation.toValue = shadowEndPath.cgPath.copy(
+            strokingWithWidth: self.progressShape.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        
+        let shadowColorAnimation = CABasicAnimation(keyPath: "shadowColor")
+        shadowColorAnimation.toValue = betweenColors.to.cgColor
+        
         let animationGroup = CAAnimationGroup()
         animationGroup.duration = withAnimationDuration
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
         animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
-        animationGroup.animations = [pathAnimation, colorAnimation]
+        animationGroup.animations = [
+            pathAnimation,
+            colorAnimation,
+            shadowPathAnimation,
+            shadowColorAnimation
+        ]
         self.progressShape.add(animationGroup, forKey: progressAnimationKey)
     }
 }

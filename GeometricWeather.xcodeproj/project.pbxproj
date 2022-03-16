@@ -140,6 +140,7 @@
 		37E5D429271402710052A690 /* DailyWidget2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D428271402710052A690 /* DailyWidget2.swift */; };
 		37E5D42B2714030B0052A690 /* CurrentSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42A2714030B0052A690 /* CurrentSquareView.swift */; };
 		37E5D42D271433630052A690 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5D42C271433630052A690 /* Contants.swift */; };
+		37FE8C7427E16C8800807B6B /* ResizeableShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */; };
 		3D9FE47FE8BF19E7F6ED37E8 /* Pods_GeometricWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B7E1ABEEC93CD7289CEFAA /* Pods_GeometricWeather.framework */; };
 /* End PBXBuildFile section */
 
@@ -458,6 +459,7 @@
 		37E5D428271402710052A690 /* DailyWidget2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWidget2.swift; sourceTree = "<group>"; };
 		37E5D42A2714030B0052A690 /* CurrentSquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSquareView.swift; sourceTree = "<group>"; };
 		37E5D42C271433630052A690 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
+		37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeableShadowView.swift; sourceTree = "<group>"; };
 		3A39A93881252F8AA87E38FA /* Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather-GeometricWeatherUITests/Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		418034B0112D37C8CAAC7A7F /* Pods-GeometricWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.release.xcconfig"; sourceTree = "<group>"; };
 		47728BD299AE1595DB9F332D /* Pods-GeometricWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -621,8 +623,8 @@
 			children = (
 				379A8A5C27C8C59000083BFF /* Trend */,
 				379A8A6827C8C59000083BFF /* Allergen */,
-				379A8A6C27C8C59000083BFF /* MainTableViewCell.swift */,
 				379A8A7827C8C59000083BFF /* MainTableViewHeaderView.swift */,
+				379A8A6C27C8C59000083BFF /* MainTableViewCell.swift */,
 				379A8A6B27C8C59000083BFF /* MainDailyCardCell.swift */,
 				379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */,
 				379A8A5A27C8C59000083BFF /* MainHourlyCardCell.swift */,
@@ -754,6 +756,7 @@
 				37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */,
 				3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */,
 				3741445327DB6C8D00E55800 /* VisualEffectView.swift */,
+				37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -761,12 +764,12 @@
 		379A8A9827C8C59000083BFF /* Trend */ = {
 			isa = PBXGroup;
 			children = (
-				379A8A9927C8C59000083BFF /* BeizerPolylineView.swift */,
 				379A8A9A27C8C59000083BFF /* PolylineAndHistogramView.swift */,
 				379A8A9B27C8C59000083BFF /* HistogramView.swift */,
 				379A8A9C27C8C59000083BFF /* DueHistogramView.swift */,
-				379A8A9D27C8C59000083BFF /* TrendUtils.swift */,
+				379A8A9927C8C59000083BFF /* BeizerPolylineView.swift */,
 				379A8A9E27C8C59000083BFF /* HorizontalLinesBackgroundView.swift */,
+				379A8A9D27C8C59000083BFF /* TrendUtils.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -1460,6 +1463,7 @@
 				379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */,
 				379A8B3127C8C59000083BFF /* MainDailyCardCell.swift in Sources */,
 				379A8B9827C8C59100083BFF /* GeoViewController.swift in Sources */,
+				37FE8C7427E16C8800807B6B /* ResizeableShadowView.swift in Sources */,
 				379A8B5A27C8C59000083BFF /* ToastHelper.swift in Sources */,
 				379A8BAE27C8C59100083BFF /* LocationHelper.swift in Sources */,
 				379A8B2827C8C59000083BFF /* DailyWindCollectionViewCell.swift in Sources */,
@@ -1721,7 +1725,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1732,7 +1736,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.4.5;
+				MARKETING_VERSION = 1.4.6;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1760,7 +1764,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1771,7 +1775,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.4.5;
+				MARKETING_VERSION = 1.4.6;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

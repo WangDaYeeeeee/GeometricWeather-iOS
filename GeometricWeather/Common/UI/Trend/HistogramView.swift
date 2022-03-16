@@ -36,9 +36,8 @@ class HistogramView: UIView {
             self.backgroundShape.strokeColor = newValue.withAlphaComponent(
                 trendHistogramBackgroundAlpha
             ).cgColor
-            self.histogramShape.strokeColor = newValue.withAlphaComponent(
-                trendHistogramForegroundAlpha
-            ).cgColor
+            self.histogramShape.strokeColor = newValue.cgColor
+            self.histogramShape.shadowColor = newValue.cgColor
             
             self.sizeCache = .zero
             self.setNeedsLayout()
@@ -103,6 +102,9 @@ class HistogramView: UIView {
         ).cgColor
         self.histogramShape.fillColor = UIColor.clear.cgColor
         self.histogramShape.zPosition = trendHistogramZ
+        self.histogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.histogramShape.shadowRadius = 4.0
+        self.histogramShape.shadowOpacity = 0.5
         
         self.timelineShape.lineCap = .round
         self.timelineShape.lineWidth = trendTimelineWidth
@@ -161,9 +163,17 @@ class HistogramView: UIView {
     
     private func setHistogramShapeLayer(layer: CAShapeLayer, value: Double) {
         let path = UIBezierPath()
+        
         path.move(to: CGPoint(x: rtlX(0.5), y: y(0)))
         path.addLine(to: CGPoint(x: rtlX(0.5), y: y(value)))
+        
         layer.path = path.cgPath
+        layer.shadowPath = path.cgPath.copy(
+            strokingWithWidth: layer.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0
+        )
     }
     
     private func setTimelineShapeLayer(layer: CAShapeLayer) {

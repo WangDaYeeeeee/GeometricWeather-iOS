@@ -28,9 +28,21 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     )
     let cardTitle = UILabel(frame: .zero)
     
+    let backgroundShadowView = ResizeableShadowView(
+        frame: .zero,
+        shadow: Shadow(
+            offset: CGSize(width: 0.0, height: 2.0),
+            blur: 12.0,
+            color: .black.withAlphaComponent(0.2)
+        ),
+        cornerRadius: cardRadius
+    )
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .clear
+        
+        self.contentView.addSubview(self.backgroundShadowView)
         
         self.cardContainer.layer.cornerRadius = cardRadius
         self.cardContainer.layer.masksToBounds = true
@@ -53,6 +65,9 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-littleMargin)
         }
+        self.backgroundShadowView.snp.makeConstraints { make in
+            make.edges.equalTo(self.cardContainer)
+        }
         self.cardTitle.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -63,7 +78,6 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location, timeBar: MainTimeBarView?) {
-        
         self.cardContainer.contentView.backgroundColor = ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
             weatherKind: weatherCodeToWeatherKind(
                 code: location.weather?.current.weatherCode ?? .clear

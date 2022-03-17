@@ -8,6 +8,8 @@
 import UIKit
 import GeometricWeatherBasic
 
+private let useBeizerPath = true
+
 class PolylineAndHistogramView: UIView {
     
     // MARK: - data.
@@ -176,8 +178,8 @@ class PolylineAndHistogramView: UIView {
         self.highPolylineShape.strokeColor = UIColor.systemBlue.cgColor
         self.highPolylineShape.fillColor = UIColor.clear.cgColor
         self.highPolylineShape.zPosition = trendPolylineZ
-        self.highPolylineShape.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.highPolylineShape.shadowRadius = 2.0
+        self.highPolylineShape.shadowOffset = CGSize(width: 0, height: 3.0)
+        self.highPolylineShape.shadowRadius = 3.0
         self.highPolylineShape.shadowOpacity = 0.5
         
         self.lowPolylineShape.lineCap = .round
@@ -185,8 +187,8 @@ class PolylineAndHistogramView: UIView {
         self.lowPolylineShape.strokeColor = UIColor.systemGreen.cgColor
         self.lowPolylineShape.fillColor = UIColor.clear.cgColor
         self.lowPolylineShape.zPosition = trendPolylineZ
-        self.lowPolylineShape.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.lowPolylineShape.shadowRadius = 2.0
+        self.lowPolylineShape.shadowOffset = CGSize(width: 0, height: 3.0)
+        self.lowPolylineShape.shadowRadius = 3.0
         self.lowPolylineShape.shadowOpacity = 0.5
         
         self.histogramShape.lineCap = .round
@@ -275,22 +277,54 @@ class PolylineAndHistogramView: UIView {
         if trend.start != nil && trend.end != nil {
             // 0, start.
             path.move(to: CGPoint(x: rtlX(0.0), y: y(trend.start ?? 0)))
-            // 0.5, center.
-            path.addLine(to: CGPoint(x: rtlX(0.5), y: y(trend.center)))
-            // 1, end.
-            path.addLine(to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)))
+            
+            if useBeizerPath {
+                // 0.5, center.
+                path.addQuadCurve(
+                    to: CGPoint(x: rtlX(0.5), y: y(trend.center)),
+                    controlPoint: CGPoint(x: rtlX(0.25), y: y(trend.center))
+                )
+                // 1, end.
+                path.addQuadCurve(
+                    to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)),
+                    controlPoint: CGPoint(x: rtlX(0.75), y: y(trend.center))
+                )
+            } else {
+                // 0.5, center.
+                path.addLine(to: CGPoint(x: rtlX(0.5), y: y(trend.center)))
+                // 1, end.
+                path.addLine(to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)))
+            }
         } else if trend.start != nil {
             // end == nil.
             // 0, start.
             path.move(to: CGPoint(x: rtlX(0.0), y: y(trend.start ?? 0)))
-            // 0.5, center.
-            path.addLine(to: CGPoint(x: rtlX(0.5), y: y(trend.center)))
+            
+            if useBeizerPath {
+                // 0.5, center.
+                path.addQuadCurve(
+                    to: CGPoint(x: rtlX(0.5), y: y(trend.center)),
+                    controlPoint: CGPoint(x: rtlX(0.25), y: y(trend.center))
+                )
+            } else {
+                // 0.5, center.
+                path.addLine(to: CGPoint(x: rtlX(0.5), y: y(trend.center)))
+            }
         } else {
             // start == nil.
             // 0.5, center.
             path.move(to: CGPoint(x: rtlX(0.5), y: y(trend.center)))
-            // 1, end.
-            path.addLine(to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)))
+            
+            if useBeizerPath {
+                // 1, end.
+                path.addQuadCurve(
+                    to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)),
+                    controlPoint: CGPoint(x: rtlX(0.75), y: y(trend.center))
+                )
+            } else {
+                // 1, end.
+                path.addLine(to: CGPoint(x: rtlX(1.0), y: y(trend.end ?? 0)))
+            }
         }
         
         layer.path = path.cgPath

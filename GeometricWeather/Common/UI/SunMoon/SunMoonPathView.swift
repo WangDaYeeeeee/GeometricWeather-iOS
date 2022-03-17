@@ -24,6 +24,8 @@ private let sunMoonPathProgressWidth = 4.0
 private let sunMoonPathBackgroundWidth = 1.0
 private let sunMoonPathShadowAlpha = 0.1
 
+private let shadowOpacity = 0.5
+
 class SunMoonPathView: UIView {
     
     // MARK: - properties.
@@ -124,9 +126,8 @@ class SunMoonPathView: UIView {
         self.sunProgressShape.strokeColor = UIColor.systemBlue.cgColor
         self.sunProgressShape.fillColor = UIColor.clear.cgColor
         self.sunProgressShape.zPosition = sunPathProgressZ
-        self.sunProgressShape.shadowOffset = CGSize(width: 0, height: 1.5)
+        self.sunProgressShape.shadowOffset = CGSize(width: 0, height: 3.0)
         self.sunProgressShape.shadowRadius = 3.0
-        self.sunProgressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.sunProgressShape)
         
         self.moonProgressShape.lineCap = .round
@@ -134,9 +135,8 @@ class SunMoonPathView: UIView {
         self.moonProgressShape.strokeColor = UIColor.systemBlue.cgColor
         self.moonProgressShape.fillColor = UIColor.clear.cgColor
         self.moonProgressShape.zPosition = moonPathProgressZ
-        self.moonProgressShape.shadowOffset = CGSize(width: 0, height: 1.5)
+        self.moonProgressShape.shadowOffset = CGSize(width: 0, height: 3.0)
         self.moonProgressShape.shadowRadius = 3.0
-        self.moonProgressShape.shadowOpacity = 0.5
         self.layer.addSublayer(self.moonProgressShape)
         
         self.backgroundShape.lineCap = .round
@@ -271,15 +271,16 @@ class SunMoonPathView: UIView {
         andCGPaths paths: (arcPath: CGPath, shadowPath: CGPath),
         forShapeLayer layer: CAShapeLayer
     ) {
+        layer.removeAllAnimations()
         let progress = progress.keepIn(range: 0.01...1)
         
         layer.path = paths.arcPath
         layer.strokeStart = 0.0
         
         if duration == 0 {
-            layer.removeAllAnimations()
-            
             layer.strokeEnd = progress
+            
+            layer.shadowOpacity = Float(shadowOpacity)
             layer.shadowPath = paths.shadowPath.copy(
                 strokingWithWidth: layer.lineWidth,
                 lineCap: .round,
@@ -290,12 +291,19 @@ class SunMoonPathView: UIView {
         }
         
         layer.strokeEnd = 0.0
+        layer.shadowOpacity = 0.0
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.toValue = progress
         
-        let shadowPathAnimation = CAKeyframeAnimation(keyPath: "shadowPath")
-        shadowPathAnimation.path = self.getAnimationPath(for: progress).cgPath.copy(
+        let shadowPathAnimation = CABasicAnimation(keyPath: "shadowPath")
+        shadowPathAnimation.fromValue = self.getAnimationPath(for: 0).cgPath.copy(
+            strokingWithWidth: layer.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        shadowPathAnimation.toValue = self.getAnimationPath(for: progress).cgPath.copy(
             strokingWithWidth: layer.lineWidth,
             lineCap: .round,
             lineJoin: .miter,
@@ -307,8 +315,19 @@ class SunMoonPathView: UIView {
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
         animationGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.9, 0.1, 0.0, 1.0)
-        animationGroup.animations = [pathAnimation, shadowPathAnimation]
+        animationGroup.animations = [
+            pathAnimation,
+            shadowPathAnimation,
+        ]
         layer.add(animationGroup, forKey: key)
+        
+        let shadowOpacityAnimation = CABasicAnimation(keyPath: "shadowOpacity")
+        shadowOpacityAnimation.toValue = Float(shadowOpacity)
+        shadowOpacityAnimation.duration = duration * 0.33
+        shadowOpacityAnimation.beginTime = CACurrentMediaTime() + duration * 0.66
+        shadowOpacityAnimation.fillMode = .forwards
+        shadowOpacityAnimation.isRemovedOnCompletion = false
+        layer.add(shadowOpacityAnimation, forKey: key + "-shadow")
     }
     
     private func setProgress(

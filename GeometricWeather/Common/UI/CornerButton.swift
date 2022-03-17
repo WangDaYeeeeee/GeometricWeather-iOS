@@ -38,10 +38,14 @@ class CornerButton: UIButton {
             if !self.intrinsicContentSizeCache.equalTo(size) {
                 self.intrinsicContentSizeCache = size
                 
-                self.cornerBackgroundLayer.path = UIBezierPath(
+                let path = UIBezierPath(
                     roundedRect: CGRect(origin: .zero, size: size),
                     cornerRadius: min(size.width, size.height) / 2.0
-                ).cgPath
+                )
+                
+                self.cornerBackgroundLayer.path = path.cgPath
+                self.cornerBackgroundLayer.shadowPath = path.cgPath
+                
                 self.cornerBackgroundLayer.frame = CGRect(origin: .zero, size: size)
             }
             
@@ -79,8 +83,8 @@ class CornerButton: UIButton {
         self.cornerBackgroundLayer.zPosition = -1
         self.cornerBackgroundLayer.strokeColor = UIColor.clear.cgColor
         self.cornerBackgroundLayer.cornerRadius = 6.0
-        self.cornerBackgroundLayer.shadowOpacity = 0.3
-        self.cornerBackgroundLayer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.cornerBackgroundLayer.shadowOpacity = 0.5
+        self.cornerBackgroundLayer.shadowOffset = CGSize(width: 0.0, height: 4.0)
         self.layer.addSublayer(self.cornerBackgroundLayer)
         
         self.backgroundColor = .clear

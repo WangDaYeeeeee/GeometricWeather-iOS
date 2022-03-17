@@ -9,6 +9,7 @@ import UIKit
 import GeometricWeatherBasic
 
 private let progressAnimationKey = "progress_animation"
+private let shadowAnimationKey = "shadow_animation"
 
 private let innerMargin = 6.0
 
@@ -18,6 +19,8 @@ private let circularProgressSubviewsZ = 2.0
 
 private let circularProgressProgressWidth = 12.0
 private let circularProgressShadowAlpha = 0.1
+
+private let shadowOpacity = 0.5
 
 class CircularProgressView: UIView {
     
@@ -80,9 +83,8 @@ class CircularProgressView: UIView {
         self.progressShape.strokeColor = UIColor.systemBlue.cgColor
         self.progressShape.fillColor = UIColor.clear.cgColor
         self.progressShape.zPosition = circularProgressProgressZ
-        self.progressShape.shadowOffset = CGSize(width: 0, height: 2.0)
-        self.progressShape.shadowRadius = 4.0
-        self.progressShape.shadowOpacity = 0.5
+        self.progressShape.shadowOffset = CGSize(width: 0, height: 4.0)
+        self.progressShape.shadowRadius = 6.0
         self.layer.addSublayer(self.progressShape)
         
         self.shadowShape.lineCap = .round
@@ -144,6 +146,8 @@ class CircularProgressView: UIView {
         andDescription: String,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
+        self.progressShape.removeAllAnimations()
+        
         self.progress = progress
         self.colors = betweenColors
         self.durationCache = withAnimationDuration
@@ -183,11 +187,10 @@ class CircularProgressView: UIView {
         self.progressShape.strokeStart = 0.0
         
         if withAnimationDuration == 0 {
-            self.progressShape.removeAllAnimations()
-            
             self.progressShape.strokeEnd = progress
             self.progressShape.strokeColor = betweenColors.to.cgColor
             
+            self.progressShape.shadowOpacity = Float(shadowOpacity)
             self.progressShape.shadowPath = shadowPath.cgPath.copy(
                 strokingWithWidth: self.progressShape.lineWidth,
                 lineCap: .round,
@@ -205,6 +208,7 @@ class CircularProgressView: UIView {
         
         self.progressShape.strokeEnd = 0.0
         self.progressShape.strokeColor = betweenColors.from.cgColor
+        self.progressShape.shadowOpacity = 0.0
         self.progressShape.shadowColor = betweenColors.from.cgColor
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
@@ -213,8 +217,14 @@ class CircularProgressView: UIView {
         let colorAnimation = CABasicAnimation(keyPath: "strokeColor")
         colorAnimation.toValue = betweenColors.to.cgColor
         
-        let shadowPathAnimation = CAKeyframeAnimation(keyPath: "shadowPath")
-        shadowPathAnimation.path = self.getAnimationPath(for: progress).cgPath.copy(
+        let shadowPathAnimation = CABasicAnimation(keyPath: "shadowPath")
+        shadowPathAnimation.fromValue = self.getAnimationPath(for: 0).cgPath.copy(
+            strokingWithWidth: self.progressShape.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
+        shadowPathAnimation.toValue = self.getAnimationPath(for: progress).cgPath.copy(
             strokingWithWidth: self.progressShape.lineWidth,
             lineCap: .round,
             lineJoin: .miter,
@@ -233,9 +243,17 @@ class CircularProgressView: UIView {
             pathAnimation,
             colorAnimation,
             shadowPathAnimation,
-            shadowColorAnimation
+            shadowColorAnimation,
         ]
         self.progressShape.add(animationGroup, forKey: progressAnimationKey)
+        
+        let shadowOpacityAnimation = CABasicAnimation(keyPath: "shadowOpacity")
+        shadowOpacityAnimation.toValue = Float(shadowOpacity)
+        shadowOpacityAnimation.duration = withAnimationDuration * 0.33
+        shadowOpacityAnimation.beginTime = CACurrentMediaTime() + withAnimationDuration * 0.66
+        shadowOpacityAnimation.fillMode = .forwards
+        shadowOpacityAnimation.isRemovedOnCompletion = false
+        self.progressShape.add(shadowOpacityAnimation, forKey: shadowAnimationKey)
     }
     
     private func getAnimationPath(for progress: Double) -> UIBezierPath {

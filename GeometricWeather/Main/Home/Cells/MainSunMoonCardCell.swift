@@ -230,10 +230,9 @@ class MainSunMoonCardCell: MainTableViewCell {
             daylight: daylight
         )
         
+        self.moonPhaseView.lightColor = color * 0.5 + .white * 0.5
         self.moonPhaseView.darkColor = color
-        self.moonPhaseView.borderColor = self.traitCollection.userInterfaceStyle == .light
-        ? self.moonPhaseView.darkColor
-        : self.moonPhaseView.lightColor
+        self.moonPhaseView.borderColor = color
         
         self.sunMoonPathView.sunColor = color
         self.sunMoonPathView.moonColor = color

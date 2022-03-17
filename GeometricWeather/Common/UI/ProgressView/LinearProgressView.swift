@@ -9,6 +9,7 @@ import UIKit
 import GeometricWeatherBasic
 
 private let progressAnimationKey = "progress_animation"
+private let shadowAnimationKey = "shadow_animation"
 
 private let innerMargin = 2.0
 
@@ -18,6 +19,8 @@ private let circularProgressSubviewsZ = 2.0
 
 private let circularProgressProgressWidth = 4.0
 private let circularProgressShadowAlpha = 0.1
+
+private let shadowOpacity = 0.5
 
 class LinearProgressView: UIView {
     
@@ -85,9 +88,8 @@ class LinearProgressView: UIView {
         self.progressShape.strokeColor = UIColor.systemBlue.cgColor
         self.progressShape.fillColor = UIColor.clear.cgColor
         self.progressShape.zPosition = circularProgressProgressZ
-        self.progressShape.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.progressShape.shadowRadius = 2.0
-        self.progressShape.shadowOpacity = 0.5
+        self.progressShape.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.progressShape.shadowRadius = 3.0
         self.layer.addSublayer(self.progressShape)
         
         self.shadowShape.lineCap = .round
@@ -143,6 +145,8 @@ class LinearProgressView: UIView {
         andDescription: (top: String, bottom: String)? = nil,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
+        self.progressShape.removeAllAnimations()
+        
         self.progress = progress
         self.colors = betweenColors
         
@@ -203,11 +207,10 @@ class LinearProgressView: UIView {
         self.progressShape.strokeStart = 0.0
         
         if withAnimationDuration == 0 {
-            self.progressShape.removeAllAnimations()
-            
             self.progressShape.strokeEnd = progress
             self.progressShape.strokeColor = betweenColors.to.cgColor
             
+            self.progressShape.shadowOpacity = Float(shadowOpacity)
             self.progressShape.shadowPath = shadowEndPath.cgPath.copy(
                 strokingWithWidth: self.progressShape.lineWidth,
                 lineCap: .round,
@@ -220,6 +223,7 @@ class LinearProgressView: UIView {
         
         self.progressShape.strokeEnd = 0.0
         self.progressShape.strokeColor = betweenColors.from.cgColor
+        self.progressShape.shadowOpacity = 0.0
         self.progressShape.shadowColor = betweenColors.from.cgColor
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
@@ -254,8 +258,16 @@ class LinearProgressView: UIView {
             pathAnimation,
             colorAnimation,
             shadowPathAnimation,
-            shadowColorAnimation
+            shadowColorAnimation,
         ]
         self.progressShape.add(animationGroup, forKey: progressAnimationKey)
+        
+        let shadowOpacityAnimation = CABasicAnimation(keyPath: "shadowOpacity")
+        shadowOpacityAnimation.toValue = Float(shadowOpacity)
+        shadowOpacityAnimation.duration = withAnimationDuration * 0.33
+        shadowOpacityAnimation.beginTime = CACurrentMediaTime() + withAnimationDuration * 0.66
+        shadowOpacityAnimation.fillMode = .forwards
+        shadowOpacityAnimation.isRemovedOnCompletion = false
+        self.progressShape.add(shadowOpacityAnimation, forKey: shadowAnimationKey)
     }
 }

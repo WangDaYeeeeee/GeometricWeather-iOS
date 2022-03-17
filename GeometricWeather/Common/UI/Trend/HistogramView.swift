@@ -102,8 +102,8 @@ class HistogramView: UIView {
         ).cgColor
         self.histogramShape.fillColor = UIColor.clear.cgColor
         self.histogramShape.zPosition = trendHistogramZ
-        self.histogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
-        self.histogramShape.shadowRadius = 4.0
+        self.histogramShape.shadowOffset = CGSize(width: 0, height: 4.0)
+        self.histogramShape.shadowRadius = 6.0
         self.histogramShape.shadowOpacity = 0.5
         
         self.timelineShape.lineCap = .round

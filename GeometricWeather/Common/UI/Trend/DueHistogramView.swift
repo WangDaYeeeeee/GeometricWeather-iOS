@@ -146,8 +146,8 @@ class DueHistogramView: UIView {
         ).cgColor
         self.highHistogramShape.fillColor = UIColor.clear.cgColor
         self.highHistogramShape.zPosition = trendHistogramZ
-        self.highHistogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
-        self.highHistogramShape.shadowRadius = 4.0
+        self.highHistogramShape.shadowOffset = CGSize(width: 0, height: 4.0)
+        self.highHistogramShape.shadowRadius = 6.0
         self.highHistogramShape.shadowOpacity = 0.5
         
         self.lowBackgroundShape.lineCap = .round
@@ -165,8 +165,8 @@ class DueHistogramView: UIView {
         ).cgColor
         self.lowHistogramShape.fillColor = UIColor.clear.cgColor
         self.lowHistogramShape.zPosition = trendHistogramZ
-        self.lowHistogramShape.shadowOffset = CGSize(width: 0, height: 2.0)
-        self.lowHistogramShape.shadowRadius = 4.0
+        self.lowHistogramShape.shadowOffset = CGSize(width: 0, height: 4.0)
+        self.lowHistogramShape.shadowRadius = 6.0
         self.lowHistogramShape.shadowOpacity = 0.5
         
         self.timelineShape.lineCap = .round

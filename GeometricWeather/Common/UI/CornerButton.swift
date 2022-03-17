@@ -82,9 +82,9 @@ class CornerButton: UIButton {
         
         self.cornerBackgroundLayer.zPosition = -1
         self.cornerBackgroundLayer.strokeColor = UIColor.clear.cgColor
-        self.cornerBackgroundLayer.cornerRadius = 6.0
+        self.cornerBackgroundLayer.cornerRadius = 4.0
         self.cornerBackgroundLayer.shadowOpacity = 0.5
-        self.cornerBackgroundLayer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        self.cornerBackgroundLayer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         self.layer.addSublayer(self.cornerBackgroundLayer)
         
         self.backgroundColor = .clear

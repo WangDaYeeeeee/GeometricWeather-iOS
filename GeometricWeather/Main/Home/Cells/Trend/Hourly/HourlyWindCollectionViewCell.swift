@@ -37,6 +37,7 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         self.hourlyIcon.contentMode = .center
         self.contentView.addSubview(self.hourlyIcon)
         
+        self.histogramView.paddingBottom = normalMargin
         self.contentView.addSubview(self.histogramView)
         
         self.hourLabel.snp.makeConstraints { make in
@@ -104,17 +105,21 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         }
         
         if maxWindSpeed > 0 {
-            self.histogramView.histogramValue = (hourly.wind?.speed ?? 0.0) / maxWindSpeed
+            self.histogramView.highValue = (hourly.wind?.speed ?? 0.0) / maxWindSpeed
         } else {
-            self.histogramView.histogramValue = 0.0
+            self.histogramView.highValue = 0.0
         }
+        self.histogramView.lowValue = nil
         
         let speedUnit = SettingsManager.shared.speedUnit
-        self.histogramView.histogramDescription = speedUnit.formatValueWithUnit(
-            hourly.wind?.speed ?? 0.0,
-            unit: ""
+        self.histogramView.highDescription = (
+            speedUnit.formatValueWithUnit(
+                hourly.wind?.speed ?? 0.0,
+                unit: ""
+            ),
+            ""
         )
-        self.histogramView.histogramColor = getLevelColor(
+        self.histogramView.color = getLevelColor(
             hourly.wind?.getWindLevel() ?? 1
         )
     }

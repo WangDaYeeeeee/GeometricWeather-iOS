@@ -17,6 +17,7 @@ enum DailyTag: String {
     case wind = "daily_wind"
     case aqi = "daily_aqi"
     case uv = "daily_uv"
+    case precipitation = "daily_precipitation"
 }
 
 struct DailyTrendCellTapAction {
@@ -86,6 +87,10 @@ class MainDailyCardCell: MainTableViewCell,
         self.dailyCollectionView.register(
             DailyUVCollectionViewCell.self,
             forCellWithReuseIdentifier: DailyTag.uv.rawValue
+        )
+        self.dailyCollectionView.register(
+            DailyPrecipitationCollectionViewCell.self,
+            forCellWithReuseIdentifier: DailyTag.precipitation.rawValue
         )
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         

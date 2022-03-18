@@ -19,6 +19,9 @@ public struct Daily: Codable {
     public let moon: Astro
     public let moonPhase: MoonPhase
     
+    public let precipitationTotal: Double?
+    public let precipitationIntensity: Double?
+    public let precipitationProbability: Double?
     public let wind: Wind?
     public let airQuality: AirQuality
     public let pollen: Pollen
@@ -32,6 +35,9 @@ public struct Daily: Codable {
         sun: Astro,
         moon: Astro,
         moonPhase: MoonPhase,
+        precipitationTotal: Double?,
+        precipitationIntensity: Double?,
+        precipitationProbability: Double?,
         wind: Wind?,
         airQuality: AirQuality,
         pollen: Pollen,
@@ -44,6 +50,9 @@ public struct Daily: Codable {
         self.sun = sun
         self.moon = moon
         self.moonPhase = moonPhase
+        self.precipitationTotal = precipitationTotal
+        self.precipitationIntensity = precipitationIntensity
+        self.precipitationProbability = precipitationProbability
         self.wind = wind
         self.airQuality = airQuality
         self.pollen = pollen

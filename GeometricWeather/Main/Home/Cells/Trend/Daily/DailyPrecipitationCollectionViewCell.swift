@@ -1,16 +1,14 @@
 //
-//  DailyTrendTableViewCell.swift
+//  DailyPrecipitationCollectionViewCell.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2021/8/14.
+//  Created by 王大爷 on 2022/3/18.
 //
 
 import UIKit
 import GeometricWeatherBasic
 
-// MARK: - cell.
-
-class DailyTrendCollectionViewCell: UICollectionViewCell {
+class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - cell subviews.
     
@@ -21,10 +19,6 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
     private let nighttimeIcon = UIImageView(frame: .zero)
     
     private let trendView = HistogramView(frame: .zero)
-    
-    // MARK: - inner data.
-    
-    private var weatherCode: WeatherCode?
     
     // MARK: - cell life cycle.
     
@@ -50,6 +44,7 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         self.nighttimeIcon.contentMode = .scaleAspectFit
         self.contentView.addSubview(self.nighttimeIcon)
         
+        self.trendView.paddingBottom = normalMargin
         self.contentView.addSubview(self.trendView)
         
         self.weekLabel.snp.makeConstraints { make in
@@ -82,17 +77,6 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.nighttimeIcon.snp.top)
         }
-        
-        ThemeManager.shared.daylight.addNonStickyObserver(self) { daylight in
-            if self.weatherCode == nil {
-                return
-            }
-            
-            self.updateTrendColors(
-                weatherCode: self.weatherCode ?? .clear,
-                daylight: daylight
-            )
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -101,13 +85,9 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
     
     func bindData(
         daily: Daily,
-        temperatureRange: ClosedRange<Int>,
-        weatherCode: WeatherCode,
         timezone: TimeZone,
         histogramType: DailyPrecipitationHistogramType
     ) {
-        self.weatherCode = weatherCode
-        
         self.weekLabel.text = daily.isToday(timezone: timezone)
         ? NSLocalizedString("today", comment: "")
         : getWeekText(week: daily.getWeek(timezone: timezone))
@@ -135,17 +115,6 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
             )
         )
         
-        self.trendView.highValue = getY(
-            value: Double(daily.day.temperature.temperature),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        self.trendView.lowValue = getY(
-            value: Double(daily.night.temperature.temperature),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        
         switch histogramType {
         case .precipitationProb:
             let precipitationProb = max(
@@ -154,90 +123,118 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
                 daily.precipitationProbability ?? 0.0
             )
             if precipitationProb > 0 {
-                self.trendView.bottomDescription = (
-                    getPercentText(
+                self.trendView.highValue = min(precipitationProb / 100.0, 1.0)
+                
+                self.trendView.highDescription = (
+                    getPercentTextWithoutUnit(
                         precipitationProb,
                         decimal: 0
                     ),
-                    ""
+                    "%"
                 )
+                self.trendView.lowDescription = nil
             } else {
-                self.trendView.bottomDescription = nil
+                self.trendView.highValue = nil
+                
+                self.trendView.highDescription = nil
+                self.trendView.lowDescription = (
+                    getPercentTextWithoutUnit(
+                        precipitationProb,
+                        decimal: 0
+                    ),
+                    "%"
+                )
             }
+            self.trendView.lowValue = nil
+            
+            self.trendView.color = getLevelColor(
+                getPrecipitationProbLevel(precipitationProb)
+            )
+            break
             
         case .precipitationTotal:
+            let unit = SettingsManager.shared.precipitationUnit
             let precipitationTotal = max(
                 daily.day.precipitationTotal ?? 0.0,
                 daily.night.precipitationTotal ?? 0.0,
                 daily.precipitationTotal ?? 0.0
             )
             if precipitationTotal > 0 {
-                let unit = SettingsManager.shared.precipitationUnit
+                self.trendView.highValue = min(
+                    precipitationTotal / dailyPrecipitationHeavy,
+                    1.0
+                )
                 
-                self.trendView.bottomDescription = (
+                self.trendView.highDescription = (
                     unit.formatValueWithUnit(
                         precipitationTotal,
                         unit: ""
                     ),
                     ""
                 )
+                self.trendView.lowDescription = nil
             } else {
-                self.trendView.bottomDescription = nil
+                self.trendView.highValue = nil
+                
+                self.trendView.highDescription = nil
+                self.trendView.lowDescription = (
+                    unit.formatValueWithUnit(
+                        precipitationTotal,
+                        unit: ""
+                    ),
+                    ""
+                )
             }
+            self.trendView.lowValue = nil
+            
+            self.trendView.color = getLevelColor(
+                getDailyPrecipitationLevel(precipitationTotal)
+            )
+            break
             
         case .precipitationIntensity:
+            let unit = SettingsManager.shared.precipitationIntensityUnit
             let precipitationIntensity = max(
                 daily.day.precipitationIntensity ?? 0.0,
                 daily.night.precipitationIntensity ?? 0.0,
                 daily.precipitationIntensity ?? 0.0
             )
             if precipitationIntensity > 0 {
-                let unit = SettingsManager.shared.precipitationIntensityUnit
+                self.trendView.highValue = min(
+                    precipitationIntensity / radarPrecipitationIntensityHeavy,
+                    1.0
+                )
                 
-                self.trendView.bottomDescription = (
+                self.trendView.highDescription = (
                     unit.formatValueWithUnit(
                         precipitationIntensity,
                         unit: ""
                     ),
                     ""
                 )
+                self.trendView.lowDescription = nil
             } else {
-                self.trendView.bottomDescription = nil
+                self.trendView.highValue = nil
+                
+                self.trendView.highDescription = nil
+                self.trendView.lowDescription = (
+                    unit.formatValueWithUnit(
+                        precipitationIntensity,
+                        unit: ""
+                    ),
+                    ""
+                )
             }
+            self.trendView.lowValue = nil
+            
+            self.trendView.color = getLevelColor(
+                getPrecipitationIntensityLevel(precipitationIntensity)
+            )
+            break
             
         case .none:
-            self.trendView.bottomDescription = nil
+            self.trendView.highValue = nil
         }
-        
-        self.updateTrendColors(
-            weatherCode: weatherCode,
-            daylight: ThemeManager.shared.daylight.value
-        )
-        
-        let tempUnit = SettingsManager.shared.temperatureUnit
-        self.trendView.highDescription = (
-            tempUnit.formatValueWithUnit(
-                daily.day.temperature.temperature,
-                unit: ""
-            ),
-            "°"
-        )
-        self.trendView.lowDescription = (
-            tempUnit.formatValueWithUnit(
-                daily.night.temperature.temperature,
-                unit: ""
-            ),
-            "°"
-        )
-    }
-    
-    private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
-        let themeColor = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
-            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
-            daylight: daylight
-        )
-        self.trendView.color = themeColor
-        self.trendView.bottomLabel.textColor = precipitationProbabilityColor
     }
     
     // MARK: - cell selection.
@@ -260,98 +257,5 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-    }
-}
-
-// MARK: - background.
-
-class DailyTrendCellBackgroundView: UIView {
-    
-    // MARK: - background subviews.
-    
-    private let weekLabel = UILabel(frame: .zero)
-    private let dateLabel = UILabel(frame: .zero)
-    
-    private let horizontalLinesView = HorizontalLinesBackgroundView(frame: .zero)
-    
-    // MARK: - background life cycle.
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .clear
-        
-        self.weekLabel.text = "A"
-        self.weekLabel.font = bodyFont
-        self.weekLabel.textColor = .clear
-        self.weekLabel.textAlignment = .center
-        self.weekLabel.numberOfLines = 1
-        self.addSubview(self.weekLabel)
-        
-        self.dateLabel.text = "A"
-        self.dateLabel.font = miniCaptionFont
-        self.dateLabel.textColor = .clear
-        self.dateLabel.textAlignment = .center
-        self.dateLabel.numberOfLines = 1
-        self.addSubview(self.dateLabel)
-        self.addSubview(self.horizontalLinesView)
-        
-        self.weekLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.weekLabel.snp.bottom).offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.horizontalLinesView.snp.makeConstraints { make in
-            make.top.equalTo(self.dateLabel.snp.bottom).offset(littleMargin + mainTrendIconSize)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-littleMargin - mainTrendIconSize)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bindData(
-        weather: Weather,
-        temperatureRange: ClosedRange<Int>
-    ) {
-        guard
-            let yesterday = weather.yesterday,
-            let daytimeTemp = yesterday.daytimeTemperature,
-            let nighttimeTemp = yesterday.nighttimeTemperature
-        else {
-            self.horizontalLinesView.highValue = nil
-            self.horizontalLinesView.lowValue = nil
-            return
-        }
-        
-        self.horizontalLinesView.highValue = getY(
-            value: Double(daytimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        self.horizontalLinesView.lowValue = getY(
-            value: Double(nighttimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        
-        self.horizontalLinesView.highLineColor = .gray
-        self.horizontalLinesView.lowLineColor = .gray
-        
-        self.horizontalLinesView.highDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(daytimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
-        self.horizontalLinesView.lowDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(nighttimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
     }
 }

@@ -43,6 +43,9 @@ extension MainDailyCardCell {
             }
         }
         
+        // precipitation.
+        tags.append((DailyTag.precipitation, NSLocalizedString("precipitation", comment: "")))
+        
         return tags
     }
     
@@ -64,27 +67,21 @@ extension MainDailyCardCell {
         )
         
         if let weather = weather, let source = source {
+            var histogramType = DailyPrecipitationHistogramType.none
+            if source.hasDailyPrecipitationProb {
+                histogramType = .precipitationProb
+            }
+            if source.hasDailyPrecipitationTotal {
+                histogramType = .precipitationTotal
+            }
+            if source.hasDailyPrecipitationIntensity {
+                histogramType = .precipitationIntensity
+            }
+            
             switch currentTag {
             case .temperature:
-                var histogramType = DailyHistogramType.none
-                if source.hasDailyPrecipitationProb {
-                    histogramType = .precipitationProb
-                }
-                if source.hasDailyPrecipitationTotal {
-                    histogramType = .precipitationTotal
-                }
-                if source.hasDailyPrecipitationIntensity {
-                    histogramType = .precipitationIntensity
-                }
-                
                 (cell as? DailyTrendCollectionViewCell)?.bindData(
-                    prev: indexPath.row == 0
-                    ? nil
-                    : weather.dailyForecasts[indexPath.row - 1],
                     daily: weather.dailyForecasts[indexPath.row],
-                    next: indexPath.row == weather.dailyForecasts.count - 1
-                    ? nil
-                    : weather.dailyForecasts[indexPath.row + 1],
                     temperatureRange: temperatureRange,
                     weatherCode: weather.current.weatherCode,
                     timezone: timezone,
@@ -107,6 +104,12 @@ extension MainDailyCardCell {
                     daily: weather.dailyForecasts[indexPath.row],
                     maxAqiIndex: maxUVIndex,
                     timezone: timezone
+                )
+            case .precipitation:
+                (cell as? DailyPrecipitationCollectionViewCell)?.bindData(
+                    daily: weather.dailyForecasts[indexPath.row],
+                    timezone: timezone,
+                    histogramType: histogramType
                 )
             }
         }

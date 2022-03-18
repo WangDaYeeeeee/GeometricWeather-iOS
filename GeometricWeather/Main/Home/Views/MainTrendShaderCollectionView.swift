@@ -17,9 +17,12 @@ class MainTrendShaderCollectionView: UICollectionView {
     var cellSize: CGSize {
         get {
             return CGSize(
-                width: CGFloat(
-                    Int(
-                        self.frame.width / CGFloat(getTrenItemDisplayCount())
+                width: max(
+                    56.0,
+                    CGFloat(
+                        Int(
+                            self.frame.width / CGFloat(getTrenItemDisplayCount())
+                        )
                     )
                 ),
                 height: self.frame.height

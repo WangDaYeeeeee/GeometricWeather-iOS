@@ -12,6 +12,10 @@
 		370BA5C3269C5E37006BB1CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C2269C5E37006BB1CE /* LaunchScreen.storyboard */; };
 		370BA5C6269C6091006BB1CE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C8269C6091006BB1CE /* InfoPlist.strings */; };
 		3732D84927DB939700F5DC81 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732D84827DB939700F5DC81 /* TrendView.swift */; };
+		373F760627E35B750005875B /* MiddleUnitLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760527E35B750005875B /* MiddleUnitLabel.swift */; };
+		373F760727E35D370005875B /* MiddleUnitText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760327E357720005875B /* MiddleUnitText.swift */; };
+		373F760927E40C500005875B /* DailyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */; };
+		373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */; };
 		3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */; };
 		3741445427DB6C8D00E55800 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741445327DB6C8D00E55800 /* VisualEffectView.swift */; };
 		374BA5FE26FC78E00080B5CA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6226F4B45300431565 /* WidgetKit.framework */; };
@@ -74,10 +78,8 @@
 		379A8B4F27C8C59000083BFF /* StaggeredCellAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9227C8C59000083BFF /* StaggeredCellAnimation.swift */; };
 		379A8B5027C8C59000083BFF /* DotPagerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9327C8C59000083BFF /* DotPagerIndicator.swift */; };
 		379A8B5127C8C59000083BFF /* DragSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9427C8C59000083BFF /* DragSwitchView.swift */; };
-		379A8B5327C8C59000083BFF /* BeizerPolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9927C8C59000083BFF /* BeizerPolylineView.swift */; };
-		379A8B5427C8C59000083BFF /* PolylineAndHistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9A27C8C59000083BFF /* PolylineAndHistogramView.swift */; };
-		379A8B5527C8C59000083BFF /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9B27C8C59000083BFF /* HistogramView.swift */; };
-		379A8B5627C8C59000083BFF /* DueHistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9C27C8C59000083BFF /* DueHistogramView.swift */; };
+		379A8B5327C8C59000083BFF /* HistogramPolylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9927C8C59000083BFF /* HistogramPolylineView.swift */; };
+		379A8B5427C8C59000083BFF /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9A27C8C59000083BFF /* HistogramView.swift */; };
 		379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9D27C8C59000083BFF /* TrendUtils.swift */; };
 		379A8B5827C8C59000083BFF /* HorizontalLinesBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A9E27C8C59000083BFF /* HorizontalLinesBackgroundView.swift */; };
 		379A8B5927C8C59000083BFF /* Toast-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8AA027C8C59000083BFF /* Toast-Swift.swift */; };
@@ -249,6 +251,10 @@
 		370BA5C9269C609B006BB1CE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeometricWeather.entitlements; sourceTree = "<group>"; };
 		3732D84827DB939700F5DC81 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
+		373F760327E357720005875B /* MiddleUnitText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleUnitText.swift; sourceTree = "<group>"; };
+		373F760527E35B750005875B /* MiddleUnitLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleUnitLabel.swift; sourceTree = "<group>"; };
+		373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPrecipitationCollectionViewCell.swift; sourceTree = "<group>"; };
+		373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyPrecipitationCollectionViewCell.swift; sourceTree = "<group>"; };
 		3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionModifier.swift; sourceTree = "<group>"; };
 		3741445327DB6C8D00E55800 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeometricWeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -312,10 +318,8 @@
 		379A8A9227C8C59000083BFF /* StaggeredCellAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaggeredCellAnimation.swift; sourceTree = "<group>"; };
 		379A8A9327C8C59000083BFF /* DotPagerIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotPagerIndicator.swift; sourceTree = "<group>"; };
 		379A8A9427C8C59000083BFF /* DragSwitchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragSwitchView.swift; sourceTree = "<group>"; };
-		379A8A9927C8C59000083BFF /* BeizerPolylineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeizerPolylineView.swift; sourceTree = "<group>"; };
-		379A8A9A27C8C59000083BFF /* PolylineAndHistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolylineAndHistogramView.swift; sourceTree = "<group>"; };
-		379A8A9B27C8C59000083BFF /* HistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistogramView.swift; sourceTree = "<group>"; };
-		379A8A9C27C8C59000083BFF /* DueHistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DueHistogramView.swift; sourceTree = "<group>"; };
+		379A8A9927C8C59000083BFF /* HistogramPolylineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistogramPolylineView.swift; sourceTree = "<group>"; };
+		379A8A9A27C8C59000083BFF /* HistogramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistogramView.swift; sourceTree = "<group>"; };
 		379A8A9D27C8C59000083BFF /* TrendUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendUtils.swift; sourceTree = "<group>"; };
 		379A8A9E27C8C59000083BFF /* HorizontalLinesBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalLinesBackgroundView.swift; sourceTree = "<group>"; };
 		379A8AA027C8C59000083BFF /* Toast-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Toast-Swift.swift"; sourceTree = "<group>"; };
@@ -653,6 +657,7 @@
 			children = (
 				379A8A5E27C8C59000083BFF /* HourlyWindCollectionViewCell.swift */,
 				379A8A5F27C8C59000083BFF /* HourlyTrendCollectionViewCell.swift */,
+				373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */,
 			);
 			path = Hourly;
 			sourceTree = "<group>";
@@ -664,6 +669,7 @@
 				379A8A6227C8C59000083BFF /* DailyTrendCollectionViewCell.swift */,
 				379A8A6327C8C59000083BFF /* DailyAirQualityCollectionViewCell.swift */,
 				379A8A6427C8C59000083BFF /* DailyUVCollectionViewCell.swift */,
+				373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */,
 			);
 			path = Daily;
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 				3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */,
 				3741445327DB6C8D00E55800 /* VisualEffectView.swift */,
 				37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */,
+				373F760527E35B750005875B /* MiddleUnitLabel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -764,10 +771,8 @@
 		379A8A9827C8C59000083BFF /* Trend */ = {
 			isa = PBXGroup;
 			children = (
-				379A8A9A27C8C59000083BFF /* PolylineAndHistogramView.swift */,
-				379A8A9B27C8C59000083BFF /* HistogramView.swift */,
-				379A8A9C27C8C59000083BFF /* DueHistogramView.swift */,
-				379A8A9927C8C59000083BFF /* BeizerPolylineView.swift */,
+				379A8A9A27C8C59000083BFF /* HistogramView.swift */,
+				379A8A9927C8C59000083BFF /* HistogramPolylineView.swift */,
 				379A8A9E27C8C59000083BFF /* HorizontalLinesBackgroundView.swift */,
 				379A8A9D27C8C59000083BFF /* TrendUtils.swift */,
 			);
@@ -1138,6 +1143,7 @@
 				37E5D41B271022D60052A690 /* HourlyView.swift */,
 				374BA61C26FC89160080B5CA /* ItemViews.swift */,
 				3732D84827DB939700F5DC81 /* TrendView.swift */,
+				373F760327E357720005875B /* MiddleUnitText.swift */,
 			);
 			path = CommonUI;
 			sourceTree = "<group>";
@@ -1427,7 +1433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				379A8B5427C8C59000083BFF /* PolylineAndHistogramView.swift in Sources */,
+				379A8B5427C8C59000083BFF /* HistogramView.swift in Sources */,
 				379A8B2927C8C59000083BFF /* DailyTrendCollectionViewCell.swift in Sources */,
 				379A8B5F27C8C59000083BFF /* CornerButton.swift in Sources */,
 				379A8B6327C8C59100083BFF /* SunMoonPathView.swift in Sources */,
@@ -1444,6 +1450,7 @@
 				379A8B3D27C8C59000083BFF /* MainTableViewHeaderView.swift in Sources */,
 				379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */,
 				379A8BB627C8C59100083BFF /* AccuJson.swift in Sources */,
+				373F760627E35B750005875B /* MiddleUnitLabel.swift in Sources */,
 				377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */,
 				379A8B5027C8C59000083BFF /* DotPagerIndicator.swift in Sources */,
 				379A8B2A27C8C59000083BFF /* DailyAirQualityCollectionViewCell.swift in Sources */,
@@ -1455,7 +1462,6 @@
 				379A8BB227C8C59100083BFF /* WeatherKeywords.swift in Sources */,
 				379A8BBC27C8C59100083BFF /* AboutViewController.swift in Sources */,
 				379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */,
-				379A8B5527C8C59000083BFF /* HistogramView.swift in Sources */,
 				37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */,
 				37D3B8C827D6FA0A00191C2A /* NeedleGenerated.swift in Sources */,
 				379A8B2E27C8C59000083BFF /* MainDetailsCardCell.swift in Sources */,
@@ -1478,12 +1484,12 @@
 				379A8B3527C8C59000083BFF /* HomeViewController+Layout.swift in Sources */,
 				379A8B4727C8C59000083BFF /* DailyView.swift in Sources */,
 				379A8B6427C8C59100083BFF /* CircularProgressView.swift in Sources */,
-				379A8B5627C8C59000083BFF /* DueHistogramView.swift in Sources */,
 				377B1D6626B6B93000E7E07E /* SceneDelegate.swift in Sources */,
 				379A8B6227C8C59100083BFF /* MoonPhaseView.swift in Sources */,
 				379A8B4127C8C59000083BFF /* SplitManagementViewController.swift in Sources */,
 				379A8B5C27C8C59000083BFF /* GeoDialog+Helper.swift in Sources */,
 				379A8B2727C8C59000083BFF /* HourlyTrendCollectionViewCell.swift in Sources */,
+				373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */,
 				379A8B5127C8C59000083BFF /* DragSwitchView.swift in Sources */,
 				379A8B4427C8C59000083BFF /* SearchTableViewCell.swift in Sources */,
 				379A8B3427C8C59000083BFF /* HomeViewController+UITableView.swift in Sources */,
@@ -1511,7 +1517,7 @@
 				379A8BB427C8C59100083BFF /* AccuConvert.swift in Sources */,
 				37D3B8C627D6F6A500191C2A /* EditComponent.swift in Sources */,
 				379A8BB727C8C59100083BFF /* WeatherApi.swift in Sources */,
-				379A8B5327C8C59000083BFF /* BeizerPolylineView.swift in Sources */,
+				379A8B5327C8C59000083BFF /* HistogramPolylineView.swift in Sources */,
 				379A8B3327C8C59000083BFF /* HomeViewController+Events.swift in Sources */,
 				379A8B6D27C8C59100083BFF /* AppExtensionHelper.swift in Sources */,
 				379A8B4327C8C59000083BFF /* SearchResultController.swift in Sources */,
@@ -1524,6 +1530,7 @@
 				379A8B3827C8C59000083BFF /* MainDetailItemView.swift in Sources */,
 				379A8B6027C8C59000083BFF /* UIViewEffect.swift in Sources */,
 				379A8B6627C8C59100083BFF /* UIRefreshControlExt.swift in Sources */,
+				373F760927E40C500005875B /* DailyPrecipitationCollectionViewCell.swift in Sources */,
 				379A8B5B27C8C59000083BFF /* ToastViews.swift in Sources */,
 				379A8BCB27CCFA7C00083BFF /* MainFooterCell.swift in Sources */,
 				379A8B5927C8C59000083BFF /* Toast-Swift.swift in Sources */,
@@ -1543,6 +1550,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				374BA62426FC89170080B5CA /* WeatherWidgetMediumView.swift in Sources */,
+				373F760727E35D370005875B /* MiddleUnitText.swift in Sources */,
 				374BA62326FC89170080B5CA /* WeatherWidgetLargeView.swift in Sources */,
 				374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */,
 				37E5D42D271433630052A690 /* Contants.swift in Sources */,
@@ -1725,7 +1733,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1736,7 +1744,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1764,7 +1772,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1775,7 +1783,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -15,6 +15,7 @@ enum HourlyTag: String {
     
     case temperature = "hourly_temperature"
     case wind = "hourly_wind"
+    case precipitation = "hourly_precipitation"
 }
 
 class MainHourlyCardCell: MainTableViewCell,
@@ -55,7 +56,7 @@ class MainHourlyCardCell: MainTableViewCell,
     )
     private let minutelyTitle = UILabel(frame: .zero)
     
-    private let minutelyView = BeizerPolylineView(frame: .zero)
+    private let minutelyView = HistogramPolylineView(frame: .zero)
     
     // MARK: - life cycle.
     
@@ -89,6 +90,10 @@ class MainHourlyCardCell: MainTableViewCell,
         self.hourlyCollectionView.register(
             HourlyWindCollectionViewCell.self,
             forCellWithReuseIdentifier: HourlyTag.wind.rawValue
+        )
+        self.hourlyCollectionView.register(
+            HourlyPrecipitationCollectionViewCell.self,
+            forCellWithReuseIdentifier: HourlyTag.precipitation.rawValue
         )
         self.hourlyTrendGroupView.addSubview(self.hourlyCollectionView)
         

@@ -23,6 +23,9 @@ extension MainHourlyCardCell {
             }
         }
         
+        // precipitation.
+        tags.append((HourlyTag.precipitation, NSLocalizedString("precipitation", comment: "")))
+        
         return tags
     }
     
@@ -42,24 +45,18 @@ extension MainHourlyCardCell {
         )
         
         if let weather = weather, let source = source {
+            var histogramType = HourlyPrecipitationHistogramType.none
+            if source.hasHourlyPrecipitationProb {
+                histogramType = .precipitationProb
+            }
+            if source.hasHourlyPrecipitationIntensity {
+                histogramType = .precipitationIntensity
+            }
+            
             switch currentTag {
             case .temperature:
-                var histogramType = HourlyHistogramType.none
-                if source.hasHourlyPrecipitationProb {
-                    histogramType = .precipitationProb
-                }
-                if source.hasHourlyPrecipitationIntensity {
-                    histogramType = .precipitationIntensity
-                }
-                
                 (cell as? HourlyTrendCollectionViewCell)?.bindData(
-                    prev: indexPath.row == 0
-                    ? nil
-                    : weather.hourlyForecasts[indexPath.row - 1],
                     hourly: weather.hourlyForecasts[indexPath.row],
-                    next: indexPath.row == weather.hourlyForecasts.count - 1
-                    ? nil
-                    : weather.hourlyForecasts[indexPath.row + 1],
                     temperatureRange: temperatureRange,
                     weatherCode: weather.current.weatherCode,
                     timezone: timezone,
@@ -70,6 +67,12 @@ extension MainHourlyCardCell {
                     hourly: weather.hourlyForecasts[indexPath.row],
                     maxWindSpeed: maxWindSpeed,
                     timezone: timezone
+                )
+            case .precipitation:
+                (cell as? HourlyPrecipitationCollectionViewCell)?.bindData(
+                    hourly: weather.hourlyForecasts[indexPath.row],
+                    timezone: timezone,
+                    histogramType: histogramType
                 )
             }
         }

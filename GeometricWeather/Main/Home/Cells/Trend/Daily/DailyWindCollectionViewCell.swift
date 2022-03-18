@@ -45,6 +45,7 @@ class DailySingleWindCollectionViewCell: UICollectionViewCell {
         self.dailyIcon.contentMode = .center
         self.contentView.addSubview(self.dailyIcon)
         
+        self.histogramView.paddingBottom = normalMargin
         self.contentView.addSubview(self.histogramView)
         
         self.weekLabel.snp.makeConstraints { make in
@@ -118,17 +119,21 @@ class DailySingleWindCollectionViewCell: UICollectionViewCell {
         }
         
         if maxWindSpeed > 0 {
-            self.histogramView.histogramValue = (daily.wind?.speed ?? 0.0) / maxWindSpeed
+            self.histogramView.highValue = (daily.wind?.speed ?? 0.0) / maxWindSpeed
         } else {
-            self.histogramView.histogramValue = 0.0
+            self.histogramView.highValue = 0.0
         }
+        self.histogramView.lowValue = nil
         
         let speedUnit = SettingsManager.shared.speedUnit
-        self.histogramView.histogramDescription = speedUnit.formatValueWithUnit(
-            daily.wind?.speed ?? 0.0,
-            unit: ""
+        self.histogramView.highDescription = (
+            speedUnit.formatValueWithUnit(
+                daily.wind?.speed ?? 0.0,
+                unit: ""
+            ),
+            ""
         )
-        self.histogramView.histogramColor = getLevelColor(
+        self.histogramView.color = getLevelColor(
             daily.wind?.getWindLevel() ?? 1
         )
     }

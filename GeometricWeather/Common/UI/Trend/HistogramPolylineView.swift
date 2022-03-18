@@ -1,5 +1,5 @@
 //
-//  BeizerPolylineView.swift
+//  HistogramPolylineView.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/10/26.
@@ -13,7 +13,7 @@ private let paddingHorizontal = normalMargin
 
 private let tickMarkCount = 5
 
-class BeizerPolylineView: UIView {
+class HistogramPolylineView: UIView {
     
     // MARK: - data.
     
@@ -200,6 +200,10 @@ class BeizerPolylineView: UIView {
                 shape.strokeColor = self.polylineColor.cgColor
                 shape.fillColor = UIColor.clear.cgColor
                 shape.zPosition = trendPolylineZ
+                shape.shadowOffset = CGSize(width: 0, height: 1.0)
+                shape.shadowRadius = 2.0
+                shape.shadowOpacity = 0.5
+                shape.shadowColor = self.polylineColor.cgColor
                 
                 let path = UIBezierPath()
                 path.move(
@@ -215,6 +219,12 @@ class BeizerPolylineView: UIView {
                     )
                 )
                 shape.path = path.cgPath
+                shape.shadowPath = shape.path?.copy(
+                    strokingWithWidth: shape.lineWidth,
+                    lineCap: .round,
+                    lineJoin: .miter,
+                    miterLimit: 0.0
+                )
                 
                 self.polylineShapes.append(shape)
                 self.layer.addSublayer(shape)
@@ -260,7 +270,7 @@ class BeizerPolylineView: UIView {
     private func rtlX(_ x: CGFloat) -> CGFloat {
         let len = (self.frame.width - 2 * paddingHorizontal) * x
         
-        return isRtl ? (
+        return self.isRtl ? (
             self.frame.width - paddingHorizontal - len
         ) : (
             paddingHorizontal + len

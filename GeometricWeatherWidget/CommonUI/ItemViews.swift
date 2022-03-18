@@ -8,6 +8,11 @@
 import SwiftUI
 import GeometricWeatherBasic
 
+private let font = UIFont.systemFont(
+    ofSize: miniCaptionFont.pointSize,
+    weight: .bold
+)
+
 // MARK: - daily.
 
 struct DailyItemView: View {
@@ -48,15 +53,14 @@ struct DailyItemView: View {
                 )
             }
             
-            Text(
-                SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+            MiddleUnitText(
+                value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                     self.weather.dailyForecasts[index].day.temperature.temperature,
-                    unit: "°"
-                )
-            ).font(
-                Font(miniCaptionFont).weight(.bold)
-            ).foregroundColor(
-                .white
+                    unit: ""
+                ),
+                unit: "°",
+                font: Font(miniCaptionFont).weight(.bold),
+                textColor: .white
             )
             
             GeometryReader { proxy in
@@ -111,15 +115,14 @@ struct DailyItemView: View {
                 }
             }
             
-            Text(
-                SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+            MiddleUnitText(
+                value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                     self.weather.dailyForecasts[index].night.temperature.temperature,
-                    unit: "°"
-                )
-            ).font(
-                Font(miniCaptionFont).weight(.bold)
-            ).foregroundColor(
-                .white
+                    unit: ""
+                ),
+                unit: "°",
+                font: Font(miniCaptionFont).weight(.bold),
+                textColor: .white
             ).opacity(
                 secondaryTextOpacity
             ).padding(
@@ -199,13 +202,14 @@ struct HourlyItemView: View {
                     Image(uiImage: uiImage)
                 }
                 
-                Text(
-                    SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                MiddleUnitText(
+                    value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                         self.weather.hourlyForecasts[index].temperature.temperature,
-                        unit: "°"
-                    )
-                ).font(
-                    Font(miniCaptionFont)
+                        unit: ""
+                    ),
+                    unit: "°",
+                    font: Font(miniCaptionFont).weight(.bold),
+                    textColor: .white
                 ).foregroundColor(
                     .white
                 )

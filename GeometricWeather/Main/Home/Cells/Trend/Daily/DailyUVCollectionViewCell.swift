@@ -37,6 +37,7 @@ class DailyUVCollectionViewCell: UICollectionViewCell {
         self.dateLabel.numberOfLines = 1
         self.contentView.addSubview(self.dateLabel)
         
+        self.histogramView.paddingBottom = normalMargin
         self.contentView.addSubview(self.histogramView)
         
         self.weekLabel.snp.makeConstraints { make in
@@ -77,17 +78,21 @@ class DailyUVCollectionViewCell: UICollectionViewCell {
         )
         
         if maxAqiIndex > 0 {
-            self.histogramView.histogramValue = Double(
+            self.histogramView.highValue = Double(
                 (daily.uv.index ?? 0)
             ) / Double(
                 maxAqiIndex
             )
         } else {
-            self.histogramView.histogramValue = 0.0
+            self.histogramView.highValue = 0.0
         }
+        self.histogramView.lowValue = nil
         
-        self.histogramView.histogramDescription = daily.uv.index?.description ?? ""
-        self.histogramView.histogramColor = getLevelColor(
+        self.histogramView.highDescription = (
+            daily.uv.index?.description ?? "",
+            ""
+        )
+        self.histogramView.color = getLevelColor(
             daily.uv.getUVLevel()
         )
     }

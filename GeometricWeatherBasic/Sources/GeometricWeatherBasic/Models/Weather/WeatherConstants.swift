@@ -17,10 +17,10 @@ public let hourlyPrecipitationMiddle = 3.44
 public let hourlyPrecipitationHeavy = 11.33
 public let hourlyPrecipitationRainstrom = 51.3
 
-public let radarPrecipitationIntensityLight = 0.031
-public let radarPrecipitationIntensityMiddle = 0.25
-public let radarPrecipitationIntensityHeavy = 0.35
-public let radarPrecipitationIntensityRainstrom = 0.48
+public let radarPrecipitationIntensityLight = 2.5
+public let radarPrecipitationIntensityMiddle = 7.6
+public let radarPrecipitationIntensityHeavy = 50.0
+public let radarPrecipitationIntensityRainstrom = 70.0
 
 public let aqiIndexLevel1 = 50
 public let aqiIndexLevel2 = 100

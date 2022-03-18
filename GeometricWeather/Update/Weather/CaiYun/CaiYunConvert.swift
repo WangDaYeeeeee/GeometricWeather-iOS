@@ -315,7 +315,7 @@ private func getDailyList(
                         temperature: Int(weatherResult.result.daily.temperature[i].max)
                     ),
                     precipitationTotal: nil,
-                    precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
+                    precipitationIntensity: nil,
                     precipitationProbability: nil,
                     wind: nil,
                     cloudCover: nil
@@ -334,7 +334,7 @@ private func getDailyList(
                         temperature: Int(weatherResult.result.daily.temperature[i].min)
                     ),
                     precipitationTotal: nil,
-                    precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
+                    precipitationIntensity: nil,
                     precipitationProbability: nil,
                     wind: nil,
                     cloudCover: nil
@@ -367,6 +367,9 @@ private func getDailyList(
                     angle: getMoonPhaseAngle(phase: forecast?.moon?.phase ?? ""),
                     description: forecast?.moon?.phase
                 ),
+                precipitationTotal: nil,
+                precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
+                precipitationProbability: nil,
                 wind: Wind(
                     direction: getWindDirectionText(
                         weatherResult.result.daily.wind[i].avg.direction

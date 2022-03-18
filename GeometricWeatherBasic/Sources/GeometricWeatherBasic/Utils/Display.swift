@@ -102,7 +102,7 @@ public func getTrendItemWidth(totalWidth: Double, margin: Double) -> Double {
 }
 
 public func getTrenItemDisplayCount() -> Int {
-    return isTablet() || isLandscape() ? 7 : 5
+    return isTablet() || isLandscape() ? 9 : 6
 }
 
 // MARK: - text.
@@ -210,6 +210,13 @@ public func getPercentText(
     decimal: Int
 ) -> String {
     return value.toString(decimal) + "%"
+}
+
+public func getPercentTextWithoutUnit(
+    _ value: Double,
+    decimal: Int
+) -> String {
+    return value.toString(decimal)
 }
 
 // MARK: - color.

@@ -251,11 +251,13 @@ class HorizontalLinesBackgroundView: UIView {
     }
     
     private func rtlX(_ x: CGFloat) -> CGFloat {
-        return GeometricWeather.rtlX(x, width: self.frame.width, rtl: isRtl)
+        return (self.isRtl ? (1.0 - x) : x) * self.frame.width
     }
     
     private func y(_ y: CGFloat) -> CGFloat {
-        return GeometricWeather.y(y, height: self.frame.height)
+        return self.frame.height - trendPaddingBottom - y * (
+            self.frame.height - trendPaddingTop - trendPaddingBottom
+        )
     }
     
     private func alignEdge(label: UILabel) {

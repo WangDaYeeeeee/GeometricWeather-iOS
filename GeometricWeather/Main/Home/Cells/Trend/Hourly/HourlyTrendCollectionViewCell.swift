@@ -8,12 +8,6 @@
 import UIKit
 import GeometricWeatherBasic
 
-enum HourlyHistogramType {
-    case precipitationProb
-    case precipitationIntensity
-    case none
-}
-
 // MARK: - cell.
 
 class HourlyTrendCollectionViewCell: UICollectionViewCell {
@@ -22,7 +16,7 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
     
     private let hourLabel = UILabel(frame: .zero)
     private let hourlyIcon = UIImageView(frame: .zero)
-    private let trendView = PolylineAndHistogramView(frame: .zero)
+    private let trendView = HistogramView(frame: .zero)
     
     // MARK: - inner data.
     
@@ -81,13 +75,11 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(
-        prev: Hourly?,
         hourly: Hourly,
-        next: Hourly?,
         temperatureRange: ClosedRange<Int>,
         weatherCode: WeatherCode,
         timezone: TimeZone,
-        histogramType: HourlyHistogramType
+        histogramType: HourlyPrecipitationHistogramType
     ) {
         self.weatherCode = weatherCode
         
@@ -108,39 +100,26 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             )
         )
         
-        self.trendView.highPolylineTrend = (
-            start: prev == nil ? nil : getY(
-                value: Double(
-                    (prev?.temperature.temperature ?? 0) + hourly.temperature.temperature
-                ) / 2.0,
-                min: Double(temperatureRange.lowerBound),
-                max: Double(temperatureRange.upperBound)
-            ),
-            center: getY(
-                value: Double(hourly.temperature.temperature),
-                min: Double(temperatureRange.lowerBound),
-                max: Double(temperatureRange.upperBound)
-            ),
-            end: next == nil ? nil : getY(
-                value: Double(
-                    (next?.temperature.temperature ?? 0) + hourly.temperature.temperature
-                ) / 2.0,
-                min: Double(temperatureRange.lowerBound),
-                max: Double(temperatureRange.upperBound)
-            )
+        self.trendView.highValue = getY(
+            value: Double(hourly.temperature.temperature),
+            min: Double(temperatureRange.lowerBound),
+            max: Double(temperatureRange.upperBound)
         )
+        self.trendView.lowValue = nil
         
         switch histogramType {
         case .precipitationProb:
             let precipitationProb = hourly.precipitationProbability ?? 0.0
             if precipitationProb > 0 {
-                self.trendView.histogramValue = min(precipitationProb / 100.0, 1.0)
-                self.trendView.histogramDescription = getPercentText(
-                    precipitationProb,
-                    decimal: 0
+                self.trendView.bottomDescription = (
+                    getPercentText(
+                        precipitationProb,
+                        decimal: 0
+                    ),
+                    ""
                 )
             } else {
-                self.trendView.histogramValue = nil
+                self.trendView.bottomDescription = nil
             }
             
         case .precipitationIntensity:
@@ -148,20 +127,19 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             if precipitationIntensity > 0 {
                 let unit = SettingsManager.shared.precipitationIntensityUnit
                 
-                self.trendView.histogramValue = min(
-                    precipitationIntensity / hourlyPrecipitationHeavy,
-                    1.0
-                )
-                self.trendView.histogramDescription = unit.formatValueWithUnit(
-                    precipitationIntensity,
-                    unit: ""
+                self.trendView.bottomDescription = (
+                    unit.formatValueWithUnit(
+                        precipitationIntensity,
+                        unit: ""
+                    ),
+                    ""
                 )
             } else {
-                self.trendView.histogramValue = nil
+                self.trendView.bottomDescription = nil
             }
             
         case .none:
-            self.trendView.histogramValue = nil
+            self.trendView.bottomDescription = nil
         }
         
         self.updateTrendColors(
@@ -170,9 +148,12 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         )
         
         let tempUnit = SettingsManager.shared.temperatureUnit
-        self.trendView.highPolylineDescription = tempUnit.formatValueWithUnit(
-            hourly.temperature.temperature,
-            unit: "°"
+        self.trendView.highDescription = (
+            tempUnit.formatValueWithUnit(
+                hourly.temperature.temperature,
+                unit: ""
+            ),
+            "°"
         )
     }
     
@@ -181,10 +162,8 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
             weatherKind: weatherCodeToWeatherKind(code: weatherCode),
             daylight: daylight
         )
-        self.trendView.highPolylineColor = themeColor
-        self.trendView.lowPolylineColor = themeColor
-        self.trendView.histogramColor = themeColor
-        self.trendView.histogramLabel.textColor = precipitationProbabilityColor
+        self.trendView.color = themeColor
+        self.trendView.bottomLabel.textColor = precipitationProbabilityColor
     }
     
     // MARK: - cell selection.

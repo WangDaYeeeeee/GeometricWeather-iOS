@@ -1,8 +1,8 @@
 //
-//  HistogramView.swift
+//  TemperatureAndPrecipitationTrendView.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2022/2/23.
+//  Created by 王大爷 on 2021/8/15.
 //
 
 import UIKit
@@ -14,17 +14,22 @@ class HistogramView: UIView {
     
     // trend data.
     
-    var histogramValue: Double? {
+    var highValue: Double? {
         didSet {
             self.sizeCache = .zero
-            self.histogramLabel.alpha = self.histogramValue == nil ? 0 : 1
+            self.setNeedsLayout()
+        }
+    }
+    var lowValue: Double? {
+        didSet {
+            self.sizeCache = .zero
             self.setNeedsLayout()
         }
     }
     
     // color.
     
-    var histogramColor: UIColor {
+    var color: UIColor {
         get {
             return UIColor(
                 cgColor: self.histogramShape.strokeColor ?? CGColor(
@@ -33,9 +38,6 @@ class HistogramView: UIView {
             )
         }
         set {
-            self.backgroundShape.strokeColor = newValue.withAlphaComponent(
-                trendHistogramBackgroundAlpha
-            ).cgColor
             self.histogramShape.strokeColor = newValue.cgColor
             self.histogramShape.shadowColor = newValue.cgColor
             
@@ -46,15 +48,50 @@ class HistogramView: UIView {
     
     // text.
     
-    var histogramDescription: String {
+    var highDescription: (value: String, unit: String)? {
         get {
-            return self.histogramLabel.text ?? ""
+            return self.highLabel.text
         }
         set {
             self.setLabel(
-                label: self.histogramLabel,
-                text: newValue
+                label: self.highLabel,
+                value: newValue
             )
+        }
+    }
+    var lowDescription: (value: String, unit: String)? {
+        get {
+            return self.lowLabel.text
+        }
+        set {
+            self.setLabel(
+                label: self.lowLabel,
+                value: newValue
+            )
+        }
+    }
+    var bottomDescription: (value: String, unit: String)? {
+        get {
+            return self.bottomLabel.text
+        }
+        set {
+            self.setLabel(
+                label: self.bottomLabel,
+                value: newValue
+            )
+        }
+    }
+    
+    // layout.
+    
+    var paddingTop = trendPaddingTop {
+        didSet {
+            self.setNeedsLayout()
+        }
+    }
+    var paddingBottom = trendPaddingBottom {
+        didSet {
+            self.setNeedsLayout()
         }
     }
     
@@ -64,11 +101,12 @@ class HistogramView: UIView {
     
     // MARK: - subviews.
     
-    let histogramLabel = UILabel(frame: .zero)
+    let highLabel = MiddleUnitLabel(frame: .zero)
+    let lowLabel = MiddleUnitLabel(frame: .zero)
+    let bottomLabel = MiddleUnitLabel(frame: .zero)
     
     // MARK: - shapes.
     
-    private let backgroundShape = CAShapeLayer()
     private let histogramShape = CAShapeLayer()
     private let timelineShape = CAShapeLayer()
     
@@ -80,26 +118,32 @@ class HistogramView: UIView {
         
         // subviews.
         
-        self.histogramLabel.textColor = .label
-        self.histogramLabel.font = miniCaptionFont
-        self.histogramLabel.layer.zPosition = trendSubviewsZ
-        self.addSubview(self.histogramLabel);
+        self.highLabel.textColor = .label
+        self.highLabel.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .bold
+        )
+        self.highLabel.layer.zPosition = trendSubviewsZ
+        self.addSubview(self.highLabel);
+        
+        self.lowLabel.textColor = .label.withAlphaComponent(0.5)
+        self.lowLabel.font = .systemFont(
+            ofSize: miniCaptionFont.pointSize,
+            weight: .bold
+        )
+        self.lowLabel.layer.zPosition = trendSubviewsZ
+        self.addSubview(self.lowLabel);
+        
+        self.bottomLabel.textColor = .secondaryLabel
+        self.bottomLabel.font = miniCaptionFont
+        self.bottomLabel.layer.zPosition = trendSubviewsZ
+        self.addSubview(self.bottomLabel);
         
         // sublayers.
         
-        self.backgroundShape.lineCap = .round
-        self.backgroundShape.lineWidth = trendHistogramWidth
-        self.backgroundShape.strokeColor = UIColor.systemYellow.withAlphaComponent(
-            trendHistogramBackgroundAlpha
-        ).cgColor
-        self.backgroundShape.fillColor = UIColor.clear.cgColor
-        self.backgroundShape.zPosition = trendHistogramZ
-        
         self.histogramShape.lineCap = .round
         self.histogramShape.lineWidth = trendHistogramWidth
-        self.histogramShape.strokeColor = UIColor.systemYellow.withAlphaComponent(
-            trendHistogramForegroundAlpha
-        ).cgColor
+        self.histogramShape.strokeColor = UIColor.systemYellow.cgColor
         self.histogramShape.fillColor = UIColor.clear.cgColor
         self.histogramShape.zPosition = trendHistogramZ
         self.histogramShape.shadowOffset = CGSize(width: 0, height: 4.0)
@@ -128,7 +172,6 @@ class HistogramView: UIView {
         // remove all shape layers.
         
         self.timelineShape.removeFromSuperlayer()
-        self.backgroundShape.removeFromSuperlayer()
         self.histogramShape.removeFromSuperlayer()
         
         // add shape layers.
@@ -136,58 +179,83 @@ class HistogramView: UIView {
         setTimelineShapeLayer(layer: self.timelineShape)
         self.layer.addSublayer(self.timelineShape)
         
-        if let value = self.histogramValue {
-            self.setHistogramShapeLayer(layer: self.backgroundShape, value: 1.0)
-            self.layer.addSublayer(self.backgroundShape)
-            self.setHistogramShapeLayer(layer: self.histogramShape, value: value)
+        if let highValue = self.highValue {
+            self.setHistogramShapeLayer(
+                layer: self.histogramShape,
+                highValue: highValue,
+                lowValue: self.lowValue
+            )
             self.layer.addSublayer(self.histogramShape)
         }
         
         // subviews.
         
-        if self.histogramValue != nil {
-            self.histogramLabel.center = CGPoint(
-                x: rtlX(0.5),
-                y: y(0) + self.histogramLabel.frame.height / 2 + trendTextMargin + trendHistogramWidth
-            )
-        }
+        self.highLabel.center = CGPoint(
+            x: rtlX(0.5),
+            y: y(self.highValue ?? 0.0)
+            - self.highLabel.frame.height / 2.0
+            - trendTextMargin
+            - trendHistogramWidth / 2.0
+        )
+        
+        self.lowLabel.center = CGPoint(
+            x: rtlX(0.5),
+            y: y(self.lowValue ?? 0.0)
+            + self.highLabel.frame.height / 2.0
+            + trendTextMargin
+            + trendHistogramWidth / 2.0
+        )
+        
+        self.bottomLabel.center = CGPoint(
+            x: rtlX(0.5),
+            y: y(0)
+            + (self.lowValue == nil ? 0 : self.highLabel.frame.height)
+            + trendTextMargin
+            + self.bottomLabel.frame.height / 2.0
+            + trendHistogramWidth / 2.0
+        )
     }
     
     // MARK: - ui.
     
-    private func setLabel(label: UILabel, text: String) {
-        label.text = text
-        label.isHidden = text.isEmpty
+    private func setLabel(label: MiddleUnitLabel, value: (value: String, unit: String)?) {
+        label.text = value
         label.sizeToFit()
+        self.setNeedsLayout()
     }
     
-    private func setHistogramShapeLayer(layer: CAShapeLayer, value: Double) {
+    private func setHistogramShapeLayer(
+        layer: CAShapeLayer,
+        highValue: Double,
+        lowValue: Double?
+    ) {
         let path = UIBezierPath()
-        
-        path.move(to: CGPoint(x: rtlX(0.5), y: y(0)))
-        path.addLine(to: CGPoint(x: rtlX(0.5), y: y(value)))
-        
+        path.move(to: CGPoint(x: rtlX(0.5), y: y(highValue)))
+        path.addLine(to: CGPoint(x: rtlX(0.5), y: y(lowValue ?? 0.0)))
         layer.path = path.cgPath
+        
         layer.shadowPath = path.cgPath.copy(
             strokingWithWidth: layer.lineWidth,
             lineCap: .round,
             lineJoin: .miter,
-            miterLimit: 0
+            miterLimit: 0.0
         )
     }
     
     private func setTimelineShapeLayer(layer: CAShapeLayer) {
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: rtlX(0.5), y: trendPaddingTop))
-        path.addLine(to: CGPoint(x: rtlX(0.5), y: self.frame.height - trendPaddingBottom))
+        path.move(to: CGPoint(x: rtlX(0.5), y: self.paddingTop))
+        path.addLine(to: CGPoint(x: rtlX(0.5), y: self.frame.height - self.paddingBottom))
         layer.path = path.cgPath
     }
     
     private func rtlX(_ x: CGFloat) -> CGFloat {
-        return GeometricWeather.rtlX(x, width: self.frame.width, rtl: isRtl)
+        return (self.isRtl ? (1.0 - x) : x) * self.frame.width
     }
     
     private func y(_ y: CGFloat) -> CGFloat {
-        return GeometricWeather.y(y, height: self.frame.height)
+        return self.frame.height - self.paddingBottom - y * (
+            self.frame.height - self.paddingTop - self.paddingBottom
+        )
     }
 }

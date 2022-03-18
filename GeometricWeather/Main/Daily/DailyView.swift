@@ -165,6 +165,42 @@ struct DailyView: View {
             Section(
                 header: DailySectionTitleView(key: "daily_overview")
             ) {
+                if let precipitationTotal = self.weather.dailyForecasts[index].precipitationTotal {
+                    if precipitationTotal > 0 {
+                        DailyValueItemView(
+                            title: NSLocalizedString("precipitation", comment: ""),
+                            content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
+                                precipitationTotal,
+                                unit: NSLocalizedString(
+                                    SettingsManager.shared.precipitationUnit.key,
+                                    comment: ""
+                                )
+                            )
+                        )
+                    }
+                }
+                if let precipitationIntensity = self.weather.dailyForecasts[index].precipitationIntensity {
+                    if precipitationIntensity > 0 {
+                        DailyValueItemView(
+                            title: NSLocalizedString("precipitation_intensity", comment: ""),
+                            content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
+                                precipitationIntensity,
+                                unit: NSLocalizedString(
+                                    SettingsManager.shared.precipitationIntensityUnit.key,
+                                    comment: ""
+                                )
+                            )
+                        )
+                    }
+                }
+                if let precipitationProb = self.weather.dailyForecasts[index].precipitationProbability {
+                    if precipitationProb > 0 {
+                        DailyValueItemView(
+                            title: NSLocalizedString("precipitation_probability", comment: ""),
+                            content: getPercentText(precipitationProb, decimal: 1)
+                        )
+                    }
+                }
                 if let wind = self.weather.dailyForecasts[index].wind {
                     DailyValueItemView(
                         title: NSLocalizedString("wind", comment: ""),

@@ -367,6 +367,9 @@ private func getDailies(
                     angle: getMoonPhaseAngle(phase: forecast.moon?.phase ?? ""),
                     description: forecast.moon?.phase
                 ),
+                precipitationTotal: nil,
+                precipitationIntensity: nil,
+                precipitationProbability: nil,
                 wind: nil,
                 airQuality: getDailyAirQuality(array: forecast.airAndPollen ?? []),
                 pollen: getDailyPollen(array: forecast.airAndPollen ?? []),

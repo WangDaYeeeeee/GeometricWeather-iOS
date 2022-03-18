@@ -12,6 +12,19 @@ let mainTrendInnerMargin = littleMargin / 2
 let mainTrendIconSize = 32.0
 let mainWindIconSize = 16.0
 
+enum DailyPrecipitationHistogramType {
+    case precipitationProb
+    case precipitationTotal
+    case precipitationIntensity
+    case none
+}
+
+enum HourlyPrecipitationHistogramType {
+    case precipitationProb
+    case precipitationIntensity
+    case none
+}
+
 func getY(
     value: Double,
     min: Double,

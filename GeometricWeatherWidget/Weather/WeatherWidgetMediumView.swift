@@ -17,10 +17,25 @@ struct WeatherWidgetMediumView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            WeatherWidgetMediumHeaderView(location: self.location)
+            WeatherWidgetMediumHeaderView(
+                location: self.location
+            ).padding(
+                [.top, .leading, .trailing]
+            )
+            
             Spacer()
-            HourlyView(location: self.location)
-        }.padding()
+            
+            HourlyView(
+                location: self.location
+            ).padding(
+                EdgeInsets(
+                    top: 0,
+                    leading: littleMargin,
+                    bottom: littleMargin,
+                    trailing: littleMargin
+                )
+            )
+        }
     }
     
     private func getTemperatureTitleText() -> String {

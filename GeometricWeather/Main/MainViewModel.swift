@@ -150,7 +150,9 @@ class MainViewModel: NSObject, UIStateRestoring {
     private func setCurrentLocation(
         location: Location
     ) {
-        self.currentLocation.value = location
+        if self.currentLocation.value != location {
+            self.currentLocation.value = location
+        }
         self.checkDBCacheTimestamp = CFAbsoluteTimeGetCurrent()
         ThemeManager.shared.update(location: self.currentLocation.value)
         

@@ -61,6 +61,7 @@ class SearchResultController: GeoViewController<Bool>,
         self.tableView.hideKeyboardExecutor = {
             EventBus.shared.post(HideKeyboardEvent())
         }
+        self.tableView.tableFooterView = UIView(frame: .zero)
         self.view.addSubview(self.tableView)
         
         self.progressView.color = .label

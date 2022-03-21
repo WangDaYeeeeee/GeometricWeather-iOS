@@ -95,10 +95,6 @@ class DragSwitchView: UIView {
         guard let gesture = gestureRecognizer as? UIPanGestureRecognizer else {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
         }
-        
-        if !dragEnabled {
-            return false
-        }
 
         let translation = gesture.translation(in: self)
         return abs(translation.x) > abs(translation.y)
@@ -107,7 +103,7 @@ class DragSwitchView: UIView {
     @objc private func onDrag(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began, .changed:
-            if gesture.state == .began && self.dragEnabled {
+            if gesture.state == .began {
                 self.beginDrag()
             }
             self.dragContentView(gesture)
@@ -153,7 +149,7 @@ class DragSwitchView: UIView {
         }
         self.dragging = false
         
-        if abs(self.offsetX) >= self.offsetTrigger {
+        if self.dragEnabled && abs(self.offsetX) >= self.offsetTrigger {
             self.delegate?.onSwitched(self.offsetX > 0 ? -1 : 1)
             
             self.offsetX = 0
@@ -196,6 +192,10 @@ class DragSwitchView: UIView {
     }
     
     private func getAlpha() -> Double {
+        if !self.dragEnabled {
+            return 1.0
+        }
+        
         return 1.0 - min(
             fabs(self.getProgress()),
             1.0

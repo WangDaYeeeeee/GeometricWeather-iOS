@@ -17,7 +17,7 @@ struct AboutView: View {
                 header: AboutSectionTitle(key: "about_app")
             ) {
                 AboutAppItem(
-                    icon: "chevron.left.forwardslash.chevron.right",
+                    icon: "filemenu.and.selection",
                     key: "gitHub"
                 ).onTapGesture {
                     UIApplication.shared.open(

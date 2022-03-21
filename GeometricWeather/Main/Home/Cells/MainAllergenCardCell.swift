@@ -11,6 +11,8 @@ import GeometricWeatherBasic
 private let allergenReuseIdentifier = "allergen_trend_cell"
 private let allergenCollectionViewHeight = 198
 
+struct AllergenCollectionViewTapAction {}
+
 class MainAllergenCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout {
@@ -28,7 +30,7 @@ class MainAllergenCardCell: MainTableViewCell,
         layout.minimumLineSpacing = 0.0
         layout.scrollDirection = .horizontal
         
-        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return CollectionViewEffect(frame: .zero, collectionViewLayout: layout)
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -45,6 +47,12 @@ class MainAllergenCardCell: MainTableViewCell,
         self.allergenCollectionView.register(
             AllergenCollectionViewCell.self,
             forCellWithReuseIdentifier: allergenReuseIdentifier
+        )
+        self.allergenCollectionView.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.onCollectionViewTapped)
+            )
         )
         self.cardContainer.contentView.addSubview(self.allergenCollectionView)
         
@@ -81,6 +89,10 @@ class MainAllergenCardCell: MainTableViewCell,
             self.allergenCollectionView.collectionViewLayout.invalidateLayout()
             self.allergenCollectionView.reloadData()
         }
+    }
+    
+    @objc private func onCollectionViewTapped() {
+        EventBus.shared.post(AllergenCollectionViewTapAction())
     }
     
     // MARK: - delegates.

@@ -43,7 +43,6 @@ class LinearProgressView: UIView {
             
             self.progressTopLabel.text = newValue
             self.progressTopLabel.sizeToFit()
-            self.sizeCache = .zero
             self.setNeedsLayout()
         }
     }
@@ -58,13 +57,10 @@ class LinearProgressView: UIView {
             
             self.progressBottomLabel.text = newValue
             self.progressBottomLabel.sizeToFit()
-            self.sizeCache = .zero
             self.setNeedsLayout()
         }
     }
-    
-    private var sizeCache = CGSize.zero
-    
+        
     // sublayers.
     
     private let progressShape = CAShapeLayer()
@@ -119,11 +115,6 @@ class LinearProgressView: UIView {
     }
     
     override func layoutSubviews() {
-        if sizeCache == self.frame.size {
-            return
-        }
-        sizeCache = self.frame.size
-        
         self.progressTopLabel.frame.origin = CGPoint(
             x: innerMargin,
             y: innerMargin
@@ -145,6 +136,7 @@ class LinearProgressView: UIView {
         andDescription: (top: String, bottom: String)? = nil,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
+        self.layoutIfNeeded()
         self.progressShape.removeAllAnimations()
         
         self.progress = progress

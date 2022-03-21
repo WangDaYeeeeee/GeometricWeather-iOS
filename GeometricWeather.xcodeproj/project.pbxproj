@@ -16,6 +16,7 @@
 		373F760727E35D370005875B /* MiddleUnitText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760327E357720005875B /* MiddleUnitText.swift */; };
 		373F760927E40C500005875B /* DailyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */; };
 		373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */; };
+		373F761B27E858070005875B /* AllergenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F761A27E858070005875B /* AllergenViewController.swift */; };
 		3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */; };
 		3741445427DB6C8D00E55800 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741445327DB6C8D00E55800 /* VisualEffectView.swift */; };
 		374BA5FE26FC78E00080B5CA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6226F4B45300431565 /* WidgetKit.framework */; };
@@ -255,6 +256,7 @@
 		373F760527E35B750005875B /* MiddleUnitLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleUnitLabel.swift; sourceTree = "<group>"; };
 		373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPrecipitationCollectionViewCell.swift; sourceTree = "<group>"; };
 		373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyPrecipitationCollectionViewCell.swift; sourceTree = "<group>"; };
+		373F761A27E858070005875B /* AllergenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllergenViewController.swift; sourceTree = "<group>"; };
 		3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionModifier.swift; sourceTree = "<group>"; };
 		3741445327DB6C8D00E55800 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeometricWeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -553,6 +555,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		373F760F27E857BC0005875B /* Allergen */ = {
+			isa = PBXGroup;
+			children = (
+				373F761A27E858070005875B /* AllergenViewController.swift */,
+				379A8A6927C8C59000083BFF /* AllergenCollectionViewCell.swift */,
+			);
+			path = Allergen;
+			sourceTree = "<group>";
+		};
 		374BA60026FC78E00080B5CA /* GeometricWeatherWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,6 +599,7 @@
 				379A8A5427C8C59000083BFF /* Hourly */,
 				379A8A8A27C8C59000083BFF /* Alerts */,
 				379A8BCC27CD04D400083BFF /* Edit */,
+				373F760F27E857BC0005875B /* Allergen */,
 				379A8A7927C8C59000083BFF /* MainViewController.swift */,
 				379A8A8E27C8C59000083BFF /* MainViewModel.swift */,
 				379A8A8D27C8C59000083BFF /* MainRepository.swift */,
@@ -626,7 +638,6 @@
 			isa = PBXGroup;
 			children = (
 				379A8A5C27C8C59000083BFF /* Trend */,
-				379A8A6827C8C59000083BFF /* Allergen */,
 				379A8A7827C8C59000083BFF /* MainTableViewHeaderView.swift */,
 				379A8A6C27C8C59000083BFF /* MainTableViewCell.swift */,
 				379A8A6B27C8C59000083BFF /* MainDailyCardCell.swift */,
@@ -672,14 +683,6 @@
 				373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */,
 			);
 			path = Daily;
-			sourceTree = "<group>";
-		};
-		379A8A6827C8C59000083BFF /* Allergen */ = {
-			isa = PBXGroup;
-			children = (
-				379A8A6927C8C59000083BFF /* AllergenCollectionViewCell.swift */,
-			);
-			path = Allergen;
 			sourceTree = "<group>";
 		};
 		379A8A7227C8C59000083BFF /* Views */ = {
@@ -1489,6 +1492,7 @@
 				379A8B4127C8C59000083BFF /* SplitManagementViewController.swift in Sources */,
 				379A8B5C27C8C59000083BFF /* GeoDialog+Helper.swift in Sources */,
 				379A8B2727C8C59000083BFF /* HourlyTrendCollectionViewCell.swift in Sources */,
+				373F761B27E858070005875B /* AllergenViewController.swift in Sources */,
 				373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */,
 				379A8B5127C8C59000083BFF /* DragSwitchView.swift in Sources */,
 				379A8B4427C8C59000083BFF /* SearchTableViewCell.swift in Sources */,
@@ -1733,7 +1737,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 55;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1744,7 +1748,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.4;
+				MARKETING_VERSION = 1.5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1772,7 +1776,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 55;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1783,7 +1787,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.4;
+				MARKETING_VERSION = 1.5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -12,7 +12,7 @@ extension HomeViewController {
         
     func registerEventObservers() {
         
-        // background updated.
+        // MARK: - background updated.
         
         EventBus.shared.register(
             self,
@@ -23,7 +23,7 @@ extension HomeViewController {
             )
         }
         
-        // settings changed.
+        // MARK: - settings changed.
         
         EventBus.shared.register(
             self,
@@ -32,7 +32,7 @@ extension HomeViewController {
             self?.updateTableView()
         }
         
-        // daily cell tapped.
+        // MARK: - daily cell tapped.
         
         EventBus.shared.register(
             self,
@@ -55,7 +55,7 @@ extension HomeViewController {
             )
         }
         
-        // time bar tapped.
+        // MARK: - time bar tapped.
         
         EventBus.shared.register(
             self,
@@ -68,7 +68,7 @@ extension HomeViewController {
             self?.onManagementButtonClicked()
         }
         
-        // time bar alert tapped.
+        // MARK: - time bar alert tapped.
         
         EventBus.shared.register(
             self,
@@ -86,7 +86,26 @@ extension HomeViewController {
             )
         }
         
-        // edit button tapped.
+        // MARK: - allergen collection view tapped.
+        
+        EventBus.shared.register(
+            self,
+            for: AllergenCollectionViewTapAction.self
+        ) { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            if strongSelf.navigationController?.presentedViewController != nil {
+                return
+            }
+            strongSelf.navigationController?.present(
+                AllergenViewController(param: strongSelf.vm.currentLocation.value),
+                animated: true,
+                completion: nil
+            )
+        }
+        
+        // MARK: - edit button tapped.
         
         EventBus.shared.register(
             self,
@@ -100,7 +119,7 @@ extension HomeViewController {
             }
         }
         
-        // opened from alert notification.
+        // MARK: - opened from alert notification.
         
         EventBus.shared.stickyRegister(
             self,
@@ -139,7 +158,7 @@ extension HomeViewController {
             )
         }
         
-        // opened from forecast notification.
+        // MARK: - opened from forecast notification.
         
         EventBus.shared.stickyRegister(
             self,
@@ -163,7 +182,7 @@ extension HomeViewController {
             )
         }
         
-        // opened from shortcut.
+        // MARK: - opened from shortcut.
         
         EventBus.shared.stickyRegister(
             self,

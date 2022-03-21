@@ -102,7 +102,7 @@ public func getTrendItemWidth(totalWidth: Double, margin: Double) -> Double {
 }
 
 public func getTrenItemDisplayCount() -> Int {
-    return isTablet() || isLandscape() ? 9 : 6
+    return isTablet() || isLandscape() ? 8 : 6
 }
 
 // MARK: - text.

@@ -76,7 +76,7 @@ class SplitManagementViewController: BaseManagementController,
                 return
             }
             
-            if strongSelf.param.addLocation(location: event.location) ?? false {
+            if strongSelf.param.addLocation(location: event.location) {
                 strongSelf.searchController.searchBar.text = ""
                 strongSelf.searchController.dismiss(animated: true, completion: nil)
                 
@@ -148,7 +148,7 @@ class SplitManagementViewController: BaseManagementController,
             location: Location.buildLocal(
                 weatherSource: SettingsManager.shared.weatherSource
             )
-        ) ?? false {
+        ) {
             ToastHelper.showToastMessage(
                 NSLocalizedString("feedback_collect_succeed", comment: ""),
                 inWindowOfView: self.view

@@ -53,12 +53,9 @@ class CircularProgressView: UIView {
             self.progressDescriptionLabel.text = newValue
             self.progressDescriptionLabel.sizeToFit()
             
-            self.sizeCache = .zero
             self.setNeedsLayout()
         }
     }
-        
-    private var sizeCache = CGSize.zero
     
     // sublayers.
     
@@ -117,11 +114,6 @@ class CircularProgressView: UIView {
     }
     
     override func layoutSubviews() {
-        if sizeCache == self.frame.size {
-            return
-        }
-        sizeCache = self.frame.size
-        
         self.progressValueLabel.frame = self.bounds
         
         self.progressDescriptionLabel.center = CGPoint(
@@ -146,6 +138,8 @@ class CircularProgressView: UIView {
         andDescription: String,
         betweenColors: (from: UIColor, to: UIColor)
     ) {
+        self.layoutIfNeeded()
+        
         self.progressShape.removeAllAnimations()
         
         self.progress = progress

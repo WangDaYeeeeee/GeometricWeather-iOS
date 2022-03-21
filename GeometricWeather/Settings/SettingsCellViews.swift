@@ -46,7 +46,10 @@ struct SettingsListCellView: View {
             Spacer()
             
             Picker(
-                "",
+                NSLocalizedString(
+                    self.keys[self.selectedIndex.wrappedValue],
+                    comment: ""
+                ),
                 selection: self.selectedIndex
             ) {
                 ForEach(self.keys.indices) { index in

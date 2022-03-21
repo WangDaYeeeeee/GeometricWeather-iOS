@@ -110,8 +110,12 @@ class SunMoonPathView: UIView {
     
     // subviews.
     
-    private let sunIcon = UIImageView(frame: .zero)
-    private let moonIcon = UIImageView(frame: .zero)
+    private let sunIcon = UIImageView(
+        frame: CGRect(x: 0.0, y: 0.0, width: iconSize, height: iconSize)
+    )
+    private let moonIcon = UIImageView(
+        frame: CGRect(x: 0.0, y: 0.0, width: iconSize, height: iconSize)
+    )
     
     // MARK: - life cycle.
     
@@ -167,11 +171,6 @@ class SunMoonPathView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        self.sunIcon.frame.size = CGSize(width: iconSize, height: iconSize)
-        self.moonIcon.frame.size = CGSize(width: iconSize, height: iconSize)
-    }
-    
     // MARK: - interfaces.
     
     // progress: 0 - 1 if there is a valid progress, negative value if no progress.
@@ -180,6 +179,7 @@ class SunMoonPathView: UIView {
         _ progress: (sun: Double, moon: Double),
         withAnimationDuration: (sun: TimeInterval, moon: TimeInterval)
     ) {
+        self.layoutIfNeeded()
         self.sunProgress = progress.sun
         self.moonProgress = progress.moon
         

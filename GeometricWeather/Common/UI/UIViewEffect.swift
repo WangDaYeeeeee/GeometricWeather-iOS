@@ -153,3 +153,34 @@ class AutoHideKeyboardTableView : UITableView {
         return super.touchesShouldBegin(touches, with: event, in: view)
     }
 }
+
+class CollectionViewEffect: UICollectionView {
+
+    override func touchesBegan(
+        _ touches: Set<UITouch>,
+        with event: UIEvent?
+    ) {
+        super.touchesBegan(touches, with: event)
+        self.alpha = touchDownAlpha
+    }
+    
+    override func touchesCancelled(
+        _ touches: Set<UITouch>,
+        with event: UIEvent?
+    ) {
+        super.touchesCancelled(touches, with: event)
+        UIView.animate(withDuration: touchUpAnimDuration) {
+            self.alpha = 1.0
+        }
+    }
+    
+    override func touchesEnded(
+        _ touches: Set<UITouch>,
+        with event: UIEvent?
+    ) {
+        super.touchesEnded(touches, with: event)
+        UIView.animate(withDuration: touchUpAnimDuration) {
+            self.alpha = 1.0
+        }
+    }
+}

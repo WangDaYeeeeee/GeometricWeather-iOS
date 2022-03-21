@@ -7,6 +7,7 @@
 
 import Foundation
 import GeometricWeatherBasic
+import UIKit
 
 private let cellReuseId = "ManagementTableViewCell"
 
@@ -41,6 +42,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         view.separatorStyle = .singleLine
         view.separatorColor = .opaqueSeparator.withAlphaComponent(0.5)
         view.separatorInset = .zero
+        view.tableFooterView = UIView(frame: .zero)
         view.rowHeight = LocationTableViewCell.cellHeight
         view.register(
             LocationTableViewCell.self,
@@ -294,7 +296,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
             self?.param.deleteLocation(position: indexPath.row)
             handler(true)
         }
-        delete.image = UIImage(systemName: "delete.backward.fill")
+        delete.image = UIImage(systemName: "minus.circle.fill")
         delete.backgroundColor = .systemRed
         
         var actions = [UIContextualAction]()

@@ -39,9 +39,6 @@ class MainFooterCell: UITableViewCell, AbstractMainItem {
         )
         self.contentView.addSubview(self.editButton)
 
-        self.contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()

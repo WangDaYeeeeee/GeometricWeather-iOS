@@ -50,6 +50,7 @@ class AlertViewController: GeoViewController<[WeatherAlert]>,
             AlertTableViewCell.self,
             forCellReuseIdentifier: cellReuseId
         )
+        self.tableView.tableFooterView = UIView(frame: .zero)
         self.blurBackground.contentView.addSubview(self.tableView)
         
         self.titleLabel.text = NSLocalizedString("action_alert", comment: "")
@@ -116,5 +117,12 @@ class AlertViewController: GeoViewController<[WeatherAlert]>,
             self.param[indexPath.row]
         )
         return cell
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

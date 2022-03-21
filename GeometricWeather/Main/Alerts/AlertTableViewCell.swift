@@ -40,9 +40,6 @@ class AlertTableViewCell: UITableViewCell {
         self.bodyLabel.lineBreakMode = .byWordWrapping
         self.contentView.addSubview(self.bodyLabel)
         
-        self.contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(normalMargin)
             make.leading.equalToSuperview().offset(normalMargin)

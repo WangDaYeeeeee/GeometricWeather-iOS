@@ -68,6 +68,13 @@ class MainAllergenCardCell: MainTableViewCell,
             make.height.equalTo(allergenCollectionViewHeight)
             make.bottom.equalToSuperview().offset(-littleMargin)
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.onDeviceOrientationChanged),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -87,6 +94,17 @@ class MainAllergenCardCell: MainTableViewCell,
                 animated: false
             )
             self.allergenCollectionView.collectionViewLayout.invalidateLayout()
+            self.allergenCollectionView.reloadData()
+        }
+    }
+    
+    @objc private func onDeviceOrientationChanged() {
+        if let index = self.allergenCollectionView.indexPathsForVisibleItems.first {
+            self.allergenCollectionView.scrollToItem(
+                at: index,
+                at: .left,
+                animated: false
+            )
             self.allergenCollectionView.reloadData()
         }
     }

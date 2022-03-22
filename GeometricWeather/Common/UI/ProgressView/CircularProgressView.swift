@@ -31,7 +31,6 @@ class CircularProgressView: UIView {
     // 0 - 1.
     private(set) var progress = 0.0
     private(set) var colors = (from: UIColor.clear, to: UIColor.clear)
-    private var durationCache = 0.0
     
     var progressValue: Int {
         get {
@@ -56,6 +55,8 @@ class CircularProgressView: UIView {
             self.setNeedsLayout()
         }
     }
+    
+    private var sizeCache = CGSize.zero
     
     // sublayers.
     
@@ -124,6 +125,22 @@ class CircularProgressView: UIView {
             x: self.progressDescriptionLabel.frame.origin.x,
             y: self.frame.height - innerMargin - self.progressDescriptionLabel.frame.height
         )
+        
+        if self.sizeCache == .zero {
+            self.sizeCache = self.frame.size
+            return
+        }
+        
+        if self.sizeCache != self.frame.size {
+            self.sizeCache = self.frame.size
+            self.setProgress(
+                self.progress,
+                withAnimationDuration: 0.0,
+                value: self.progressValue,
+                andDescription: self.progressDescription,
+                betweenColors: self.colors
+            )
+        }
     }
     
     // MARK: - interfaces.
@@ -144,7 +161,6 @@ class CircularProgressView: UIView {
         
         self.progress = progress
         self.colors = betweenColors
-        self.durationCache = withAnimationDuration
         
         self.progressValue = value
         self.progressDescription = andDescription

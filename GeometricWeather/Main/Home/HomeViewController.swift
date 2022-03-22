@@ -196,7 +196,10 @@ class HomeViewController: UIViewController,
         with coordinator: UIViewControllerTransitionCoordinator
     ) {
         super.viewWillTransition(to: size, with: coordinator)
-        self.cellHeightCache.removeAll()
+        
+        DispatchQueue.main.async {
+            self.rotateHeaderAndCells()
+        }
     }
     
     @objc private func viewWillEnterForeground() {

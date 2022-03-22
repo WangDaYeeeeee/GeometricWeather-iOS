@@ -60,6 +60,8 @@ class LinearProgressView: UIView {
             self.setNeedsLayout()
         }
     }
+    
+    private var sizeCache = CGSize.zero
         
     // sublayers.
     
@@ -123,6 +125,20 @@ class LinearProgressView: UIView {
             x: self.frame.width - innerMargin - self.progressBottomLabel.frame.width,
             y: self.frame.height - innerMargin - self.progressBottomLabel.frame.height
         )
+        
+        if self.sizeCache == .zero {
+            self.sizeCache = self.frame.size
+            return
+        }
+        
+        if self.sizeCache != self.frame.size {
+            self.sizeCache = self.frame.size
+            self.setProgress(
+                self.progress,
+                withAnimationDuration: 0.0,
+                betweenColors: self.colors
+            )
+        }
     }
     
     // MARK: - interfaces.

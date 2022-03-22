@@ -126,6 +126,13 @@ class MainDailyCardCell: MainTableViewCell,
             make.trailing.equalTo(self.dailyBackgroundView.snp.trailing)
             make.bottom.equalTo(self.dailyBackgroundView.snp.bottom)
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.onDeviceOrientationChanged),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -195,6 +202,12 @@ class MainDailyCardCell: MainTableViewCell,
                let range = self.temperatureRange {
                 self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
             }
+        }
+    }
+    
+    @objc private func onDeviceOrientationChanged() {
+        if !self.dailyCollectionView.indexPathsForVisibleItems.isEmpty {
+            self.dailyCollectionView.reloadData()
         }
     }
     

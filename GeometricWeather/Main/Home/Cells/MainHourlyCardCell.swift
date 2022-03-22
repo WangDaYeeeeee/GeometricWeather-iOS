@@ -158,6 +158,13 @@ class MainHourlyCardCell: MainTableViewCell,
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-littleMargin)
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.onDeviceOrientationChanged),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -266,6 +273,12 @@ class MainHourlyCardCell: MainTableViewCell,
                let range = self.temperatureRange {
                 self.hourlyBackgroundView.bindData(weather: weather, temperatureRange: range)
             }
+        }
+    }
+    
+    @objc private func onDeviceOrientationChanged() {
+        if !self.hourlyCollectionView.indexPathsForVisibleItems.isEmpty {
+            self.hourlyCollectionView.reloadData()
         }
     }
     

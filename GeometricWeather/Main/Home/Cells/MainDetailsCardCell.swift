@@ -97,7 +97,7 @@ class MainDetailsCardCell: MainTableViewCell {
             if let humidity = weather.current.relativeHumidity {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
-                        iconName: "humidity",
+                        iconName: "drop",
                         title: NSLocalizedString("humidity", comment: ""),
                         body: getPercentText(
                             humidity,

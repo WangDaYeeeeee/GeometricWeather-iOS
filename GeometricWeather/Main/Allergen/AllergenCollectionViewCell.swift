@@ -38,7 +38,7 @@ class AllergenItemView: UIView {
         self.addSubview(self.titleLabel)
         
         self.captionLabel.font = miniCaptionFont
-        self.captionLabel.textColor = .tertiaryLabel
+        self.captionLabel.textColor = .secondaryLabel
         self.addSubview(self.captionLabel)
         
         self.icon.snp.makeConstraints { make in

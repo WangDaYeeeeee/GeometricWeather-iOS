@@ -145,7 +145,7 @@ class AllergenViewController: GeoViewController<Location>,
                (cell as? AllergenCollectionViewCell)?.bindData(
                     daily: weather.dailyForecasts[indexPath.row / 2],
                     timezone: self.param.timezone,
-                    index: indexPath.row,
+                    index: indexPath.row / 2,
                     total: weather.dailyForecasts.count
                )
             }

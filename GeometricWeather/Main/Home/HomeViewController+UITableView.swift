@@ -99,6 +99,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         self.cellHeightCache.removeAll()
     }
     
+    func rotateHeaderAndCells() {
+        self.cellHeightCache.removeAll()
+        self.tableView.reloadData()
+    }
+    
     // MARK: - delegate.
     
     // header.

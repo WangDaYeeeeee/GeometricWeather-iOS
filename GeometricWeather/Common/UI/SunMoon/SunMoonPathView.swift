@@ -102,6 +102,8 @@ class SunMoonPathView: UIView {
         }
     }
     
+    private var sizeCache = CGSize.zero
+    
     // sublayers.
     
     private let sunProgressShape = CAShapeLayer()
@@ -169,6 +171,21 @@ class SunMoonPathView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        if self.sizeCache == .zero {
+            self.sizeCache = self.frame.size
+            return
+        }
+        
+        if self.sizeCache != self.frame.size {
+            self.sizeCache = self.frame.size
+            self.setProgress(
+                (self.sunProgress, self.moonProgress),
+                withAnimationDuration: (0.0, 0.0)
+            )
+        }
     }
     
     // MARK: - interfaces.

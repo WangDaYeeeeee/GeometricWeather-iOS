@@ -41,17 +41,12 @@ extension HomeViewController {
             guard let strongSelf = self else {
                 return
             }
-            
-            if strongSelf.navigationController?.presentedViewController != nil {
-                return
-            }
                     
-            strongSelf.navigationController?.present(
+            strongSelf.navigationController?.pushViewController(
                 DailyViewController(
                     param: (strongSelf.vm.currentLocation.value, event.index)
                 ),
-                animated: true,
-                completion: nil
+                animated: true
             )
         }
         

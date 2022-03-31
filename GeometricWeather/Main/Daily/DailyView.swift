@@ -628,6 +628,11 @@ struct DailyProgressView: View {
                             lineWidth: Self.strokeWidth,
                             lineCap: .round
                         )
+                    ).shadow(
+                        color: Color(self.color),
+                        radius: 6.0,
+                        x: 0.0,
+                        y: 3.0
                     ).frame(
                         width: proxy.size.width,
                         height: proxy.size.height,
@@ -723,17 +728,17 @@ struct DailyDotValueItemView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: itemHorizontalMargin) {
-            Image(
-                uiImage: UIImage(
-                    systemName: "circle.fill"
-                )!.withTintColor(
-                    self.color
-                ).scaleToSize(
-                    CGSize(
-                        width: 12.0,
-                        height: 12.0
-                    )
-                )!
+            Circle().frame(
+                width: 10.0,
+                height: 10.0,
+                alignment: .center
+            ).foregroundColor(
+                Color(self.color)
+            ).shadow(
+                color: Color(self.color),
+                radius: 4.0,
+                x: 0.0,
+                y: 2.0
             )
             
             VStack(alignment: .leading, spacing: 2.0) {

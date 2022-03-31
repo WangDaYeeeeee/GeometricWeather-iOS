@@ -8,6 +8,8 @@
 import UIKit
 import GeometricWeatherBasic
 
+private let uiVisualEffectStyle = UIBlurEffect.Style.systemMaterial
+
 private let dragUpRatio = 0.1
 
 private let showDuration = 1.0
@@ -27,7 +29,6 @@ private enum ToastStatus {
 class ToastWrapperView: UIView {
     
     private let toast: UIView
-    private let shadow: ResizeableShadowView
     
     private var status = ToastStatus.hiding
     private var dragging = false
@@ -44,25 +45,11 @@ class ToastWrapperView: UIView {
     init(toast: UIView) {
         self.toast = toast
         
-        self.shadow = ResizeableShadowView(
-            frame: .zero,
-            shadow: Shadow(
-                offset: CGSize(width: 0.0, height: 4.0),
-                blur: 18.0,
-                color: .black.withAlphaComponent(0.1)
-            ),
-            cornerRadius: ResizeableShadowView.capsuleRadius
-        )
-        
         super.init(frame: .zero)
         self.backgroundColor = .clear
         
-        self.addSubview(self.shadow)
         self.addSubview(self.toast)
         
-        self.shadow.snp.makeConstraints { make in
-            make.edges.equalTo(self.toast)
-        }
         self.toast.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(normalMargin)
             make.leading.equalToSuperview().offset(normalMargin)
@@ -307,7 +294,7 @@ class MessageToastView: UIVisualEffectView {
         message: String
     ) {
         super.init(
-            effect: UIBlurEffect(style: .prominent)
+            effect: UIBlurEffect(style: uiVisualEffectStyle)
         )
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
@@ -361,7 +348,7 @@ class ActionableToastView: UIVisualEffectView {
     ) {
         self.actionCallback = actionCallback
         super.init(
-            effect: UIBlurEffect(style: .prominent)
+            effect: UIBlurEffect(style: uiVisualEffectStyle)
         )
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear

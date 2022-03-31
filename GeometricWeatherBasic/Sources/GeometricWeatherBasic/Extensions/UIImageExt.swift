@@ -20,6 +20,7 @@ public extension UIImage {
 }
 
 public struct Shadow {
+    
     public let offset: CGSize
     public let blur: CGFloat
     public let color: UIColor

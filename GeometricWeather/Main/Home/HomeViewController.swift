@@ -47,6 +47,8 @@ class HomeViewController: UIViewController,
             self.updateNavigationBarTintColor()
             
             self.navigationBarBackground.layer.removeAllAnimations()
+            self.navigationBarBackgroundShadow.layer.removeAllAnimations()
+            
             let targetAlpha = self.blurNavigationBar ? 1.0 : 0.0
             UIView.animate(
                 withDuration: 0.3,
@@ -54,6 +56,7 @@ class HomeViewController: UIViewController,
                 options: [.beginFromCurrentState, .curveEaseInOut]
             ) { [weak self] in
                 self?.navigationBarBackground.alpha = targetAlpha
+                self?.navigationBarBackgroundShadow.alpha = targetAlpha
             } completion: { _ in
                 // do nothing.
             }
@@ -88,6 +91,7 @@ class HomeViewController: UIViewController,
     let navigationBarBackground = UIVisualEffectView(
         effect: UIBlurEffect(style: .systemUltraThinMaterial)
     )
+    let navigationBarBackgroundShadow = UIView(frame: .zero)
     
     let indicator = DotPagerIndicator(frame: .zero)
         

@@ -64,6 +64,10 @@ extension HomeViewController {
         self.navigationBarBackground.alpha = 0
         self.view.addSubview(self.navigationBarBackground)
         
+        self.navigationBarBackgroundShadow.alpha = 0
+        self.navigationBarBackgroundShadow.backgroundColor = .opaqueSeparator.withAlphaComponent(0.5)
+        self.view.addSubview(self.navigationBarBackgroundShadow)
+        
         self.indicator.alpha = 0
         self.view.addSubview(self.indicator)
         
@@ -81,6 +85,12 @@ extension HomeViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.topMargin)
+        }
+        self.navigationBarBackgroundShadow.snp.makeConstraints { make in
+            make.top.equalTo(self.navigationBarBackground.snp.bottom)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(0.5)
         }
         self.indicator.snp.makeConstraints { make in
             make.leading.equalToSuperview()

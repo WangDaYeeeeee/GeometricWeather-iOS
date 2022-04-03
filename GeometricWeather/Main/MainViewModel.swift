@@ -15,13 +15,12 @@ class MainViewModel: NSObject, UIStateRestoring {
     let indicator: EqualtableLiveData<Indicator>
     let selectableValidLocations: LiveData<SelectableLocationArray>
     let selectableTotalLocations: LiveData<SelectableLocationArray>
-    let loading: LiveData<Bool>
+    let loading: EqualtableLiveData<Bool>
     let toastMessage: LiveData<MainToastMessage?>
     
     // inner data.
     private var initCompleted: Bool
-    private var updating: Bool
-    private var checkDBCacheTimestamp = 0.0
+    private var pendingReloadDBCacheIdSet = Set<String>()
     
     // repository.
     private let repository = MainRepository()
@@ -33,7 +32,6 @@ class MainViewModel: NSObject, UIStateRestoring {
         
         // init inner data at first.
         self.initCompleted = false
-        self.updating = false
         
         // init state properties.
         self.currentLocation = EqualtableLiveData(data.valid[0])
@@ -52,7 +50,7 @@ class MainViewModel: NSObject, UIStateRestoring {
                 selectedId: data.valid[0].formattedId
             )
         )
-        self.loading = LiveData(false)
+        self.loading = EqualtableLiveData(false)
         
         self.toastMessage = LiveData(nil)
         
@@ -85,7 +83,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         }
     }
     
-    // MARK: - inner methods.
+    // MARK: - update inner data.
     
     private func updateInnerData(location: Location) {
         var total = self.selectableTotalLocations.value.locations
@@ -153,16 +151,9 @@ class MainViewModel: NSObject, UIStateRestoring {
         if self.currentLocation.value != location {
             self.currentLocation.value = location
         }
-        self.checkDBCacheTimestamp = CFAbsoluteTimeGetCurrent()
         ThemeManager.shared.update(location: self.currentLocation.value)
         
         self.checkToUpdateCurrentLocation()
-    }
-    
-    private func setLoading(loading: Bool) {
-        if self.loading.value != loading {
-            self.loading.value = loading
-        }
     }
     
     private func onUpdateResult(
@@ -178,23 +169,29 @@ class MainViewModel: NSObject, UIStateRestoring {
         
         self.updateInnerData(location: location)
         
-        self.setLoading(loading: false)
-        self.updating = false
+        self.loading.value = false
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
         updateAppExtensions()
     }
     
-    private func checkToUpdateCurrentLocation(
-        sholdCheckNewDBCache: Bool = false
-    ) {
-        // is not loading, or just completed an init progress.
+    private func checkToUpdateCurrentLocation() {
+        // if the pending reload db cache id set contains this location's formatted id
+        // we need to read cache data from database.
+        let sholdCheckNewDBCache = self.pendingReloadDBCacheIdSet.contains(
+            self.currentLocation.value.formattedId
+        )
+        
+        // if the app is completed init progress and is not updating data,
+        // and it should check cache from db.
+        //
+        // then, read db.
         if sholdCheckNewDBCache
-            && (!self.loading.value || self.initCompleted) {
-            
-            let timestamp = self.checkDBCacheTimestamp
-            
-            self.setLoading(loading: true)
+            && !self.loading.value
+            && self.initCompleted {
+                        
+            self.loading.value = true
+            // read new cache from database.
             self.repository.getWeatherCacheForLocations(
                 oldList: [self.currentLocation.value],
                 ignoredFormattedId: ""
@@ -202,49 +199,40 @@ class MainViewModel: NSObject, UIStateRestoring {
                 guard let newLocation = result.first else {
                     return
                 }
-                if newLocation.formattedId != self?.currentLocation.value.formattedId
-                    || timestamp != self?.checkDBCacheTimestamp {
-                    return
-                }
+                self?.pendingReloadDBCacheIdSet.remove(newLocation.formattedId)
                 
+                self?.loading.value = false
                 self?.updateInnerData(location: newLocation)
             }
             return
         }
         
+        // if should read db cache, but the app is updating or just in an init progress.
+        //
+        // then, we need delete the flag.
+        if sholdCheckNewDBCache {
+            self.pendingReloadDBCacheIdSet.remove(self.currentLocation.value.formattedId)
+        }
+        
+        // is not loading
         if !self.loading.value {
+            // if already valid, just return.
             if self.currentLocationIsValid() {
-                self.setLoading(loading: false)
                 return
             }
             
+            // if is not valid, we need:
+            // update if init completed.
+            // otherwise, mark a loading state and wait the init progress complete.
             if self.initCompleted {
                 self.updateWithUpdatingChecking()
             } else {
-                self.setLoading(loading: true)
+                self.loading.value = true
             }
             return
         }
         
-        if self.initCompleted {
-            // is loading, and init completed.
-            // means init just completed, and we need to check whether to update.
-            
-            // if valid, set loading finished.
-            if self.currentLocationIsValid() {
-                self.setLoading(loading: false)
-                return
-            }
-            
-            // if cache is invalid, and should not check database, update directly.
-            if !sholdCheckNewDBCache {
-                self.updateWithUpdatingChecking()
-                return
-            }
-            return
-        }
-        
-        // is updating, do nothing.
+        // is loading, do nothing.
     }
     
     private func currentLocationIsValid() -> Bool {
@@ -253,22 +241,14 @@ class MainViewModel: NSObject, UIStateRestoring {
         ) ?? false
     }
     
-    func cancelRequest() {
-        self.setLoading(loading: false)
-        self.updating = false
-        
-        self.repository.cancel()
-    }
-    
-    // MARK: - interfaces.
+    // MARK: - update.
     
     func updateWithUpdatingChecking() {
-        if self.updating {
+        if self.loading.value {
             return
         }
         
-        self.setLoading(loading: true)
-        self.updating = true
+        self.loading.value = true
         
         self.repository.update(
             location: self.currentLocation.value,
@@ -276,10 +256,20 @@ class MainViewModel: NSObject, UIStateRestoring {
         )
     }
     
+    func cancelRequest() {
+        self.loading.value = false
+        self.repository.cancel()
+    }
+    
     func checkToUpdate() {
         ThemeManager.shared.update(location: currentLocation.value)
         
-        self.checkToUpdateCurrentLocation(sholdCheckNewDBCache: true)
+        self.pendingReloadDBCacheIdSet.removeAll()
+        self.selectableTotalLocations.value.locations.forEach { location in
+            self.pendingReloadDBCacheIdSet.insert(location.formattedId)
+        }
+        
+        self.checkToUpdateCurrentLocation()
     }
     
     func updateLocationFromBackground(
@@ -297,6 +287,8 @@ class MainViewModel: NSObject, UIStateRestoring {
         }
         self.updateInnerData(location: location)
     }
+    
+    // MARK: - set location.
     
     func setLocation(index: Int) {
         let location = self.selectableValidLocations.value.locations[index]
@@ -372,7 +364,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         return self.currentLocation.value.formattedId != oldFormattedId
     }
     
-    // MARK: - list interfaces.
+    // MARK: - list.
     
     // return false if failed.
     func addLocation(

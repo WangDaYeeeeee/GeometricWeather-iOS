@@ -8,10 +8,8 @@
 import SwiftUI
 
 enum CloudType {
-    case partlyCloudyDay
-    case partlyCloudyNight
-    case cloudyDay
-    case cloudyNight
+    case partlyCloudy
+    case cloudy
     case thunder
     case fog
     case haze
@@ -47,8 +45,8 @@ private let partlyCloudyColors = [
     ]
 ]
 
-private let cloudyColors = [
-    [
+private let cloudyThunderColors = [
+    [// cloudy day.
         Color(
             red: 160 / 255.0,
             green: 179 / 255.0,
@@ -61,7 +59,7 @@ private let cloudyColors = [
             blue: 191 / 255.0,
             opacity: 0.3
         )
-    ], [
+    ], [ // cloudy night.
         Color(
             red: 95 / 255.0,
             green: 104 / 255.0,
@@ -74,7 +72,10 @@ private let cloudyColors = [
             blue: 108 / 255.0,
             opacity: 0.3
         )
-    ], [
+    ], [ // thunder day.
+        Color.ColorFromRGB(0xBCADC1).opacity(0.2),
+        Color.ColorFromRGB(0xBCADC1).opacity(0.3)
+    ], [ // thunder night.
         Color(
             red: 43 / 255.0,
             green: 30 / 255.0,
@@ -90,27 +91,35 @@ private let cloudyColors = [
     ]
 ]
 
-private let fogColors = [
-    [
+private let fogHazeColors = [
+    [ // fog day.
+        Color.ColorFromRGB(0x717DA0).opacity(0.1),
+        Color.ColorFromRGB(0x717DA0).opacity(0.1),
+        Color.ColorFromRGB(0x717DA0).opacity(0.1),
+    ], [ // fog night.
         Color(
             red: 85 / 255.0,
             green: 99 / 255.0,
             blue: 110 / 255.0,
-            opacity: 0.8
+            opacity: 0.4
         ),
         Color(
             red: 91 / 255.0,
             green: 104 / 255.0,
             blue: 114 / 255.0,
-            opacity: 0.8
+            opacity: 0.6
         ),
         Color(
             red: 99 / 255.0,
             green: 113 / 255.0,
             blue: 123 / 255.0,
-            opacity: 0.8
+            opacity: 0.4
         )
-    ], [
+    ], [ // haze day.
+        Color.ColorFromRGB(0xAC9D82).opacity(0.3),
+        Color.ColorFromRGB(0xAC9D82).opacity(0.3),
+        Color.ColorFromRGB(0xAC9D82).opacity(0.3)
+    ], [ // haze night.
         Color(
             red: 179 / 255.0,
             green: 158 / 255.0,
@@ -145,7 +154,10 @@ private let startColors = [
     Color(red: 240 / 255.0, green: 220 / 255.0, blue: 151 / 255.0)
 ]
 
-private let thunderColor = Color(
+private let thunderDayColor = Color.ColorFromRGB(
+    0xE5D5EB
+).opacity(0.8)
+private let thunderNightColor = Color(
     red: 81 / 255.0,
     green: 67 / 455.0,
     blue: 168 / 255.0,
@@ -161,22 +173,34 @@ private let partlyCloudyNightBackgroundColors = [
     Color.ColorFromRGB(0x000000)
 ]
 private let cloudyDayBackgroundColors = [
-    Color.ColorFromRGB(0x607988),
+    Color.ColorFromRGB(0x9DAFC1),
     Color.ColorFromRGB(0x2d5879)
 ]
 private let cloudyNightBackgroundColors = [
     Color.ColorFromRGB(0x263238),
     Color.ColorFromRGB(0x080d10)
 ]
-private let thunderBackgroundColors = [
+private let thunderDayBackgroundColors = [
+    Color.ColorFromRGB(0xB296BD),
+    Color.ColorFromRGB(0x50367F)
+]
+private let thunderNightBackgroundColors = [
     Color.ColorFromRGB(0x231739),
     Color.ColorFromRGB(0x06040a)
 ]
-private let fogBackgroundColors = [
+private let fogDayBackgroundColors = [
+    Color.ColorFromRGB(0xD7DDE8),
+    Color.ColorFromRGB(0x757F9A)
+]
+private let fogNightBackgroundColors = [
     Color.ColorFromRGB(0x4f5d68),
     Color.ColorFromRGB(0x1c232d)
 ]
-private let hazeBackgroundColors = [
+private let hazeDayBackgroundColors = [
+    Color.ColorFromRGB(0xE1C899),
+    Color.ColorFromRGB(0x8CA2A5)
+]
+private let hazeNightBackgroundColors = [
     Color.ColorFromRGB(0x6c5c49),
     Color.ColorFromRGB(0x434343)
 ]
@@ -191,6 +215,7 @@ private let starRadiusRatio = 0.00125
 struct CloudForegroundView: View {
     
     let type: CloudType
+    let daylight: Bool
     @StateObject private var model = CloudModel()
     
     let width: CGFloat
@@ -205,18 +230,15 @@ struct CloudForegroundView: View {
     let headerHeight: CGFloat
     
     var body: some View {
-        model.checkToInit(type: type)
+        model.checkToInit(type: type, daylight: daylight)
         let canvasSize = sqrt(width * width + height * height)
                 
         return GeometryReader { proxy in
             // stars.
-            ForEach(0 ..< model.stars.count) { i in
-                StarLayer(
-                    model: model,
-                    index: i,
-                    canvasSize: canvasSize
-                )
-            }.offset(
+            StarLayer(
+                model: self.model,
+                canvasSize: canvasSize
+            ).offset(
                 x: (width - canvasSize) / 2.0,
                 y: (height - canvasSize) / 2.0
             ).offset(
@@ -224,30 +246,18 @@ struct CloudForegroundView: View {
                 y: getDeltaY() * 0.25
             )
             
-            // clouds.
-            ForEach(0 ..< model.clouds.count) { i in
-                CloudLayer(
-                    model: model,
-                    index: i,
-                    width: width,
-                    rotation2D: rotation2D,
-                    rotation3D: rotation3D
-                ).offset(
-                    x: 0.0,
-                    y: topPadding
-                )
-                
-                // thunder.
-                if i == 2 && type == .thunder {
-                    ThunderLayer().frame(
-                        width: proxy.size.width,
-                        height: proxy.size.height
-                    ).offset(
-                        x: (width - proxy.size.width) / 2.0,
-                        y: (height - proxy.size.height) / 2.0
-                    )
-                }
-            }.opacity(
+            // cloud and thunder.
+            CloudAndThunderLayer(
+                type: self.type,
+                daylight: self.daylight,
+                model: self.model,
+                proxy: proxy,
+                canvasSize: canvasSize,
+                width: self.width,
+                height: self.height,
+                rotation2D: self.rotation2D,
+                rotation3D: self.rotation3D
+            ).opacity(
                 Double(
                     1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
                 ).keepIn(range: 0...1) * 0.5 + 0.5
@@ -272,6 +282,66 @@ struct CloudForegroundView: View {
     }
 }
 
+private struct StarLayer: View {
+    
+    @ObservedObject var model: CloudModel
+    let canvasSize: CGFloat
+    
+    var body: some View {
+        ForEach(0 ..< model.stars.count) { i in
+            SingleStarLayer(
+                model: model,
+                index: i,
+                canvasSize: canvasSize
+            )
+        }
+    }
+}
+
+private struct CloudAndThunderLayer: View {
+    
+    let type: CloudType
+    let daylight: Bool
+    
+    @ObservedObject var model: CloudModel
+    let proxy: GeometryProxy
+    
+    let canvasSize: CGFloat
+    let width: CGFloat
+    let height: CGFloat
+    
+    let rotation2D: Double
+    let rotation3D: Double
+    
+    var body: some View {
+        ForEach(0 ..< model.clouds.count) { i in
+            CloudLayer(
+                model: model,
+                index: i,
+                width: width,
+                rotation2D: rotation2D,
+                rotation3D: rotation3D
+            ).offset(
+                x: 0.0,
+                y: topPadding
+            )
+            
+            // thunder.
+            if i == 2 && type == .thunder {
+                ThunderLayer(
+                    daylight: self.daylight
+                ).frame(
+                    width: proxy.size.width,
+                    height: proxy.size.height
+                ).offset(
+                    x: (width - proxy.size.width) / 2.0,
+                    y: (height - proxy.size.height) / 2.0
+                )
+            }
+        }
+    }
+}
+
 // MARK: - model.
 
 private class CloudModel: ObservableObject {
@@ -287,15 +357,15 @@ private class CloudModel: ObservableObject {
     
     private var newInstance = true
     
-    func checkToInit(type: CloudType) {
+    func checkToInit(type: CloudType, daylight: Bool) {
         if !newInstance {
             return
         }
         newInstance = false
         
         // clouds
-        if type == .partlyCloudyDay || type == .partlyCloudyNight {
-            let colorIndex = type == .partlyCloudyDay ? 0 : 1
+        if type == .partlyCloudy {
+            let colorIndex = daylight ? 0 : 1
             
             clouds.append((
                 0.1529, // cx.
@@ -351,12 +421,9 @@ private class CloudModel: ObservableObject {
                 partlyCloudyColors[colorIndex][1], // color.
                 9.0 // duration.
             ))
-        } else if type == .cloudyDay
-                    || type == .cloudyNight
+        } else if type == .cloudy
                     || type == .thunder {
-            let colorIndex = type == .cloudyDay ? 0 : (
-                type == .cloudyNight ? 1 : 2
-            )
+            let colorIndex = (type == .cloudy ? 0 : 2) + (daylight ? 0 : 1)
             
             clouds.append((
                 1.0699, // cx.
@@ -364,7 +431,7 @@ private class CloudModel: ObservableObject {
                 0.4694 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                cloudyColors[colorIndex][0], // color.
+                cloudyThunderColors[colorIndex][0], // color.
                 9.0 // duration.
             ))
             clouds.append((
@@ -373,7 +440,7 @@ private class CloudModel: ObservableObject {
                 0.3946 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                cloudyColors[colorIndex][0], // color.
+                cloudyThunderColors[colorIndex][0], // color.
                 10.5 // duration.
             ))
             clouds.append((
@@ -382,7 +449,7 @@ private class CloudModel: ObservableObject {
                 0.4627 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                cloudyColors[colorIndex][0], // color.
+                cloudyThunderColors[colorIndex][0], // color.
                 9.0 // duration.
             ))
             clouds.append((
@@ -391,7 +458,7 @@ private class CloudModel: ObservableObject {
                 0.3238 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                cloudyColors[colorIndex][1], // color.
+                cloudyThunderColors[colorIndex][1], // color.
                 7.0 // duration.
             ))
             clouds.append((
@@ -400,7 +467,7 @@ private class CloudModel: ObservableObject {
                 0.2906 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                cloudyColors[colorIndex][1], // color.
+                cloudyThunderColors[colorIndex][1], // color.
                 8.5 // duration.
             ))
             clouds.append((
@@ -409,11 +476,11 @@ private class CloudModel: ObservableObject {
                 0.2972 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                cloudyColors[colorIndex][1], // color.
+                cloudyThunderColors[colorIndex][1], // color.
                 7.0 // duration.
             ))
         } else {
-            let colorIndex = type == .fog ? 0 : 1
+            let colorIndex = (type == .fog ? 0 : 2) + (daylight ? 0 : 1)
             
             clouds.append((
                 1.0699, // cx.
@@ -421,7 +488,7 @@ private class CloudModel: ObservableObject {
                 0.4694 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                fogColors[colorIndex][0], // color.
+                fogHazeColors[colorIndex][0], // color.
                 9.0 // duration.
             ))
             clouds.append((
@@ -430,7 +497,7 @@ private class CloudModel: ObservableObject {
                 0.3946 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                fogColors[colorIndex][0], // color.
+                fogHazeColors[colorIndex][0], // color.
                 10.5 // duration.
             ))
             clouds.append((
@@ -439,7 +506,7 @@ private class CloudModel: ObservableObject {
                 0.4627 * 0.9, // init radius.
                 1.10, // scale ratio.
                 Double.random(in: 1.3 ... 1.8), // offset factor.
-                fogColors[colorIndex][0], // color.
+                fogHazeColors[colorIndex][0], // color.
                 9.0 // duration.
             ))
             clouds.append((
@@ -448,7 +515,7 @@ private class CloudModel: ObservableObject {
                 0.3238 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                fogColors[colorIndex][1], // color.
+                fogHazeColors[colorIndex][1], // color.
                 7.0 // duration.
             ))
             clouds.append((
@@ -457,7 +524,7 @@ private class CloudModel: ObservableObject {
                 0.2906 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                fogColors[colorIndex][1], // color.
+                fogHazeColors[colorIndex][1], // color.
                 8.5 // duration.
             ))
             clouds.append((
@@ -466,7 +533,7 @@ private class CloudModel: ObservableObject {
                 0.2972 * 0.9, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.6 ... 2), // offset factor.
-                fogColors[colorIndex][1], // color.
+                fogHazeColors[colorIndex][1], // color.
                 7.0 // duration.
             ))
             clouds.append((
@@ -475,7 +542,7 @@ private class CloudModel: ObservableObject {
                 0.3166, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.8 ... 2.2), // offset factor.
-                fogColors[colorIndex][2], // color.
+                fogHazeColors[colorIndex][2], // color.
                 7.0 // duration.
             ))
             clouds.append((
@@ -484,7 +551,7 @@ private class CloudModel: ObservableObject {
                 0.3166, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.8 ... 2.2), // offset factor.
-                fogColors[colorIndex][2], // color.
+                fogHazeColors[colorIndex][2], // color.
                 8.2 // duration.
             ))
             clouds.append((
@@ -493,13 +560,13 @@ private class CloudModel: ObservableObject {
                 0.3166, // init radius.
                 1.15, // scale ratio.
                 Double.random(in: 1.8 ... 2.2), // offset factor.
-                fogColors[colorIndex][2], // color.
+                fogHazeColors[colorIndex][2], // color.
                 7.7 // duration.
             ))
         }
         
         // stars in background.
-        if type == .partlyCloudyNight {
+        if type == .partlyCloudy && !daylight {
             for _ in 0 ..< startCount {
                 stars.append((
                     // cx.
@@ -604,7 +671,7 @@ private struct CloudLayer: View {
     }
 }
 
-private struct StarLayer: View {
+private struct SingleStarLayer: View {
     
     @State private var opacity = 0.0
     private let animation: Animation
@@ -683,6 +750,7 @@ private struct StarShape: Shape {
 private struct ThunderLayer: View {
     
     @State private var opacity = 0.0
+    let daylight: Bool
     
     private let animation = Animation.linear(
         duration: 3.0
@@ -691,7 +759,7 @@ private struct ThunderLayer: View {
     var body: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                thunderColor,
+                daylight ? thunderDayColor : thunderNightColor,
                 .clear
             ]),
             startPoint: .top,
@@ -722,52 +790,57 @@ private struct ThunderLayer: View {
 struct CloudBackgroundView: View {
     
     let type: CloudType
-    
-    init(type: CloudType) {
-        self.type = type
-    }
+    let daylight: Bool
     
     var body: some View {
         switch type {
-        case .partlyCloudyDay:
+        case .partlyCloudy:
             return LinearGradient(
-                gradient: Gradient(colors: partlyCloudyDayBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? partlyCloudyDayBackgroundColors
+                    : partlyCloudyNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
-        case .partlyCloudyNight:
+        case .cloudy:
             return LinearGradient(
-                gradient: Gradient(colors: partlyCloudyNightBackgroundColors),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        case .cloudyDay:
-            return LinearGradient(
-                gradient: Gradient(colors: cloudyDayBackgroundColors),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        case .cloudyNight:
-            return LinearGradient(
-                gradient: Gradient(colors: cloudyNightBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? cloudyDayBackgroundColors
+                    : cloudyNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
         case .thunder:
             return LinearGradient(
-                gradient: Gradient(colors: thunderBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? thunderDayBackgroundColors
+                    : thunderNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
         case .fog:
             return LinearGradient(
-                gradient: Gradient(colors: fogBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? fogDayBackgroundColors
+                    : fogNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
         case .haze:
             return LinearGradient(
-                gradient: Gradient(colors: hazeBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? hazeDayBackgroundColors
+                    : hazeNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -779,12 +852,14 @@ struct CloudBackgroundView: View {
 
 struct Cloud_Previews: PreviewProvider {
         
-    static let type = CloudType.cloudyDay
+    static let type = CloudType.haze
+    static let daylight = true
     
     static var previews: some View {
         GeometryReader { proxy in
             CloudForegroundView(
                 type: type,
+                daylight: daylight,
                 width: proxy.size.width,
                 height: proxy.size.height,
                 rotation2D: 0.0,
@@ -794,7 +869,7 @@ struct Cloud_Previews: PreviewProvider {
                 headerHeight: 1
             )
         }.background(
-            CloudBackgroundView(type: type)
+            CloudBackgroundView(type: type, daylight: daylight)
         ).ignoresSafeArea()
     }
 }

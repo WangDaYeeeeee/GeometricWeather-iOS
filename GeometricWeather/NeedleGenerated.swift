@@ -10,6 +10,9 @@ private let needleDependenciesHash : String? = nil
 // MARK: - Registration
 
 public func registerProviderFactories() {
+    __DependencyProviderRegistry.instance.registerDependencyProviderFactory(for: "^->MainComponent->EditComponent") { component in
+        return EmptyDependencyProvider(component: component)
+    }
     __DependencyProviderRegistry.instance.registerDependencyProviderFactory(for: "^->MainComponent->SettingsComponent") { component in
         return EmptyDependencyProvider(component: component)
     }
@@ -21,9 +24,6 @@ public func registerProviderFactories() {
     }
     __DependencyProviderRegistry.instance.registerDependencyProviderFactory(for: "^->MainComponent->ManagementConponent") { component in
         return ManagementDependency04a6d2d9dc503e8de2a1Provider(component: component)
-    }
-    __DependencyProviderRegistry.instance.registerDependencyProviderFactory(for: "^->MainComponent->EditComponent") { component in
-        return EmptyDependencyProvider(component: component)
     }
     
 }

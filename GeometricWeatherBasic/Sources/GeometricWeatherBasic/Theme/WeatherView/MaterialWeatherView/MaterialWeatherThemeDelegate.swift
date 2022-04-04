@@ -53,48 +53,42 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         weatherKind: WeatherKind,
         daylight: Bool
     ) -> UIColor {
-        if weatherKind == .clear && daylight {
-            return UIColor.colorFromRGB(0xfdbc4c)
-        } else if weatherKind == .clear {
-            return UIColor.colorFromRGB(0x141b2c)
-        } else if weatherKind == .cloud && daylight {
-            return UIColor.colorFromRGB(0x00a5d9)
-        } else if weatherKind == .cloud {
-            return UIColor.colorFromRGB(0x222d43)
-        } else if weatherKind == .cloudy && daylight {
-            return UIColor.colorFromRGB(0x607988)
-        } else if weatherKind == .cloudy {
-            return UIColor.colorFromRGB(0x263238)
-        } else if weatherKind == .thunder {
-            return UIColor.colorFromRGB(0x231739)
-        } else if weatherKind == .fog {
-            return UIColor.colorFromRGB(0x4f5d68)
-        } else if weatherKind == .haze {
-            return UIColor.colorFromRGB(0x9c8f7f)
-        } else if (
-            weatherKind == .lightRainy
-            || weatherKind == .middleRainy
-            || weatherKind == .haveyRainy
-        ) && daylight {
-            return UIColor.colorFromRGB(0x4097e7)
-        } else if weatherKind == .lightRainy
-                    || weatherKind == .middleRainy
-                    || weatherKind == .haveyRainy {
-            return UIColor.colorFromRGB(0x264e8f)
-        } else if weatherKind == .sleet && daylight {
-            return UIColor.colorFromRGB(0x68baff)
-        } else if weatherKind == .sleet {
-            return UIColor.colorFromRGB(0x1a5b92)
-        } else if weatherKind == .thunderstorm {
-            return UIColor.colorFromRGB(0x2b1d45)
-        } else if weatherKind == .snow {
-            return daylight ? UIColor.colorFromRGB(0x68baff) : UIColor.colorFromRGB(0x1a5b92)
-        } else if weatherKind == .hail {
-            return daylight ? UIColor.colorFromRGB(0x68baff) : UIColor.colorFromRGB(0x1a5b92)
-        } else if weatherKind == .wind {
-            return UIColor.colorFromRGB(0xe99e3c)
-        } else {
-            return .clear
+        switch weatherKind {
+        case .null:
+            return UIColor.clear
+            
+        case .clear:
+            return daylight ? .colorFromRGB(0xfdbc4c) : .colorFromRGB(0x141b2c)
+            
+        case .cloud:
+            return daylight ? .colorFromRGB(0x222d43) : .colorFromRGB(0x607988)
+            
+        case .cloudy:
+            return daylight ? .colorFromRGB(0x9DAFC1) : .colorFromRGB(0x263238)
+            
+        case .lightRainy, .middleRainy, .haveyRainy:
+            return daylight ? .colorFromRGB(0x4097e7) : .colorFromRGB(0x264e8f)
+            
+        case .snow:
+            return daylight ? .colorFromRGB(0x68baff) : .colorFromRGB(0x1a5b92)
+            
+        case .sleet:
+            return daylight ? .colorFromRGB(0x68baff) : .colorFromRGB(0x1a5b92)
+            
+        case .hail:
+            return daylight ? .colorFromRGB(0x68baff) : .colorFromRGB(0x1a5b92)
+            
+        case .fog:
+            return daylight ? .colorFromRGB(0xA3AEC2) : .colorFromRGB(0x4F5D68)
+            
+        case .haze:
+            return daylight ? .colorFromRGB(0xE1C899) : .colorFromRGB(0x9c8f7f)
+            
+        case .thunder, .thunderstorm:
+            return daylight ? .colorFromRGB(0x9577A0) : .colorFromRGB(0x231739)
+
+        case .wind:
+            return daylight ? .colorFromRGB(0xC7A779) : .colorFromRGB(0x958675)
         }
     }
     

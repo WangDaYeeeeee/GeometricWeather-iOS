@@ -44,31 +44,10 @@ struct MtrlForegroundMapperView: View {
                 scrollOffset: scrollOffset,
                 headerHeight: headerHeight
             )
-        } else if weatherKind == .cloud && daylight {
-            CloudForegroundView(
-                type: .partlyCloudyDay,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                paddingTop: paddingTop,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
         } else if weatherKind == .cloud {
             CloudForegroundView(
-                type: .partlyCloudyNight,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                paddingTop: paddingTop,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
-        } else if weatherKind == .cloudy && daylight {
-            CloudForegroundView(
-                type: .cloudyDay,
+                type: .partlyCloudy,
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -79,7 +58,8 @@ struct MtrlForegroundMapperView: View {
             )
         } else if weatherKind == .cloudy {
             CloudForegroundView(
-                type: .cloudyNight,
+                type: .cloudy,
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -91,6 +71,7 @@ struct MtrlForegroundMapperView: View {
         } else if weatherKind == .thunder {
             CloudForegroundView(
                 type: .thunder,
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -102,6 +83,7 @@ struct MtrlForegroundMapperView: View {
         } else if weatherKind == .fog {
             CloudForegroundView(
                 type: .fog,
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -113,6 +95,7 @@ struct MtrlForegroundMapperView: View {
         } else if weatherKind == .haze {
             CloudForegroundView(
                 type: .haze,
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -121,32 +104,11 @@ struct MtrlForegroundMapperView: View {
                 scrollOffset: scrollOffset,
                 headerHeight: headerHeight
             )
-        } else if weatherKind == .lightRainy && daylight {
-            RainForegroundView(
-                type: .rainyDay,
-                level: .light,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
         } else if weatherKind == .lightRainy {
             RainForegroundView(
-                type: .rainyNight,
+                type: .rainy,
+                daylight: daylight,
                 level: .light,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
-        } else if weatherKind == .middleRainy && daylight {
-            RainForegroundView(
-                type: .rainyDay,
-                level: .middle,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -156,19 +118,9 @@ struct MtrlForegroundMapperView: View {
             )
         } else if weatherKind == .middleRainy {
             RainForegroundView(
-                type: .rainyNight,
+                type: .rainy,
+                daylight: daylight,
                 level: .middle,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
-        } else if weatherKind == .haveyRainy && daylight {
-            RainForegroundView(
-                type: .rainyDay,
-                level: .heavy,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -178,19 +130,9 @@ struct MtrlForegroundMapperView: View {
             )
         } else if weatherKind == .haveyRainy {
             RainForegroundView(
-                type: .rainyNight,
+                type: .rainy,
+                daylight: daylight,
                 level: .heavy,
-                width: width,
-                height: height,
-                rotation2D: rotation2D,
-                rotation3D: rotation3D,
-                scrollOffset: scrollOffset,
-                headerHeight: headerHeight
-            )
-        } else if weatherKind == .sleet && daylight {
-            RainForegroundView(
-                type: .sleetDay,
-                level: .light,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -200,7 +142,8 @@ struct MtrlForegroundMapperView: View {
             )
         } else if weatherKind == .sleet {
             RainForegroundView(
-                type: .sleetNight,
+                type: .sleet,
+                daylight: daylight,
                 level: .light,
                 width: width,
                 height: height,
@@ -212,6 +155,7 @@ struct MtrlForegroundMapperView: View {
         } else if weatherKind == .thunderstorm {
             RainForegroundView(
                 type: .thunderstrom,
+                daylight: daylight,
                 level: .heavy,
                 width: width,
                 height: height,
@@ -242,6 +186,7 @@ struct MtrlForegroundMapperView: View {
             )
         } else if weatherKind == .wind {
             WindForegroundView(
+                daylight: daylight,
                 width: width,
                 height: height,
                 rotation2D: rotation2D,
@@ -274,42 +219,32 @@ struct MtrlBackgroundMapperView: View {
             ClearBackgroundView()
         } else if weatherKind == .clear {
             MetroShowerBackgroundView()
-        } else if weatherKind == .cloud && daylight {
-            CloudBackgroundView(type: .partlyCloudyDay)
         } else if weatherKind == .cloud {
-            CloudBackgroundView(type: .partlyCloudyNight)
-        } else if weatherKind == .cloudy && daylight {
-            CloudBackgroundView(type: .cloudyDay)
+            CloudBackgroundView(type: .partlyCloudy, daylight: daylight)
         } else if weatherKind == .cloudy {
-            CloudBackgroundView(type: .cloudyNight)
+            CloudBackgroundView(type: .cloudy, daylight: daylight)
         } else if weatherKind == .thunder {
-            CloudBackgroundView(type: .thunder)
+            CloudBackgroundView(type: .thunder, daylight: daylight)
         } else if weatherKind == .fog {
-            CloudBackgroundView(type: .fog)
+            CloudBackgroundView(type: .fog, daylight: daylight)
         } else if weatherKind == .haze {
-            CloudBackgroundView(type: .haze)
+            CloudBackgroundView(type: .haze, daylight: daylight)
         } else if (
             weatherKind == .lightRainy
             || weatherKind == .middleRainy
             || weatherKind == .haveyRainy
-        ) && daylight {
-            RainBackgroundView(type: .rainyDay)
-        } else if weatherKind == .lightRainy
-                    || weatherKind == .middleRainy
-                    || weatherKind == .haveyRainy {
-            RainBackgroundView(type: .rainyNight)
-        } else if weatherKind == .sleet && daylight {
-            RainBackgroundView(type: .sleetDay)
+        ) {
+            RainBackgroundView(type: .rainy, daylight: daylight)
         } else if weatherKind == .sleet {
-            RainBackgroundView(type: .sleetNight)
+            RainBackgroundView(type: .sleet, daylight: daylight)
         } else if weatherKind == .thunderstorm {
-            RainBackgroundView(type: .thunderstrom)
+            RainBackgroundView(type: .thunderstrom, daylight: daylight)
         } else if weatherKind == .snow {
             SnowBackgroundView(daylight: daylight)
         } else if weatherKind == .hail {
             HailBackgroundView(daylight: daylight)
         } else if weatherKind == .wind {
-            WindBackgroundView()
+            WindBackgroundView(daylight: daylight)
         } else {
             NullBackgroundView()
         }

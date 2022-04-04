@@ -598,7 +598,6 @@
 				379A8A8627C8C59000083BFF /* Daily */,
 				379A8A5427C8C59000083BFF /* Hourly */,
 				379A8A8A27C8C59000083BFF /* Alerts */,
-				379A8BCC27CD04D400083BFF /* Edit */,
 				373F760F27E857BC0005875B /* Allergen */,
 				379A8A7927C8C59000083BFF /* MainViewController.swift */,
 				379A8A8E27C8C59000083BFF /* MainViewModel.swift */,
@@ -902,6 +901,7 @@
 		379A8B1C27C8C59000083BFF /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				379A8BCC27CD04D400083BFF /* Edit */,
 				379A8B1827C8C59000083BFF /* About */,
 				379A8B2027C8C59000083BFF /* SettingsViewController.swift */,
 				379A8B1E27C8C59000083BFF /* SettingsView.swift */,
@@ -1737,7 +1737,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1748,7 +1748,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.8;
+				MARKETING_VERSION = 1.5.9;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1776,7 +1776,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1787,7 +1787,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.5.8;
+				MARKETING_VERSION = 1.5.9;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

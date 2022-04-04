@@ -8,11 +8,9 @@
 import SwiftUI
 
 enum RainType {
-    case rainyDay
-    case rainyNight
+    case rainy
     case thunderstrom
-    case sleetDay
-    case sleetNight
+    case sleet
 }
 enum RainLevel: Double {
     case light = 0.8
@@ -40,13 +38,21 @@ private let sleetNightColors = [
     Color(red: 99 / 255.0, green: 144 / 255.0, blue: 182 / 255.0),
     Color(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0)
 ]
-private let thunderstormColors = [
+private let thunderstormDayColors = [
+    Color(red: 182 / 255.0, green: 142 / 255.0, blue: 82 / 255.0),
+    Color.ColorFromRGB(0x6C5592),
+    Color(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0)
+]
+private let thunderstormNightColors = [
     Color(red: 182 / 255.0, green: 142 / 255.0, blue: 82 / 255.0),
     Color(red: 88 / 255.0, green: 92 / 255.0, blue: 113 / 255.0),
     Color(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0)
 ]
 
-private let thunderColor = Color(
+private let thunderDayColor = Color.ColorFromRGB(
+    0xE5D5EB
+).opacity(0.8)
+private let thunderNightColor = Color(
     red: 81 / 255.0,
     green: 67 / 455.0,
     blue: 168 / 255.0,
@@ -69,7 +75,11 @@ private let sleetNightBackgroundColors = [
     Color.ColorFromRGB(0x1a5b92),
     Color.ColorFromRGB(0x263f56)
 ]
-private let thunderstromBackgroundColors = [
+private let thunderstromDayBackgroundColors = [
+    Color.ColorFromRGB(0xB296BD),
+    Color.ColorFromRGB(0x50367F)
+]
+private let thunderstromNightBackgroundColors = [
     Color.ColorFromRGB(0x2b1d45),
     Color.ColorFromRGB(0x06040a)
 ]
@@ -86,6 +96,7 @@ private let rainyRaindropCount = 150
 struct RainForegroundView: View {
     
     let type: RainType
+    let daylight: Bool
     let level: RainLevel
     @StateObject private var model = RainModel()
     
@@ -99,13 +110,15 @@ struct RainForegroundView: View {
     let headerHeight: CGFloat
     
     var body: some View {
-        model.checkToInit(type: type, level: level)
+        model.checkToInit(type: type, daylight: daylight, level: level)
         let canvasSize = sqrt(width * width + height * height)
         
         return GeometryReader { proxy in
             // thunder.
             if type == .thunderstrom {
-                ThunderLayer().frame(
+                ThunderLayer(
+                    daylight: self.daylight
+                ).frame(
                     width: proxy.size.width,
                     height: proxy.size.height
                 ).offset(
@@ -168,7 +181,7 @@ private class RainModel: ObservableObject {
     
     private var newInstance = true
     
-    func checkToInit(type: RainType, level: RainLevel) {
+    func checkToInit(type: RainType, daylight: Bool, level: RainLevel) {
         if !newInstance {
             return
         }
@@ -179,20 +192,16 @@ private class RainModel: ObservableObject {
         let raindropCount = Int(Double(rainyRaindropCount) * level.rawValue)
         var raindropColors: Array<Color>
         switch type {
-        case .rainyDay:
-            raindropColors = rainyDayColors
-            
-        case .rainyNight:
-            raindropColors = rainyNightColors
+        case .rainy:
+            raindropColors = daylight ? rainyDayColors : rainyNightColors
             
         case .thunderstrom:
-            raindropColors = thunderstormColors
+            raindropColors = daylight
+            ? thunderstormDayColors
+            : thunderstormNightColors
             
-        case .sleetDay:
-            raindropColors = sleetDayColors
-            
-        case .sleetNight:
-            raindropColors = sleetNightColors
+        case .sleet:
+            raindropColors = daylight ? sleetDayColors : sleetNightColors
         }
         
         for i in 0 ..< raindropCount {
@@ -310,6 +319,7 @@ private struct RaindropShape: Shape {
 private struct ThunderLayer: View {
     
     @State private var opacity = 0.0
+    let daylight: Bool
     
     private let animation = Animation.linear(
         duration: 3.0
@@ -318,7 +328,7 @@ private struct ThunderLayer: View {
     var body: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                thunderColor,
+                self.daylight ? thunderDayColor : thunderNightColor,
                 .clear
             ]),
             startPoint: .top,
@@ -349,40 +359,37 @@ private struct ThunderLayer: View {
 struct RainBackgroundView: View {
     
     let type: RainType
-    
-    init(type: RainType) {
-        self.type = type
-    }
+    let daylight: Bool
     
     var body: some View {
         switch type {
-        case .rainyDay:
+        case .rainy:
             return LinearGradient(
-                gradient: Gradient(colors: rainyDayBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? rainyDayBackgroundColors
+                    : rainyNightBckgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
-        case .rainyNight:
+        case .sleet:
             return LinearGradient(
-                gradient: Gradient(colors: rainyNightBckgroundColors),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        case .sleetDay:
-            return LinearGradient(
-                gradient: Gradient(colors: sleetDayBackgroundColors),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        case .sleetNight:
-            return LinearGradient(
-                gradient: Gradient(colors: sleetNightBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? sleetDayBackgroundColors
+                    : sleetNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
         case .thunderstrom:
             return LinearGradient(
-                gradient: Gradient(colors: thunderstromBackgroundColors),
+                gradient: Gradient(
+                    colors: daylight
+                    ? thunderstromDayBackgroundColors
+                    : thunderstromNightBackgroundColors
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -407,12 +414,14 @@ struct RainDayWidgetBackgroundView: View {
 
 struct Rain_Previews: PreviewProvider {
     
-    static let type = RainType.rainyDay
+    static let type = RainType.thunderstrom
+    static let daylight = true
     
     static var previews: some View {
         GeometryReader { proxy in
             RainForegroundView(
                 type: type,
+                daylight: daylight,
                 level: .heavy,
                 width: proxy.size.width,
                 height: proxy.size.height,
@@ -422,7 +431,7 @@ struct Rain_Previews: PreviewProvider {
                 headerHeight: 1
             )
         }.background(
-            RainBackgroundView(type: type)
+            RainBackgroundView(type: type, daylight: daylight)
         ).ignoresSafeArea()
     }
 }

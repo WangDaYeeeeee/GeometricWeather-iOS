@@ -7,15 +7,26 @@
 
 import SwiftUI
 
-private let windColors = [
+private let windDayColors = [
     Color(red: 240 / 255.0, green: 200 / 255.0, blue: 148 / 255.0),
     Color(red: 237 / 255.0, green: 178 / 255.0, blue: 100 / 255.0),
     Color(red: 209 / 255.0, green: 142 / 255.0, blue: 54 / 255.0)
 ]
+private let windNightColors = [
+    Color(red: 240 / 255.0, green: 200 / 255.0, blue: 148 / 255.0),
+    Color(red: 237 / 255.0, green: 178 / 255.0, blue: 100 / 255.0),
+    Color(red: 209 / 255.0, green: 142 / 255.0, blue: 54 / 255.0)
+].map { color in
+    color.opacity(0.33)
+}
 
-private let backgroundColors = [
-    Color.ColorFromRGB(0xe99e3c),
-    Color.ColorFromRGB(0xff8300)
+private let dayBackgroundColors = [
+    Color.ColorFromRGB(0xeacda3),
+    Color.ColorFromRGB(0xD68E30)
+]
+private let nightBackgroundColors = [
+    Color.ColorFromRGB(0x958675),
+    Color.ColorFromRGB(0x1E130C)
 ]
 
 private let windMaxWidth = 0.006
@@ -30,6 +41,7 @@ private let windCount = 240
 struct WindForegroundView: View {
     
     @StateObject private var model = WindModel()
+    let daylight: Bool
     
     let width: CGFloat
     let height: CGFloat
@@ -41,7 +53,7 @@ struct WindForegroundView: View {
     let headerHeight: CGFloat
     
     var body: some View {
-        model.checkToInit()
+        model.checkToInit(daylight: self.daylight)
         let canvasSize = sqrt(width * width + height * height)
         
         return ForEach(0 ..< model.winds.count) { i in
@@ -92,12 +104,13 @@ private class WindModel: ObservableObject {
     
     private var newInstance = true
     
-    func checkToInit() {
+    func checkToInit(daylight: Bool) {
         if !newInstance {
             return
         }
         newInstance = false
         
+        let colors = daylight ? windDayColors : windNightColors
         for i in 0 ..< windCount {
             winds.append((
                 // init x.
@@ -109,7 +122,7 @@ private class WindModel: ObservableObject {
                 // length.
                 Double.random(in: windMinLength ... windMaxLength),
                 // color.
-                windColors[i / (windCount / windColors.count)],
+                colors[i / (windCount / colors.count)],
                 // period.
                 Double.random(
                     in: 0.5 ... 1.5
@@ -211,9 +224,15 @@ private struct WindShape: Shape {
 
 struct WindBackgroundView: View {
     
+    let daylight: Bool
+    
     var body: some View {
         return LinearGradient(
-            gradient: Gradient(colors: backgroundColors),
+            gradient: Gradient(
+                colors: self.daylight
+                ? dayBackgroundColors
+                : nightBackgroundColors
+            ),
             startPoint: .top,
             endPoint: .bottom
         )
@@ -226,6 +245,7 @@ struct Wind_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
             WindForegroundView(
+                daylight: false,
                 width: proxy.size.width,
                 height: proxy.size.height,
                 rotation2D: 0.0,
@@ -234,7 +254,7 @@ struct Wind_Previews: PreviewProvider {
                 headerHeight: 1
             )
         }.background(
-            WindBackgroundView()
+            WindBackgroundView(daylight: false)
         ).ignoresSafeArea()
     }
 }

@@ -172,6 +172,10 @@ public struct Location: Equatable {
             return false
         }
         
+        if left.weatherSource != right.weatherSource {
+            return false
+        }
+        
         if left.weather != nil && right.weather != nil {
             return left.weather! == right.weather!
         }

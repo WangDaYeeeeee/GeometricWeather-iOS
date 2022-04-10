@@ -61,7 +61,7 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
             return daylight ? .colorFromRGB(0xfdbc4c) : .colorFromRGB(0x141b2c)
             
         case .cloud:
-            return daylight ? .colorFromRGB(0x222d43) : .colorFromRGB(0x607988)
+            return daylight ? .colorFromRGB(0x00a5d9) : .colorFromRGB(0x222d43)
             
         case .cloudy:
             return daylight ? .colorFromRGB(0x9DAFC1) : .colorFromRGB(0x263238)
@@ -100,13 +100,6 @@ public class MaterialWeatherThemeDelegate: WeatherThemeDelegate {
         weatherKind: WeatherKind,
         daylight: Bool
     ) -> UIColor {
-        return UIColor { traitCollection in
-            if weatherKind == .clear
-                || (weatherKind == .cloud && daylight) {
-                return .systemBackground.withAlphaComponent(0.125)
-            }
-            
-            return .clear
-        }
+        return .clear
     }
 }

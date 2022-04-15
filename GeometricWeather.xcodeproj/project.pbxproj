@@ -31,6 +31,7 @@
 		374BA62526FC89170080B5CA /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62026FC89170080B5CA /* WeatherWidgetSmallView.swift */; };
 		374BA62726FC894E0080B5CA /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 374BA62626FC894E0080B5CA /* GeometricWeatherBasic */; };
 		374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */; };
+		374E76D828098EBF0031D1C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370BA59B269C398F006BB1CE /* Assets.xcassets */; };
 		377B1D6626B6B93000E7E07E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6426B6B93000E7E07E /* SceneDelegate.swift */; };
 		377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6526B6B93000E7E07E /* AppDelegate.swift */; };
 		379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5527C8C59000083BFF /* HourlyView.swift */; };
@@ -120,7 +121,6 @@
 		379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */; };
 		379A8BC027C8C59100083BFF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8B2027C8C59000083BFF /* SettingsViewController.swift */; };
 		379A8BC127C916A200083BFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 37D7AA8A26B2AEB70028F67E /* Localizable.strings */; };
-		379A8BC327C9174200083BFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379A8BC227C9174200083BFF /* Assets.xcassets */; };
 		379A8BC527C91D1000083BFF /* BaseManagementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC427C91D1000083BFF /* BaseManagementController.swift */; };
 		379A8BC727C9261100083BFF /* MainDailyCardCell+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */; };
 		379A8BC927C92AD000083BFF /* MainHourlyCardCell+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC827C92AD000083BFF /* MainHourlyCardCell+Tags.swift */; };
@@ -360,7 +360,6 @@
 		379A8B1E27C8C59000083BFF /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCellViews.swift; sourceTree = "<group>"; };
 		379A8B2027C8C59000083BFF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		379A8BC227C9174200083BFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		379A8BC427C91D1000083BFF /* BaseManagementController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseManagementController.swift; sourceTree = "<group>"; };
 		379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainDailyCardCell+Tags.swift"; sourceTree = "<group>"; };
 		379A8BC827C92AD000083BFF /* MainHourlyCardCell+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainHourlyCardCell+Tags.swift"; sourceTree = "<group>"; };
@@ -573,7 +572,6 @@
 				374BA61B26FC88F20080B5CA /* Weather */,
 				374BA60126FC78E00080B5CA /* GeometricWeatherWidget.swift */,
 				374BA60326FC78E00080B5CA /* GeometricWeatherWidget.intentdefinition */,
-				379A8BC227C9174200083BFF /* Assets.xcassets */,
 				374BA60626FC78E10080B5CA /* Info.plist */,
 			);
 			path = GeometricWeatherWidget;
@@ -1364,7 +1362,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				379A8BC327C9174200083BFF /* Assets.xcassets in Resources */,
+				374E76D828098EBF0031D1C7 /* Assets.xcassets in Resources */,
 				379A8BC127C916A200083BFF /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

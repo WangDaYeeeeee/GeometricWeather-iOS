@@ -19,6 +19,7 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
     // MARK: - cell subviews.
     
     private let hourLabel = UILabel(frame: .zero)
+    private let dateLabel = UILabel(frame: .zero)
     private let hourlyIcon = UIImageView(frame: .zero)
     private let histogramView = HistogramView(frame: .zero)
     
@@ -34,6 +35,12 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         self.hourLabel.numberOfLines = 1
         self.contentView.addSubview(self.hourLabel)
         
+        self.dateLabel.font = miniCaptionFont
+        self.dateLabel.textColor = .secondaryLabel
+        self.dateLabel.textAlignment = .center
+        self.dateLabel.numberOfLines = 1
+        self.contentView.addSubview(self.dateLabel)
+        
         self.hourlyIcon.contentMode = .center
         self.contentView.addSubview(self.hourlyIcon)
         
@@ -45,8 +52,13 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
             make.leading.equalToSuperview().offset(mainTrendInnerMargin)
             make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
         }
+        self.dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.hourLabel.snp.bottom).offset(mainTrendInnerMargin)
+            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
+            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
+        }
         self.hourlyIcon.snp.makeConstraints { make in
-            make.top.equalTo(self.hourLabel.snp.bottom).offset(littleMargin)
+            make.top.equalTo(self.dateLabel.snp.bottom).offset(littleMargin)
             make.width.equalTo(mainTrendIconSize)
             make.width.lessThanOrEqualToSuperview()
             make.height.equalTo(self.hourlyIcon.snp.width)
@@ -74,6 +86,10 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
                 isTwelveHour(),
                 timezone: timezone
             )
+        )
+        
+        self.dateLabel.text = hourly.formatDate(
+            format: NSLocalizedString("date_format_short", comment: "")
         )
         
         if !(hourly.wind?.degree.noDirection ?? true) {

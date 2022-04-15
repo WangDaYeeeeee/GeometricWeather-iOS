@@ -8,7 +8,7 @@
 import UIKit
 import GeometricWeatherBasic
 
-private let hourlyTrendViewHeight = 198.0
+private let hourlyTrendViewHeight = 226.0
 private let minutelyTrendViewHeight = 56.0
 
 enum HourlyTag: String {

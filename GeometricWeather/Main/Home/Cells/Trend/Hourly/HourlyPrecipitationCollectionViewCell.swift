@@ -13,6 +13,7 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
     // MARK: - cell subviews.
     
     private let hourLabel = UILabel(frame: .zero)
+    private let dateLabel = UILabel(frame: .zero)
     private let hourlyIcon = UIImageView(frame: .zero)
     private let trendView = HistogramView(frame: .zero)
     
@@ -29,19 +30,30 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
         self.hourLabel.numberOfLines = 1
         self.contentView.addSubview(self.hourLabel)
         
+        self.dateLabel.font = miniCaptionFont
+        self.dateLabel.textColor = .secondaryLabel
+        self.dateLabel.textAlignment = .center
+        self.dateLabel.numberOfLines = 1
+        self.contentView.addSubview(self.dateLabel)
+        
         self.hourlyIcon.contentMode = .scaleAspectFit
         self.contentView.addSubview(self.hourlyIcon)
         
         self.trendView.paddingBottom = normalMargin
         self.contentView.addSubview(self.trendView)
-        
+                
         self.hourLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(mainTrendInnerMargin)
             make.leading.equalToSuperview().offset(mainTrendInnerMargin)
             make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
         }
+        self.dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.hourLabel.snp.bottom).offset(mainTrendInnerMargin)
+            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
+            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
+        }
         self.hourlyIcon.snp.makeConstraints { make in
-            make.top.equalTo(self.hourLabel.snp.bottom).offset(littleMargin)
+            make.top.equalTo(self.dateLabel.snp.bottom).offset(littleMargin)
             make.width.equalTo(mainTrendIconSize)
             make.width.lessThanOrEqualToSuperview()
             make.height.equalTo(self.hourlyIcon.snp.width)
@@ -69,6 +81,10 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
                 isTwelveHour(),
                 timezone: timezone
             )
+        )
+        
+        self.dateLabel.text = hourly.formatDate(
+            format: NSLocalizedString("date_format_short", comment: "")
         )
         
         self.hourlyIcon.image = UIImage.getWeatherIcon(

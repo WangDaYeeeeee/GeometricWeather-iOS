@@ -44,7 +44,7 @@ class AccuApi: WeatherApi {
         return CancelToken(cancelable: provider.request(
             .location(
                 alias: "Always",
-                apikey: ACCU_WEATHER_KEY,
+                apikey: BuildConfig.current.accuWeatherKey,
                 q: query,
                 language: getLanguage()
             )
@@ -82,7 +82,7 @@ class AccuApi: WeatherApi {
         return CancelToken(cancelable: provider.request(
             .geoPosition(
                 alias: "Always",
-                apikey: ACCU_WEATHER_KEY,
+                apikey: BuildConfig.current.accuWeatherKey,
                 q: "\(target.latitude),\(target.longitude)",
                 language: getLanguage()
             )
@@ -122,7 +122,7 @@ class AccuApi: WeatherApi {
             provider.rx.request(
                 .current(
                     city_key: target.cityId,
-                    apikey: ACCU_CURRENT_KEY,
+                    apikey: BuildConfig.current.accuCurrentKey,
                     language: getLanguage(),
                     metric: true,
                     details: true
@@ -136,7 +136,7 @@ class AccuApi: WeatherApi {
             provider.rx.request(
                 .daily(
                     city_key: target.cityId,
-                    apikey: ACCU_WEATHER_KEY,
+                    apikey: BuildConfig.current.accuWeatherKey,
                     language: getLanguage(),
                     metric: true,
                     details: true
@@ -150,7 +150,7 @@ class AccuApi: WeatherApi {
             provider.rx.request(
                 .hourly(
                     city_key: target.cityId,
-                    apikey: ACCU_WEATHER_KEY,
+                    apikey: BuildConfig.current.accuWeatherKey,
                     language: getLanguage(),
                     metric: true
                 )
@@ -163,7 +163,7 @@ class AccuApi: WeatherApi {
             provider.rx.request(
                 .alert(
                     city_key: target.cityId,
-                    apikey: ACCU_WEATHER_KEY,
+                    apikey: BuildConfig.current.accuWeatherKey,
                     language: getLanguage(),
                     details: true
                 )
@@ -173,7 +173,7 @@ class AccuApi: WeatherApi {
             provider.rx.request(
                 .airQuality(
                     city_key: target.cityId,
-                    apikey: ACCU_AQI_KEY
+                    apikey: BuildConfig.current.accuAqiKey
                 )
             ).asObservable().filterSuccessfulStatusCodes()
         ).subscribe(onNext: { results in
@@ -276,7 +276,7 @@ enum AccuService {
 extension AccuService: TargetType {
     
     var baseURL: URL {
-        return URL(string: ACCU_WEATHER_BASE_URL)!
+        return URL(string: BuildConfig.current.accuWeatherBaseUrl)!
     }
     
     var path: String {

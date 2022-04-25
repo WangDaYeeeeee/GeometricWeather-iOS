@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - build config.
 
-enum BuildConfig: String {
+public enum BuildConfig: String {
     
     case debug
     case release
     
-    static var current: BuildConfigProtocal {
+    public static var current: BuildConfigProtocal {        
         guard let rawValue = Bundle.main.infoDictionary?["Configuration"] as? String else {
             fatalError("No Configuration Found")
         }
@@ -34,7 +34,7 @@ enum BuildConfig: String {
 
 // MARK: - protocal.
 
-protocol BuildConfigProtocal {
+public protocol BuildConfigProtocal {
     
     var defaultWeatherSourceId: String { get }
     

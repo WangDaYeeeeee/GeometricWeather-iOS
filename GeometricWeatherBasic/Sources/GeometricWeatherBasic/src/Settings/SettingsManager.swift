@@ -80,7 +80,7 @@ public class SettingsManager {
     // MARK: - service provider.
     
     // key: prefixSync + "weather_source"
-    public let weatherSource = WeatherSource.caiYun
+    public let weatherSource = WeatherSource[BuildConfig.current.defaultWeatherSourceId]
     
     // MARK: - unit.
     

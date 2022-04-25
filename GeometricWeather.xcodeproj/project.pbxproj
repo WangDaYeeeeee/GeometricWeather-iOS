@@ -129,7 +129,6 @@
 		379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BD327CDFEC800083BFF /* EditViewController.swift */; };
 		37A35F8126F5BF3E00431565 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37A35F8026F5BF3E00431565 /* GeometricWeatherBasic */; };
 		37C18C1128156545001A46A3 /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C18C1028156545001A46A3 /* PlaceholderView.swift */; };
-		37C18C1328161D7E001A46A3 /* BuildConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C18C1228161D7E001A46A3 /* BuildConfig.swift */; };
 		37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C6AE2F27D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift */; };
 		37D3B8BC27D6D76C00191C2A /* MainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8BB27D6D76C00191C2A /* MainComponent.swift */; };
 		37D3B8BE27D6D85600191C2A /* HomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D3B8BD27D6D85600191C2A /* HomeComponent.swift */; };
@@ -373,7 +372,6 @@
 		37A35F6426F4B45300431565 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		37A35F7926F5957B00431565 /* GeometricWeatherBasic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GeometricWeatherBasic; sourceTree = "<group>"; };
 		37C18C1028156545001A46A3 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
-		37C18C1228161D7E001A46A3 /* BuildConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfig.swift; sourceTree = "<group>"; };
 		37C4DFBA27D21D4200430086 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		37C4E09F27D21D4200430086 /* Moya.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Moya.modulemap; sourceTree = "<group>"; };
 		37C4E0A027D21D4200430086 /* Moya-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Moya-prefix.pch"; sourceTree = "<group>"; };
@@ -534,7 +532,6 @@
 				379A8B1C27C8C59000083BFF /* Settings */,
 				379A8A5327C8C59000083BFF /* Main */,
 				3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */,
-				37C18C1228161D7E001A46A3 /* BuildConfig.swift */,
 				377B1D6526B6B93000E7E07E /* AppDelegate.swift */,
 				377B1D6426B6B93000E7E07E /* SceneDelegate.swift */,
 				37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */,
@@ -1446,7 +1443,6 @@
 				379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */,
 				379A8B5E27C8C59000083BFF /* GeoDialog.swift in Sources */,
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
-				37C18C1328161D7E001A46A3 /* BuildConfig.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,
 				379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */,
 				3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */,
@@ -1731,7 +1727,6 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 64_alpha;
-				Configuration = "$(CONFIGURATION)";
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1771,7 +1766,6 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 64_alpha;
-				Configuration = "$(CONFIGURATION)";
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;

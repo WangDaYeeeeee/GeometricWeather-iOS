@@ -63,7 +63,7 @@ class CaiYunApi: WeatherApi {
         return CancelToken(cancelable: accuProvider.request(
             .location(
                 alias: "Always",
-                apikey: ACCU_WEATHER_KEY,
+                apikey: BuildConfig.current.accuWeatherKey,
                 q: query,
                 language: getLanguageForAccuApi()
             )
@@ -101,7 +101,7 @@ class CaiYunApi: WeatherApi {
         return CancelToken(cancelable: accuProvider.request(
             .geoPosition(
                 alias: "Always",
-                apikey: ACCU_WEATHER_KEY,
+                apikey: BuildConfig.current.accuWeatherKey,
                 q: "\(target.latitude),\(target.longitude)",
                 language: getLanguageForAccuApi()
             )
@@ -153,7 +153,7 @@ class CaiYunApi: WeatherApi {
             accuProvider.rx.request(
                 .current(
                     city_key: target.cityId,
-                    apikey: ACCU_CURRENT_KEY,
+                    apikey: BuildConfig.current.accuCurrentKey,
                     language: getLanguageForAccuApi(),
                     metric: true,
                     details: true
@@ -167,7 +167,7 @@ class CaiYunApi: WeatherApi {
             accuProvider.rx.request(
                 .daily(
                     city_key: target.cityId,
-                    apikey: ACCU_WEATHER_KEY,
+                    apikey: BuildConfig.current.accuWeatherKey,
                     language: getLanguageForAccuApi(),
                     metric: true,
                     details: true
@@ -215,7 +215,7 @@ extension CaiYunService: TargetType {
     
     var baseURL: URL {
         return URL(
-            string: "\(CAIYUN_WEATHER_BASE_URL)\(CAIYUN_WEATHER_API_KEY)"
+            string: "\(BuildConfig.current.caiyunWeatherBaseUrl)\(BuildConfig.current.caiyunWeatherApiKey)"
         )!
     }
     

@@ -15,13 +15,8 @@ public enum BuildConfig: String {
     case release
     
     public static var current: BuildConfigProtocal {        
-        guard let rawValue = Bundle.main.infoDictionary?["Configuration"] as? String else {
-            fatalError("No Configuration Found")
-        }
-
-        guard let instance = BuildConfig(rawValue: rawValue.lowercased()) else {
-            fatalError("Invalid Configuration Name")
-        }
+        let rawValue = (Bundle.main.infoDictionary?["Configuration"] as? String) ?? "debug"
+        let instance = BuildConfig(rawValue: rawValue.lowercased()) ?? .debug
 
         switch instance {
         case .debug:

@@ -17,17 +17,18 @@ struct DailyWidget2EntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        if let location = self.entry.location,
-            let weather = self.entry.location?.weather {
+        if self.entry.location.weather == nil {
+            PlaceholderView()
+        } else {
             GeometryReader { proxy in
                 HStack {
-                    CurrentSquareView(location: location)
+                    CurrentSquareView(location: self.entry.location)
                         .padding()
                         .frame(
                             width: proxy.size.width * 0.5,
                             alignment: .leading
                         )
-                    HorizontalDailyView(location: location)
+                    HorizontalDailyView(location: self.entry.location)
                         .padding(.trailing)
                         .padding(.vertical, 2.0)
                         .frame(
@@ -38,13 +39,11 @@ struct DailyWidget2EntryView : View {
             }.background(
                 ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                     weatherKind: weatherCodeToWeatherKind(
-                        code: weather.current.weatherCode
+                        code: self.entry.location.weather?.current.weatherCode ?? .clear
                     ),
-                    daylight: location.daylight
+                    daylight: self.entry.location.daylight
                 )
             )
-        } else {
-            PlaceholderView()
         }
     }
 }

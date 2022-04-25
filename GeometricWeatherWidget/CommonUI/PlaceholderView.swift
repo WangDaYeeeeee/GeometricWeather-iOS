@@ -6,12 +6,26 @@
 //
 
 import SwiftUI
+import GeometricWeatherBasic
 
 struct PlaceholderView: View {
     var body: some View {
-        Image(
-            uiImage: UIImage(namedInBasic: "launch_icon")!
-                .scaleToSize(CGSize(width: 56.0, height: 56.0))!
+        HStack {
+            Spacer()
+            VStack {
+                Spacer()
+                Image(
+                    uiImage: UIImage(namedInBasic: "launch_icon")!
+                        .scaleToSize(CGSize(width: 96.0, height: 96.0))!
+                )
+                Spacer()
+            }
+            Spacer()
+        }.background(
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                weatherKind: weatherCodeToWeatherKind(code: .clear),
+                daylight: isDaylight()
+            )
         )
     }
 }

@@ -31,7 +31,7 @@ struct Provider: IntentTimelineProvider {
     
     func placeholder(in context: Context) -> GeoWidgetEntry {
         GeoWidgetEntry(
-            location: nil,
+            location: readLocationWithWeatherCache(),
             date: Date(),
             configuration: ConfigurationIntent()
         )
@@ -76,7 +76,7 @@ struct Provider: IntentTimelineProvider {
 // MARK: - entry.
 
 struct GeoWidgetEntry: TimelineEntry {
-    let location: Location?
+    let location: Location
     let date: Date
     let configuration: ConfigurationIntent
     let settings = SettingsManager.shared

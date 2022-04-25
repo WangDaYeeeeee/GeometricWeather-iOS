@@ -18,27 +18,26 @@ struct WeatherWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        if let location = self.entry.location,
-            let weather = self.entry.location?.weather {
+        if self.entry.location.weather == nil {
+            PlaceholderView()
+        } else {
             Group {
                 switch self.family {
                 case .systemSmall:
-                    WeatherWidgetSmallView(location: location)
+                    WeatherWidgetSmallView(location: self.entry.location)
                 case .systemMedium:
-                    WeatherWidgetMediumView(location: location)
+                    WeatherWidgetMediumView(location: self.entry.location)
                 default:
-                    WeatherWidgetLargeView(location: location)
+                    WeatherWidgetLargeView(location: self.entry.location)
                 }
             }.background(
                 ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                     weatherKind: weatherCodeToWeatherKind(
-                        code: weather.current.weatherCode
+                        code: self.entry.location.weather?.current.weatherCode ?? .clear
                     ),
-                    daylight: location.daylight
+                    daylight: self.entry.location.daylight
                 )
             )
-        } else {
-            PlaceholderView()
         }
     }
 }

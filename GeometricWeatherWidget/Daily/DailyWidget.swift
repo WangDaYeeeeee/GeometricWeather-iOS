@@ -17,20 +17,19 @@ struct DailyWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        if let location = self.entry.location,
-            let weather = self.entry.location?.weather {
-            DailyView(location: location)
+        if self.entry.location.weather == nil {
+            PlaceholderView()
+        } else {
+            DailyView(location: self.entry.location)
                 .padding(littleMargin)
                 .background(
                     ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
                         weatherKind: weatherCodeToWeatherKind(
-                            code: weather.current.weatherCode
+                            code: self.entry.location.weather?.current.weatherCode ?? .clear
                         ),
-                        daylight: location.daylight
+                        daylight: self.entry.location.daylight
                     )
                 )
-        } else {
-            PlaceholderView()
         }
     }
 }

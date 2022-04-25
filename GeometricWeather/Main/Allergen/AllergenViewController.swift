@@ -62,7 +62,7 @@ class AllergenViewController: GeoViewController<Location>,
         )
         self.blurBackground.contentView.addSubview(self.allergenCollectionView)
 
-        self.titleLabel.text = NSLocalizedString("allergen", comment: "")
+        self.titleLabel.text = getLocalizedText("allergen")
         self.titleLabel.font = titleFont
         self.titleLabel.textColor = .label
         self.titleContainer.addSubview(self.titleLabel)

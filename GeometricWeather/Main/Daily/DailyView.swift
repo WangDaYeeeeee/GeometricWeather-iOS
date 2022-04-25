@@ -38,26 +38,20 @@ struct DailyView: View {
                 
                 if let realFeelTemp = self.weather.dailyForecasts[index].day.temperature.realFeelTemperature {
                     DailyValueItemView(
-                        title: NSLocalizedString("real_feel_temperature", comment: ""),
+                        title: getLocalizedText("real_feel_temperature"),
                         content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                             realFeelTemp,
-                            unit: NSLocalizedString(
-                                SettingsManager.shared.temperatureUnit.key,
-                                comment: ""
-                            )
+                            unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
                         )
                     )
                 }
                 if let precipitationTotal = self.weather.dailyForecasts[index].day.precipitationTotal {
                     if precipitationTotal > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation", comment: ""),
+                            title: getLocalizedText("precipitation"),
                             content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                                 precipitationTotal,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
                             )
                         )
                     }
@@ -65,13 +59,10 @@ struct DailyView: View {
                 if let precipitationIntensity = self.weather.dailyForecasts[index].day.precipitationIntensity {
                     if precipitationIntensity > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_intensity", comment: ""),
+                            title: getLocalizedText("precipitation_intensity"),
                             content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                                 precipitationIntensity,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationIntensityUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
                             )
                         )
                     }
@@ -79,14 +70,14 @@ struct DailyView: View {
                 if let precipitationProb = self.weather.dailyForecasts[index].day.precipitationProbability {
                     if precipitationProb > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_probability", comment: ""),
+                            title: getLocalizedText("precipitation_probability"),
                             content: getPercentText(precipitationProb, decimal: 1)
                         )
                     }
                 }
                 if let wind = self.weather.dailyForecasts[index].day.wind {
                     DailyValueItemView(
-                        title: NSLocalizedString("wind", comment: ""),
+                        title: getLocalizedText("wind"),
                         content: getWindText(
                             wind: wind,
                             unit: SettingsManager.shared.speedUnit
@@ -105,26 +96,20 @@ struct DailyView: View {
                 
                 if let realFeelTemp = self.weather.dailyForecasts[index].night.temperature.realFeelTemperature {
                     DailyValueItemView(
-                        title: NSLocalizedString("real_feel_temperature", comment: ""),
+                        title: getLocalizedText("real_feel_temperature"),
                         content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                             realFeelTemp,
-                            unit: NSLocalizedString(
-                                SettingsManager.shared.temperatureUnit.key,
-                                comment: ""
-                            )
+                            unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
                         )
                     )
                 }
                 if let precipitationTotal = self.weather.dailyForecasts[index].night.precipitationTotal {
                     if precipitationTotal > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation", comment: ""),
+                            title: getLocalizedText("precipitation"),
                             content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                                 precipitationTotal,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
                             )
                         )
                     }
@@ -132,13 +117,10 @@ struct DailyView: View {
                 if let precipitationIntensity = self.weather.dailyForecasts[index].night.precipitationIntensity {
                     if precipitationIntensity > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_intensity", comment: ""),
+                            title: getLocalizedText("precipitation_intensity"),
                             content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                                 precipitationIntensity,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationIntensityUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
                             )
                         )
                     }
@@ -146,14 +128,14 @@ struct DailyView: View {
                 if let precipitationProb = self.weather.dailyForecasts[index].night.precipitationProbability {
                     if precipitationProb > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_probability", comment: ""),
+                            title: getLocalizedText("precipitation_probability"),
                             content: getPercentText(precipitationProb, decimal: 1)
                         )
                     }
                 }
                 if let wind = self.weather.dailyForecasts[index].night.wind {
                     DailyValueItemView(
-                        title: NSLocalizedString("wind", comment: ""),
+                        title: getLocalizedText("wind"),
                         content: getWindText(
                             wind: wind,
                             unit: SettingsManager.shared.speedUnit
@@ -168,13 +150,10 @@ struct DailyView: View {
                 if let precipitationTotal = self.weather.dailyForecasts[index].precipitationTotal {
                     if precipitationTotal > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation", comment: ""),
+                            title: getLocalizedText("precipitation"),
                             content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                                 precipitationTotal,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
                             )
                         )
                     }
@@ -182,13 +161,10 @@ struct DailyView: View {
                 if let precipitationIntensity = self.weather.dailyForecasts[index].precipitationIntensity {
                     if precipitationIntensity > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_intensity", comment: ""),
+                            title: getLocalizedText("precipitation_intensity"),
                             content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                                 precipitationIntensity,
-                                unit: NSLocalizedString(
-                                    SettingsManager.shared.precipitationIntensityUnit.key,
-                                    comment: ""
-                                )
+                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
                             )
                         )
                     }
@@ -196,14 +172,14 @@ struct DailyView: View {
                 if let precipitationProb = self.weather.dailyForecasts[index].precipitationProbability {
                     if precipitationProb > 0 {
                         DailyValueItemView(
-                            title: NSLocalizedString("precipitation_probability", comment: ""),
+                            title: getLocalizedText("precipitation_probability"),
                             content: getPercentText(precipitationProb, decimal: 1)
                         )
                     }
                 }
                 if let wind = self.weather.dailyForecasts[index].wind {
                     DailyValueItemView(
-                        title: NSLocalizedString("wind", comment: ""),
+                        title: getLocalizedText("wind"),
                         content: getWindText(
                             wind: wind,
                             unit: SettingsManager.shared.speedUnit
@@ -234,7 +210,7 @@ struct DailyView: View {
                 
                 if self.weather.dailyForecasts[index].uv.isValid() {
                     DailyValueItemView(
-                        title: NSLocalizedString("uv_index", comment: ""),
+                        title: getLocalizedText("uv_index"),
                         content: self.weather.dailyForecasts[index].uv.getUVDescription()
                     )
                 }
@@ -255,7 +231,7 @@ struct DailySectionTitleView: View {
     
     var body: some View {
         Text(
-            NSLocalizedString(key, comment: "")
+            getLocalizedText(key)
         ).font(
             Font(bodyFont)
         ).foregroundColor(
@@ -291,10 +267,7 @@ struct HalfDayHeaderView: View {
                 + ", "
                 + SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                     halfDay.temperature.temperature,
-                    unit: NSLocalizedString(
-                        SettingsManager.shared.temperatureUnit.key,
-                        comment: ""
-                    )
+                    unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
                 )
             ).font(
                 Font(titleFont)
@@ -345,7 +318,7 @@ struct DailySunMoonItemView: View {
         VStack(alignment: .leading, spacing: 0) {
             if self.moonPhase.isValid() {
                 Text(
-                    NSLocalizedString(self.moonPhase.getMoonPhaseKey(), comment: "")
+                    getLocalizedText(self.moonPhase.getMoonPhaseKey())
                 ).font(
                     Font(titleFont)
                 ).foregroundColor(
@@ -436,7 +409,7 @@ struct DailyAirQualityItemView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let aqi = self.aqi.aqiIndex {
                 DailyProgressView(
-                    title: NSLocalizedString("air_quality", comment: ""),
+                    title: getLocalizedText("air_quality"),
                     description: aqi.description + " / " + getAirQualityText(
                         level: self.aqi.getAqiLevel()
                     ),
@@ -673,7 +646,7 @@ struct DailyPollenView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
                 DailyDotValueItemView(
-                    title: NSLocalizedString("grass", comment: ""),
+                    title: getLocalizedText("grass"),
                     description: (
                         self.pollen.grassIndex?.description ?? "0"
                     ) + "/m³ - " + (
@@ -683,7 +656,7 @@ struct DailyPollenView: View {
                 )
                 
                 DailyDotValueItemView(
-                    title: NSLocalizedString("mold", comment: ""),
+                    title: getLocalizedText("mold"),
                     description: (
                         self.pollen.moldIndex?.description ?? "0"
                     ) + "/m³ - " + (
@@ -695,7 +668,7 @@ struct DailyPollenView: View {
             
             HStack(alignment: .center, spacing: 0) {
                 DailyDotValueItemView(
-                    title: NSLocalizedString("ragweed", comment: ""),
+                    title: getLocalizedText("ragweed"),
                     description: (
                         self.pollen.ragweedIndex?.description ?? "0"
                     ) + "/m³ - " + (
@@ -705,7 +678,7 @@ struct DailyPollenView: View {
                 )
                 
                 DailyDotValueItemView(
-                    title: NSLocalizedString("tree", comment: ""),
+                    title: getLocalizedText("tree"),
                     description: (
                         self.pollen.treeIndex?.description ?? "0"
                     ) + "/m³ - " + (
@@ -741,7 +714,7 @@ struct DailyDotValueItemView: View {
                 y: 2.0
             )
             
-            VStack(alignment: .leading, spacing: 2.0) {
+            VStack(alignment: .leading, spacing: 2.0) {                
                 Text(
                     self.title
                 ).font(

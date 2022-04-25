@@ -14,7 +14,7 @@ class SettingsViewController: GeoViewController<Void> {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        self.navigationItem.title = NSLocalizedString("action_settings", comment: "")
+        self.navigationItem.title = getLocalizedText("action_settings")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "info.circle"),
             style: .plain,

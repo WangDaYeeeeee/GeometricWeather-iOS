@@ -6,6 +6,9 @@
   
 */
 
+// Add default text here.
+// Add localized text in Localizable.
+
 "GeometricWeather" = "Geometric Weather";
 
 "current_location" = "Current location";

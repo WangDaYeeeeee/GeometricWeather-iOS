@@ -247,20 +247,14 @@ class BaseManagementController: GeoViewController<MainViewModel>,
             if let location = strongSelf.itemList.get(indexPath.row)?.location {
                 if !location.residentPosition {
                     ToastHelper.showToastMessage(
-                        NSLocalizedString("feedback_resident_location", comment: ""),
+                        getLocalizedText("feedback_resident_location"),
                         inWindowOfView: strongSelf.view,
-                        WithAction: NSLocalizedString("learn_more", comment: ""),
+                        WithAction: getLocalizedText("learn_more"),
                         andDuration: longToastInterval
                     ) {
                         StatementDialog(
-                            title: NSLocalizedString(
-                                "feedback_resident_location",
-                                comment: ""
-                            ),
-                            content: NSLocalizedString(
-                                "feedback_resident_location_description",
-                                comment: ""
-                            )
+                            title: getLocalizedText("feedback_resident_location"),
+                            content: getLocalizedText("feedback_resident_location_description")
                         ).showSelf(inWindowOfView: strongSelf.view)
                     } completion: { didTap in
                         // do nothing.
@@ -288,7 +282,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         ) { [weak self] action, view, handler in
             if let view = self?.view {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_delete_succeed", comment: ""),
+                    getLocalizedText("feedback_delete_succeed"),
                     inWindowOfView: view
                 )
             }

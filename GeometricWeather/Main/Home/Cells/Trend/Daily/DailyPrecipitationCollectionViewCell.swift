@@ -8,7 +8,7 @@
 import UIKit
 import GeometricWeatherBasic
 
-class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
+class DailyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -19,6 +19,26 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
     private let nighttimeIcon = UIImageView(frame: .zero)
     
     private let trendView = HistogramView(frame: .zero)
+    
+    // MARK: - inner data.
+        
+    var trendPaddingTop: CGFloat {
+        get {
+            return self.trendView.paddingTop
+        }
+        set {
+            self.trendView.paddingTop = newValue
+        }
+    }
+    
+    var trendPaddingBottom: CGFloat {
+        get {
+            return self.trendView.paddingBottom
+        }
+        set {
+            self.trendView.paddingBottom = newValue
+        }
+    }
     
     // MARK: - cell life cycle.
     
@@ -44,7 +64,6 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
         self.nighttimeIcon.contentMode = .scaleAspectFit
         self.contentView.addSubview(self.nighttimeIcon)
         
-        self.trendView.paddingBottom = normalMargin
         self.contentView.addSubview(self.trendView)
         
         self.weekLabel.snp.makeConstraints { make in
@@ -89,11 +108,11 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
         histogramType: DailyPrecipitationHistogramType
     ) {
         self.weekLabel.text = daily.isToday(timezone: timezone)
-        ? NSLocalizedString("today", comment: "")
+        ? getLocalizedText("today")
         : getWeekText(week: daily.getWeek(timezone: timezone))
         
         self.dateLabel.text = daily.getDate(
-            format: NSLocalizedString("date_format_short", comment: "")
+            format: getLocalizedText("date_format_short")
         )
         
         self.daytimeIcon.image = UIImage.getWeatherIcon(
@@ -152,7 +171,7 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
             )
             break
             
-        case .precipitationTotal:
+        case .precipitationTotal(let maxPrecipitationTotal):
             let unit = SettingsManager.shared.precipitationUnit
             let precipitationTotal = max(
                 daily.day.precipitationTotal ?? 0.0,
@@ -161,7 +180,7 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
             )
             if precipitationTotal > 0 {
                 self.trendView.highValue = min(
-                    precipitationTotal / dailyPrecipitationHeavy,
+                    precipitationTotal / maxPrecipitationTotal,
                     1.0
                 )
                 
@@ -192,7 +211,7 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
             )
             break
             
-        case .precipitationIntensity:
+        case .precipitationIntensity(let maxPrecipitationIntensity):
             let unit = SettingsManager.shared.precipitationIntensityUnit
             let precipitationIntensity = max(
                 daily.day.precipitationIntensity ?? 0.0,
@@ -201,7 +220,7 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
             )
             if precipitationIntensity > 0 {
                 self.trendView.highValue = min(
-                    precipitationIntensity / radarPrecipitationIntensityHeavy,
+                    precipitationIntensity / maxPrecipitationIntensity,
                     1.0
                 )
                 
@@ -234,28 +253,6 @@ class DailyPrecipitationCollectionViewCell: UICollectionViewCell {
             
         case .none:
             self.trendView.highValue = nil
-        }
-    }
-    
-    // MARK: - cell selection.
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if (self.isHighlighted) {
-                self.contentView.layer.removeAllAnimations()
-                self.contentView.alpha = 0.5
-            } else {
-                self.contentView.layer.removeAllAnimations()
-                UIView.animate(
-                    withDuration: 0.45,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 1.0
-                } completion: { _ in
-                    // do nothing.
-                }
-            }
         }
     }
 }

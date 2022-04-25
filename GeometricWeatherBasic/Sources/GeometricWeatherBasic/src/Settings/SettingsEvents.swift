@@ -19,7 +19,7 @@ public class SettingsValueEvent<T> {
     
     public let newValue: T
     
-    init(_ newValue: T) {
+    required init(_ newValue: T) {
         self.newValue = newValue
     }
 }
@@ -33,7 +33,7 @@ public class UpdateIntervalChanged: SettingsValueEvent<UpdateInterval> {}
 // MARK: - appearance.
 
 public class DarkModeChanged: SettingsValueEvent<DarkMode> {}
-public class mainCardsChanged: SettingsValueEvent<[MainCard]> {}
+public class MainCardsChanged: SettingsValueEvent<[MainCard]> {}
 
 // MARK: - service provider.
 

@@ -15,19 +15,11 @@ struct SettingsView: View {
     @State private var alertEnabled = SettingsManager.shared.alertEnabled
     
     @State private var precipitationAlertEnabled = SettingsManager.shared.precipitationAlertEnabled
-    
-    @State private var updateInterval = SettingsManager.shared.updateInterval.key
-    
+        
     // MARK: - appearance.
     
     @State private var darkModeIndex = DarkMode.all.firstIndex(
         of: SettingsManager.shared.darkMode
-    ) ?? 0
-    
-    // MARK: - service provider.
-    
-    @State private var weatherSourceIndex = WeatherSource.all.firstIndex(
-        of: SettingsManager.shared.weatherSource
     ) ?? 0
     
     // MARK: - unit.
@@ -79,11 +71,6 @@ struct SettingsView: View {
                     titleKey: "settings_title_precipitation_notification_switch",
                     toggleOn: self.$precipitationAlertEnabled
                 )
-//                SettingsListCellView(
-//                    titleKey: "settings_title_refresh_rate",
-//                    keys: UpdateInterval.allKey,
-//                    selectedKey: self.$updateInterval
-//                )
             }
             
             Section(
@@ -141,6 +128,7 @@ struct SettingsView: View {
                 )
                 SettingsTimePickerCellView(
                     titleKey: "settings_title_forecast_today_time",
+                    enabled: self.todayForecastEnabled,
                     selectedDate: self.$todayForecastDate
                 )
                 SettingsToggleCellView(
@@ -149,6 +137,7 @@ struct SettingsView: View {
                 )
                 SettingsTimePickerCellView(
                     titleKey: "settings_title_forecast_tomorrow_time",
+                    enabled: self.tomorrowForecastEnabled,
                     selectedDate: self.$tomorrowForecastDate
                 )
             }
@@ -158,17 +147,9 @@ struct SettingsView: View {
             SettingsManager.shared.alertEnabled = newValue
         }.onChange(of: self.precipitationAlertEnabled) { newValue in
             SettingsManager.shared.precipitationAlertEnabled = newValue
-        }.onChange(of: self.updateInterval) { newValue in
-            SettingsManager.shared.updateInterval = UpdateInterval[
-                updateInterval
-            ]
         }.onChange(of: self.darkModeIndex) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
             ThemeManager.shared.update(darkMode: DarkMode[newValue])
-        }.onChange(of: self.weatherSourceIndex) { newValue in
-            SettingsManager.shared.weatherSource = WeatherSource[
-                newValue
-            ]
         }.onChange(of: self.temperatureUnitIndex) { newValue in
             SettingsManager.shared.temperatureUnit = TemperatureUnit[
                 newValue

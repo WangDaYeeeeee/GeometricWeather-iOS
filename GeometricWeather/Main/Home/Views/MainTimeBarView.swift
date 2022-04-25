@@ -113,7 +113,7 @@ class MainTimeBarView: UIStackView {
         )
         self.leadingIcon.isUserInteractionEnabled = !weather.alerts.isEmpty
         
-        self.updateTimeLabel.text = NSLocalizedString("refresh_at", comment: "")
+        self.updateTimeLabel.text = getLocalizedText("refresh_at")
         + ": "
         + weather.base.formatePublishTime(twelveHour: isTwelveHour())
         
@@ -176,7 +176,7 @@ class MainTimeBarView: UIStackView {
         timestamp: TimeInterval,
         timezone: TimeZone
     ) -> String {
-        return NSLocalizedString("local_time", comment: "")
+        return getLocalizedText("local_time")
         + ": "
         + formateTime(
             timeIntervalSine1970: timestamp,

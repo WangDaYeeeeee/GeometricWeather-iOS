@@ -17,23 +17,21 @@ struct DailyWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        DailyView(
-            location: self.entry.location
-        ).padding(
-            EdgeInsets(
-                top: littleMargin,
-                leading: littleMargin,
-                bottom: littleMargin,
-                trailing: littleMargin
-            )
-        ).background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: self.entry.location.weather?.current.weatherCode ?? .clear
-                ),
-                daylight: self.entry.location.daylight
-            )
-        )
+        if let location = self.entry.location,
+            let weather = self.entry.location?.weather {
+            DailyView(location: location)
+                .padding(littleMargin)
+                .background(
+                    ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                        weatherKind: weatherCodeToWeatherKind(
+                            code: weather.current.weatherCode
+                        ),
+                        daylight: location.daylight
+                    )
+                )
+        } else {
+            PlaceholderView()
+        }
     }
 }
 
@@ -51,7 +49,7 @@ struct DailyWidget: Widget {
         ) { entry in
             DailyWidgetEntryView(entry: entry)
         }.configurationDisplayName(
-            NSLocalizedString("daily_overview", comment: "")
+            getLocalizedText("daily_overview")
         ).supportedFamilies(
             [.systemMedium]
         )

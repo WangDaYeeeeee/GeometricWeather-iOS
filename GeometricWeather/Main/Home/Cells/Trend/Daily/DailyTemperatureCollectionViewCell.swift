@@ -1,5 +1,5 @@
 //
-//  DailyTrendTableViewCell.swift
+//  DailyTemperatureCollectionViewCell.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/8/14.
@@ -8,9 +8,7 @@
 import UIKit
 import GeometricWeatherBasic
 
-// MARK: - cell.
-
-class DailyTrendCollectionViewCell: UICollectionViewCell {
+class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -25,6 +23,24 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
     // MARK: - inner data.
     
     private var weatherCode: WeatherCode?
+    
+    var trendPaddingTop: CGFloat {
+        get {
+            return self.trendView.paddingTop
+        }
+        set {
+            self.trendView.paddingTop = newValue
+        }
+    }
+    
+    var trendPaddingBottom: CGFloat {
+        get {
+            return self.trendView.paddingBottom
+        }
+        set {
+            self.trendView.paddingBottom = newValue
+        }
+    }
     
     // MARK: - cell life cycle.
     
@@ -109,11 +125,11 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         self.weatherCode = weatherCode
         
         self.weekLabel.text = daily.isToday(timezone: timezone)
-        ? NSLocalizedString("today", comment: "")
+        ? getLocalizedText("today")
         : getWeekText(week: daily.getWeek(timezone: timezone))
         
         self.dateLabel.text = daily.getDate(
-            format: NSLocalizedString("date_format_short", comment: "")
+            format: getLocalizedText("date_format_short")
         )
         
         self.daytimeIcon.image = UIImage.getWeatherIcon(
@@ -238,120 +254,5 @@ class DailyTrendCollectionViewCell: UICollectionViewCell {
         )
         self.trendView.color = themeColor
         self.trendView.bottomLabel.textColor = precipitationProbabilityColor
-    }
-    
-    // MARK: - cell selection.
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if (self.isHighlighted) {
-                self.contentView.layer.removeAllAnimations()
-                self.contentView.alpha = 0.5
-            } else {
-                self.contentView.layer.removeAllAnimations()
-                UIView.animate(
-                    withDuration: 0.45,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 1.0
-                } completion: { _ in
-                    // do nothing.
-                }
-            }
-        }
-    }
-}
-
-// MARK: - background.
-
-class DailyTrendCellBackgroundView: UIView {
-    
-    // MARK: - background subviews.
-    
-    private let weekLabel = UILabel(frame: .zero)
-    private let dateLabel = UILabel(frame: .zero)
-    
-    private let horizontalLinesView = HorizontalLinesBackgroundView(frame: .zero)
-    
-    // MARK: - background life cycle.
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .clear
-        
-        self.weekLabel.text = "A"
-        self.weekLabel.font = bodyFont
-        self.weekLabel.textColor = .clear
-        self.weekLabel.textAlignment = .center
-        self.weekLabel.numberOfLines = 1
-        self.addSubview(self.weekLabel)
-        
-        self.dateLabel.text = "A"
-        self.dateLabel.font = miniCaptionFont
-        self.dateLabel.textColor = .clear
-        self.dateLabel.textAlignment = .center
-        self.dateLabel.numberOfLines = 1
-        self.addSubview(self.dateLabel)
-        self.addSubview(self.horizontalLinesView)
-        
-        self.weekLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.weekLabel.snp.bottom).offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.horizontalLinesView.snp.makeConstraints { make in
-            make.top.equalTo(self.dateLabel.snp.bottom).offset(littleMargin + mainTrendIconSize)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-littleMargin - mainTrendIconSize)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bindData(
-        weather: Weather,
-        temperatureRange: ClosedRange<Int>
-    ) {
-        guard
-            let yesterday = weather.yesterday,
-            let daytimeTemp = yesterday.daytimeTemperature,
-            let nighttimeTemp = yesterday.nighttimeTemperature
-        else {
-            self.horizontalLinesView.highValue = nil
-            self.horizontalLinesView.lowValue = nil
-            return
-        }
-        
-        self.horizontalLinesView.highValue = getY(
-            value: Double(daytimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        self.horizontalLinesView.lowValue = getY(
-            value: Double(nighttimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        
-        self.horizontalLinesView.highLineColor = .gray
-        self.horizontalLinesView.lowLineColor = .gray
-        
-        self.horizontalLinesView.highDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(daytimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
-        self.horizontalLinesView.lowDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(nighttimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
     }
 }

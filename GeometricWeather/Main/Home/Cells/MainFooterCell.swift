@@ -57,7 +57,7 @@ class MainFooterCell: UITableViewCell, AbstractMainItem {
     func bindData(location: Location, timeBar: MainTimeBarView?) {
         self.titleLabel.text = "Powered by " + SettingsManager.shared.weatherSource.url
         self.editButton.setTitle(
-            NSLocalizedString("edit", comment: ""),
+            getLocalizedText("edit"),
             for: .normal
         )
     }

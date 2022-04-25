@@ -158,16 +158,16 @@ class AllergenCollectionViewCell: UICollectionViewCell {
     
     func bindData(daily: Daily, timezone: TimeZone, index: Int, total: Int) {
         self.titleLabel.text = daily.getDate(
-            format: NSLocalizedString("date_format_long", comment: "")
+            format: getLocalizedText("date_format_long")
         )
         self.captionLabel.text = daily.isToday(timezone: timezone)
-        ? NSLocalizedString("today", comment: "")
+        ? getLocalizedText("today")
         : getWeekText(week: daily.getWeek(timezone: timezone))
         self.indicatorLabel.text = (index + 1).description + "/" + total.description
         
         self.grass.bindData(
             color: getLevelColor(daily.pollen.grassLevel ?? 0),
-            title: NSLocalizedString("grass", comment: ""),
+            title: getLocalizedText("grass"),
             caption: (
                 daily.pollen.grassIndex?.description ?? "0"
             ) + "/m³ - " + (
@@ -176,7 +176,7 @@ class AllergenCollectionViewCell: UICollectionViewCell {
         )
         self.mold.bindData(
             color: getLevelColor(daily.pollen.moldLevel ?? 0),
-            title: NSLocalizedString("mold", comment: ""),
+            title: getLocalizedText("mold"),
             caption: (
                 daily.pollen.moldIndex?.description ?? "0"
             ) + "/m³ - " + (
@@ -185,7 +185,7 @@ class AllergenCollectionViewCell: UICollectionViewCell {
         )
         self.ragweed.bindData(
             color: getLevelColor(daily.pollen.ragweedLevel ?? 0),
-            title: NSLocalizedString("ragweed", comment: ""),
+            title: getLocalizedText("ragweed"),
             caption: (
                 daily.pollen.ragweedIndex?.description ?? "0"
             ) + "/m³ - " + (
@@ -194,7 +194,7 @@ class AllergenCollectionViewCell: UICollectionViewCell {
         )
         self.tree.bindData(
             color: getLevelColor(daily.pollen.treeLevel ?? 0),
-            title: NSLocalizedString("tree", comment: ""),
+            title: getLocalizedText("tree"),
             caption: (
                 daily.pollen.treeIndex?.description ?? "0"
             ) + "/m³ - " + (

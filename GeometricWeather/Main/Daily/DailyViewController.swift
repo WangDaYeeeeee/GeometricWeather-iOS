@@ -140,7 +140,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
         self.navigationItem.title = self.param.location.weather?.dailyForecasts[
             index
         ].getDate(
-            format: NSLocalizedString("date_format_widget_long", comment: "")
+            format: getLocalizedText("date_format_widget_long")
         ) ?? ""
     }
     

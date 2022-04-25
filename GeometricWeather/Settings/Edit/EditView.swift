@@ -72,7 +72,7 @@ struct EditView: View {
             List {
                 ForEach(self.model.mainCardList) { card in
                     Text(
-                        NSLocalizedString(card.key, comment: "")
+                        getLocalizedText(card.key)
                     ).font(
                         Font(titleFont)
                     ).padding(8.0)
@@ -98,10 +98,7 @@ struct EditView: View {
                         
                         ForEach(self.model.deletedList) { card in
                             MainCardTagView(
-                                title: NSLocalizedString(
-                                    card.key,
-                                    comment: ""
-                                )
+                                title: getLocalizedText(card.key)
                             ).onTapGesture {
                                 self.onAdd(card)
                             }

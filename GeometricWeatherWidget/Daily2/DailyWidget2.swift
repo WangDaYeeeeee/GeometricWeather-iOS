@@ -17,34 +17,35 @@ struct DailyWidget2EntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        GeometryReader { proxy in
-            HStack {
-                CurrentSquareView(
-                    location: self.entry.location
-                ).padding().frame(
-                    width: proxy.size.width * 0.5,
-                    alignment: .leading
+        if let location = self.entry.location,
+            let weather = self.entry.location?.weather {
+            GeometryReader { proxy in
+                HStack {
+                    CurrentSquareView(location: location)
+                        .padding()
+                        .frame(
+                            width: proxy.size.width * 0.5,
+                            alignment: .leading
+                        )
+                    HorizontalDailyView(location: location)
+                        .padding(.trailing)
+                        .padding(.vertical, 2.0)
+                        .frame(
+                            width: proxy.size.width * 0.5,
+                            alignment: .trailing
+                        )
+                }
+            }.background(
+                ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                    weatherKind: weatherCodeToWeatherKind(
+                        code: weather.current.weatherCode
+                    ),
+                    daylight: location.daylight
                 )
-                                
-                HorizontalDailyView(
-                    location: self.entry.location
-                ).padding(
-                    .trailing
-                ).padding(
-                    .vertical, 2.0
-                ).frame(
-                    width: proxy.size.width * 0.5,
-                    alignment: .trailing
-                )
-            }
-        }.background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: self.entry.location.weather?.current.weatherCode ?? .clear
-                ),
-                daylight: self.entry.location.daylight
             )
-        )
+        } else {
+            PlaceholderView()
+        }
     }
 }
 
@@ -80,7 +81,7 @@ struct DailyWidget2: Widget {
         ) { entry in
             DailyWidget2EntryView(entry: entry)
         }.configurationDisplayName(
-            NSLocalizedString("daily_overview", comment: "")
+            getLocalizedText("daily_overview")
         ).supportedFamilies(
             [.systemMedium]
         )

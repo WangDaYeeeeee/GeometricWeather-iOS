@@ -95,18 +95,18 @@ class MainTableViewHeaderView: UIView, AbstractMainItem {
             if let realFeelTemperature = weather.current.temperature.realFeelTemperature {
                 description = description
                 + ", "
-                + NSLocalizedString("feels_like", comment: "")
+                + getLocalizedText("feels_like")
                 + " "
                 + SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                     realFeelTemperature,
-                    unit: NSLocalizedString("temperature_unit_short_c", comment: "")
+                    unit: getLocalizedText("temperature_unit_short_c")
                 )
             }
             self.title.text = description
             
             self.subtitle.text = weather.current.airQuality.isValid() ? (
-                NSLocalizedString(
-                    "air_quality", comment: ""
+                getLocalizedText(
+                    "air_quality"
                 ) + " - " + getAirQualityText(
                     level: weather.current.airQuality.aqiLevel ?? 0
                 )

@@ -14,14 +14,14 @@ let mainWindIconSize = 16.0
 
 enum DailyPrecipitationHistogramType {
     case precipitationProb
-    case precipitationTotal
-    case precipitationIntensity
+    case precipitationTotal(max: Double)
+    case precipitationIntensity(max: Double)
     case none
 }
 
 enum HourlyPrecipitationHistogramType {
     case precipitationProb
-    case precipitationIntensity
+    case precipitationIntensity(max: Double)
     case none
 }
 

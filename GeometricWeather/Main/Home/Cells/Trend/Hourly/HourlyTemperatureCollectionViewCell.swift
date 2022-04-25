@@ -1,5 +1,5 @@
 //
-//  HourlyTrendCollectionViewCell.swift
+//  HourlyTemperatureCollectionViewCell.swift
 //  GeometricWeather
 //
 //  Created by 王大爷 on 2021/8/16.
@@ -8,9 +8,7 @@
 import UIKit
 import GeometricWeatherBasic
 
-// MARK: - cell.
-
-class HourlyTrendCollectionViewCell: UICollectionViewCell {
+class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -22,6 +20,24 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
     // MARK: - inner data.
     
     private var weatherCode: WeatherCode?
+    
+    var trendPaddingTop: CGFloat {
+        get {
+            return self.trendView.paddingTop
+        }
+        set {
+            self.trendView.paddingTop = newValue
+        }
+    }
+    
+    var trendPaddingBottom: CGFloat {
+        get {
+            return self.trendView.paddingBottom
+        }
+        set {
+            self.trendView.paddingBottom = newValue
+        }
+    }
     
     // MARK: - cell life cycle.
     
@@ -91,7 +107,8 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         temperatureRange: ClosedRange<Int>,
         weatherCode: WeatherCode,
         timezone: TimeZone,
-        histogramType: HourlyPrecipitationHistogramType
+        histogramType: HourlyPrecipitationHistogramType,
+        useAccentColorForDate: Bool
     ) {
         self.weatherCode = weatherCode
         
@@ -103,8 +120,11 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         )
         
         self.dateLabel.text = hourly.formatDate(
-            format: NSLocalizedString("date_format_short", comment: "")
+            format: getLocalizedText("date_format_short")
         )
+        self.dateLabel.textColor = useAccentColorForDate
+        ? .secondaryLabel
+        : .tertiaryLabel
         
         self.hourlyIcon.image = UIImage.getWeatherIcon(
             weatherCode: hourly.weatherCode,
@@ -180,108 +200,5 @@ class HourlyTrendCollectionViewCell: UICollectionViewCell {
         )
         self.trendView.color = themeColor
         self.trendView.bottomLabel.textColor = precipitationProbabilityColor
-    }
-    
-    // MARK: - cell selection.
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if (self.isHighlighted) {
-                self.contentView.layer.removeAllAnimations()
-                self.contentView.alpha = 0.5
-            } else {
-                self.contentView.layer.removeAllAnimations()
-                UIView.animate(
-                    withDuration: 0.45,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 1.0
-                } completion: { _ in
-                    // do nothing.
-                }
-            }
-        }
-    }
-}
-
-// MARK: - background.
-
-class HourlyTrendCellBackgroundView: UIView {
-    
-    // MARK: - background subviews.
-    
-    private let hourLabel = UILabel(frame: .zero)
-    
-    private let horizontalLinesView = HorizontalLinesBackgroundView(frame: .zero)
-    
-    // MARK: - background life cycle.
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .clear
-        
-        self.hourLabel.text = "A"
-        self.hourLabel.font = bodyFont
-        self.hourLabel.textColor = .clear
-        self.hourLabel.textAlignment = .center
-        self.hourLabel.numberOfLines = 1
-        self.addSubview(self.hourLabel)
-        
-        self.addSubview(self.horizontalLinesView)
-        
-        self.hourLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.horizontalLinesView.snp.makeConstraints { make in
-            make.top.equalTo(self.hourLabel.snp.bottom).offset(littleMargin + mainTrendIconSize)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bindData(
-        weather: Weather,
-        temperatureRange: ClosedRange<Int>
-    ) {
-        guard
-            let yesterday = weather.yesterday,
-            let daytimeTemp = yesterday.daytimeTemperature,
-            let nighttimeTemp = yesterday.nighttimeTemperature
-        else {
-            self.horizontalLinesView.highValue = nil
-            self.horizontalLinesView.lowValue = nil
-            return
-        }
-        
-        self.horizontalLinesView.highValue = getY(
-            value: Double(daytimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        self.horizontalLinesView.lowValue = getY(
-            value: Double(nighttimeTemp),
-            min: Double(temperatureRange.lowerBound),
-            max: Double(temperatureRange.upperBound)
-        )
-        
-        self.horizontalLinesView.highLineColor = .gray
-        self.horizontalLinesView.lowLineColor = .gray
-        
-        self.horizontalLinesView.highDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(daytimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
-        self.horizontalLinesView.lowDescription = (
-            SettingsManager.shared.temperatureUnit.formatValueWithUnit(nighttimeTemp, unit: "°"),
-            NSLocalizedString("yesterday", comment: "")
-        )
     }
 }

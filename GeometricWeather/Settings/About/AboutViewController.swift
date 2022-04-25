@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GeometricWeatherBasic
 
 class AboutViewController: GeoViewController<Void> {
     
@@ -13,7 +14,7 @@ class AboutViewController: GeoViewController<Void> {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        self.navigationItem.title = NSLocalizedString("action_about", comment: "")
+        self.navigationItem.title = getLocalizedText("action_about")
         
         let aboutViewController = UIHostingController<AboutView>(
             rootView: AboutView()

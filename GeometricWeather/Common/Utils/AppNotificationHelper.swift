@@ -90,8 +90,8 @@ func resetTodayForecastPendingNotification(weather: Weather) {
     let unit = SettingsManager.shared.temperatureUnit
     
     let content = UNMutableNotificationContent()
-    content.title = NSLocalizedString("today", comment: "")
-    content.body = NSLocalizedString("daytime", comment: "")
+    content.title = getLocalizedText("today")
+    content.body = getLocalizedText("daytime")
     + " "
     + weather.dailyForecasts[0].day.weatherText
     + " "
@@ -100,7 +100,7 @@ func resetTodayForecastPendingNotification(weather: Weather) {
         unit: "°"
     )
     + "\n"
-    + NSLocalizedString("nighttime", comment: "")
+    + getLocalizedText("nighttime")
     + " "
     + weather.dailyForecasts[0].night.weatherText
     + " "
@@ -139,8 +139,8 @@ func resetTomorrowForecastPendingNotification(weather: Weather) {
     let unit = SettingsManager.shared.temperatureUnit
     
     let content = UNMutableNotificationContent()
-    content.title = NSLocalizedString("tomorrow", comment: "")
-    content.body = NSLocalizedString("daytime", comment: "")
+    content.title = getLocalizedText("tomorrow")
+    content.body = getLocalizedText("daytime")
     + " "
     + weather.dailyForecasts[1].day.weatherText
     + " "
@@ -149,7 +149,7 @@ func resetTomorrowForecastPendingNotification(weather: Weather) {
         unit: "°"
     )
     + "\n"
-    + NSLocalizedString("nighttime", comment: "")
+    + getLocalizedText("nighttime")
     + " "
     + weather.dailyForecasts[1].night.weatherText
     + " "
@@ -207,11 +207,11 @@ func checkToPushPrecipitationNotification(weather: Weather) {
     )
     
     let content = UNMutableNotificationContent()
-    content.title = NSLocalizedString("precipitation_overview", comment: "")
+    content.title = getLocalizedText("precipitation_overview")
     if isLiquidDay(weather) {
-        content.body = NSLocalizedString("feedback_today_precipitation_alert", comment: "")
+        content.body = getLocalizedText("feedback_today_precipitation_alert")
     } else {
-        content.body = NSLocalizedString("feedback_short_term_precipitation_alert", comment: "")
+        content.body = getLocalizedText("feedback_short_term_precipitation_alert")
     }
     content.badge = NSNumber(value: 1)
     content.threadIdentifier = precipitationNotificationGroupIdentifier

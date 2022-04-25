@@ -46,15 +46,12 @@ struct SettingsListCellView: View {
             Spacer()
             
             Picker(
-                NSLocalizedString(
-                    self.keys[self.selectedIndex.wrappedValue],
-                    comment: ""
-                ),
+                getLocalizedText(self.keys[self.selectedIndex.wrappedValue]),
                 selection: self.selectedIndex
             ) {
                 ForEach(self.keys.indices) { index in
                     Text(
-                        NSLocalizedString(self.keys[index], comment: "")
+                        getLocalizedText(self.keys[index])
                     )
                 }
             }.pickerStyle(
@@ -78,8 +75,18 @@ struct SettingsListCellView: View {
 struct SettingsTimePickerCellView: View {
     
     let titleKey: String
-    
+    let enabled: Bool
     let selectedDate: Binding<Date>
+    
+    init(
+        titleKey: String,
+        enabled: Bool = true,
+        selectedDate: Binding<Date>
+    ) {
+        self.titleKey = titleKey
+        self.enabled = enabled
+        self.selectedDate = selectedDate
+    }
     
     var body: some View {
         DatePicker(
@@ -107,6 +114,10 @@ struct SettingsTimePickerCellView: View {
                 bottom: littleMargin / 2.0,
                 trailing: 0.0
             )
+        ).opacity(
+            self.enabled ? 1.0 : 0.5
+        ).disabled(
+            !self.enabled
         )
     }
 }

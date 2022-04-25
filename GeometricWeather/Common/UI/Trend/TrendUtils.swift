@@ -29,4 +29,3 @@ let trendPolylineZ = 2.0
 let trendSubviewsZ = 3.0
 
 typealias PolylineTrend = (start: Double?, center: Double, end: Double?)
-typealias HorizontalLineDescription = (leading: String, trailing: String)

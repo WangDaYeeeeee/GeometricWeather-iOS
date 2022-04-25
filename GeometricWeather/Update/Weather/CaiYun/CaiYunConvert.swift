@@ -154,45 +154,45 @@ func generateWeather(
 
 private func getWeatherText(_ skycon: String) -> String {
     if skycon.contains("CLEAR") {
-        return NSLocalizedString("weather_clear", comment: "")
+        return getLocalizedText("weather_clear")
     }
     if skycon.contains("PARTLY_CLOUDY") {
-        return NSLocalizedString("weather_partly_cloudy", comment: "")
+        return getLocalizedText("weather_partly_cloudy")
     }
     if skycon.contains("CLOUDY") {
-        return NSLocalizedString("weather_cloudy", comment: "")
+        return getLocalizedText("weather_cloudy")
     }
     if skycon.contains("HAZE") {
-        return NSLocalizedString("weather_haze", comment: "")
+        return getLocalizedText("weather_haze")
     }
     if skycon == "LIGHT_RAIN" {
-        return NSLocalizedString("weather_light_rain", comment: "")
+        return getLocalizedText("weather_light_rain")
     }
     if skycon == "MODERATE_RAIN" {
-        return NSLocalizedString("weather_moderate_rain", comment: "")
+        return getLocalizedText("weather_moderate_rain")
     }
     if skycon.contains("RAIN") {
-        return NSLocalizedString("weather_heavy_rain", comment: "")
+        return getLocalizedText("weather_heavy_rain")
     }
     if skycon.contains("FOG") {
-        return NSLocalizedString("weather_fog", comment: "")
+        return getLocalizedText("weather_fog")
     }
     if skycon == "LIGHT_SNOW" {
-        return NSLocalizedString("weather_light_snow", comment: "")
+        return getLocalizedText("weather_light_snow")
     }
     if skycon == "MODERATE_SNOW" {
-        return NSLocalizedString("weather_moderate_snow", comment: "")
+        return getLocalizedText("weather_moderate_snow")
     }
     if skycon.contains("SNOW") {
-        return NSLocalizedString("weather_heavy_snow", comment: "")
+        return getLocalizedText("weather_heavy_snow")
     }
     if skycon.contains("DUST") {
-        return NSLocalizedString("weather_dust", comment: "")
+        return getLocalizedText("weather_dust")
     }
     if skycon.contains("SAND") {
-        return NSLocalizedString("weather_sand", comment: "")
+        return getLocalizedText("weather_sand")
     }
-    return NSLocalizedString("weather_wind", comment: "")
+    return getLocalizedText("weather_wind")
 }
 
 // TODO: wind direction description.
@@ -200,51 +200,51 @@ private func getWindDirectionText(_ direction: Double) -> String? {
     let d = direction.truncatingRemainder(dividingBy: 360.0)
     
     if 348.75 < d || d <= 11.25 {
-        return NSLocalizedString("wind_direction_n", comment: "")
+        return getLocalizedText("wind_direction_n")
     }
     if 11.25 < d && d <= 33.75 {
-        return NSLocalizedString("wind_direction_nne", comment: "")
+        return getLocalizedText("wind_direction_nne")
     }
     if 33.75 < d && d <= 56.25 {
-        return NSLocalizedString("wind_direction_ne", comment: "")
+        return getLocalizedText("wind_direction_ne")
     }
     if 56.25 < d && d <= 78.75 {
-        return NSLocalizedString("wind_direction_ene", comment: "")
+        return getLocalizedText("wind_direction_ene")
     }
     if 78.75 < d && d <= 101.25 {
-        return NSLocalizedString("wind_direction_e", comment: "")
+        return getLocalizedText("wind_direction_e")
     }
     if 101.25 < d && d <= 123.75 {
-        return NSLocalizedString("wind_direction_ese", comment: "")
+        return getLocalizedText("wind_direction_ese")
     }
     if 123.75 < d && d <= 146.25 {
-        return NSLocalizedString("wind_direction_se", comment: "")
+        return getLocalizedText("wind_direction_se")
     }
     if 146.25 < d && d <= 168.75 {
-        return NSLocalizedString("wind_direction_sse", comment: "")
+        return getLocalizedText("wind_direction_sse")
     }
     if 168.75 < d && d <= 191.25 {
-        return NSLocalizedString("wind_direction_s", comment: "")
+        return getLocalizedText("wind_direction_s")
     }
     if 191.25 < d && d <= 213.75 {
-        return NSLocalizedString("wind_direction_ssw", comment: "")
+        return getLocalizedText("wind_direction_ssw")
     }
     if 213.75 < d && d <= 236.25 {
-        return NSLocalizedString("wind_direction_sw", comment: "")
+        return getLocalizedText("wind_direction_sw")
     }
     if 236.25 < d && d <= 258.75 {
-        return NSLocalizedString("wind_direction_wsw", comment: "")
+        return getLocalizedText("wind_direction_wsw")
     }
     if 258.75 < d && d <= 281.25 {
-        return NSLocalizedString("wind_direction_w", comment: "")
+        return getLocalizedText("wind_direction_w")
     }
     if 281.25 < d && d <= 303.75 {
-        return NSLocalizedString("wind_direction_wnw", comment: "")
+        return getLocalizedText("wind_direction_wnw")
     }
     if 303.75 < d && d <= 326.25 {
-        return NSLocalizedString("wind_direction_nw", comment: "")
+        return getLocalizedText("wind_direction_nw")
     }
-    return NSLocalizedString("wind_direction_nnw", comment: "")
+    return getLocalizedText("wind_direction_nnw")
 }
 
 private func getWeatherCode(_ skycon: String) -> WeatherCode {

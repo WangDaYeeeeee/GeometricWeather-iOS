@@ -26,12 +26,9 @@ struct DailyItemView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 2.0) {
             Text(
-                self.weather.dailyForecasts[index].isToday(
-                    timezone: self.timezone
-                ) ? NSLocalizedString(
-                    "today",
-                    comment: ""
-                ) : getWeekText(
+                self.weather.dailyForecasts[index].isToday(timezone: self.timezone)
+                ? getLocalizedText("today")
+                : getWeekText(
                     week: self.weather.dailyForecasts[index].getWeek(
                         timezone: self.timezone
                     )

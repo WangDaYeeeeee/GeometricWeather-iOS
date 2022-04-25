@@ -92,7 +92,7 @@ class SearchTableViewCell: UITableViewCell {
         }
         
         self.titleLabel.text = location.currentPosition
-        ? NSLocalizedString("current_location", comment: "")
+        ? getLocalizedText("current_location")
         : getLocationText(location: location)
         
         if location.residentPosition && location.weather != nil {

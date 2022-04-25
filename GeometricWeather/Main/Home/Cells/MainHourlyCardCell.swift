@@ -46,8 +46,8 @@ class MainHourlyCardCell: MainTableViewCell,
     private let hourlyTagView = MainSelectableTagView(frame: .zero)
     
     private let hourlyTrendGroupView = UIView(frame: .zero)
-    private let hourlyBackgroundView = HourlyTrendCellBackgroundView(frame: .zero)
     private let hourlyCollectionView = MainTrendShaderCollectionView(frame: .zero)
+    private let hourlyBackgroundView = MainTrendBackgroundView(frame: .zero)
     
     private let minutelyTitleVibrancyContainer = UIVisualEffectView(
         effect: UIVibrancyEffect(
@@ -63,7 +63,7 @@ class MainHourlyCardCell: MainTableViewCell,
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
                 
-        self.cardTitle.text = NSLocalizedString("hourly_overview", comment: "")
+        self.cardTitle.text = getLocalizedText("hourly_overview")
         
         self.vstack.axis = .vertical
         self.vstack.alignment = .center
@@ -81,20 +81,9 @@ class MainHourlyCardCell: MainTableViewCell,
         self.hourlyTagView.tagDelegate = self
         self.vstack.addArrangedSubview(self.hourlyTagView)
         
+        self.registerCells(collectionView: self.hourlyCollectionView)
         self.hourlyCollectionView.delegate = self
         self.hourlyCollectionView.dataSource = self
-        self.hourlyCollectionView.register(
-            HourlyTrendCollectionViewCell.self,
-            forCellWithReuseIdentifier: HourlyTag.temperature.rawValue
-        )
-        self.hourlyCollectionView.register(
-            HourlyWindCollectionViewCell.self,
-            forCellWithReuseIdentifier: HourlyTag.wind.rawValue
-        )
-        self.hourlyCollectionView.register(
-            HourlyPrecipitationCollectionViewCell.self,
-            forCellWithReuseIdentifier: HourlyTag.precipitation.rawValue
-        )
         self.hourlyTrendGroupView.addSubview(self.hourlyCollectionView)
         
         self.hourlyBackgroundView.isUserInteractionEnabled = false
@@ -102,10 +91,7 @@ class MainHourlyCardCell: MainTableViewCell,
         
         self.vstack.addArrangedSubview(self.hourlyTrendGroupView)
         
-        self.minutelyTitle.text = NSLocalizedString(
-            "precipitation_overview",
-            comment: ""
-        )
+        self.minutelyTitle.text = getLocalizedText("precipitation_overview")
         self.minutelyTitle.font = titleFont
         self.minutelyTitleVibrancyContainer.contentView.addSubview(self.minutelyTitle)
         
@@ -208,11 +194,6 @@ class MainHourlyCardCell: MainTableViewCell,
             }
             self.hourlyTagView.tagList = titles
             
-            self.hourlyBackgroundView.bindData(
-                weather: weather,
-                temperatureRange: self.temperatureRange ?? 0...0
-            )
-            
             // minutely.
             
             guard let minutely = weather.minutelyForecast else {
@@ -268,11 +249,6 @@ class MainHourlyCardCell: MainTableViewCell,
         super.traitCollectionDidChange(previousTraitCollection)
         DispatchQueue.main.async {
             self.hourlyCollectionView.reloadData()
-            
-            if let weather = self.weather,
-               let range = self.temperatureRange {
-                self.hourlyBackgroundView.bindData(weather: weather, temperatureRange: range)
-            }
         }
     }
     
@@ -281,8 +257,8 @@ class MainHourlyCardCell: MainTableViewCell,
             self.hourlyCollectionView.reloadData()
         }
     }
-    
-    // MARK: - delegates.
+        
+    // MARK: - collection view delegate.
     
     // collection view delegate flow layout.
     
@@ -389,7 +365,7 @@ class MainHourlyCardCell: MainTableViewCell,
         )
     }
     
-    // selectable tag view.
+    // MARK: - selectable tag view delegate.
     
     func getSelectedColor() -> UIColor {
         return .systemBlue
@@ -406,7 +382,6 @@ class MainHourlyCardCell: MainTableViewCell,
     
     func onSelectedChanged(newSelectedIndex: Int) {
         self.currentTag = self.tagList[newSelectedIndex].tag
-        self.hourlyBackgroundView.isHidden = self.tagList[newSelectedIndex].tag != .temperature
         
         self.hourlyCollectionView.scrollToItem(
             at: IndexPath(row: 0, section: 0),
@@ -415,5 +390,15 @@ class MainHourlyCardCell: MainTableViewCell,
         )
         self.hourlyCollectionView.collectionViewLayout.invalidateLayout()
         self.hourlyCollectionView.reloadData()
+        
+        self.bindTrendBackground(
+            trendBackgroundView: self.hourlyBackgroundView,
+            currentTag: self.currentTag,
+            weather: self.weather,
+            source: self.source,
+            timezone: self.timezone ?? .current,
+            temperatureRange: self.temperatureRange ?? 0...0,
+            maxWindSpeed: self.maxWindSpeed ?? 0
+        )
     }
 }

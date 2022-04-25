@@ -107,6 +107,24 @@ public func getTrenItemDisplayCount() -> Int {
 
 // MARK: - text.
 
+public func getLocalizedText(_ key: String) -> String {
+    let defaultValue = NSLocalizedString(
+        key,
+        tableName: "Default",
+        bundle: .module,
+        value: "",
+        comment: ""
+    )
+    
+    return NSLocalizedString(
+        key,
+        tableName: nil,
+        bundle: .module,
+        value: defaultValue,
+        comment: ""
+    )
+}
+
 public func getLocationText(location: Location) -> String {
     if !location.district.isEmpty {
         return location.district
@@ -118,17 +136,17 @@ public func getLocationText(location: Location) -> String {
         return location.province
     }
     if location.currentPosition {
-        return NSLocalizedString("current_location", comment: "")
+        return getLocalizedText("current_location")
     }
     return ""
 }
 
 public func getWeekText(week: Int) -> String {
-    return NSLocalizedString("week_\(week)", comment: "")
+    return getLocalizedText("week_\(week)")
 }
 
 public func getHourText(hour: Int) -> String {
-    return "\(hour)\(NSLocalizedString("of_clock", comment: ""))"
+    return "\(hour)\(getLocalizedText("of_clock"))"
 }
 
 public func getAirQualityText(level: Int) -> String {
@@ -136,7 +154,7 @@ public func getAirQualityText(level: Int) -> String {
         return ""
     }
     
-    return NSLocalizedString("aqi_\(level)", comment: "")
+    return getLocalizedText("aqi_\(level)")
 }
 
 public func getWindLevelText(level: Int) -> String {
@@ -144,7 +162,7 @@ public func getWindLevelText(level: Int) -> String {
         return ""
     }
     
-    return NSLocalizedString("wind_\(level)", comment: "")
+    return getLocalizedText("wind_\(level)")
 }
 
 public func getShortWindText(wind: Wind) -> String {
@@ -167,7 +185,7 @@ public func getWindText(wind: Wind, unit: SpeedUnit) -> String {
     if let speed = wind.speed {
         text += unit.formatValueWithUnit(
             speed,
-            unit: NSLocalizedString("speed_unit_kph", comment: "")
+            unit: getLocalizedText("speed_unit_kph")
         ) + " "
     }
     

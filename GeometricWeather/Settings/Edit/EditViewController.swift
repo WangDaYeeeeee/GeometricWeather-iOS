@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GeometricWeatherBasic
 
 class EditViewController: GeoViewController<Void> {
     
@@ -15,7 +16,7 @@ class EditViewController: GeoViewController<Void> {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        self.navigationItem.title = NSLocalizedString("settings_title_card_display", comment: "")
+        self.navigationItem.title = getLocalizedText("settings_title_card_display")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "arrow.counterclockwise"),
             style: .plain,

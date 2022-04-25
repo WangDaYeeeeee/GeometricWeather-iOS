@@ -35,7 +35,7 @@ class MainAirQualityCardCell: MainTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.cardTitle.text = NSLocalizedString("air_quality", comment: "")
+        self.cardTitle.text = getLocalizedText("air_quality")
         
         self.hstack.axis = .horizontal
         self.hstack.alignment = .center

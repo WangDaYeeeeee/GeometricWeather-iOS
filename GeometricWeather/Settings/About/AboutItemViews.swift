@@ -17,7 +17,7 @@ struct AboutHeader: View {
             VStack(spacing: 8) {
                 Image(
                     uiImage: UIImage(
-                        named: "launch_icon"
+                        namedInBasic: "launch_icon"
                     )!.scaleToSize(
                         CGSize(width: 156, height: 156)
                     )!
@@ -61,7 +61,7 @@ struct AboutSectionTitle: View {
     
     var body: some View {
         Text(
-            NSLocalizedString(key, comment: "")
+            getLocalizedText(key)
         ).font(
             Font(bodyFont)
         ).foregroundColor(
@@ -80,7 +80,7 @@ struct AboutAppItem: View {
             Image(systemName: self.icon)
             
             Text(
-                NSLocalizedString(key, comment: "")
+                getLocalizedText(key)
             ).font(
                 Font(titleFont)
             ).foregroundColor(

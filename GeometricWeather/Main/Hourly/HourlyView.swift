@@ -46,10 +46,7 @@ class HourlyView: UIView {
             
             let subtitleLabel = UILabel(frame: .zero)
             subtitleLabel.text = hourly.formatDate(
-                format: NSLocalizedString(
-                    "date_format_widget_long",
-                    comment: ""
-                )
+                format: getLocalizedText("date_format_widget_long")
             )
             subtitleLabel.textColor = .tertiaryLabel
             subtitleLabel.font = captionFont
@@ -76,16 +73,10 @@ class HourlyView: UIView {
                 let precipitationIntensityUnit = SettingsManager.shared.precipitationIntensityUnit
                 
                 let item = HourlyItemView(
-                    title: NSLocalizedString(
-                        "precipitation_intensity",
-                        comment: ""
-                    ),
+                    title: getLocalizedText("precipitation_intensity"),
                     content: precipitationIntensityUnit.formatValueWithUnit(
                         precipitationIntensity,
-                        unit: NSLocalizedString(
-                            precipitationIntensityUnit.key,
-                            comment: ""
-                        )
+                        unit: getLocalizedText(precipitationIntensityUnit.key)
                     )
                 )
                 stack2.addArrangedSubview(item)
@@ -97,7 +88,7 @@ class HourlyView: UIView {
             if let precipitationProb = hourly.precipitationProbability {
                 if precipitationProb > 0 {
                     let item = HourlyItemView(
-                        title: NSLocalizedString("precipitation_probability", comment: ""),
+                        title: getLocalizedText("precipitation_probability"),
                         content: "\(Int(precipitationProb))%"
                     )
                     stack2.addArrangedSubview(item)
@@ -109,7 +100,7 @@ class HourlyView: UIView {
             }
             if let wind = hourly.wind {
                 let item = HourlyItemView(
-                    title: NSLocalizedString("wind", comment: ""),
+                    title: getLocalizedText("wind"),
                     content: getWindText(
                         wind: wind,
                         unit: SettingsManager.shared.speedUnit
@@ -161,7 +152,7 @@ private class HourlyHeaderView: UIView {
         + ", "
         + tempUnit.formatValueWithUnit(
             hourly.temperature.temperature,
-            unit: NSLocalizedString(tempUnit.key, comment: "")
+            unit: getLocalizedText(tempUnit.key)
         )
         self.titleLabel.textColor = .label
         self.titleLabel.font = titleFont

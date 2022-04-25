@@ -18,23 +18,28 @@ struct WeatherWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        Group {
-            switch self.family {
-            case .systemSmall:
-                WeatherWidgetSmallView(location: self.entry.location)
-            case .systemMedium:
-                WeatherWidgetMediumView(location: self.entry.location)
-            default:
-                WeatherWidgetLargeView(location: self.entry.location)
-            }
-        }.background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
-                weatherKind: weatherCodeToWeatherKind(
-                    code: self.entry.location.weather?.current.weatherCode ?? .clear
-                ),
-                daylight: self.entry.location.daylight
+        if let location = self.entry.location,
+            let weather = self.entry.location?.weather {
+            Group {
+                switch self.family {
+                case .systemSmall:
+                    WeatherWidgetSmallView(location: location)
+                case .systemMedium:
+                    WeatherWidgetMediumView(location: location)
+                default:
+                    WeatherWidgetLargeView(location: location)
+                }
+            }.background(
+                ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                    weatherKind: weatherCodeToWeatherKind(
+                        code: weather.current.weatherCode
+                    ),
+                    daylight: location.daylight
+                )
             )
-        )
+        } else {
+            PlaceholderView()
+        }
     }
 }
 
@@ -52,7 +57,7 @@ struct WeatherWidget: Widget {
         ) { entry in
             WeatherWidgetEntryView(entry: entry)
         }.configurationDisplayName(
-            NSLocalizedString("forecast", comment: "")
+            getLocalizedText("forecast")
         ).supportedFamilies(
             [.systemSmall, .systemMedium, .systemLarge]
         )

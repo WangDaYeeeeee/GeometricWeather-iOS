@@ -8,7 +8,7 @@
 import UIKit
 import GeometricWeatherBasic
 
-class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
+class HourlyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -16,6 +16,26 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
     private let dateLabel = UILabel(frame: .zero)
     private let hourlyIcon = UIImageView(frame: .zero)
     private let trendView = HistogramView(frame: .zero)
+    
+    // MARK: - inner data.
+        
+    var trendPaddingTop: CGFloat {
+        get {
+            return self.trendView.paddingTop
+        }
+        set {
+            self.trendView.paddingTop = newValue
+        }
+    }
+    
+    var trendPaddingBottom: CGFloat {
+        get {
+            return self.trendView.paddingBottom
+        }
+        set {
+            self.trendView.paddingBottom = newValue
+        }
+    }
     
     // MARK: - cell life cycle.
     
@@ -39,7 +59,6 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
         self.hourlyIcon.contentMode = .scaleAspectFit
         self.contentView.addSubview(self.hourlyIcon)
         
-        self.trendView.paddingBottom = normalMargin
         self.contentView.addSubview(self.trendView)
                 
         self.hourLabel.snp.makeConstraints { make in
@@ -74,7 +93,8 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
     func bindData(
         hourly: Hourly,
         timezone: TimeZone,
-        histogramType: HourlyPrecipitationHistogramType
+        histogramType: HourlyPrecipitationHistogramType,
+        useAccentColorForDate: Bool
     ) {
         self.hourLabel.text = getHourText(
             hour: hourly.getHour(
@@ -84,8 +104,11 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
         )
         
         self.dateLabel.text = hourly.formatDate(
-            format: NSLocalizedString("date_format_short", comment: "")
+            format: getLocalizedText("date_format_short")
         )
+        self.dateLabel.textColor = useAccentColorForDate
+        ? .secondaryLabel
+        : .tertiaryLabel
         
         self.hourlyIcon.image = UIImage.getWeatherIcon(
             weatherCode: hourly.weatherCode,
@@ -168,28 +191,6 @@ class HourlyPrecipitationCollectionViewCell: UICollectionViewCell {
             
         case .none:
             self.trendView.highValue = nil
-        }
-    }
-    
-    // MARK: - cell selection.
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if (self.isHighlighted) {
-                self.contentView.layer.removeAllAnimations()
-                self.contentView.alpha = 0.5
-            } else {
-                self.contentView.layer.removeAllAnimations()
-                UIView.animate(
-                    withDuration: 0.45,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 1.0
-                } completion: { _ in
-                    // do nothing.
-                }
-            }
         }
     }
 }

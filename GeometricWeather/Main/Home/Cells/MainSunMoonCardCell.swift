@@ -37,7 +37,7 @@ class MainSunMoonCardCell: MainTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.cardTitle.text = NSLocalizedString("sunrise_sunset", comment: "")
+        self.cardTitle.text = getLocalizedText("sunrise_sunset")
         
         self.cardContainer.contentView.addSubview(self.moonPhaseView)
         
@@ -152,9 +152,8 @@ class MainSunMoonCardCell: MainTableViewCell {
                 self.moonPhaseView.angle = Double(angle)
                 self.moonPhaseView.lightColor = .white
                 
-                self.moonPhaseLabel.text = NSLocalizedString(
-                    weather.dailyForecasts[0].moonPhase.getMoonPhaseKey(),
-                    comment: ""
+                self.moonPhaseLabel.text = getLocalizedText(
+                    weather.dailyForecasts[0].moonPhase.getMoonPhaseKey()
                 )
             } else {
                 self.moonPhaseView.alpha = 0.0

@@ -12,9 +12,7 @@ private func toRadians(_ degrees: Double) -> Double {
     return degrees * .pi / 180.0
 }
 
-// MARK: - cell.
-
-class HourlyWindCollectionViewCell: UICollectionViewCell {
+class HourlyWindCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -22,6 +20,26 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
     private let dateLabel = UILabel(frame: .zero)
     private let hourlyIcon = UIImageView(frame: .zero)
     private let histogramView = HistogramView(frame: .zero)
+    
+    // MARK: - inner data.
+    
+    var trendPaddingTop: CGFloat {
+        get {
+            return self.histogramView.paddingTop
+        }
+        set {
+            self.histogramView.paddingTop = newValue
+        }
+    }
+    
+    var trendPaddingBottom: CGFloat {
+        get {
+            return self.histogramView.paddingBottom
+        }
+        set {
+            self.histogramView.paddingBottom = newValue
+        }
+    }
     
     // MARK: - cell life cycle.
     
@@ -44,7 +62,6 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         self.hourlyIcon.contentMode = .center
         self.contentView.addSubview(self.hourlyIcon)
         
-        self.histogramView.paddingBottom = normalMargin
         self.contentView.addSubview(self.histogramView)
         
         self.hourLabel.snp.makeConstraints { make in
@@ -79,7 +96,8 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
     func bindData(
         hourly: Hourly,
         maxWindSpeed: Double,
-        timezone: TimeZone
+        timezone: TimeZone,
+        useAccentColorForDate: Bool
     ) {
         self.hourLabel.text = getHourText(
             hour: hourly.getHour(
@@ -89,8 +107,11 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
         )
         
         self.dateLabel.text = hourly.formatDate(
-            format: NSLocalizedString("date_format_short", comment: "")
+            format: getLocalizedText("date_format_short")
         )
+        self.dateLabel.textColor = useAccentColorForDate
+        ? .secondaryLabel
+        : .tertiaryLabel
         
         if !(hourly.wind?.degree.noDirection ?? true) {
             self.hourlyIcon.image = UIImage(
@@ -139,104 +160,4 @@ class HourlyWindCollectionViewCell: UICollectionViewCell {
             hourly.wind?.getWindLevel() ?? 1
         )
     }
-    
-    // MARK: - cell selection.
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if (self.isHighlighted) {
-                self.contentView.layer.removeAllAnimations()
-                self.contentView.alpha = 0.5
-            } else {
-                self.contentView.layer.removeAllAnimations()
-                UIView.animate(
-                    withDuration: 0.45,
-                    delay: 0.0,
-                    options: [.allowUserInteraction, .beginFromCurrentState]
-                ) {
-                    self.contentView.alpha = 1.0
-                } completion: { _ in
-                    // do nothing.
-                }
-            }
-        }
-    }
 }
-
-// MARK: - background.
-
-class HourlyWindCellBackgroundView: UIView {
-    
-    // MARK: - background subviews.
-    
-    private let hourLabel = UILabel(frame: .zero)
-    
-    private let horizontalLinesView = HorizontalLinesBackgroundView(frame: .zero)
-    
-    // MARK: - background life cycle.
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .clear
-        
-        self.hourLabel.text = "A"
-        self.hourLabel.font = bodyFont
-        self.hourLabel.textColor = .clear
-        self.hourLabel.textAlignment = .center
-        self.hourLabel.numberOfLines = 1
-        self.addSubview(self.hourLabel)
-        
-        self.addSubview(self.horizontalLinesView)
-        
-        self.hourLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(mainTrendInnerMargin)
-            make.leading.equalToSuperview().offset(mainTrendInnerMargin)
-            make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
-        }
-        self.horizontalLinesView.snp.makeConstraints { make in
-            make.top.equalTo(self.hourLabel.snp.bottom).offset(littleMargin + mainTrendIconSize)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bindData(
-        maxWindSpeed: Double
-    ) {
-        if maxWindSpeed > windSpeedLevel4 {
-            self.horizontalLinesView.lowValue = windSpeedLevel4 / maxWindSpeed
-            
-            self.horizontalLinesView.lowDescription = (
-                SettingsManager.shared.speedUnit.formatValueWithUnit(
-                    windSpeedLevel4,
-                    unit: SettingsManager.shared.speedUnit.key
-                ),
-                NSLocalizedString("wind_4", comment: "")
-            )
-        } else {
-            self.horizontalLinesView.lowValue = nil
-        }
-        if maxWindSpeed > windSpeedLevel6 {
-            self.horizontalLinesView.highValue = windSpeedLevel6 / maxWindSpeed
-            
-            self.horizontalLinesView.highDescription = (
-                SettingsManager.shared.speedUnit.formatValueWithUnit(
-                    windSpeedLevel6,
-                    unit: SettingsManager.shared.speedUnit.key
-                ),
-                NSLocalizedString("wind_6", comment: "")
-            )
-        } else {
-            self.horizontalLinesView.highValue = nil
-        }
-        
-        self.horizontalLinesView.highLineColor = .gray
-        self.horizontalLinesView.lowLineColor = .gray
-    }
-}
-

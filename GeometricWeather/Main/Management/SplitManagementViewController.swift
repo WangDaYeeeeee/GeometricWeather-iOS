@@ -37,11 +37,10 @@ class SplitManagementViewController: BaseManagementController,
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         
-        self.navigationItem.title = NSLocalizedString("action_manage", comment: "")
+        self.navigationItem.title = getLocalizedText("action_manage")
         
-        self.searchController.searchBar.placeholder = NSLocalizedString(
-            "feedback_search_location",
-            comment: ""
+        self.searchController.searchBar.placeholder = getLocalizedText(
+            "feedback_search_location"
         )
         self.searchController.searchBar.setImage(
             UIImage(systemName: "location.circle"),
@@ -81,12 +80,12 @@ class SplitManagementViewController: BaseManagementController,
                 strongSelf.searchController.dismiss(animated: true, completion: nil)
                 
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_succeed", comment: ""),
+                    getLocalizedText("feedback_collect_succeed"),
                     inWindowOfView: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_failed", comment: ""),
+                    getLocalizedText("feedback_collect_failed"),
                     inWindowOfView: strongSelf.view
                 )
             }
@@ -150,7 +149,7 @@ class SplitManagementViewController: BaseManagementController,
             )
         ) {
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_collect_succeed", comment: ""),
+                getLocalizedText("feedback_collect_succeed"),
                 inWindowOfView: self.view
             )
         }

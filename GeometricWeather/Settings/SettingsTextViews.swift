@@ -14,7 +14,7 @@ struct SettingsTitleView: View {
     
     var body: some View {
         Text(
-            NSLocalizedString(key, comment: "")
+            getLocalizedText(key)
         ).font(
             Font(titleFont)
         ).foregroundColor(
@@ -29,7 +29,7 @@ struct SettingsBodyView: View {
     
     var body: some View {
         Text(
-            NSLocalizedString(key, comment: "")
+            getLocalizedText(key)
         ).font(
             Font(bodyFont)
         ).foregroundColor(
@@ -44,7 +44,7 @@ struct SettingsCaptionView: View {
     
     var body: some View {
         Text(
-            NSLocalizedString(key, comment: "")
+            getLocalizedText(key)
         ).font(
             Font(captionFont)
         ).foregroundColor(

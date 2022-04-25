@@ -36,7 +36,7 @@ class MainAllergenCardCell: MainTableViewCell,
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.cardTitle.text = NSLocalizedString("allergen", comment: "")
+        self.cardTitle.text = getLocalizedText("allergen")
         
         self.allergenCollectionView.backgroundColor = .clear
         self.allergenCollectionView.showsVerticalScrollIndicator = false

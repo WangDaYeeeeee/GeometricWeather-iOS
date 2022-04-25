@@ -52,14 +52,14 @@ class MainDailyCardCell: MainTableViewCell,
     private let dailyTagView = MainSelectableTagView(frame: .zero)
     
     private let dailyCollectionView = MainTrendShaderCollectionView(frame: .zero)
-    private var dailyBackgroundView = DailyTrendCellBackgroundView(frame: .zero)
+    private var dailyBackgroundView = MainTrendBackgroundView(frame: .zero)
     
     // MARK: - life cycle.
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.cardTitle.text = NSLocalizedString("daily_overview", comment: "")
+        self.cardTitle.text = getLocalizedText("daily_overview")
         
         self.summaryLabel.font = miniCaptionFont;
         self.summaryLabel.textColor = .tertiaryLabel
@@ -70,28 +70,9 @@ class MainDailyCardCell: MainTableViewCell,
         self.dailyTagView.tagDelegate = self
         self.cardContainer.contentView.addSubview(self.dailyTagView)
         
+        self.registerCells(collectionView: self.dailyCollectionView)
         self.dailyCollectionView.delegate = self
         self.dailyCollectionView.dataSource = self
-        self.dailyCollectionView.register(
-            DailyTrendCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.temperature.rawValue
-        )
-        self.dailyCollectionView.register(
-            DailySingleWindCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.wind.rawValue
-        )
-        self.dailyCollectionView.register(
-            DailyAirQualityCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.aqi.rawValue
-        )
-        self.dailyCollectionView.register(
-            DailyUVCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.uv.rawValue
-        )
-        self.dailyCollectionView.register(
-            DailyPrecipitationCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.precipitation.rawValue
-        )
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         
         self.dailyBackgroundView.isUserInteractionEnabled = false
@@ -183,11 +164,6 @@ class MainDailyCardCell: MainTableViewCell,
                 titles.append(tagPair.title)
             }
             self.dailyTagView.tagList = titles
-            
-            if let weather = self.weather,
-               let range = self.temperatureRange {
-                self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
-            }
         }
     }
     
@@ -197,11 +173,6 @@ class MainDailyCardCell: MainTableViewCell,
         super.traitCollectionDidChange(previousTraitCollection)
         DispatchQueue.main.async {
             self.dailyCollectionView.reloadData()
-            
-            if let weather = self.weather,
-               let range = self.temperatureRange {
-                self.dailyBackgroundView.bindData(weather: weather, temperatureRange: range)
-            }
         }
     }
     
@@ -211,7 +182,7 @@ class MainDailyCardCell: MainTableViewCell,
         }
     }
     
-    // MARK: - delegates.
+    // MARK: - collection view delegate.
     
     // collection view delegate flow layout.
     
@@ -315,8 +286,8 @@ class MainDailyCardCell: MainTableViewCell,
         )
     }
     
-    // selectable tag view.
-    
+    // MARK: - selectable tag view delegate.
+        
     func getSelectedColor() -> UIColor {
         return .systemBlue
     }
@@ -332,7 +303,6 @@ class MainDailyCardCell: MainTableViewCell,
     
     func onSelectedChanged(newSelectedIndex: Int) {
         self.currentTag = self.tagList[newSelectedIndex].tag
-        self.dailyBackgroundView.isHidden = self.tagList[newSelectedIndex].tag != .temperature
         
         self.dailyCollectionView.scrollToItem(
             at: IndexPath(row: 0, section: 0),
@@ -341,5 +311,17 @@ class MainDailyCardCell: MainTableViewCell,
         )
         self.dailyCollectionView.collectionViewLayout.invalidateLayout()
         self.dailyCollectionView.reloadData()
+        
+        self.bindTrendBackground(
+            trendBackgroundView: self.dailyBackgroundView,
+            currentTag: self.currentTag,
+            weather: self.weather,
+            source: self.source,
+            timezone: self.timezone ?? .current,
+            temperatureRange: self.temperatureRange ?? 0...0,
+            maxWindSpeed: self.maxWindSpeed ?? 0,
+            maxAqiIndex: self.maxAqiIndex ?? 0,
+            maxUVIndex: self.maxUVIndex ?? 0
+        )
     }
 }

@@ -7,270 +7,153 @@
 
 import UIKit
 import GeometricWeatherBasic
+import SwiftUI
+
+struct HorizontalLine: Identifiable {
+    let id = UUID()
+    
+    let value: Double
+    let leadingDescription: String
+    let trailingDescription: String
+}
 
 class HorizontalLinesBackgroundView: UIView {
+        
+    // MARK: - properties.
     
-    // MARK: - data.
-    
-    // data.
-    
-    var highValue: Double? {
+    var highLines = [HorizontalLine]() {
         didSet {
-            self.sizeCache = .zero
-            self.highLeadingLabel.alpha = self.highValue == nil ? 0 : 1
-            self.highTrailingLabel.alpha = self.highValue == nil ? 0 : 1
             self.setNeedsLayout()
         }
     }
-    var lowValue: Double? {
+    var lowLines = [HorizontalLine]() {
         didSet {
-            self.sizeCache = .zero
-            self.lowLeadingLabel.alpha = self.highValue == nil ? 0 : 1
-            self.lowTrailingLabel.alpha = self.highValue == nil ? 0 : 1
             self.setNeedsLayout()
         }
     }
     
-    // color.
-    
-    var highLineColor: UIColor {
-        get {
-            return UIColor(
-                cgColor: self.highLineShape.strokeColor ?? CGColor(
-                    red: 0, green: 0, blue: 0, alpha: 0
-                )
-            )
-        }
-        set {
-            self.highLineShape.strokeColor = newValue.withAlphaComponent(
-                trendHorizontalLineAlpha
-            ).cgColor
-            
-            self.sizeCache = .zero
-            self.setNeedsLayout()
-        }
-    }
-    var lowLineColor: UIColor {
-        get {
-            return UIColor(
-                cgColor: self.lowLineShape.strokeColor ?? CGColor(
-                    red: 0, green: 0, blue: 0, alpha: 0
-                )
-            )
-        }
-        set {
-            self.lowLineShape.strokeColor = newValue.withAlphaComponent(
-                trendHorizontalLineAlpha
-            ).cgColor
-            
-            self.sizeCache = .zero
+    var lineColor: UIColor = .gray {
+        didSet {
             self.setNeedsLayout()
         }
     }
     
-    // text.
-    
-    var highDescription: HorizontalLineDescription {
-        get {
-            return (
-                self.highLeadingLabel.text ?? "",
-                self.highTrailingLabel.text ?? ""
-            )
-        }
-        set {
-            self.setLabel(
-                label: self.highLeadingLabel,
-                text: newValue.leading
-            )
-            self.setLabel(
-                label: self.highTrailingLabel,
-                text: newValue.trailing
-            )
-            
-            self.sizeCache = .zero
+    var paddingTop = trendPaddingTop {
+        didSet {
             self.setNeedsLayout()
         }
     }
-    var lowDescription: HorizontalLineDescription {
-        get {
-            return (
-                self.lowLeadingLabel.text ?? "",
-                self.lowTrailingLabel.text ?? ""
-            )
-        }
-        set {
-            self.setLabel(
-                label: self.lowLeadingLabel,
-                text: newValue.leading
-            )
-            self.setLabel(
-                label: self.lowTrailingLabel,
-                text: newValue.trailing
-            )
-            
-            self.sizeCache = .zero
+    var paddingBottom = trendPaddingBottom {
+        didSet {
             self.setNeedsLayout()
         }
     }
     
-    // inner data.
+    // MARK: - subviews and sublayers cache.
+    
+    private var labelCache = Set<UILabel>()
+    private var layerCache = Set<CAShapeLayer>()
+    
+    // MARK: - inner data.
     
     private var sizeCache = CGSize.zero
     
-    // MARK: - subviews.
-    
-    private let highLeadingLabel = UILabel(frame: .zero)
-    private let lowLeadingLabel = UILabel(frame: .zero)
-    
-    private let highTrailingLabel = UILabel(frame: .zero)
-    private let lowTrailingLabel = UILabel(frame: .zero)
-    
-    // MARK: - shapes.
-    
-    private let highLineShape = CAShapeLayer()
-    private let lowLineShape = CAShapeLayer()
-    
     // MARK: - life cycle.
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.frame = frame
-        
-        // subviews.
-        
-        self.highLeadingLabel.textColor = .tertiaryLabel
-        self.highLeadingLabel.font = miniCaptionFont
-        self.highLeadingLabel.layer.zPosition = trendSubviewsZ
-        self.addSubview(self.highLeadingLabel);
-        
-        self.highTrailingLabel.textColor = .tertiaryLabel
-        self.highTrailingLabel.font = miniCaptionFont
-        self.highTrailingLabel.layer.zPosition = trendSubviewsZ
-        self.addSubview(self.highTrailingLabel);
-        
-        self.lowLeadingLabel.textColor = .tertiaryLabel
-        self.lowLeadingLabel.font = miniCaptionFont
-        self.lowLeadingLabel.layer.zPosition = trendSubviewsZ
-        self.addSubview(self.lowLeadingLabel);
-        
-        self.lowTrailingLabel.textColor = .tertiaryLabel
-        self.lowTrailingLabel.font = miniCaptionFont
-        self.lowTrailingLabel.layer.zPosition = trendSubviewsZ
-        self.addSubview(self.lowTrailingLabel);
-        
-        // sublayers.
-        
-        self.highLineShape.lineCap = .round
-        self.highLineShape.lineWidth = trendHorizontalLineWidth
-        self.highLineShape.strokeColor = UIColor.separator.withAlphaComponent(
-            trendHorizontalLineAlpha
-        ).cgColor
-        self.highLineShape.fillColor = UIColor.clear.cgColor
-        self.highLineShape.zPosition = trendTimelineZ
-        self.layer.addSublayer(self.highLineShape)
-        
-        self.lowLineShape.lineCap = .round
-        self.lowLineShape.lineWidth = trendHorizontalLineWidth
-        self.lowLineShape.strokeColor = UIColor.separator.withAlphaComponent(
-            trendHorizontalLineAlpha
-        ).cgColor
-        self.lowLineShape.fillColor = UIColor.clear.cgColor
-        self.lowLineShape.zPosition = trendTimelineZ
-        self.layer.addSublayer(self.lowLineShape)
+    override func setNeedsLayout() {
+        self.sizeCache = .zero
+        super.setNeedsLayout()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.setNeedsLayout()
     }
     
     override func layoutSubviews() {
-        if sizeCache == self.frame.size {
+        if self.sizeCache == self.frame.size {
             return
         }
-        sizeCache = self.frame.size
+        self.sizeCache = self.frame.size
         
-        // sublayers.
-        
-        // remove all shape layers.
-        self.highLineShape.removeFromSuperlayer()
-        self.lowLineShape.removeFromSuperlayer()
-        
-        // add shape layers.
-        if let value = self.highValue {
-            self.setHorizontalLineShapeLayer(layer: self.highLineShape, value: value)
-            self.layer.addSublayer(self.highLineShape)
+        for label in self.labelCache {
+            label.removeFromSuperview()
         }
-        if let value = self.lowValue {
-            self.setHorizontalLineShapeLayer(layer: self.lowLineShape, value: value)
-            self.layer.addSublayer(self.lowLineShape)
+        self.labelCache.removeAll()
+        
+        for layer in self.layerCache {
+            layer.removeFromSuperlayer()
         }
+        self.layerCache.removeAll()
         
-        // subviews.
-        
-        if let value = self.highValue {
-            self.highLeadingLabel.center = CGPoint(
-                x: rtlX(0),
-                y: y(value) - self.highLeadingLabel.frame.height / 2 - trendTextMargin
-            )
-            self.alignEdge(label: self.highLeadingLabel)
+        for line in self.highLines {
+            let layer = self.generateHorizontalLine(value: line.value)
+            self.layer.addSublayer(layer)
+            self.layerCache.insert(layer)
             
-            self.highTrailingLabel.center = CGPoint(
-                x: rtlX(1),
-                y: y(value) - self.highTrailingLabel.frame.height / 2 - trendTextMargin
-            )
-            self.alignEdge(label: self.highTrailingLabel)
+            self.bindLabel(line: line, isHighLine: true)
         }
-        if let value = self.lowValue {
-            self.lowLeadingLabel.center = CGPoint(
-                x: rtlX(0),
-                y: y(value) + self.lowLeadingLabel.frame.height / 2 + trendTextMargin
-            )
-            self.alignEdge(label: self.lowLeadingLabel)
+        for line in self.lowLines {
+            let layer = self.generateHorizontalLine(value: line.value)
+            self.layer.addSublayer(layer)
+            self.layerCache.insert(layer)
             
-            self.lowTrailingLabel.center = CGPoint(
-                x: rtlX(1),
-                y: y(value) + self.lowTrailingLabel.frame.height / 2 + trendTextMargin
-            )
-            self.alignEdge(label: self.lowTrailingLabel)
+            self.bindLabel(line: line, isHighLine: false)
         }
     }
     
     // MARK: - ui.
-    
-    private func setLabel(label: UILabel, text: String) {
-        label.text = text
-        label.isHidden = text.isEmpty
-        label.sizeToFit()
-    }
-    
-    private func setHorizontalLineShapeLayer(layer: CAShapeLayer, value: Double) {
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: rtlX(0), y: y(value)))
-        path.addLine(to: CGPoint(x: rtlX(1), y: y(value)))
-        layer.path = path.cgPath
-    }
     
     private func rtlX(_ x: CGFloat) -> CGFloat {
         return (self.isRtl ? (1.0 - x) : x) * self.frame.width
     }
     
     private func y(_ y: CGFloat) -> CGFloat {
-        return self.frame.height - trendPaddingBottom - y * (
-            self.frame.height - trendPaddingTop - trendPaddingBottom
+        return self.frame.height - self.paddingBottom - y * (
+            self.frame.height - self.paddingTop - self.paddingBottom
         )
     }
     
-    private func alignEdge(label: UILabel) {
-        if label.center.x < self.frame.width / 2 {
-            label.frame.origin = CGPoint(
-                x: trendTextMargin,
-                y: label.frame.origin.y
-            )
-        } else {
-            label.frame.origin = CGPoint(
-                x: self.frame.width - label.frame.width - trendTextMargin,
-                y: label.frame.origin.y
-            )
-        }
+    private func generateHorizontalLine(value: Double) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        layer.strokeColor = self.lineColor.cgColor
+        layer.lineWidth = trendHorizontalLineWidth
+        
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: rtlX(0), y: y(value)))
+        path.addLine(to: CGPoint(x: rtlX(1), y: y(value)))
+        layer.path = path.cgPath
+        
+        return layer
+    }
+    
+    private func bindLabel(line: HorizontalLine, isHighLine: Bool) {
+        let leadingLabel = self.generateLabel(text: line.leadingDescription)
+        leadingLabel.center = CGPoint(x: rtlX(0.0), y: y(line.value))
+        leadingLabel.center = CGPoint(
+            x: leadingLabel.center.x + (self.isRtl ? -1 : 1) * (leadingLabel.frame.width * 0.5 + trendTextMargin),
+            y: leadingLabel.center.y + (isHighLine ? -1 : 1) * (leadingLabel.frame.height * 0.5 + trendTextMargin)
+        )
+        self.addSubview(leadingLabel)
+        self.labelCache.insert(leadingLabel)
+        
+        let trailingLabel = self.generateLabel(text: line.trailingDescription)
+        trailingLabel.center = CGPoint(x: rtlX(1.0), y: y(line.value))
+        trailingLabel.center = CGPoint(
+            x: trailingLabel.center.x + (self.isRtl ? 1 : -1) * (trailingLabel.frame.width * 0.5 + trendTextMargin),
+            y: trailingLabel.center.y + (isHighLine ? -1 : 1) * (trailingLabel.frame.height * 0.5 + trendTextMargin)
+        )
+        self.addSubview(trailingLabel)
+        self.labelCache.insert(trailingLabel)
+    }
+    
+    private func generateLabel(text: String) -> UILabel {
+        let label = UILabel(frame: .zero)
+        label.text = text
+        label.font = miniCaptionFont
+        label.textColor = .tertiaryLabel
+        label.frame = .zero
+        label.sizeToFit()
+        return label
     }
 }
+

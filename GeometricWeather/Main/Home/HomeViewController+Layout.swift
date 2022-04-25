@@ -27,10 +27,7 @@ extension HomeViewController {
             target: self,
             action: #selector(self.onSettingsButtonClicked)
         )
-        self.navigationItem.title = NSLocalizedString(
-            "action_home",
-            comment: ""
-        )
+        self.navigationItem.title = getLocalizedText("action_home")
         self.navigationItem.titleView = self.navigationBarTitleView
         
         self.weatherViewController.view.backgroundColor = .clear

@@ -53,7 +53,7 @@ class AlertViewController: GeoViewController<[WeatherAlert]>,
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.blurBackground.contentView.addSubview(self.tableView)
         
-        self.titleLabel.text = NSLocalizedString("action_alert", comment: "")
+        self.titleLabel.text = getLocalizedText("action_alert")
         self.titleLabel.font = titleFont
         self.titleLabel.textColor = .label
         self.titleContainer.addSubview(self.titleLabel)

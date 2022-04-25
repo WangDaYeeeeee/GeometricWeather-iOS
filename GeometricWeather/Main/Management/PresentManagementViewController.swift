@@ -40,10 +40,7 @@ class PresentManagementViewController: BaseManagementController,
         
         self.view.addSubview(self.blurBackground)
         
-        self.searchBar.placeholder = NSLocalizedString(
-            "feedback_search_location",
-            comment: ""
-        )
+        self.searchBar.placeholder = getLocalizedText("feedback_search_location")
         self.searchBar.setImage(
             UIImage(systemName: "location.circle"),
             for: .bookmark,
@@ -96,12 +93,12 @@ class PresentManagementViewController: BaseManagementController,
                 strongSelf.searching.value = false
                 
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_succeed", comment: ""),
+                    getLocalizedText("feedback_collect_succeed"),
                     inWindowOfView: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
-                    NSLocalizedString("feedback_collect_failed", comment: ""),
+                    getLocalizedText("feedback_collect_failed"),
                     inWindowOfView: strongSelf.view
                 )
             }
@@ -201,7 +198,7 @@ class PresentManagementViewController: BaseManagementController,
             )
         ) {
             ToastHelper.showToastMessage(
-                NSLocalizedString("feedback_collect_succeed", comment: ""),
+                getLocalizedText("feedback_collect_succeed"),
                 inWindowOfView: self.view
             )
         }

@@ -23,7 +23,7 @@ class MainDetailsCardCell: MainTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.cardTitle.text = NSLocalizedString("life_details", comment: "")
+        self.cardTitle.text = getLocalizedText("life_details")
         
         self.vstack.axis = .vertical
         self.cardContainer.contentView.addSubview(self.vstack)
@@ -63,11 +63,11 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "wind",
-                        title: NSLocalizedString("live", comment: "") + ": " + getWindText(
+                        title: getLocalizedText("live") + ": " + getWindText(
                             wind: weather.current.wind,
                             unit: SettingsManager.shared.speedUnit
                         ),
-                        body: NSLocalizedString("today", comment: "") + ": " + getWindText(
+                        body: getLocalizedText("today") + ": " + getWindText(
                             wind: wind,
                             unit: SettingsManager.shared.speedUnit
                         )
@@ -78,14 +78,14 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "wind",
-                        title: NSLocalizedString("live", comment: "") + ": " + getWindText(
+                        title: getLocalizedText("live") + ": " + getWindText(
                             wind: weather.current.wind,
                             unit: SettingsManager.shared.speedUnit
                         ),
-                        body: NSLocalizedString("daytime", comment: "") + ": " + getWindText(
+                        body: getLocalizedText("daytime") + ": " + getWindText(
                             wind: daytime,
                             unit: SettingsManager.shared.speedUnit
-                        ) + "\n" + NSLocalizedString("nighttime", comment: "") + ": " + getWindText(
+                        ) + "\n" + getLocalizedText("nighttime") + ": " + getWindText(
                             wind: nighttime,
                             unit: SettingsManager.shared.speedUnit
                         )
@@ -98,7 +98,7 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "drop",
-                        title: NSLocalizedString("humidity", comment: ""),
+                        title: getLocalizedText("humidity"),
                         body: getPercentText(
                             humidity,
                             decimal: 1
@@ -112,7 +112,7 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "sun.max",
-                        title: NSLocalizedString("uv_index", comment: ""),
+                        title: getLocalizedText("uv_index"),
                         body: weather.current.uv.getUVDescription()
                     )
                 )
@@ -124,10 +124,10 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "gauge",
-                        title: NSLocalizedString("pressure", comment: ""),
+                        title: getLocalizedText("pressure"),
                         body: unit.formatValueWithUnit(
                             pressure,
-                            unit: NSLocalizedString(unit.key, comment: "")
+                            unit: getLocalizedText(unit.key)
                         )
                     )
                 )
@@ -139,10 +139,10 @@ class MainDetailsCardCell: MainTableViewCell {
                 self.vstack.addArrangedSubview(
                     self.generateDetailItemView(
                         iconName: "eye",
-                        title: NSLocalizedString("visibility", comment: ""),
+                        title: getLocalizedText("visibility"),
                         body: unit.formatValueWithUnit(
                             visibility,
-                            unit: NSLocalizedString(unit.key, comment: "")
+                            unit: getLocalizedText(unit.key)
                         )
                     )
                 )

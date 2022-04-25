@@ -67,3 +67,6 @@ fastlane/test_output
 
 iOSInjectionProject/
 {"mode":"full","isActive":false}
+
+# Hide for opensource
+GeometricWeatherBasic/Sources/GeometricWeatherBasic/BuildConfig.swift

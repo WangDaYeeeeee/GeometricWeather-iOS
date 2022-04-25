@@ -90,15 +90,15 @@ private struct ReleaseConfig: BuildConfigProtocal {
     }
     
     var accuWeatherKey: String {
-        return ""
+        return "srRLeAmTroxPinDG8Aus3Ikl6tLGJd94"
     }
     
     var accuCurrentKey: String {
-        return ""
+        return "131778526309453295c9ce2350a79e87"
     }
     
     var accuAqiKey: String {
-        return ""
+        return "7f8c4da3ce9849ffb2134f075201c45a"
     }
     
     var accuWeatherBaseUrl: String {
@@ -106,7 +106,7 @@ private struct ReleaseConfig: BuildConfigProtocal {
     }
     
     var caiyunWeatherApiKey: String {
-        return ""
+        return "mCsnasNJUFP1-mPe"
     }
     
     var caiyunWeatherBaseUrl: String {

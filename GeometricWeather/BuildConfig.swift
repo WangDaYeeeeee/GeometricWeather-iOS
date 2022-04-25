@@ -72,7 +72,7 @@ private struct DebugConfig: BuildConfigProtocal {
     }
     
     var caiyunWeatherApiKey: String {
-        return "mCsnasNJUFP1-mPe"
+        return ""
     }
     
     var caiyunWeatherBaseUrl: String {

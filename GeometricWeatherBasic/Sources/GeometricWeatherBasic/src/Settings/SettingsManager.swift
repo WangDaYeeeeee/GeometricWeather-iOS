@@ -80,7 +80,9 @@ public class SettingsManager {
     // MARK: - service provider.
     
     // key: prefixSync + "weather_source"
-    public let weatherSource = WeatherSource[BuildConfig.current.defaultWeatherSourceId]
+    public let weatherSource = WeatherSource[
+        "weather_source_\(BuildConfig.current.defaultWeatherSourceId)"
+    ]
     
     // MARK: - unit.
     

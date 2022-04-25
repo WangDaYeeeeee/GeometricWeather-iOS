@@ -114,7 +114,7 @@ class UpdateHelper {
                 }
                 
                 self.getWeather(
-                    target: result,
+                    target: result.copyOf(weatherSource: SettingsManager.shared.weatherSource),
                     locationResult: locationResult,
                     geoPositionResult: true,
                     callback: callback
@@ -149,8 +149,12 @@ class UpdateHelper {
     ) {
         printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
         
+        let targetSource = target.currentPosition
+        ? SettingsManager.shared.weatherSource
+        : target.weatherSource
+        
         let token = self.getWeatherApi(
-            target.weatherSource
+            targetSource
         ).getWeather(
             target: target
         ) { weather in
@@ -166,7 +170,8 @@ class UpdateHelper {
                 
                 callback(
                     target.copyOf(
-                        weather: result
+                        weather: result,
+                        weatherSource: targetSource
                     ),
                     locationResult,
                     geoPositionResult ?? true

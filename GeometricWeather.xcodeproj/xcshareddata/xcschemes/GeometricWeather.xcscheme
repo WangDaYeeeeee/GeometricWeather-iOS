@@ -92,7 +92,8 @@
       buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Beta"
+      customArchiveName = "GeometricWeather-Beta"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

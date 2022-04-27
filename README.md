@@ -17,6 +17,9 @@ If you cannot run the project, please ensure the `GeometricWeatherBasic` module 
 ### License
 * [LICENSE](/LICENSE)
 
+### Also see
+* [GeometricWeather For Android](https://github.com/WangDaYeeeeee/GeometricWeather)
+
 ### What I gonna do next
 * Watch app.
 * Modularize the entire project.

@@ -18,7 +18,7 @@ class AppDelegate: UIResponder,
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        // register needle for DI.
+        // register needle for di.
         registerProviderFactories()
         
         // request notification authorization and set delegate.
@@ -46,6 +46,8 @@ class AppDelegate: UIResponder,
                 resetTomorrowForecastPendingNotification(weather: weather)
             }
         }
+        
+        //
         
         return true
     }

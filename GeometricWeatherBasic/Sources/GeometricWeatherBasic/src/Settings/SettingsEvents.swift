@@ -29,6 +29,7 @@ public class SettingsValueEvent<T> {
 public class AlertEnabledChanged: SettingsValueEvent<Bool> {}
 public class PrecipitationAlertEnabledChanged: SettingsValueEvent<Bool> {}
 public class UpdateIntervalChanged: SettingsValueEvent<UpdateInterval> {}
+public class DynamicAppIconEnabledChanged: SettingsValueEvent<Bool> {}
 
 // MARK: - appearance.
 

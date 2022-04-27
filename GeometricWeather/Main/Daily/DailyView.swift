@@ -216,7 +216,7 @@ struct DailyView: View {
                 }
             }
         }.listStyle(
-            GroupedListStyle()
+            .insetGrouped
         ).background(
             Color.clear
         )

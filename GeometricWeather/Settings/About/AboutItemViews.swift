@@ -100,7 +100,6 @@ struct AboutAppItem: View {
 struct ThanksItem: View {
     
     let title: String
-    let content: String
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -110,14 +109,6 @@ struct ThanksItem: View {
                 Font(titleFont)
             ).foregroundColor(
                 Color(UIColor.label)
-            )
-            
-            Text(
-                self.content
-            ).font(
-                Font(bodyFont)
-            ).foregroundColor(
-                Color(UIColor.secondaryLabel)
             )
         }.padding(
             EdgeInsets(

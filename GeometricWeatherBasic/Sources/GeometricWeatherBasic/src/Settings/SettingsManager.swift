@@ -49,6 +49,11 @@ public class SettingsManager {
     
     public let updateInterval = UpdateInterval.twoHour
     
+    @UserDefaultValueWrapper<Bool, DynamicAppIconEnabledChanged>(
+        key: "dynamic_app_icon_enabled",
+        defaultValue: false
+    ) public var dynamicAppIconEnabled
+    
     // MARK: - appearance.
     
     @ConvertableUserDefaultValueWrapper<String, DarkMode, DarkModeChanged>(

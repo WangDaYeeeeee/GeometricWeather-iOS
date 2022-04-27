@@ -142,7 +142,7 @@ struct SettingsView: View {
                 )
             }
         }.listStyle(
-            GroupedListStyle()
+            .insetGrouped
         ).onChange(of: self.alertEnabled) { newValue in
             SettingsManager.shared.alertEnabled = newValue
         }.onChange(of: self.precipitationAlertEnabled) { newValue in

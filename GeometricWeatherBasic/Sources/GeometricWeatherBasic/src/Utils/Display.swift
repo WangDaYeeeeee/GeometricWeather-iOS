@@ -126,19 +126,25 @@ public func getLocalizedText(_ key: String) -> String {
 }
 
 public func getLocationText(location: Location) -> String {
+    var text = ""
+    
     if !location.district.isEmpty {
-        return location.district
+        text = location.district
+    } else if !location.city.isEmpty {
+        text = location.city
+    } else if !location.province.isEmpty {
+        text = location.province
+    } else if location.currentPosition {
+        text = getLocalizedText("current_location")
     }
-    if !location.city.isEmpty {
-        return location.city
+    
+    if !text.hasSuffix(")") {
+        return text
     }
-    if !location.province.isEmpty {
-        return location.province
+    guard let deleteBegin = text.lastIndex(of: "(") else {
+        return text
     }
-    if location.currentPosition {
-        return getLocalizedText("current_location")
-    }
-    return ""
+    return String(text[..<deleteBegin])
 }
 
 public func getWeekText(week: Int) -> String {

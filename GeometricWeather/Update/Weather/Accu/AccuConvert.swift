@@ -298,7 +298,9 @@ private func getDailies(
                         degreeDayTemperature: Int.toInt(forecast.degreeDaySummary?.heating.value)
                     ),
                     precipitationTotal: forecast.day.totalLiquid.value,
-                    precipitationIntensity: forecast.day.totalLiquid.value / forecast.day.hoursOfPrecipitation,
+                    precipitationIntensity: forecast.day.hoursOfPrecipitation == 0
+                    ? 0
+                    : forecast.day.totalLiquid.value / forecast.day.hoursOfPrecipitation,
                     precipitationProbability: forecast.day.precipitationProbability,
                     wind: Wind(
                         direction: forecast.day.wind?.direction.localized ?? "",
@@ -324,7 +326,9 @@ private func getDailies(
                         degreeDayTemperature: Int.toInt(forecast.degreeDaySummary?.cooling.value)
                     ),
                     precipitationTotal: forecast.night.totalLiquid.value,
-                    precipitationIntensity: forecast.night.totalLiquid.value / forecast.night.hoursOfPrecipitation,
+                    precipitationIntensity: forecast.night.hoursOfPrecipitation == 0
+                    ? 0
+                    : forecast.night.totalLiquid.value / forecast.night.hoursOfPrecipitation,
                     precipitationProbability: forecast.night.precipitationProbability,
                     wind: Wind(
                         direction: forecast.night.wind?.direction.localized ?? "",

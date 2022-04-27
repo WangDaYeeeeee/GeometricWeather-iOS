@@ -15,7 +15,7 @@ enum HourlyTag: String {
     
     case temperature = "hourly_temperature"
     case wind = "hourly_wind"
-    case precipitation = "hourly_precipitation"
+    case precipitationIntensity = "hourly_precipitation_intensity"
 }
 
 class MainHourlyCardCell: MainTableViewCell,

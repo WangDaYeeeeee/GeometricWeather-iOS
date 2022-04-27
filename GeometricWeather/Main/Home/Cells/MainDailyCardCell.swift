@@ -17,7 +17,7 @@ enum DailyTag: String {
     case wind = "daily_wind"
     case aqi = "daily_aqi"
     case uv = "daily_uv"
-    case precipitation = "daily_precipitation"
+    case precipitationIntensity = "daily_precipitation_intensity"
 }
 
 struct DailyTrendCellTapAction {

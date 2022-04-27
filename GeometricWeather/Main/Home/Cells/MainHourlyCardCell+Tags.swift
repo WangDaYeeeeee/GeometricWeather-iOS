@@ -13,6 +13,8 @@ private let naturalTrendPaddingBottom = normalMargin
 
 private let naturalBackgroundIconPadding = littleMargin + mainTrendIconSize
 
+private let maxPrecipitationIntensity = radarPrecipitationIntensityHeavy
+
 extension MainHourlyCardCell {
     
     func buildTagList(weather: Weather) -> [(tag: HourlyTag, title: String)] {
@@ -29,7 +31,14 @@ extension MainHourlyCardCell {
         }
         
         // precipitation.
-        tags.append((HourlyTag.precipitation, getLocalizedText("precipitation")))
+        for hourly in weather.hourlyForecasts {
+            if hourly.precipitationIntensity != nil {
+                tags.append(
+                    (HourlyTag.precipitationIntensity, getLocalizedText("precipitation_intensity"))
+                )
+                break
+            }
+        }
         
         return tags
     }
@@ -45,7 +54,7 @@ extension MainHourlyCardCell {
         )
         collectionView.register(
             HourlyPrecipitationCollectionViewCell.self,
-            forCellWithReuseIdentifier: HourlyTag.precipitation.rawValue
+            forCellWithReuseIdentifier: HourlyTag.precipitationIntensity.rawValue
         )
     }
     
@@ -65,10 +74,6 @@ extension MainHourlyCardCell {
         )
         
         if let weather = weather, let source = source {
-            let histogramType = self.getPrecipitationHistogramType(
-                weather: weather,
-                source: source
-            )
             let useAccentColorForDate = indexPath.row == 0
             || weather.hourlyForecasts[indexPath.row].getHour(false, timezone: timezone) == 0
             
@@ -80,7 +85,10 @@ extension MainHourlyCardCell {
                         temperatureRange: temperatureRange,
                         weatherCode: weather.current.weatherCode,
                         timezone: timezone,
-                        histogramType: histogramType,
+                        histogramType: self.getPrecipitationHistogramType(
+                            weather: weather,
+                            source: source
+                        ),
                         useAccentColorForDate: useAccentColorForDate
                     )
                     cell.trendPaddingTop = naturalTrendPaddingTop
@@ -97,12 +105,12 @@ extension MainHourlyCardCell {
                     cell.trendPaddingTop = naturalTrendPaddingTop
                     cell.trendPaddingBottom = naturalTrendPaddingBottom
                 }
-            case .precipitation:
+            case .precipitationIntensity:
                 if let cell = cell as? HourlyPrecipitationCollectionViewCell {
                     cell.bindData(
                         hourly: weather.hourlyForecasts[indexPath.row],
                         timezone: timezone,
-                        histogramType: histogramType,
+                        histogramType: .precipitationIntensity(max: maxPrecipitationIntensity),
                         useAccentColorForDate: useAccentColorForDate
                     )
                     cell.trendPaddingTop = naturalTrendPaddingTop
@@ -186,40 +194,16 @@ extension MainHourlyCardCell {
                 paddingBottom: naturalTrendPaddingBottom
             )
             
-        case .precipitation:
-            guard let source = source else {
-                trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
-                return
-            }
-            bindPrecipitationBackground(
-                trendBackgroundView: trendBackgroundView,
-                weather: weather,
-                histogramType: self.getPrecipitationHistogramType(
-                    weather: weather,
-                    source: source
-                ),
-                lineColor: lineColor
-            )
-        }
-    }
-    
-    private func bindPrecipitationBackground(
-        trendBackgroundView: MainTrendBackgroundView,
-        weather: Weather,
-        histogramType: HourlyPrecipitationHistogramType,
-        lineColor: UIColor
-    ) {
-        switch histogramType {
-        case .precipitationIntensity(let max):
+        case .precipitationIntensity:
             let highLines = [
                 (mmph: radarPrecipitationIntensityMiddle, desc: getLocalizedText("precipitation_middle")),
                 (mmph: radarPrecipitationIntensityHeavy, desc: getLocalizedText("precipitation_heavy")),
                 (mmph: radarPrecipitationIntensityRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
             ].filter { item in
-                item.mmph <= max
+                item.mmph <= maxPrecipitationIntensity
             }.map { item in
                 HorizontalLine(
-                    value: item.mmph / max,
+                    value: item.mmph / maxPrecipitationIntensity,
                     leadingDescription: SettingsManager.shared.precipitationIntensityUnit.formatValue(item.mmph),
                     trailingDescription: item.desc
                 )
@@ -231,9 +215,6 @@ extension MainHourlyCardCell {
                 paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
                 paddingBottom: naturalTrendPaddingBottom
             )
-            
-        case .none, .precipitationProb:
-            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
         }
     }
     

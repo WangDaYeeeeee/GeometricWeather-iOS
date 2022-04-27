@@ -14,6 +14,8 @@ private let naturalTrendPaddingBottom = normalMargin
 
 private let naturalBackgroundIconPadding = littleMargin + mainTrendIconSize
 
+private let maxPrecipitationIntensity = radarPrecipitationIntensityHeavy
+
 extension MainDailyCardCell {
     
     func buildTagList(weather: Weather) -> [(tag: DailyTag, title: String)] {
@@ -50,7 +52,7 @@ extension MainDailyCardCell {
         }
         
         // precipitation.
-        tags.append((DailyTag.precipitation, getLocalizedText("precipitation")))
+        tags.append((DailyTag.precipitationIntensity, getLocalizedText("precipitation_intensity")))
         
         return tags
     }
@@ -74,7 +76,7 @@ extension MainDailyCardCell {
         )
         collectionView.register(
             DailyPrecipitationCollectionViewCell.self,
-            forCellWithReuseIdentifier: DailyTag.precipitation.rawValue
+            forCellWithReuseIdentifier: DailyTag.precipitationIntensity.rawValue
         )
     }
     
@@ -96,11 +98,6 @@ extension MainDailyCardCell {
         )
         
         if let weather = weather, let source = source {
-            let histogramType = self.getPrecipitationHistogramType(
-                weather: weather,
-                source: source
-            )
-            
             switch currentTag {
             case .temperature:
                 if let cell = cell as? DailyTemperatureCollectionViewCell {
@@ -109,7 +106,10 @@ extension MainDailyCardCell {
                         temperatureRange: temperatureRange,
                         weatherCode: weather.current.weatherCode,
                         timezone: timezone,
-                        histogramType: histogramType
+                        histogramType: self.getPrecipitationHistogramType(
+                            weather: weather,
+                            source: source
+                        )
                     )
                     cell.trendPaddingTop = naturalTrendPaddingTop
                     cell.trendPaddingBottom = temperatureTrendPaddingBottom
@@ -144,12 +144,12 @@ extension MainDailyCardCell {
                     cell.trendPaddingTop = naturalTrendPaddingTop
                     cell.trendPaddingBottom = naturalTrendPaddingBottom
                 }
-            case .precipitation:
+            case .precipitationIntensity:
                 if let cell = cell as? DailyPrecipitationCollectionViewCell {
                     cell.bindData(
                         daily: weather.dailyForecasts[indexPath.row],
                         timezone: timezone,
-                        histogramType: histogramType
+                        histogramType: .precipitationIntensity(max: maxPrecipitationIntensity)
                     )
                     cell.trendPaddingTop = naturalTrendPaddingTop
                     cell.trendPaddingBottom = naturalTrendPaddingBottom
@@ -278,62 +278,16 @@ extension MainDailyCardCell {
                 paddingBottom: naturalTrendPaddingBottom
             )
             
-        case .precipitation:
-            guard let source = source else {
-                trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
-                return
-            }
-            bindPrecipitationBackground(
-                trendBackgroundView: trendBackgroundView,
-                weather: weather,
-                histogramType: self.getPrecipitationHistogramType(
-                    weather: weather,
-                    source: source
-                ),
-                lineColor: lineColor
-            )
-        }
-    }
-    
-    private func bindPrecipitationBackground(
-        trendBackgroundView: MainTrendBackgroundView,
-        weather: Weather,
-        histogramType: DailyPrecipitationHistogramType,
-        lineColor: UIColor
-    ) {
-        switch histogramType {
-        case .precipitationTotal(let max):
-            let highLines = [
-                (mm: dailyPrecipitationMiddle, desc: getLocalizedText("precipitation_middle")),
-                (mm: dailyPrecipitationHeavy, desc: getLocalizedText("precipitation_heavy")),
-                (mm: dailyPrecipitationRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
-            ].filter { item in
-                item.mm <= max
-            }.map { item in
-                HorizontalLine(
-                    value: item.mm / max,
-                    leadingDescription: SettingsManager.shared.precipitationUnit.formatValue(item.mm),
-                    trailingDescription: item.desc
-                )
-            }
-            trendBackgroundView.bindData(
-                highLines: highLines,
-                lowLines: [],
-                lineColor: lineColor,
-                paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
-                paddingBottom: naturalTrendPaddingBottom + naturalBackgroundIconPadding
-            )
-            
-        case .precipitationIntensity(let max):
+        case .precipitationIntensity:
             let highLines = [
                 (mmph: radarPrecipitationIntensityMiddle, desc: getLocalizedText("precipitation_middle")),
                 (mmph: radarPrecipitationIntensityHeavy, desc: getLocalizedText("precipitation_heavy")),
                 (mmph: radarPrecipitationIntensityRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
             ].filter { item in
-                item.mmph <= max
+                item.mmph <= maxPrecipitationIntensity
             }.map { item in
                 HorizontalLine(
-                    value: item.mmph / max,
+                    value: item.mmph / maxPrecipitationIntensity,
                     leadingDescription: SettingsManager.shared.precipitationIntensityUnit.formatValue(item.mmph),
                     trailingDescription: item.desc
                 )
@@ -345,9 +299,6 @@ extension MainDailyCardCell {
                 paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
                 paddingBottom: naturalTrendPaddingBottom + naturalBackgroundIconPadding
             )
-            
-        case .none, .precipitationProb:
-            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
         }
     }
     

@@ -4,7 +4,7 @@
 
 ### Join the beta test
 You can join the beta test by using TestFlight:
-* https://testflight.apple.com/join/sipVnAZC
+* [GeometricWeather-Beta](https://testflight.apple.com/join/sipVnAZC)
 
 ### Contact me
 * By Email: wangdayeeeeee@gmail.com

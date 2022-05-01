@@ -108,6 +108,11 @@ struct DailyItemView: View {
                     }.stroke(
                         histogramForeground,
                         style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                    ).shadow(
+                        color: histogramShadowColor,
+                        radius: verticalHistogramShadowRadius,
+                        x: verticalHistogramShadowOffsetX,
+                        y: verticalHistogramShadowOffsetY
                     )
                 }
             }

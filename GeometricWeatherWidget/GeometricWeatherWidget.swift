@@ -92,5 +92,7 @@ struct GeometricWeatherWidget: WidgetBundle {
         WeatherWidget()
         DailyWidget()
         DailyWidget2()
+        AQIWidget()
+        CurrentWidget()
     }
 }

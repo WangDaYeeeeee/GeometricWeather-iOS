@@ -29,6 +29,7 @@ extension HomeViewController {
         )
         self.navigationItem.title = getLocalizedText("action_home")
         self.navigationItem.titleView = self.navigationBarTitleView
+        self.navigationItem.largeTitleDisplayMode = .never
         
         self.weatherViewController.view.backgroundColor = .clear
         self.addChild(self.weatherViewController)

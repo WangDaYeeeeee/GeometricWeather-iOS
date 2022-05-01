@@ -17,13 +17,12 @@ class MainViewController: UISplitViewController {
         managementBuilder: ManagementBuilder
     ) {
         super.init(style: .doubleColumn)
+        let showDoubleColumn = isTablet()
         
-        self.preferredDisplayMode = isTablet() ? .automatic : .secondaryOnly
+        self.preferredDisplayMode = showDoubleColumn ? .automatic : .secondaryOnly
         self.presentsWithGesture = true
         
-        let splitable = isTablet()
-        
-        if splitable {
+        if showDoubleColumn {
             self.setViewController(
                 GeoNavigationController(
                     rootViewController: managementBuilder.splitManagementViewController
@@ -33,7 +32,7 @@ class MainViewController: UISplitViewController {
         }
         self.setViewController(
             GeoNavigationController(
-                rootViewController: homeBuilder.homeViewController(isSplitView: splitable)
+                rootViewController: homeBuilder.homeViewController(isSplitView: showDoubleColumn)
             ),
             for: .secondary
         )

@@ -12,6 +12,7 @@ class GeoNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationBar.prefersLargeTitles = true
         self.interactivePopGestureRecognizer?.isEnabled = true
     }
     

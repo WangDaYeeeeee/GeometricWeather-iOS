@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GeometricWeatherBasic
+import WidgetKit
 
 struct PlaceholderView: View {
     var body: some View {
@@ -22,16 +23,30 @@ struct PlaceholderView: View {
             }
             Spacer()
         }.background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
-                weatherKind: weatherCodeToWeatherKind(code: .clear),
-                daylight: isDaylight()
-            )
+            ZStack {
+                if isDaylight() {
+                    Color.white
+                } else {
+                    Color.black
+                }
+                
+                ThemeManager
+                    .shared
+                    .weatherThemeDelegate
+                    .getWidgetBackgroundView(
+                        weatherKind: weatherCodeToWeatherKind(code: .clear),
+                        daylight: isDaylight()
+                    )
+                    .opacity(0.33)
+            }
         )
     }
 }
 
 struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceholderView()
+        PlaceholderView().previewContext(
+            WidgetPreviewContext(family: .systemMedium)
+        )
     }
 }

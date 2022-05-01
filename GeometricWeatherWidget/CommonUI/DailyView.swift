@@ -135,6 +135,7 @@ struct HorizontalDailyView: View {
                 // histogram.
                 VerticalHistogramView(
                     weather: weather,
+                    timeZone: self.location.timezone,
                     itemCount: self.itemCount,
                     temperatureRange: self.temperatureRange
                 )
@@ -283,6 +284,7 @@ private struct VerticalTemperatureView: View {
 private struct VerticalHistogramView: View {
     
     let weather: Weather
+    let timeZone: TimeZone
     let itemCount: Int
     let temperatureRange: (min: Int, max: Int)
     
@@ -339,6 +341,11 @@ private struct VerticalHistogramView: View {
                         }.stroke(
                             histogramForeground,
                             style: StrokeStyle(lineWidth: 6.0, lineCap: .round)
+                        ).shadow(
+                            color: histogramShadowColor,
+                            radius: horizontalHistogramShadowRadius,
+                            x: horizontalHistogramShadowOffsetX,
+                            y: horizontalHistogramShadowOffsetY
                         )
                     }
                 }.frame(height: 6.0 + 2.0 * 2)

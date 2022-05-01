@@ -34,6 +34,10 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
     private var currentIndex = 0
     private var nextIndex = 0
     
+    override var preferLargeTitle: Bool {
+        return false
+    }
+    
     // MARK: - life cycle.
     
     override init(param: (location: Location, initIndex: Int)) {

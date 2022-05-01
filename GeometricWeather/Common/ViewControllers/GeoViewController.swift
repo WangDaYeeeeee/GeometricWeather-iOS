@@ -23,6 +23,17 @@ class GeoViewController<T>: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - navigation bar style.
+    
+    var preferLargeTitle: Bool {
+        return true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.largeTitleDisplayMode = self.preferLargeTitle ? .always : .never
+    }
+    
     // MARK: - status bar.
     
     var statusBarStyle = UIStatusBarStyle.lightContent {

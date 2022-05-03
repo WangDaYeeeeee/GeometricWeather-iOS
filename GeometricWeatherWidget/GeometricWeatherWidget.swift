@@ -44,7 +44,7 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (GeoWidgetEntry) -> ()
     ) {
-        Task.detached(priority: .userInitiated) {
+        Task(priority: .userInitiated) {
             let location = await readLocationWithWeatherCache()
             
             await MainActor.run {
@@ -64,7 +64,7 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<GeoWidgetEntry>) -> ()
     ) {
-        Task.detached(priority: .userInitiated) {
+        Task(priority: .userInitiated) {
             let location = await readLocationWithWeatherCache()
             let timeline = Timeline(
                 entries: [

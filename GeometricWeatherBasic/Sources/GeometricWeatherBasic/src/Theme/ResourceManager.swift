@@ -7,9 +7,11 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 // MARK: - ui image ext.
 
+@available(iOS 8.0, *)
 public extension UIImage {
     
     convenience init?(namedInBasic name: String) {
@@ -35,6 +37,33 @@ public extension UIImage {
     }
 }
 
+// MARK: - ui image ext.
+
+public extension Image {
+    
+    init?(namedInBasic name: String) {
+        self.init(name, bundle: .module)
+    }
+    
+    static func getWeatherIcon(
+        weatherCode: WeatherCode,
+        daylight: Bool
+    ) -> Image? {
+        return ResourceManager.shared.getWeatherIcon(
+            weatherCode: weatherCode,
+            daylight: daylight
+        )
+    }
+    
+    static func getSunIcon() -> Image? {
+        return ResourceManager.shared.getSunIcon()
+    }
+    
+    static func getMoonIcon() -> Image? {
+        return ResourceManager.shared.getMoonIcon()
+    }
+}
+
 // MARK: - mtrl res manager.
 
 class ResourceManager {
@@ -47,8 +76,9 @@ class ResourceManager {
         // do nothing.
     }
     
-    // interfaces.
+    // MARK: - ui image.
     
+    @available(iOS 8.0, *)
     public func getWeatherIcon(
         weatherCode: WeatherCode,
         daylight: Bool
@@ -61,6 +91,7 @@ class ResourceManager {
         )
     }
     
+    @available(iOS 8.0, *)
     public func getSunIcon() -> UIImage? {
         return UIImage(
             namedInBasic: self.getWeatherIconName(
@@ -70,6 +101,7 @@ class ResourceManager {
         )
     }
     
+    @available(iOS 8.0, *)
     public func getMoonIcon() -> UIImage? {
         return UIImage(
             namedInBasic: self.getWeatherIconName(
@@ -78,6 +110,40 @@ class ResourceManager {
             )
         )
     }
+    
+    // MARK: - swiftUI image.
+    
+    public func getWeatherIcon(
+        weatherCode: WeatherCode,
+        daylight: Bool
+    ) -> Image? {
+        return Image(
+            namedInBasic: self.getWeatherIconName(
+                weatherCode: weatherCode,
+                daylight: daylight
+            )
+        )
+    }
+    
+    public func getSunIcon() -> Image? {
+        return Image(
+            namedInBasic: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: true
+            )
+        )
+    }
+    
+    public func getMoonIcon() -> Image? {
+        return Image(
+            namedInBasic: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: false
+            )
+        )
+    }
+    
+    // MARK: - image name.
     
     private func getWeatherIconName(
         weatherCode: WeatherCode,

@@ -61,7 +61,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         ThemeManager.shared.update(location: data.valid[0])
                 
         // read weather caches.
-        Task.detached(priority: .userInitiated) { [weak self] in
+        Task(priority: .userInitiated) { [weak self] in
             let locations = await self?.repository.getWeatherCacheForLocations(
                 oldList: data.total,
                 ignoredFormattedId: data.valid[0].formattedId
@@ -161,26 +161,6 @@ class MainViewModel: NSObject, UIStateRestoring {
         self.checkToUpdateCurrentLocation()
     }
     
-    @MainActor
-    private func onUpdateResult(
-        location: Location,
-        locationResult: Bool?,
-        weatherUpdateResult: Bool
-    ) {
-        if !weatherUpdateResult {
-            self.toastMessage.value = .weatherRequestFailed
-        } else if locationResult == false {
-            self.toastMessage.value = .locationFailed
-        }
-        
-        self.updateInnerData(location: location)
-        
-        self.loading.value = false
-        
-        printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions()
-    }
-    
     private func checkToUpdateCurrentLocation() {
         // if the pending reload db cache id set contains this location's formatted id
         // we need to read cache data from database.
@@ -200,7 +180,7 @@ class MainViewModel: NSObject, UIStateRestoring {
             
             // read new cache from database.
             let oldList = [self.currentLocation.value]
-            Task.detached(priority: .background) { [weak self] in
+            Task(priority: .background) { [weak self] in
                 let result = await self?.repository.getWeatherCacheForLocations(
                     oldList: oldList,
                     ignoredFormattedId: ""
@@ -263,13 +243,23 @@ class MainViewModel: NSObject, UIStateRestoring {
         self.loading.value = true
         
         let location = self.currentLocation.value
-        self.currentUpdateTask = Task.detached(priority: .background) {
+        self.currentUpdateTask = Task(priority: .background) {
             let result = await self.repository.update(location: location)
-            await self.onUpdateResult(
-                location: result.location,
-                locationResult: result.locationSucceed,
-                weatherUpdateResult: result.weatherRequestSucceed
-            )
+            
+            await MainActor.run {
+                if !result.weatherRequestSucceed {
+                    self.toastMessage.value = .weatherRequestFailed
+                } else if result.locationSucceed == false {
+                    self.toastMessage.value = .locationFailed
+                }
+                
+                self.updateInnerData(location: result.location)
+                
+                self.loading.value = false
+                
+                printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
+                updateAppExtensions()
+            }
         }
     }
     
@@ -404,7 +394,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         )
         
         self.updateInnerData(total: total)
-        Task.detached(priority: .background) { [total] in
+        Task(priority: .background) { [total] in
             await self.repository.writeLocations(locations: total)
         }
         
@@ -424,7 +414,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         total.insert(total.remove(at: from), at: to)
                 
         self.updateInnerData(total: total)
-        Task.detached(priority: .background) { [total] in
+        Task(priority: .background) { [total] in
             await self.repository.writeLocations(locations: total)
         }
         
@@ -436,7 +426,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         self.updateInnerData(location: location)
         
         let locations = self.selectableTotalLocations.value.locations
-        Task.detached(priority: .background) {
+        Task(priority: .background) {
             await self.repository.writeLocations(locations: locations)
         }
         
@@ -449,7 +439,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         let location = total.remove(at: position)
         
         self.updateInnerData(total: total)
-        Task.detached(priority: .background) {
+        Task(priority: .background) {
             await self.repository.deleteLocation(location: location)
         }
         

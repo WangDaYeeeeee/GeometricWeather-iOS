@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 8.0, *)
 public extension CGAffineTransform {
     
     var scale: Double {

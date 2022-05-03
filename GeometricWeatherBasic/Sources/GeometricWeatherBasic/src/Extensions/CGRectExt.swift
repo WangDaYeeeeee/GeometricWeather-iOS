@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 8.0, *)
 public extension CGRect {
     
     static func from(center: CGPoint, size: CGSize) -> CGRect {

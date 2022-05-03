@@ -114,7 +114,7 @@ class UpdateHelper {
             printLog(keyword: "update", content: "get geo position for: \(target.formattedId)")
             
             api.getGeoPosition(target: target) { location in
-                Task.detached(priority: .background) {
+                Task(priority: .background) {
                     if let result = location {
                         await DatabaseHelper.shared.asyncWriteLocation(location: result)
                         continuation.resume(
@@ -148,7 +148,7 @@ class UpdateHelper {
             printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
             
             api.getWeather(target: target){ weather in
-                Task.detached(priority: .background) {
+                Task(priority: .background) {
                     if let result = weather {
                         await DatabaseHelper.shared.asyncWriteWeather(
                             weather: result,

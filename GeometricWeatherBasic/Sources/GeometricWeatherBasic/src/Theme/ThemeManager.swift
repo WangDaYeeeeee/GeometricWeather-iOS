@@ -5,7 +5,9 @@
 //  Created by 王大爷 on 2021/7/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#endif
 import SwiftUI
 
 // MARK: - constants.
@@ -18,12 +20,13 @@ public let cardRadius = 18.0
 public let littleMargin = 12.0
 public let normalMargin = 24.0
 
-public let colorLevel1 = UIColor.colorFromRGB(0x72d572);
-public let colorLevel2 = UIColor.colorFromRGB(0xffca28);
-public let colorLevel3 = UIColor.colorFromRGB(0xffa726);
-public let colorLevel4 = UIColor.colorFromRGB(0xe52f35);
-public let colorLevel5 = UIColor.colorFromRGB(0x99004c);
-public let colorLevel6 = UIColor.colorFromRGB(0x7e0023);
+#if canImport(UIKit)
+public let colorLevel1 = UIColor.colorFromRGB(0x72d572)
+public let colorLevel2 = UIColor.colorFromRGB(0xffca28)
+public let colorLevel3 = UIColor.colorFromRGB(0xffa726)
+public let colorLevel4 = UIColor.colorFromRGB(0xe52f35)
+public let colorLevel5 = UIColor.colorFromRGB(0x99004c)
+public let colorLevel6 = UIColor.colorFromRGB(0x7e0023)
 
 public let precipitationProbabilityColor = UIColor { traitCollection in
     if traitCollection.userInterfaceStyle == .light {
@@ -40,6 +43,24 @@ public let bodyFont = UIFont.systemFont(ofSize: 14.0, weight: .semibold)
 public let captionFont = UIFont.systemFont(ofSize: 14.0, weight: .medium)
 public let miniCaptionFont = UIFont.systemFont(ofSize: 12.0, weight: .medium)
 public let tinyCaptionFont = UIFont.systemFont(ofSize: 10.0, weight: .medium)
+
+#else
+public let colorLevel1 = Color.ColorFromRGB(0x72d572)
+public let colorLevel2 = Color.ColorFromRGB(0xffca28)
+public let colorLevel3 = Color.ColorFromRGB(0xffa726)
+public let colorLevel4 = Color.ColorFromRGB(0xe52f35)
+public let colorLevel5 = Color.ColorFromRGB(0x99004c)
+public let colorLevel6 = Color.ColorFromRGB(0x7e0023)
+
+public let designTitleFont = Font.system(ofSize: 128.0, weight: .ultraLight, design: .default)
+public let largeTitleFont = Font.system(ofSize: 18.0, weight: .bold, design: .default)
+public let titleFont = Font.system(ofSize: 16.0, weight: .semibold, design: .default)
+public let bodyFont = Font.system(ofSize: 14.0, weight: .semibold, design: .default)
+public let captionFont = Font.system(ofSize: 14.0, weight: .medium, design: .default)
+public let miniCaptionFont = Font.system(ofSize: 12.0, weight: .medium, design: .default)
+public let tinyCaptionFont = Font.system(ofSize: 10.0, weight: .medium, design: .default)
+
+#endif
 
 // MARK: - data.
 

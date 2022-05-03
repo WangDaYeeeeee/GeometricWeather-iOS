@@ -57,6 +57,7 @@ public func isTwelveHour() -> Bool {
 
 // MARK: - tablet compat.
 
+@available(iOS 8.0, *)
 public func getUIOrientation() -> UIInterfaceOrientation {
     return UIApplication.shared
         .windows
@@ -65,10 +66,12 @@ public func getUIOrientation() -> UIInterfaceOrientation {
         .interfaceOrientation ?? .unknown
 }
 
+@available(iOS 8.0, *)
 public func isTablet() -> Bool {
     return UIDevice.current.userInterfaceIdiom != UIUserInterfaceIdiom.phone
 }
 
+@available(iOS 8.0, *)
 public func isLandscape() -> Bool {
     return UIApplication
         .shared
@@ -79,6 +82,7 @@ public func isLandscape() -> Bool {
         .isLandscape ?? false
 }
 
+@available(iOS 8.0, *)
 public func getTabletAdaptiveWidth(maxWidth: Double) -> Double {
     if (!isTablet() && !isLandscape()) {
         return maxWidth
@@ -87,12 +91,14 @@ public func getTabletAdaptiveWidth(maxWidth: Double) -> Double {
     return getTabletAdaptiveWidth()
 }
 
+@available(iOS 8.0, *)
 public func getTabletAdaptiveWidth() -> Double {
     return isTablet()
         ? maxTabletAdaptiveWidth
         : maxPhoneAdaptiveWidth
 }
 
+@available(iOS 8.0, *)
 public func getTrendItemWidth(totalWidth: Double, margin: Double) -> Double {
     return (
         getTabletAdaptiveWidth(maxWidth: totalWidth) - 2 * margin
@@ -101,6 +107,7 @@ public func getTrendItemWidth(totalWidth: Double, margin: Double) -> Double {
     )
 }
 
+@available(iOS 8.0, *)
 public func getTrenItemDisplayCount() -> Int {
     return isTablet() || isLandscape() ? 8 : 6
 }
@@ -245,6 +252,7 @@ public func getPercentTextWithoutUnit(
 
 // MARK: - color.
 
+@available(iOS 8.0, *)
 public func getLevelColor(_ level: Int) -> UIColor {
     if (level < 2) {
         return colorLevel1

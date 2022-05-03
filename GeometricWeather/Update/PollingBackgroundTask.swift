@@ -32,9 +32,7 @@ func registerPollingBackgroundTask() {
         forTaskWithIdentifier: identifier,
         using: .main
     ) { task in
-        Task.detached(priority: .userInitiated) {
-            await polling(onTask: task)
-        }
+        polling(onTask: task)
     }
     
     schedulePollingBackgroundTask()
@@ -59,16 +57,29 @@ func schedulePollingBackgroundTask() {
     }
 }
 
-private func polling(onTask task: BGTask) async {
+private func polling(onTask task: BGTask) {
     printLog(keyword: "polling", content: "schedule again")
     schedulePollingBackgroundTask()
+    
+    let asyncTask = Task(priority: .high) {
+        let succeed = await polling()
+        
+        printLog(keyword: "polling", content: "polling complete with result: \(succeed)")
+        updateAppExtensionsAndPrintLog()
+        
+        task.setTaskCompleted(success: succeed)
+    }
     
     printLog(keyword: "polling", content: "register expiration handler")
     task.expirationHandler = {
         printLog(keyword: "polling", content: "expiration")
         updateAppExtensionsAndPrintLog()
+        
+        asyncTask.cancel()
     }
-    
+}
+
+private func polling() async -> Bool {
     printLog(keyword: "polling", content: "read locations")
     // read weather cache for default weather for alert comparison.
     var locations = await DatabaseHelper.shared.asyncReadLocations()
@@ -82,7 +93,7 @@ private func polling(onTask task: BGTask) async {
         UpdateHelper()
     }
     
-    let succeed = await withTaskGroup(of: _PollingResult.self) { group -> Bool in
+    return await withTaskGroup(of: _PollingResult.self) { group -> Bool in
         var succeed = true
         
         for (index, location) in locations.enumerated() {
@@ -99,17 +110,12 @@ private func polling(onTask task: BGTask) async {
         }
         for await result in group {
             succeed = succeed
-            && result.inner.locationSucceed == true
+            && result.inner.locationSucceed != false
             && result.inner.weatherRequestSucceed
         }
         
         return succeed
     }
-    
-    updateAppExtensionsAndPrintLog()
-    
-    printLog(keyword: "polling", content: "polling complete with result: \(succeed)")
-    task.setTaskCompleted(success: succeed)
 }
 
 private func updateAppExtensionsAndPrintLog() {

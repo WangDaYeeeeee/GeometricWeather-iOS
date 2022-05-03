@@ -38,12 +38,12 @@ class AppDelegate: UIResponder,
         }
         
         // register forecast pending notifications.
-        Task.detached(priority: .background) {
+        Task(priority: .background) {
             if let weather = await DatabaseHelper.shared.asyncReadWeather(
                 formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
             ) {
-                await resetTodayForecastPendingNotification(weather: weather)
-                await resetTomorrowForecastPendingNotification(weather: weather)
+                resetTodayForecastPendingNotification(weather: weather)
+                resetTomorrowForecastPendingNotification(weather: weather)
             }
         }
         

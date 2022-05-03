@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 8.0, *)
 public extension UILabel {
     
     func setLeading(image: UIImage?, withText text: String?) {

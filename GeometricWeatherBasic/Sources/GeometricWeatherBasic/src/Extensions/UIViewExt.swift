@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@available(iOS 8.0, *)
 public extension UIView {
     
     var isRtl: Bool {

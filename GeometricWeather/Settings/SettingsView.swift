@@ -185,7 +185,7 @@ struct SettingsView: View {
 }
 
 private func resetTodayForecastPendingIntentInTask() {
-    Task.detached(priority: .high) {
+    Task(priority: .high) {
         if let weather = await DatabaseHelper.shared.asyncReadWeather(
             formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
         ) {
@@ -195,7 +195,7 @@ private func resetTodayForecastPendingIntentInTask() {
 }
 
 private func resetTomorrowForecastPendingIntentInTask() {
-    Task.detached(priority: .high) {
+    Task(priority: .high) {
         if let weather = await DatabaseHelper.shared.asyncReadWeather(
             formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
         ) {

@@ -30,33 +30,30 @@ func updateAppExtensions() {
     // app widgets.
     WidgetCenter.shared.reloadAllTimelines()
     
-    // app shortcut items.
-    updateAppShortcutItemsInTask()
-}
-
-private func updateAppShortcutItemsInTask() {
-    Task.detached(priority: .background) {
-        let items = Location.excludeInvalidResidentLocation(
-            locationArray: await DatabaseHelper.shared.asyncReadLocations()
-        ).map { location in
-            UIApplicationShortcutItem(
-                type: location.formattedId,
-                localizedTitle: getLocationText(location: location),
-                localizedSubtitle: location.toString(),
-                icon: UIApplicationShortcutIcon(
-                    type: location.currentPosition
-                    ? .location
-                    : .markLocation
-                ),
-                userInfo: nil
-            )
-        }
-        
-        await updateAppShortcutItems(items)
+    Task(priority: .background) {
+        // app shortcut items.
+        await updateAppShortcutItems()
     }
 }
 
-@MainActor
-private func updateAppShortcutItems(_ items: [UIApplicationShortcutItem]) {
-    UIApplication.shared.shortcutItems = items
+private func updateAppShortcutItems() async {
+    let items = Location.excludeInvalidResidentLocation(
+        locationArray: await DatabaseHelper.shared.asyncReadLocations()
+    ).map { location in
+        UIApplicationShortcutItem(
+            type: location.formattedId,
+            localizedTitle: getLocationText(location: location),
+            localizedSubtitle: location.toString(),
+            icon: UIApplicationShortcutIcon(
+                type: location.currentPosition
+                ? .location
+                : .markLocation
+            ),
+            userInfo: nil
+        )
+    }
+    
+    await MainActor.run {
+        UIApplication.shared.shortcutItems = items
+    }
 }

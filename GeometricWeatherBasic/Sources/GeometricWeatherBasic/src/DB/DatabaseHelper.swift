@@ -63,6 +63,13 @@ public class DatabaseHelper {
     
     // location.
     
+    public func asyncWriteLocation(location: Location) async {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.writeLocation(location: location))
+        }
+    }
+    
+    @available(*, deprecated, renamed: "asyncWriteLocation", message: "Prefer to use an alernative async method.")
     public func writeLocation(location: Location) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
@@ -78,6 +85,12 @@ public class DatabaseHelper {
         }
     }
     
+    public func asyncWriteLocations(locations: [Location]) async {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.writeLocations(locations: locations))
+        }
+    }
+    @available(*, deprecated, renamed: "asyncWriteLocations", message: "Prefer to use an alernative async method.")
     public func writeLocations(locations: [Location]) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
@@ -87,12 +100,24 @@ public class DatabaseHelper {
         }
     }
     
+    public func asyncDeleteLocation(formattedId: String) async {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.deleteLocation(formattedId: formattedId))
+        }
+    }
+    @available(*, deprecated, renamed: "asyncDeleteLocation", message: "Prefer to use an alernative async method.")
     public func deleteLocation(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteLocation(context: context, formattedId: formattedId)
         }
     }
     
+    public func asyncReadLocation(formattedId: String) async -> Location? {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.readLocation(formattedId: formattedId))
+        }
+    }
+    @available(*, deprecated, renamed: "asyncReadLocation", message: "Prefer to use an alernative async method.")
     public func readLocation(formattedId: String) -> Location? {
         if let context = self.persistentContainer?.viewContext {
             return DAOs.readLocations(
@@ -103,6 +128,12 @@ public class DatabaseHelper {
         return nil
     }
     
+    public func asyncReadLocations() async -> [Location] {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: readLocations())
+        }
+    }
+    @available(*, deprecated, renamed: "asyncReadLocations", message: "Prefer to use an alernative async method.")
     public func readLocations() -> [Location] {
         var locations = [Location]()
         
@@ -126,6 +157,17 @@ public class DatabaseHelper {
     
     // weather.
     
+    public func asyncWriteWeather(
+        weather: Weather,
+        formattedId: String
+    ) async {
+        await withCheckedContinuation { continuation in
+            continuation.resume(
+                returning: self.writeWeather(weather: weather, formattedId: formattedId)
+            )
+        }
+    }
+    @available(*, deprecated, renamed: "asyncWriteWeather", message: "Prefer to use an alernative async method.")
     public func writeWeather(
         weather: Weather,
         formattedId: String
@@ -145,12 +187,24 @@ public class DatabaseHelper {
         }
     }
     
+    public func asyncDeleteWeather(formattedId: String) async {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.deleteWeather(formattedId: formattedId))
+        }
+    }
+    @available(*, deprecated, renamed: "asyncDeleteWeather", message: "Prefer to use an alernative async method.")
     public func deleteWeather(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteWeather(context: context, formattedId: formattedId)
         }
     }
     
+    public func asyncReadWeather(formattedId: String) async -> Weather? {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: self.readWeather(formattedId: formattedId))
+        }
+    }
+    @available(*, deprecated, renamed: "asyncReadWeather", message: "Prefer to use an alernative async method.")
     public func readWeather(formattedId: String) -> Weather? {
         if let context = self.persistentContainer?.viewContext {
             return DAOs.readWeather(context: context, formattedId: formattedId)

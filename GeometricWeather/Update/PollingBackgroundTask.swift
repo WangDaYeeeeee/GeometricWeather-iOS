@@ -12,6 +12,11 @@ import SwiftUI
 
 private let identifier = "com.wangdaye.geometricweather.polling"
 
+private struct _PollingResult {
+    let inner: UpdateResult
+    let index: Int
+}
+
 // MARK: - event.
 
 struct BackgroundUpdateEvent {
@@ -27,7 +32,9 @@ func registerPollingBackgroundTask() {
         forTaskWithIdentifier: identifier,
         using: .main
     ) { task in
-        polling(onTask: task)
+        Task.detached(priority: .userInitiated) {
+            await polling(onTask: task)
+        }
     }
     
     schedulePollingBackgroundTask()
@@ -52,96 +59,57 @@ func schedulePollingBackgroundTask() {
     }
 }
 
-private func polling(onTask task: BGTask) {
+private func polling(onTask task: BGTask) async {
     printLog(keyword: "polling", content: "schedule again")
     schedulePollingBackgroundTask()
     
-    printLog(keyword: "polling", content: "prepare")
-    var tokenDict = [String: UpdateHelper]()
+    printLog(keyword: "polling", content: "register expiration handler")
     task.expirationHandler = {
         printLog(keyword: "polling", content: "expiration")
-        for updateHelper in tokenDict.values {
-            updateHelper.cancel()
-        }
-        tokenDict.removeAll()
-        
         updateAppExtensionsAndPrintLog()
     }
     
-    var progress = 0
-    var suceed = true
-    
     printLog(keyword: "polling", content: "read locations")
-    readLocations { locations in
-        for location in locations {
-            let updateHelper = UpdateHelper()
-            tokenDict[location.formattedId] = updateHelper
-            
-            printLog(keyword: "polling", content: "polling at: \(location.formattedId)")
-            updateHelper.update(
-                target: location,
-                inBackground: true
-            ) { location, locationSucceed, requestWeatherSucceed in
-                printLog(keyword: "polling", content: "polling at: \(location.formattedId) result")
-                progress += 1
-                tokenDict.removeValue(forKey: location.formattedId)
-                
-                if let weather = location.weather {
-                    if location.formattedId == locations[0].formattedId {
-                        // default location.
-                        checkToPushAlertNotification(
-                            newWeather: weather,
-                            oldWeahter: locations[0].weather
-                        )
-                        checkToPushPrecipitationNotification(weather: weather)
-                        
-                        resetTodayForecastPendingNotification(weather: weather)
-                        resetTomorrowForecastPendingNotification(weather: weather)
-                    }
-                    
-                    printLog(keyword: "polling", content: "polling to save: \(location.formattedId)")
-                    DispatchQueue.global(qos: .background).async {
-                        DatabaseHelper.shared.writeWeather(
-                            weather: weather,
-                            formattedId: location.formattedId
-                        )
-                    }
-                    
-                    printLog(keyword: "polling", content: "polling to post: \(location.formattedId)")
-                    EventBus.shared.post(
-                        BackgroundUpdateEvent(location: location)
-                    )
-                } else {
-                    suceed = false
-                }
-                
-                if progress == locations.count {
-                    updateAppExtensionsAndPrintLog()
-                    
-                    printLog(keyword: "polling", content: "polling complete with result: \(suceed)")
-                    task.setTaskCompleted(success: suceed)
-                }
+    // read weather cache for default weather for alert comparison.
+    var locations = await DatabaseHelper.shared.asyncReadLocations()
+    locations[0] = locations[0].copyOf(
+        weather: await DatabaseHelper.shared.asyncReadWeather(
+            formattedId: locations[0].formattedId
+        )
+    )
+    
+    let helpers = locations.map { _ in
+        UpdateHelper()
+    }
+    
+    let succeed = await withTaskGroup(of: _PollingResult.self) { group -> Bool in
+        var succeed = true
+        
+        for (index, location) in locations.enumerated() {
+            group.addTask(
+                priority: location.formattedId == locations[0].formattedId
+                ? .high
+                : .medium
+            ) {
+                return _PollingResult(
+                    inner: await helpers[index].update(target: location, inBackground: true),
+                    index: index
+                )
             }
         }
-    }
-}
-
-private func readLocations(
-    withCallback callback: @escaping (_ locations: [Location]) -> Void
-) {
-    DispatchQueue.global(qos: .background).async {
-        var locations = DatabaseHelper.shared.readLocations()
-        
-        locations[0] = locations[0].copyOf(
-            weather: DatabaseHelper.shared.readWeather(
-                formattedId: locations[0].formattedId
-            )
-        )
-        
-        DispatchQueue.main.async {
-            callback(locations)
+        for await result in group {
+            succeed = succeed
+            && result.inner.locationSucceed == true
+            && result.inner.weatherRequestSucceed
         }
+        
+        return succeed
     }
+    
+    updateAppExtensionsAndPrintLog()
+    
+    printLog(keyword: "polling", content: "polling complete with result: \(succeed)")
+    task.setTaskCompleted(success: succeed)
 }
 
 private func updateAppExtensionsAndPrintLog() {

@@ -78,6 +78,7 @@ private let todayForecastNotificationIdentifier = "today_forecast_notification"
 private let tomorrowForecastNotificationIdentifier = "tomorrow_forecast_notification"
 private let forecastNotificationGroupIdentifier = "forecast_notification_group"
 
+@MainActor
 func resetTodayForecastPendingNotification(weather: Weather) {
 
     UNUserNotificationCenter.current().removePendingNotificationRequests(
@@ -127,6 +128,7 @@ func resetTodayForecastPendingNotification(weather: Weather) {
     }
 }
 
+@MainActor
 func resetTomorrowForecastPendingNotification(weather: Weather) {
     
     UNUserNotificationCenter.current().removePendingNotificationRequests(

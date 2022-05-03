@@ -10,16 +10,15 @@ import SwiftUI
 import Intents
 import GeometricWeatherBasic
 
-func readLocationWithWeatherCache() -> Location {
-    
-    let location = DatabaseHelper.shared.readLocations().first
+func readLocationWithWeatherCache() async -> Location {
+    let location = await DatabaseHelper.shared.asyncReadLocations().first
     ?? Location.buildDefaultLocation(
         weatherSource: WeatherSource[0],
         residentPosition: false
     )
     
     return location.copyOf(
-        weather: DatabaseHelper.shared.readWeather(
+        weather: await DatabaseHelper.shared.asyncReadWeather(
             formattedId: location.formattedId
         )
     )
@@ -31,7 +30,10 @@ struct Provider: IntentTimelineProvider {
     
     func placeholder(in context: Context) -> GeoWidgetEntry {
         GeoWidgetEntry(
-            location: readLocationWithWeatherCache(),
+            location: Location.buildDefaultLocation(
+                weatherSource: WeatherSource[0],
+                residentPosition: false
+            ),
             date: Date(),
             configuration: ConfigurationIntent()
         )
@@ -42,14 +44,19 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (GeoWidgetEntry) -> ()
     ) {
-        let location = readLocationWithWeatherCache()
-        completion(
-            GeoWidgetEntry(
-                location: location,
-                date: Date(),
-                configuration: ConfigurationIntent()
-            )
-        )
+        Task.detached(priority: .userInitiated) {
+            let location = await readLocationWithWeatherCache()
+            
+            await MainActor.run {
+                completion(
+                    GeoWidgetEntry(
+                        location: location,
+                        date: Date(),
+                        configuration: ConfigurationIntent()
+                    )
+                )
+            }
+        }
     }
 
     func getTimeline(
@@ -57,9 +64,9 @@ struct Provider: IntentTimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<GeoWidgetEntry>) -> ()
     ) {
-        let location = readLocationWithWeatherCache()
-        completion(
-            Timeline(
+        Task.detached(priority: .userInitiated) {
+            let location = await readLocationWithWeatherCache()
+            let timeline = Timeline(
                 entries: [
                     GeoWidgetEntry(
                         location: location,
@@ -69,7 +76,10 @@ struct Provider: IntentTimelineProvider {
                 ],
                 policy: .after(Date().addingTimeInterval(15 * 60))
             )
-        )
+            await MainActor.run {
+                completion(timeline)
+            }
+        }
     }
 }
 

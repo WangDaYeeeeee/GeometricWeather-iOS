@@ -24,6 +24,7 @@ class MainViewModel: NSObject, UIStateRestoring {
     
     // repository.
     private let repository = MainRepository()
+    private var currentUpdateTask: Task<Void, Never>?
     
     // MARK: - life cycle.
     
@@ -60,12 +61,16 @@ class MainViewModel: NSObject, UIStateRestoring {
         ThemeManager.shared.update(location: data.valid[0])
                 
         // read weather caches.
-        self.repository.getWeatherCacheForLocations(
-            oldList: data.total,
-            ignoredFormattedId: data.valid[0].formattedId
-        ) { [weak self] locations in
-            self?.initCompleted = true
-            self?.updateInnerData(total: locations)
+        Task.detached(priority: .userInitiated) { [weak self] in
+            let locations = await self?.repository.getWeatherCacheForLocations(
+                oldList: data.total,
+                ignoredFormattedId: data.valid[0].formattedId
+            ) ?? []
+            
+            await MainActor.run { [weak self] in
+                self?.initCompleted = true
+                self?.updateInnerData(total: locations)
+            }
         }
     }
     
@@ -156,6 +161,7 @@ class MainViewModel: NSObject, UIStateRestoring {
         self.checkToUpdateCurrentLocation()
     }
     
+    @MainActor
     private func onUpdateResult(
         location: Location,
         locationResult: Bool?,
@@ -163,7 +169,7 @@ class MainViewModel: NSObject, UIStateRestoring {
     ) {
         if !weatherUpdateResult {
             self.toastMessage.value = .weatherRequestFailed
-        } else if !(locationResult ?? true) {
+        } else if locationResult == false {
             self.toastMessage.value = .locationFailed
         }
         
@@ -191,18 +197,24 @@ class MainViewModel: NSObject, UIStateRestoring {
             && self.initCompleted {
                         
             self.loading.value = true
+            
             // read new cache from database.
-            self.repository.getWeatherCacheForLocations(
-                oldList: [self.currentLocation.value],
-                ignoredFormattedId: ""
-            ) { [weak self] result in
-                guard let newLocation = result.first else {
-                    return
-                }
-                self?.pendingReloadDBCacheIdSet.remove(newLocation.formattedId)
+            let oldList = [self.currentLocation.value]
+            Task.detached(priority: .background) { [weak self] in
+                let result = await self?.repository.getWeatherCacheForLocations(
+                    oldList: oldList,
+                    ignoredFormattedId: ""
+                )
                 
-                self?.loading.value = false
-                self?.updateInnerData(location: newLocation)
+                await MainActor.run { [weak self] in
+                    guard let newLocation = result?.first else {
+                        return
+                    }
+                    self?.pendingReloadDBCacheIdSet.remove(newLocation.formattedId)
+                    
+                    self?.loading.value = false
+                    self?.updateInnerData(location: newLocation)
+                }
             }
             return
         }
@@ -250,15 +262,22 @@ class MainViewModel: NSObject, UIStateRestoring {
         
         self.loading.value = true
         
-        self.repository.update(
-            location: self.currentLocation.value,
-            callback: self.onUpdateResult
-        )
+        let location = self.currentLocation.value
+        self.currentUpdateTask = Task.detached(priority: .background) {
+            let result = await self.repository.update(location: location)
+            await self.onUpdateResult(
+                location: result.location,
+                locationResult: result.locationSucceed,
+                weatherUpdateResult: result.weatherRequestSucceed
+            )
+        }
     }
     
     func cancelRequest() {
         self.loading.value = false
-        self.repository.cancel()
+        
+        self.currentUpdateTask?.cancel()
+        self.currentUpdateTask = nil
     }
     
     func checkToUpdate() {
@@ -385,7 +404,9 @@ class MainViewModel: NSObject, UIStateRestoring {
         )
         
         self.updateInnerData(total: total)
-        self.repository.writeLocations(locations: total)
+        Task.detached(priority: .background) { [total] in
+            await self.repository.writeLocations(locations: total)
+        }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
         updateAppExtensions()
@@ -403,7 +424,9 @@ class MainViewModel: NSObject, UIStateRestoring {
         total.insert(total.remove(at: from), at: to)
                 
         self.updateInnerData(total: total)
-        self.repository.writeLocations(locations: total)
+        Task.detached(priority: .background) { [total] in
+            await self.repository.writeLocations(locations: total)
+        }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
         updateAppExtensions()
@@ -411,9 +434,11 @@ class MainViewModel: NSObject, UIStateRestoring {
     
     func updateLocation(location: Location) {
         self.updateInnerData(location: location)
-        self.repository.writeLocations(
-            locations: self.selectableTotalLocations.value.locations
-        )
+        
+        let locations = self.selectableTotalLocations.value.locations
+        Task.detached(priority: .background) {
+            await self.repository.writeLocations(locations: locations)
+        }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
         updateAppExtensions()
@@ -424,7 +449,9 @@ class MainViewModel: NSObject, UIStateRestoring {
         let location = total.remove(at: position)
         
         self.updateInnerData(total: total)
-        self.repository.deleteLocation(location: location)
+        Task.detached(priority: .background) {
+            await self.repository.deleteLocation(location: location)
+        }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
         updateAppExtensions()

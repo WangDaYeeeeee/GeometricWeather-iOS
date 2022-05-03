@@ -100,7 +100,10 @@ struct CurrentWidget_Previews: PreviewProvider {
         
     static var previews: some View {
         let entry = GeoWidgetEntry(
-            location: readLocationWithWeatherCache(),
+            location: Location.buildDefaultLocation(
+                weatherSource: WeatherSource[0],
+                residentPosition: false
+            ),
             date: Date(),
             configuration: ConfigurationIntent()
         )

@@ -19,7 +19,6 @@ class SearchResultController: GeoViewController<Bool>,
     // controllers.
     
     private let weatherApi = getWeatherApi(SettingsManager.shared.weatherSource)
-    private var cancelToken: CancelToken?
         
     // inner data.
     
@@ -103,7 +102,7 @@ class SearchResultController: GeoViewController<Bool>,
         self.cancelRequest()
         self.requesting.value = true
         
-        self.cancelToken = self.weatherApi.getLocation(
+        self.weatherApi.getLocation(
             text
         ) { [weak self] locations in
             guard let strongSelf = self else {
@@ -125,8 +124,7 @@ class SearchResultController: GeoViewController<Bool>,
     }
     
     private func cancelRequest() {
-        self.cancelToken?.cancelRequest()
-        self.cancelToken = nil
+        self.weatherApi.cancel()
     }
     
     func resetList() {

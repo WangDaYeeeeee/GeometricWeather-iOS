@@ -10,9 +10,7 @@ import Moya
 import RxSwift
 import GeometricWeatherBasic
 
-func getWeatherApi(
-    _ weatherSource: WeatherSource
-) -> WeatherApi {
+func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
     if weatherSource == .caiYun {
         return CaiYunApi()
     }
@@ -20,38 +18,40 @@ func getWeatherApi(
 }
 
 protocol WeatherApi {
-    
+        
     func getLocation(
         _ query: String,
         callback: @escaping (Array<Location>) -> Void
-    ) -> CancelToken
+    )
     
     func getGeoPosition(
         target: Location,
         callback: @escaping (Location?) -> Void
-    ) -> CancelToken
+    )
     
     func getWeather(
         target: Location,
         callback: @escaping (Weather?) -> Void
-    ) -> CancelToken
+    )
+    
+    func cancel()
 }
 
-class CancelToken {
+struct CancelToken {
     
-    private let cancelable: Cancellable?
+    private let cancellable: Cancellable?
     private let disposable: Disposable?
     
     init(
-        cancelable: Cancellable? = nil,
+        cancellable: Cancellable? = nil,
         disposable: Disposable? = nil
     ) {
-        self.cancelable = cancelable
+        self.cancellable = cancellable
         self.disposable = disposable
     }
     
     func cancelRequest() {
-        cancelable?.cancel()
+        cancellable?.cancel()
         disposable?.dispose()
     }
 }

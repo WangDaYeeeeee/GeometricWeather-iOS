@@ -45,8 +45,8 @@ public struct Location: Equatable {
     
     public var daylight: Bool {
         get {
-            if let w = weather {
-                return w.isDaylight(timezone: timezone)
+            if let weather = self.weather {
+                return weather.isDaylight(timezone: timezone)
             } else {
                 let timezoneDate = Date(
                     timeIntervalSince1970: Date().timeIntervalSince1970 + Double(

@@ -55,12 +55,13 @@ private func getLanguageForAccuApi() -> String {
 
 class CaiYunApi: WeatherApi {
     
+    var taskCancelToken: CancelToken?
+    
     func getLocation(
         _ query: String,
         callback: @escaping (Array<Location>) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(cancelable: accuProvider.request(
+    ) {
+        let cancellable = accuProvider.request(
             .location(
                 alias: "Always",
                 apikey: BuildConfig.current.accuWeatherKey,
@@ -90,15 +91,15 @@ class CaiYunApi: WeatherApi {
                 callback([])
                 break
             }
-        })
+        }
+        self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
     func getGeoPosition(
         target: Location,
         callback: @escaping (Location?) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(cancelable: accuProvider.request(
+    ) {
+        let cancellable = accuProvider.request(
             .geoPosition(
                 alias: "Always",
                 apikey: BuildConfig.current.accuWeatherKey,
@@ -128,15 +129,15 @@ class CaiYunApi: WeatherApi {
                 callback(nil)
                 break
             }
-        })
+        }
+        self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
     func getWeather(
         target: Location,
         callback: @escaping (Weather?) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(disposable: Observable.zip(
+    ) {
+        let disposable = Observable.zip(
             // weather.
             caiYunProvider.rx.request(
                 .weather(
@@ -196,7 +197,13 @@ class CaiYunApi: WeatherApi {
                 content: "Error in weather request: \(error)"
             )
             callback(nil)
-        }))
+        })
+        self.taskCancelToken = CancelToken(disposable: disposable)
+    }
+    
+    func cancel() {
+        self.taskCancelToken?.cancelRequest()
+        self.taskCancelToken = nil
     }
 }
 

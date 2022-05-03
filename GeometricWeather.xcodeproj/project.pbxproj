@@ -17,7 +17,6 @@
 		373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */; };
 		373F761B27E858070005875B /* AllergenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F761A27E858070005875B /* AllergenViewController.swift */; };
 		3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */; };
-		374BA5FE26FC78E00080B5CA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6226F4B45300431565 /* WidgetKit.framework */; };
 		374BA5FF26FC78E00080B5CA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37A35F6426F4B45300431565 /* SwiftUI.framework */; };
 		374BA60226FC78E00080B5CA /* GeometricWeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA60126FC78E00080B5CA /* GeometricWeatherWidget.swift */; };
 		374BA60726FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 374BA60326FC78E00080B5CA /* GeometricWeatherWidget.intentdefinition */; };
@@ -32,6 +31,18 @@
 		376596BB281D2D2A00164CAD /* AirQualityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596B9281D2C3700164CAD /* AirQualityWidget.swift */; };
 		376596BE281D338500164CAD /* ProgressViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596BD281D338500164CAD /* ProgressViews.swift */; };
 		376596C1281D560400164CAD /* CurrentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596C0281D560400164CAD /* CurrentWidget.swift */; };
+		376596C9281FA50C00164CAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 376596C8281FA50C00164CAD /* Assets.xcassets */; };
+		376596CF281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 376596CE281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		376596D4281FA50C00164CAD /* GeometricWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596D3281FA50C00164CAD /* GeometricWeatherApp.swift */; };
+		376596D6281FA50C00164CAD /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596D5281FA50C00164CAD /* MainView.swift */; };
+		376596D8281FA50C00164CAD /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596D7281FA50C00164CAD /* NotificationController.swift */; };
+		376596DA281FA50C00164CAD /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596D9281FA50C00164CAD /* NotificationView.swift */; };
+		376596DC281FA50C00164CAD /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596DB281FA50C00164CAD /* ComplicationController.swift */; };
+		376596DE281FA50D00164CAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 376596DD281FA50D00164CAD /* Assets.xcassets */; };
+		376596E1281FA50D00164CAD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 376596E0281FA50D00164CAD /* Preview Assets.xcassets */; };
+		376596E6281FA50D00164CAD /* GeometricWeatherWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 376596C6281FA50A00164CAD /* GeometricWeatherWatch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		37659707281FB4DA00164CAD /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37659706281FB4DA00164CAD /* WatchKit.framework */; };
+		37659709281FB51500164CAD /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37659708281FB51500164CAD /* WidgetKit.framework */; };
 		377B1D6626B6B93000E7E07E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6426B6B93000E7E07E /* SceneDelegate.swift */; };
 		377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6526B6B93000E7E07E /* AppDelegate.swift */; };
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
@@ -158,6 +169,20 @@
 			remoteGlobalIDString = 374BA5FC26FC78E00080B5CA;
 			remoteInfo = GeometricWeatherWidgetExtension;
 		};
+		376596D0281FA50C00164CAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 370BA58C269C398D006BB1CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 376596CD281FA50C00164CAD;
+			remoteInfo = "GeometricWeatherWatch WatchKit Extension";
+		};
+		376596E4281FA50D00164CAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 370BA58C269C398D006BB1CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 376596C5281FA50A00164CAD;
+			remoteInfo = GeometricWeatherWatch;
+		};
 		37C4E16127D21D4200430086 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 37C4DFBA27D21D4200430086 /* Pods.xcodeproj */;
@@ -231,6 +256,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		376596E7281FA50D00164CAD /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				376596E6281FA50D00164CAD /* GeometricWeatherWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		376596EA281FA50D00164CAD /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				376596CF281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37A35F7626F4B45400431565 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -276,6 +323,21 @@
 		376596B9281D2C3700164CAD /* AirQualityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirQualityWidget.swift; sourceTree = "<group>"; };
 		376596BD281D338500164CAD /* ProgressViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViews.swift; sourceTree = "<group>"; };
 		376596C0281D560400164CAD /* CurrentWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWidget.swift; sourceTree = "<group>"; };
+		376596C6281FA50A00164CAD /* GeometricWeatherWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeometricWeatherWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		376596C8281FA50C00164CAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		376596CE281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "GeometricWeatherWatch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		376596D3281FA50C00164CAD /* GeometricWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricWeatherApp.swift; sourceTree = "<group>"; };
+		376596D5281FA50C00164CAD /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		376596D7281FA50C00164CAD /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		376596D9281FA50C00164CAD /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		376596DB281FA50C00164CAD /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		376596DD281FA50D00164CAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		376596E0281FA50D00164CAD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		376596E2281FA50D00164CAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		376596E3281FA50D00164CAD /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		37659706281FB4DA00164CAD /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.5.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
+		37659708281FB51500164CAD /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/iOSSupport/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		376597172821131900164CAD /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = GeometricWeatherBasic/Package.swift; sourceTree = "<group>"; };
 		377B1D6426B6B93000E7E07E /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		377B1D6526B6B93000E7E07E /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
@@ -500,8 +562,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				374BA5FF26FC78E00080B5CA /* SwiftUI.framework in Frameworks */,
-				374BA5FE26FC78E00080B5CA /* WidgetKit.framework in Frameworks */,
 				374BA62726FC894E0080B5CA /* GeometricWeatherBasic in Frameworks */,
+				37659709281FB51500164CAD /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		376596CB281FA50C00164CAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37659707281FB4DA00164CAD /* WatchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +588,8 @@
 				370BA5C8269C6091006BB1CE /* InfoPlist.strings */,
 				370BA596269C398D006BB1CE /* GeometricWeather */,
 				374BA60026FC78E00080B5CA /* GeometricWeatherWidget */,
+				376596C7281FA50A00164CAD /* GeometricWeatherWatch */,
+				376596D2281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension */,
 				37A35F6126F4B45300431565 /* Frameworks */,
 				370BA595269C398D006BB1CE /* Products */,
 				F813B36BFD806899701C0E6D /* Pods */,
@@ -529,6 +601,8 @@
 			children = (
 				370BA594269C398D006BB1CE /* GeometricWeather.app */,
 				374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */,
+				376596C6281FA50A00164CAD /* GeometricWeatherWatch.app */,
+				376596CE281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -611,6 +685,54 @@
 				376596C0281D560400164CAD /* CurrentWidget.swift */,
 			);
 			path = Current;
+			sourceTree = "<group>";
+		};
+		376596C7281FA50A00164CAD /* GeometricWeatherWatch */ = {
+			isa = PBXGroup;
+			children = (
+				376596C8281FA50C00164CAD /* Assets.xcassets */,
+			);
+			path = GeometricWeatherWatch;
+			sourceTree = "<group>";
+		};
+		376596D2281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				376596FA281FAB3600164CAD /* Notification */,
+				376596F9281FAB2400164CAD /* Main */,
+				376596D3281FA50C00164CAD /* GeometricWeatherApp.swift */,
+				376596DB281FA50C00164CAD /* ComplicationController.swift */,
+				376596DD281FA50D00164CAD /* Assets.xcassets */,
+				376596E2281FA50D00164CAD /* Info.plist */,
+				376596E3281FA50D00164CAD /* PushNotificationPayload.apns */,
+				376596DF281FA50D00164CAD /* Preview Content */,
+			);
+			path = "GeometricWeatherWatch WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		376596DF281FA50D00164CAD /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				376596E0281FA50D00164CAD /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		376596F9281FAB2400164CAD /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				376596D5281FA50C00164CAD /* MainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		376596FA281FAB3600164CAD /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				376596D7281FA50C00164CAD /* NotificationController.swift */,
+				376596D9281FA50C00164CAD /* NotificationView.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		379A8A5327C8C59000083BFF /* Main */ = {
@@ -895,8 +1017,8 @@
 		379A8B1127C8C59000083BFF /* Accu */ = {
 			isa = PBXGroup;
 			children = (
-				379A8B1227C8C59000083BFF /* AccuConvert.swift */,
 				379A8B1327C8C59000083BFF /* AccuApi.swift */,
+				379A8B1227C8C59000083BFF /* AccuConvert.swift */,
 				379A8B1427C8C59000083BFF /* AccuJson.swift */,
 			);
 			path = Accu;
@@ -940,6 +1062,9 @@
 		37A35F6126F4B45300431565 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				376597172821131900164CAD /* Package.swift */,
+				37659708281FB51500164CAD /* WidgetKit.framework */,
+				37659706281FB4DA00164CAD /* WatchKit.framework */,
 				37A35F6226F4B45300431565 /* WidgetKit.framework */,
 				37A35F6426F4B45300431565 /* SwiftUI.framework */,
 				374BA63526FC8FD90080B5CA /* Intents.framework */,
@@ -1214,11 +1339,13 @@
 				37A35F7626F4B45400431565 /* Embed App Extensions */,
 				324C8A959646DF0F8ABDEB33 /* [CP] Embed Pods Frameworks */,
 				37D3B8B827D6D64600191C2A /* Needle */,
+				376596E7281FA50D00164CAD /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				374BA60A26FC78E10080B5CA /* PBXTargetDependency */,
+				376596E5281FA50D00164CAD /* PBXTargetDependency */,
 			);
 			name = GeometricWeather;
 			packageProductDependencies = (
@@ -1248,6 +1375,42 @@
 			productReference = 374BA5FD26FC78E00080B5CA /* GeometricWeatherWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		376596C5281FA50A00164CAD /* GeometricWeatherWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 376596F8281FA50D00164CAD /* Build configuration list for PBXNativeTarget "GeometricWeatherWatch" */;
+			buildPhases = (
+				376596C4281FA50A00164CAD /* Resources */,
+				376596EA281FA50D00164CAD /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				376596D1281FA50C00164CAD /* PBXTargetDependency */,
+			);
+			name = GeometricWeatherWatch;
+			productName = GeometricWeatherWatch;
+			productReference = 376596C6281FA50A00164CAD /* GeometricWeatherWatch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		376596CD281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 376596F7281FA50D00164CAD /* Build configuration list for PBXNativeTarget "GeometricWeatherWatch WatchKit Extension" */;
+			buildPhases = (
+				376596CA281FA50C00164CAD /* Sources */,
+				376596CB281FA50C00164CAD /* Frameworks */,
+				376596CC281FA50C00164CAD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GeometricWeatherWatch WatchKit Extension";
+			packageProductDependencies = (
+			);
+			productName = "GeometricWeatherWatch WatchKit Extension";
+			productReference = 376596CE281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1255,7 +1418,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					370BA593269C398D006BB1CE = {
@@ -1264,6 +1427,12 @@
 					};
 					374BA5FC26FC78E00080B5CA = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					376596C5281FA50A00164CAD = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+					376596CD281FA50C00164CAD = {
+						CreatedOnToolsVersion = 13.3.1;
 					};
 				};
 			};
@@ -1289,6 +1458,8 @@
 			targets = (
 				370BA593269C398D006BB1CE /* GeometricWeather */,
 				374BA5FC26FC78E00080B5CA /* GeometricWeatherWidgetExtension */,
+				376596C5281FA50A00164CAD /* GeometricWeatherWatch */,
+				376596CD281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -1392,6 +1563,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		376596C4281FA50A00164CAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				376596C9281FA50C00164CAD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		376596CC281FA50C00164CAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				376596E1281FA50D00164CAD /* Preview Assets.xcassets in Resources */,
+				376596DE281FA50D00164CAD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1603,6 +1791,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		376596CA281FA50C00164CAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				376596D8281FA50C00164CAD /* NotificationController.swift in Sources */,
+				376596D6281FA50C00164CAD /* MainView.swift in Sources */,
+				376596DC281FA50C00164CAD /* ComplicationController.swift in Sources */,
+				376596D4281FA50C00164CAD /* GeometricWeatherApp.swift in Sources */,
+				376596DA281FA50C00164CAD /* NotificationView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1610,6 +1810,16 @@
 			isa = PBXTargetDependency;
 			target = 374BA5FC26FC78E00080B5CA /* GeometricWeatherWidgetExtension */;
 			targetProxy = 374BA60926FC78E10080B5CA /* PBXContainerItemProxy */;
+		};
+		376596D1281FA50C00164CAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 376596CD281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension */;
+			targetProxy = 376596D0281FA50C00164CAD /* PBXContainerItemProxy */;
+		};
+		376596E5281FA50D00164CAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 376596C5281FA50A00164CAD /* GeometricWeatherWatch */;
+			targetProxy = 376596E4281FA50D00164CAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1686,6 +1896,7 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -1744,6 +1955,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -1761,7 +1973,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 174;
+				CURRENT_PROJECT_VERSION = 175;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1772,7 +1984,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.4;
+				MARKETING_VERSION = 1.7.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1801,7 +2013,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 174;
+				CURRENT_PROJECT_VERSION = 175;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1812,7 +2024,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.4;
+				MARKETING_VERSION = 1.7.5;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1888,6 +2100,134 @@
 			};
 			name = Release;
 		};
+		376596E8281FA50D00164CAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73CBTMT92C;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = GeometricWeatherWatch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = GeometricWeatherWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wangdaye.com.GeometricWeather;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		376596E9281FA50D00164CAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73CBTMT92C;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = GeometricWeatherWatch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = GeometricWeatherWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wangdaye.com.GeometricWeather;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
+		376596EB281FA50D00164CAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeatherWatch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 73CBTMT92C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GeometricWeatherWatch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "GeometricWeatherWatch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = ComplicationController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		376596EC281FA50D00164CAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeatherWatch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 73CBTMT92C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GeometricWeatherWatch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "GeometricWeatherWatch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = ComplicationController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1914,6 +2254,24 @@
 			buildConfigurations = (
 				374BA60E26FC78E10080B5CA /* Debug */,
 				374BA60F26FC78E10080B5CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		376596F7281FA50D00164CAD /* Build configuration list for PBXNativeTarget "GeometricWeatherWatch WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				376596EB281FA50D00164CAD /* Debug */,
+				376596EC281FA50D00164CAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		376596F8281FA50D00164CAD /* Build configuration list for PBXNativeTarget "GeometricWeatherWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				376596E8281FA50D00164CAD /* Debug */,
+				376596E9281FA50D00164CAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

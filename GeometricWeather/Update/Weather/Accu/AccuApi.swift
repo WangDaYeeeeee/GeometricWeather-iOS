@@ -36,12 +36,13 @@ private func getLanguage() -> String {
 
 class AccuApi: WeatherApi {
     
+    var taskCancelToken: CancelToken?
+    
     func getLocation(
         _ query: String,
         callback: @escaping (Array<Location>) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(cancelable: provider.request(
+    ) {
+        let cancellable = provider.request(
             .location(
                 alias: "Always",
                 apikey: BuildConfig.current.accuWeatherKey,
@@ -71,15 +72,15 @@ class AccuApi: WeatherApi {
                 callback([])
                 break
             }
-        })
+        }
+        self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
     func getGeoPosition(
         target: Location,
         callback: @escaping (Location?) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(cancelable: provider.request(
+    ) {
+        let cancellable = provider.request(
             .geoPosition(
                 alias: "Always",
                 apikey: BuildConfig.current.accuWeatherKey,
@@ -109,15 +110,15 @@ class AccuApi: WeatherApi {
                 callback(nil)
                 break
             }
-        })
+        }
+        self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
     func getWeather(
         target: Location,
         callback: @escaping (Weather?) -> Void
-    ) -> CancelToken {
-        
-        return CancelToken(disposable: Observable.zip(
+    ) {
+        let disposable = Observable.zip(
             // current.
             provider.rx.request(
                 .current(
@@ -208,7 +209,13 @@ class AccuApi: WeatherApi {
                 content: "Error in weather request: \(error)"
             )
             callback(nil)
-        }))
+        })
+        self.taskCancelToken = CancelToken(disposable: disposable)
+    }
+    
+    func cancel() {
+        self.taskCancelToken?.cancelRequest()
+        self.taskCancelToken = nil
     }
 }
 

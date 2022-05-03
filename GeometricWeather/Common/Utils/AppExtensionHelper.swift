@@ -31,33 +31,32 @@ func updateAppExtensions() {
     WidgetCenter.shared.reloadAllTimelines()
     
     // app shortcut items.
-    updateAppShortcutItems()
+    updateAppShortcutItemsInTask()
 }
 
-private func updateAppShortcutItems() {
-    DispatchQueue.global(qos: .background).async {
-        var locations = DatabaseHelper.shared.readLocations()
-        locations = Location.excludeInvalidResidentLocation(locationArray: locations)
-        
-        DispatchQueue.main.async {
-            var items = [UIApplicationShortcutItem]()
-            
-            for location in locations {
-                let item = UIApplicationShortcutItem(
-                    type: location.formattedId,
-                    localizedTitle: getLocationText(location: location),
-                    localizedSubtitle: location.toString(),
-                    icon: UIApplicationShortcutIcon(
-                        type: location.currentPosition
-                        ? .location
-                        : .markLocation
-                    ),
-                    userInfo: nil
-                )
-                items.append(item)
-            }
-            
-            UIApplication.shared.shortcutItems = items
+private func updateAppShortcutItemsInTask() {
+    Task.detached(priority: .background) {
+        let items = Location.excludeInvalidResidentLocation(
+            locationArray: await DatabaseHelper.shared.asyncReadLocations()
+        ).map { location in
+            UIApplicationShortcutItem(
+                type: location.formattedId,
+                localizedTitle: getLocationText(location: location),
+                localizedSubtitle: location.toString(),
+                icon: UIApplicationShortcutIcon(
+                    type: location.currentPosition
+                    ? .location
+                    : .markLocation
+                ),
+                userInfo: nil
+            )
         }
+        
+        await updateAppShortcutItems(items)
     }
+}
+
+@MainActor
+private func updateAppShortcutItems(_ items: [UIApplicationShortcutItem]) {
+    UIApplication.shared.shortcutItems = items
 }

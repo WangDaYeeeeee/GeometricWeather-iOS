@@ -10,198 +10,172 @@ import GeometricWeatherBasic
 
 private let backgroundPollingValidInterval = 0.25 // 15 minutes.
 
+struct UpdateResult {
+    let location: Location
+    let locationSucceed: Bool?
+    let weatherRequestSucceed: Bool
+}
+
+private struct _UpdateResult {
+    let location: Location
+    let isSucceed: Bool
+}
+
 class UpdateHelper {
     
     private let locator = LocationHelper()
+    private var api: WeatherApi?
     
-    private let accuApi = AccuApi()
-    private let caiYunApi = CaiYunApi()
-    
-    private var weatherRequestTokens = [CancelToken]()
-    
-    private func getWeatherApi(
-        _ weatherSource: WeatherSource
-    ) -> WeatherApi {
-        if weatherSource == .caiYun {
-            return self.caiYunApi
-        }
-        return self.accuApi
-    }
-    
-    func update(
-        target: Location,
-        inBackground: Bool,
-        // location, location result, weather request result.
-        callback: @escaping (Location, Bool?, Bool) -> Void
-    ) {
+    func update(target: Location, inBackground: Bool) async -> UpdateResult {
         printLog(keyword: "update", content: "update for: \(target.formattedId)")
-        
-        cancel()
+        self.cancelRequest()
         
         if inBackground && target.weather?.isValid(
             pollingIntervalHours: backgroundPollingValidInterval
-        ) ?? false {
-            DispatchQueue.main.async {
-                callback(target, target.currentPosition ? true : nil, true)
-            }
-            return
+        ) == true {
+            return UpdateResult(
+                location: target,
+                locationSucceed: target.currentPosition ? true : nil,
+                weatherRequestSucceed: true
+            )
         }
         
-        if !target.currentPosition {
-            getWeather(target: target, callback: callback)
-            return
-        }
+        self.api = self.getWeatherApi(
+            target.currentPosition ? SettingsManager.shared.weatherSource : target.weatherSource
+        )
         
-        locator.requestLocation(inBackground: inBackground) { geoPosition in
-            if let geo = geoPosition {
-                let location = target.copyOf(
-                    latitude: geo.0,
-                    longitude: geo.1
-                )
-                DispatchQueue.global(qos: .background).async {
-                    DatabaseHelper.shared.writeLocation(location: location)
+        return await withTaskCancellationHandler {
+            printLog(keyword: "update", content: "begin update for: \(target.formattedId)")
+            
+            var result = UpdateResult(location: target, locationSucceed: nil, weatherRequestSucceed: false)
+            if result.location.currentPosition {
+                // location.
+                
+                if let locationResult = await self.locator.requestLocation(inBackground: inBackground) {
+                    result = UpdateResult(
+                        location: result.location.copyOf(
+                            latitude: locationResult.latitude,
+                            longitude: locationResult.longitude
+                        ),
+                        locationSucceed: true,
+                        weatherRequestSucceed: false
+                    )
+                    await DatabaseHelper.shared.asyncWriteLocation(location: result.location)
+                } else {
+                    result = UpdateResult(
+                        location: result.location,
+                        locationSucceed: false,
+                        weatherRequestSucceed: false
+                    )
                 }
                 
-                self.getGeoPosition(
-                    target: location,
-                    locationResult: true,
-                    callback: callback
+                // get geo position.
+                let geoResult = await self.getGeoPosition(api: self.api!, target: result.location)
+                result = UpdateResult(
+                    location: geoResult.location.copyOf(
+                        weatherSource: SettingsManager.shared.weatherSource
+                    ),
+                    locationSucceed: result.locationSucceed == true && geoResult.isSucceed,
+                    weatherRequestSucceed: false
                 )
-                return
             }
             
-            if target.usable {
-                self.getWeather(
-                    target: target,
-                    locationResult: false,
-                    callback: callback
-                )
-                return
-            }
-            
-            let location = Location.buildDefaultLocation(
-                weatherSource: SettingsManager.shared.weatherSource,
-                residentPosition: target.residentPosition
+            // get weather.
+            let weatherResult = await self.getWeather(api: self.api!, target: result.location)
+            return UpdateResult(
+                location: weatherResult.location,
+                locationSucceed: result.locationSucceed,
+                weatherRequestSucceed: weatherResult.isSucceed
             )
-            DispatchQueue.global(qos: .background).async {
-                DatabaseHelper.shared.writeLocation(location: location)
-            }
-            
-            self.getWeather(
-                target: location,
-                locationResult: false,
-                callback: callback
-            )
+        } onCancel: { [weak self] in
+            printLog(keyword: "update", content: "cancel update for: \(target.formattedId)")
+            self?.cancelRequest()
         }
     }
     
+    private func cancelRequest() {
+        self.locator.stopRequest()
+        self.api?.cancel()
+    }
+    
+    private func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
+        if weatherSource == .caiYun {
+            return CaiYunApi()
+        }
+        return AccuApi()
+    }
+    
+    // location, whether succeed.
     private func getGeoPosition(
-        target: Location,
-        locationResult: Bool,
-        // location, location result, weather request result.
-        callback: @escaping (Location, Bool?, Bool) -> Void
-    ) {
-        printLog(keyword: "update", content: "get geo position for: \(target.formattedId)")
-        
-        let token = self.getWeatherApi(
-            SettingsManager.shared.weatherSource
-        ).getGeoPosition(
-            target: target
-        ) { location in
-            if let result = location {
-                DispatchQueue.global(qos: .background).async {
-                    DatabaseHelper.shared.writeLocation(location: result)
-                }
-                
-                self.getWeather(
-                    target: result.copyOf(weatherSource: SettingsManager.shared.weatherSource),
-                    locationResult: locationResult,
-                    geoPositionResult: true,
-                    callback: callback
-                )
-                return
-            }
+        api: WeatherApi,
+        target: Location
+    ) async -> _UpdateResult {
+        await withCheckedContinuation { continuation in
+            printLog(keyword: "update", content: "get geo position for: \(target.formattedId)")
             
-            DispatchQueue.global(qos: .background).async {
-                let weather = DatabaseHelper.shared.readWeather(
-                    formattedId: target.formattedId
-                )
-                DispatchQueue.main.async {
-                    callback(
-                        target.copyOf(weather: weather),
-                        locationResult,
-                        false
+            api.getGeoPosition(target: target) { location in
+                Task.detached(priority: .background) {
+                    if let result = location {
+                        await DatabaseHelper.shared.asyncWriteLocation(location: result)
+                        continuation.resume(
+                            returning: _UpdateResult(location: result, isSucceed: true)
+                        )
+                        return
+                    }
+                    
+                    continuation.resume(
+                        returning: _UpdateResult(
+                            location: target.copyOf(
+                                weather: await DatabaseHelper.shared.asyncReadWeather(
+                                    formattedId: target.formattedId
+                                )
+                            ),
+                            isSucceed: false
+                        )
                     )
                 }
             }
-            
         }
-        
-        weatherRequestTokens.append(token)
     }
     
     private func getWeather(
+        api: WeatherApi,
         target: Location,
         locationResult: Bool? = nil,
-        geoPositionResult: Bool? = nil,
-        // location, location result, weather request result.
-        callback: @escaping (Location, Bool?, Bool) -> Void
-    ) {
-        printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
-        
-        let targetSource = target.currentPosition
-        ? SettingsManager.shared.weatherSource
-        : target.weatherSource
-        
-        let token = self.getWeatherApi(
-            targetSource
-        ).getWeather(
-            target: target
-        ) { weather in
-            self.weatherRequestTokens.removeAll()
+        geoPositionResult: Bool? = nil
+    ) async -> _UpdateResult {
+        await withCheckedContinuation { continuation in
+            printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
             
-            if let result = weather {
-                DispatchQueue.global(qos: .background).async {
-                    DatabaseHelper.shared.writeWeather(
-                        weather: result,
-                        formattedId: target.formattedId
-                    )
-                }
-                
-                callback(
-                    target.copyOf(
-                        weather: result,
-                        weatherSource: targetSource
-                    ),
-                    locationResult,
-                    geoPositionResult ?? true
-                )
-                return
-            }
-            
-            DispatchQueue.global(qos: .background).async {
-                let weather = DatabaseHelper.shared.readWeather(
-                    formattedId: target.formattedId
-                )
-                DispatchQueue.main.async {
-                    callback(
-                        target.copyOf(weather: weather),
-                        locationResult,
-                        false
+            api.getWeather(target: target){ weather in
+                Task.detached(priority: .background) {
+                    if let result = weather {
+                        await DatabaseHelper.shared.asyncWriteWeather(
+                            weather: result,
+                            formattedId: target.formattedId
+                        )
+                        continuation.resume(
+                            returning: _UpdateResult(
+                                location: target.copyOf(weather: result),
+                                isSucceed: true
+                            )
+                        )
+                        return
+                    }
+                    
+                    continuation.resume(
+                        returning: _UpdateResult(
+                            location: target.copyOf(
+                                weather: await DatabaseHelper.shared.asyncReadWeather(
+                                    formattedId: target.formattedId
+                                ),
+                                weatherSource: SettingsManager.shared.weatherSource
+                            ),
+                            isSucceed: false
+                        )
                     )
                 }
             }
         }
-        
-        weatherRequestTokens.append(token)
-    }
-    
-    func cancel() {
-        locator.stopRequest()
-        
-        for token in weatherRequestTokens {
-            token.cancelRequest()
-        }
-        weatherRequestTokens.removeAll()
     }
 }

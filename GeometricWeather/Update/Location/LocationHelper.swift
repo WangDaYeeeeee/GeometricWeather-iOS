@@ -11,40 +11,47 @@ import GeometricWeatherBasic
 
 private let timeOut = 10.0
 
+struct LocationResult {
+    let latitude: Double
+    let longitude: Double
+}
+
 class LocationHelper: NSObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
-    private var isRunning = false
-    private var callbacks = [((Double, Double)?) -> Void]()
     
     private var timer: Timer?
+    private var callback: ((LocationResult?) -> Void)?
+    
+    func requestLocation(inBackground: Bool) async -> LocationResult? {
+        await withCheckedContinuation { continuation in
+            self.requestLocation(inBackground: inBackground) { result in
+                continuation.resume(returning: result)
+            }
+        }
+    }
     
     func requestLocation(
         inBackground: Bool,
-        // latitude, longitude.
-        _ callback: @escaping ((Double, Double)?) -> Void
+        _ callback: @escaping (LocationResult?) -> Void
     ) {
         printLog(keyword: "update", content: "location begin")
         
         if inBackground {
             if let location = self.locationManager.location {
-                callback((
-                    location.coordinate.latitude,
-                    location.coordinate.longitude
-                ))
+                callback(
+                    LocationResult(
+                        latitude: location.coordinate.latitude,
+                        longitude: location.coordinate.longitude
+                    )
+                )
             } else {
                 callback(nil)
             }
             return
         }
         
-        if self.isRunning {
-            self.callbacks.append(callback)
-            return
-        }
-        
-        self.isRunning = true
-        self.callbacks.append(callback)
+        self.callback = callback
         
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.distanceFilter = 0
@@ -69,15 +76,14 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
     
     func stopRequest() {
         self.locationManager.stopUpdatingLocation()
-        self.callbacks.removeAll()
-        self.isRunning = false
+        self.callback = nil
         
         self.timer?.invalidate()
         self.timer = nil
     }
     
     private func startUpdatingLocation() {
-        self.locationManager.startUpdatingLocation()
+        self.locationManager.requestLocation()
         
         self.timer = Timer.scheduledTimer(
             withTimeInterval: timeOut,
@@ -90,16 +96,14 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
     
     private func publishResult(_ result: CLLocation?) {
         if let location = result {
-            for callback in self.callbacks {
-                callback((
-                    location.coordinate.latitude,
-                    location.coordinate.longitude
-                ))
-            }
+            self.callback?(
+                LocationResult(
+                    latitude: location.coordinate.latitude,
+                    longitude: location.coordinate.longitude
+                )
+            )
         } else {
-            for callback in self.callbacks {
-                callback(nil)
-            }
+            self.callback?(nil)
         }
     }
     
@@ -126,5 +130,10 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
             self.publishResult(location)
             self.stopRequest()
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.publishResult(nil)
+        self.stopRequest()
     }
 }

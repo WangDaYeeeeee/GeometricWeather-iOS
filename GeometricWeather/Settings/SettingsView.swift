@@ -170,36 +170,36 @@ struct SettingsView: View {
             ]
         }.onChange(of: self.todayForecastEnabled) { newValue in
             SettingsManager.shared.todayForecastEnabled = newValue
-            resetTodayForecastPendingIntent()
+            resetTodayForecastPendingIntentInTask()
         }.onChange(of: self.todayForecastDate) { newValue in
             SettingsManager.shared.todayForecastDate = newValue
-            resetTodayForecastPendingIntent()
+            resetTodayForecastPendingIntentInTask()
         }.onChange(of: self.tomorrowForecastEnabled) { newValue in
             SettingsManager.shared.tomorrowForecastEnabled = newValue
-            resetTomorrowForecastPendingIntent()
+            resetTomorrowForecastPendingIntentInTask()
         }.onChange(of: self.tomorrowForecastDate) { newValue in
             SettingsManager.shared.tomorrowForecastDate = newValue
-            resetTomorrowForecastPendingIntent()
+            resetTomorrowForecastPendingIntentInTask()
         }
     }
 }
 
-private func resetTodayForecastPendingIntent() {
-    DispatchQueue.global(qos: .background).async {
-        if let weather = DatabaseHelper.shared.readWeather(
-            formattedId: DatabaseHelper.shared.readLocations()[0].formattedId
+private func resetTodayForecastPendingIntentInTask() {
+    Task.detached(priority: .high) {
+        if let weather = await DatabaseHelper.shared.asyncReadWeather(
+            formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
         ) {
-            resetTodayForecastPendingNotification(weather: weather)
+            await resetTodayForecastPendingNotification(weather: weather)
         }
     }
 }
 
-private func resetTomorrowForecastPendingIntent() {
-    DispatchQueue.global(qos: .background).async {
-        if let weather = DatabaseHelper.shared.readWeather(
-            formattedId: DatabaseHelper.shared.readLocations()[0].formattedId
+private func resetTomorrowForecastPendingIntentInTask() {
+    Task.detached(priority: .high) {
+        if let weather = await DatabaseHelper.shared.asyncReadWeather(
+            formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
         ) {
-            resetTomorrowForecastPendingNotification(weather: weather)
+            await resetTomorrowForecastPendingNotification(weather: weather)
         }
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 
 extension GeoDialog {
     
-    func showSelf(inWindowOfView view: UIView) {
+    func showSelf(inWindowOf view: UIView) {
         if let window = view.window {
             self.showOn(window)
         }

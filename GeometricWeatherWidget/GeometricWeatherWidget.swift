@@ -8,7 +8,9 @@
 import WidgetKit
 import SwiftUI
 import Intents
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherSettings
+import GeometricWeatherDB
 
 func readLocationWithWeatherCache() async -> Location {
     let location = await DatabaseHelper.shared.asyncReadLocations().first

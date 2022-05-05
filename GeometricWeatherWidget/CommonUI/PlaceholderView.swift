@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
 import WidgetKit
+import GeometricWeatherCore
+import GeometricWeatherTheme
 
 struct PlaceholderView: View {
     var body: some View {
@@ -15,10 +16,9 @@ struct PlaceholderView: View {
             Spacer()
             VStack {
                 Spacer()
-                Image(
-                    uiImage: UIImage(namedInBasic: "launch_icon")!
-                        .scaleToSize(CGSize(width: 96.0, height: 96.0))!
-                )
+                Image(namedInBasic: "launch_icon")?
+                    .resizable()
+                    .frame(width: 96, height: 96)
                 Spacer()
             }
             Spacer()

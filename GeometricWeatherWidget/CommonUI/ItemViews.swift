@@ -6,12 +6,9 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
-
-private let font = UIFont.systemFont(
-    ofSize: miniCaptionFont.pointSize,
-    weight: .bold
-)
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
 
 // MARK: - daily.
 
@@ -33,22 +30,16 @@ struct DailyItemView: View {
                         timezone: self.timezone
                     )
                 )
-            ).font(
-                Font(miniCaptionFont).weight(.bold)
-            ).foregroundColor(
-                .white
-            )
+            ).font(Font(miniCaptionFont).weight(.bold))
+                .foregroundColor(.white)
             
-            if let uiImage = UIImage.getWeatherIcon(
+            
+            Image.getWeatherIcon(
                 weatherCode: self.weather.dailyForecasts[index].day.weatherCode,
                 daylight: true
-            )?.scaleToSize(
-                CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
-            ) {
-                Image(uiImage: uiImage).padding(
-                    .bottom, 2.0
-                )
-            }
+            )?.resizable()
+                .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
+                .padding(.bottom, 2.0)
             
             MiddleUnitText(
                 value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
@@ -131,14 +122,11 @@ struct DailyItemView: View {
                 .bottom, 2.0
             )
 
-            if let uiImage = UIImage.getWeatherIcon(
+            Image.getWeatherIcon(
                 weatherCode: self.weather.dailyForecasts[index].night.weatherCode,
                 daylight: false
-            )?.scaleToSize(
-                CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
-            ) {
-                Image(uiImage: uiImage)
-            }
+            )?.resizable()
+                .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
         }
     }
     
@@ -189,20 +177,14 @@ struct HourlyItemView: View {
                             timezone: self.timezone
                         )
                     )
-                ).font(
-                    Font(miniCaptionFont).weight(.bold)
-                ).foregroundColor(
-                    .white
-                )
+                ).font(Font(miniCaptionFont).weight(.bold))
+                    .foregroundColor(.white)
                 
-                if let uiImage = UIImage.getWeatherIcon(
+                Image.getWeatherIcon(
                     weatherCode: self.weather.hourlyForecasts[index].weatherCode,
                     daylight: self.weather.hourlyForecasts[index].daylight
-                )?.scaleToSize(
-                    CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
-                ) {
-                    Image(uiImage: uiImage)
-                }
+                )?.resizable()
+                    .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
                 
                 MiddleUnitText(
                     value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(

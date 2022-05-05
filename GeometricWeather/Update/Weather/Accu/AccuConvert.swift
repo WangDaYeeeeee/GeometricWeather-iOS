@@ -7,7 +7,11 @@
 
 import Foundation
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 func generateLocations(
     _ from: Array<AccuLocationResult>,

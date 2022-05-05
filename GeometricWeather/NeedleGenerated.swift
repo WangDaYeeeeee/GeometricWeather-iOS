@@ -1,7 +1,11 @@
 
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherDB
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherTheme
 import NeedleFoundation
 
 // swiftlint:disable unused_declaration

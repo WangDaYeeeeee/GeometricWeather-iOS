@@ -7,7 +7,11 @@
 
 import Foundation
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 class EmptyLocationItemView: UIView {
     
@@ -81,7 +85,9 @@ class EmptyLocationItemView: UIView {
     }
     
     func bindData(location: Location) {
-        self.titleLabel1.text = getLocationText(location: location)
+        self.titleLabel1.text = location.currentPosition
+        ? getLocalizedText("current_location")
+        : getLocationText(location: location)
         self.residientIcon.alpha = location.residentPosition ? 1 : 0
         self.subtitleLabel.text = location.toString()
         self.sourceLabel.text = "Powered by \(location.weatherSource.url)"

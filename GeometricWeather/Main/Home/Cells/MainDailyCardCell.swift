@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 import SwiftUI
 
 private let dailyTrendViewHeight = 286
@@ -293,11 +297,13 @@ class MainDailyCardCell: MainTableViewCell,
     }
     
     func getUnselectedColor() -> UIColor {
-        return ThemeManager.shared.weatherThemeDelegate.getThemeColor(
-            weatherKind: weatherCodeToWeatherKind(
-                code: self.weather?.current.weatherCode ?? .clear
-            ),
-            daylight: ThemeManager.shared.daylight.value
+        return UIColor(
+            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(
+                    code: self.weather?.current.weatherCode ?? .clear
+                ),
+                daylight: ThemeManager.shared.daylight.value
+            )
         ).withAlphaComponent(0.33)
     }
     

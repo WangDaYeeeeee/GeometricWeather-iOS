@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let backgroundPollingValidInterval = 0.25 // 15 minutes.
 

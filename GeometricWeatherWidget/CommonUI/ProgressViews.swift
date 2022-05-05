@@ -7,7 +7,9 @@
 
 import SwiftUI
 import WidgetKit
-import GeometricWeatherBasic
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherTheme
 
 private let circularProgressInnerMargin = 6.0
 private let circularProgressProgressWidth = 12.0
@@ -59,7 +61,7 @@ struct CircularProgressView: View {
                     .foregroundColor(.white.opacity(0.5))
                     .position(
                         x: proxy.size.width / 2.0,
-                        y: proxy.size.height - captionFont.pointSize + 4.0
+                        y: proxy.size.height - 10.0
                     )
             }
         }

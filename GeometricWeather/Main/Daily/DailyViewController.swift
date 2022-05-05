@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 import SwiftUI
 
 private let topInset = 56.0

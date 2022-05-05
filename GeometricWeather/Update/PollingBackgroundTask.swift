@@ -7,7 +7,11 @@
 
 import Foundation
 import BackgroundTasks
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 import SwiftUI
 
 private let identifier = "com.wangdaye.geometricweather.polling"

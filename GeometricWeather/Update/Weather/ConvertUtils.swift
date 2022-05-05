@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 func toInt(_ value: Double) -> Int {
   return Int(value + 0.5)

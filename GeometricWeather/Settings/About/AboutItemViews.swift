@@ -6,7 +6,11 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 struct AboutHeader: View {
     
@@ -15,39 +19,22 @@ struct AboutHeader: View {
             Spacer()
             
             VStack(spacing: 8) {
-                Image(
-                    uiImage: UIImage(
-                        namedInBasic: "launch_icon"
-                    )!.scaleToSize(
-                        CGSize(width: 156, height: 156)
-                    )!
-                ).frame(
-                    width: 156,
-                    height: 156,
-                    alignment: .center
-                )
+                Image(namedInBasic: "launch_icon")?
+                    .resizable()
+                    .frame(width: 156, height: 156)
                 
-                Text(
-                    "GeometricWeather"
-                ).font(
-                    Font(largeTitleFont)
-                ).foregroundColor(
-                    Color(UIColor.label)
-                )
+                Text(getLocalizedText("GeometricWeather"))
+                    .font(Font(largeTitleFont))
+                    .foregroundColor(Color(UIColor.label))
                 
-                Text(
-                    Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-                ).font(
-                    Font(captionFont)
-                ).foregroundColor(
-                    Color(UIColor.tertiaryLabel)
-                )
+                Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String ?? "--")
+                    .font(Font(captionFont))
+                    .foregroundColor(Color(UIColor.tertiaryLabel))
                 
-                Color.black.opacity(0.0).frame(
-                    width: 0.0,
-                    height: 2.0,
-                    alignment: .center
-                )
+                Color
+                    .black
+                    .opacity(0.0)
+                    .frame(width: 0.0, height: 2.0)
             }
             
             Spacer()

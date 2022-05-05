@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let normalBackgroundColor = UIColor.systemBackground
 private let selectedBackgroundColor = UIColor.secondarySystemBackground

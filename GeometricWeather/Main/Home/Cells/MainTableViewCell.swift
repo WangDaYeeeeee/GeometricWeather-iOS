@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let blurStyle = UIBlurEffect.Style.prominent
 
@@ -78,11 +82,13 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location, timeBar: MainTimeBarView?) {
-        self.cardContainer.contentView.backgroundColor = ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
-            weatherKind: weatherCodeToWeatherKind(
-                code: location.weather?.current.weatherCode ?? .clear
-            ),
-            daylight: ThemeManager.shared.daylight.value
+        self.cardContainer.contentView.backgroundColor = UIColor(
+            ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
+                weatherKind: weatherCodeToWeatherKind(
+                    code: location.weather?.current.weatherCode ?? .clear
+                ),
+                daylight: ThemeManager.shared.daylight.value
+            )
         )
         
         if let timeBar = timeBar {

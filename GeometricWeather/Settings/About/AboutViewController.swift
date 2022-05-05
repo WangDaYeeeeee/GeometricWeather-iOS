@@ -6,7 +6,11 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 class AboutViewController: GeoViewController<Void> {
     

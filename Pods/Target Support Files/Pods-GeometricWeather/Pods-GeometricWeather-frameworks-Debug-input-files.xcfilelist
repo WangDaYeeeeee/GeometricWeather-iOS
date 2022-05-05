@@ -3,7 +3,6 @@ ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/JXMovableCellTableView/JXMovableCellTableView.framework
 ${BUILT_PRODUCTS_DIR}/Moya/Moya.framework
 ${BUILT_PRODUCTS_DIR}/NeedleFoundation/NeedleFoundation.framework
-${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework

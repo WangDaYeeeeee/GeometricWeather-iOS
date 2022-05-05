@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let iconSize = 20.0
 
@@ -229,13 +233,13 @@ class MainSunMoonCardCell: MainTableViewCell {
             daylight: daylight
         )
         
-        self.moonPhaseView.lightColor = color * 0.5 + .white * 0.5
-        self.moonPhaseView.darkColor = color
-        self.moonPhaseView.borderColor = color
+        self.moonPhaseView.lightColor = UIColor(color * 0.5 + .white * 0.5)
+        self.moonPhaseView.darkColor = UIColor(color)
+        self.moonPhaseView.borderColor = UIColor(color)
         
-        self.sunMoonPathView.sunColor = color
-        self.sunMoonPathView.moonColor = color
-        self.sunMoonPathView.backgroundLineColor = color
+        self.sunMoonPathView.sunColor = UIColor(color)
+        self.sunMoonPathView.moonColor = UIColor(color)
+        self.sunMoonPathView.backgroundLineColor = UIColor(color)
     }
     
     override func staggeredScrollIntoScreen(atFirstTime: Bool) {

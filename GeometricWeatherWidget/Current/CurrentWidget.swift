@@ -8,7 +8,10 @@
 import WidgetKit
 import SwiftUI
 import Intents
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherTheme
+import GeometricWeatherSettings
 
 private let elementSize = 56.0
 private let elementOffsetX = 10.0
@@ -45,21 +48,17 @@ struct CurrentWidgetEntryView : View {
                     )
                 }
                 
-                if let icon = UIImage.getWeatherIcon(
+                Image.getWeatherIcon(
                     weatherCode: self.entry.location.weather!.current.weatherCode,
                     daylight: self.entry.location.daylight
-                )?.scaleToSize(
-                    CGSize(
-                        width: elementSize,
-                        height: elementSize
-                    )
-                ) {
-                    Image(uiImage: icon).offset(
-                        x: elementOffsetX,
-                        y: -elementOffsetY
-                    )
-                    Spacer()
-                }
+                )?.resizable().frame(
+                    width: elementSize,
+                    height: elementSize
+                ).offset(
+                    x: elementOffsetX,
+                    y: -elementOffsetY
+                )
+                Spacer()
             }.padding()
                 .background(
                     ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(

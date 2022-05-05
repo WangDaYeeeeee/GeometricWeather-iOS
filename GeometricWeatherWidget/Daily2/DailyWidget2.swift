@@ -8,7 +8,10 @@
 import WidgetKit
 import SwiftUI
 import Intents
-import GeometricWeatherBasic
+
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherTheme
 
 // MARK: - view.
 

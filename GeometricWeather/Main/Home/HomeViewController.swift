@@ -6,7 +6,12 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import SwiftUI
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 class HomeViewController: UIViewController,
                             DragSwitchDelegate,
@@ -82,7 +87,19 @@ class HomeViewController: UIViewController,
     
     // MARK: - subviews.
     
-    let weatherViewController = ThemeManager.shared.weatherThemeDelegate.getWeatherViewController()
+    lazy var weatherViewController: WeatherViewController<MaterialWeatherView> = {
+        let state = WeatherViewState(
+            weatherKind: .null,
+            daylight: isDaylight()
+        )
+        return WeatherViewController(
+            ThemeManager
+                .shared
+                .weatherThemeDelegate
+                .getWeatherView(state: state),
+            state: state
+        )
+    }()
     
     let dragSwitchView = DragSwitchView(frame: .zero)
     let tableView = AutoHideKeyboardTableView(frame: .zero, style: .grouped)

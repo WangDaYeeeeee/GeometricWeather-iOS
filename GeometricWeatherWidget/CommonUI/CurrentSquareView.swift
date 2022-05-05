@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
 
 struct CurrentSquareView: View {
     
@@ -19,10 +21,12 @@ struct CurrentSquareView: View {
                 .foregroundColor(.white)
             
             Text(self.getTemperatureTitleText())
-                .font(largeTemperatureFont).foregroundColor(.white)
+                .font(largeTemperatureFont)
+                .foregroundColor(.white)
             
             Text(self.getBottomCaptionText())
-                .font(Font(miniCaptionFont)).foregroundColor(.white)
+                .font(Font(miniCaptionFont))
+                .foregroundColor(.white)
                 .padding(
                     EdgeInsets(
                         top: 2.0,
@@ -40,14 +44,13 @@ struct CurrentSquareView: View {
                     .font(Font(captionFont).weight(.bold))
                     .foregroundColor(.white)
                 
-                if let uiImage = UIImage.getWeatherIcon(
+                Image.getWeatherIcon(
                     weatherCode: self.location.weather?.current.weatherCode ?? .clear,
                     daylight: self.location.daylight
-                )?.scaleToSize(
-                    CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
-                ) {
-                    Image(uiImage: uiImage)
-                }
+                )?.resizable().frame(
+                    width: miniWeatherIconSize,
+                    height: miniWeatherIconSize
+                )
             }
         }
     }

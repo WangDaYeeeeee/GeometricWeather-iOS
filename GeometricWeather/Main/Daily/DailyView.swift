@@ -6,7 +6,11 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let itemVerticalMargin = 8.0
 private let itemHorizontalMargin = littleMargin
@@ -249,17 +253,12 @@ struct HalfDayHeaderView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: littleMargin) {
-            Image(
-                uiImage: UIImage.getWeatherIcon(
-                    weatherCode: halfDay.weatherCode,
-                    daylight: daylight
-                )!.scaleToSize(
-                    CGSize(width: 56, height: 56)
-                )!
-            ).frame(
+            Image.getWeatherIcon(
+                weatherCode: halfDay.weatherCode,
+                daylight: daylight
+            )?.resizable().frame(
                 width: 56,
-                height: 56,
-                alignment: .center
+                height: 56
             )
             
             Text(
@@ -328,25 +327,18 @@ struct DailySunMoonItemView: View {
             
             HStack(alignment: .center, spacing: 0.0) {
                 if self.sun.isValid() {
-                    Image(
-                        uiImage: UIImage.getSunIcon()!.scaleToSize(
-                            CGSize(
-                                width: 24.0,
-                                height: 24.0
+                    Image
+                        .getSunIcon()?
+                        .resizable()
+                        .frame(width: 24.0, height: 24.0)
+                        .padding(
+                            EdgeInsets(
+                                top: 0,
+                                leading: 0,
+                                bottom: 0,
+                                trailing: itemHorizontalMargin
                             )
-                        )!
-                    ).frame(
-                        width: 24.0,
-                        height: 24.0,
-                        alignment: .center
-                    ).padding(
-                        EdgeInsets(
-                            top: 0,
-                            leading: 0,
-                            bottom: 0,
-                            trailing: itemHorizontalMargin
                         )
-                    )
 
                     Text(
                         self.sun.formateRiseTime(twelveHour: isTwelveHour()) + "↑"
@@ -374,25 +366,18 @@ struct DailySunMoonItemView: View {
                         Color(UIColor.secondaryLabel)
                     )
                     
-                    Image(
-                        uiImage: UIImage.getMoonIcon()!.scaleToSize(
-                            CGSize(
-                                width: 24.0,
-                                height: 24.0
+                    Image
+                        .getMoonIcon()?
+                        .resizable()
+                        .frame(width: 24.0, height: 24.0)
+                        .padding(
+                            EdgeInsets(
+                                top: 0,
+                                leading: itemHorizontalMargin,
+                                bottom: 0,
+                                trailing: 0
                             )
-                        )!
-                    ).frame(
-                        width: 24.0,
-                        height: 24.0,
-                        alignment: .center
-                    ).padding(
-                        EdgeInsets(
-                            top: 0,
-                            leading: itemHorizontalMargin,
-                            bottom: 0,
-                            trailing: 0
                         )
-                    )
                 }
             }.padding(itemEdgeInsets)
         }

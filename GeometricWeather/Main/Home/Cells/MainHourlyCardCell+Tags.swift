@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let naturalTrendPaddingTop = 24.0
 private let naturalTrendPaddingBottom = normalMargin

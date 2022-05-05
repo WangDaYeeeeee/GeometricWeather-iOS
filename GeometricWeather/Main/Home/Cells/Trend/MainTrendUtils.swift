@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 let mainTrendInnerMargin = littleMargin / 2
 let mainTrendIconSize = 32.0

@@ -6,7 +6,8 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
 
 struct HourlyView: View {
     
@@ -24,13 +25,9 @@ struct HourlyView: View {
                         index: i / 2
                     )
                 } else {
-                    Text(
-                        "--"
-                    ).font(
-                        Font(miniCaptionFont)
-                    ).foregroundColor(
-                        .white
-                    )
+                    Text("--")
+                        .font(Font(miniCaptionFont))
+                        .foregroundColor(.white)
                 }
             }
         }

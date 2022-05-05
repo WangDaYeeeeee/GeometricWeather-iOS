@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private func toRadians(_ degrees: Double) -> Double {
     return degrees * .pi / 180.0

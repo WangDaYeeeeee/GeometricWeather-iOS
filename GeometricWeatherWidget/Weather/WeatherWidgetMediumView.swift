@@ -7,7 +7,9 @@
 
 import WidgetKit
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
 
 // MARK: - view.
 
@@ -71,13 +73,9 @@ struct WeatherWidgetMediumHeaderView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            Text(
-                getLocationText(location: self.location)
-            ).font(
-                Font(miniCaptionFont).weight(.semibold)
-            ).foregroundColor(
-                .white
-            )
+            Text(getLocationText(location: self.location))
+                .font(Font(miniCaptionFont).weight(.semibold))
+                .foregroundColor(.white)
             
             HStack(alignment: .center) {
                 Text(
@@ -95,62 +93,46 @@ struct WeatherWidgetMediumHeaderView: View {
                                 weather.dailyForecasts[0].day.temperature.temperature,
                                 unit: "°"
                             )
-                        ).font(
-                            Font(miniCaptionFont).weight(.bold)
-                        ).foregroundColor(
-                            .white
-                        )
+                        ).font(Font(miniCaptionFont).weight(.bold))
+                            .foregroundColor(.white)
                         
                         Text(
                             SettingsManager.shared.temperatureUnit.formatValueWithUnit(
                                 weather.dailyForecasts[0].night.temperature.temperature,
                                 unit: "°"
                             )
-                        ).font(
-                            Font(miniCaptionFont).weight(.bold)
-                        ).foregroundColor(
-                            .white
-                        ).opacity(secondaryTextOpacity)
+                        ).font(Font(miniCaptionFont).weight(.bold))
+                            .foregroundColor(.white)
+                            .opacity(secondaryTextOpacity)
                     }.offset(x: -4.0, y: 0.0)
                 }
                 
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 2.0) {
-                    Text(
-                        self.getBottomBodyText()
-                    ).font(
-                        Font(captionFont).weight(.bold)
-                    ).foregroundColor(
-                        .white
-                    )
+                    Text(self.getBottomBodyText())
+                        .font(Font(captionFont).weight(.bold))
+                        .foregroundColor(.white)
                     
-                    Text(
-                        self.getBottomCaptionText()
-                    ).font(
-                        Font(miniCaptionFont)
-                    ).foregroundColor(
-                        .white
-                    ).padding(
-                        EdgeInsets(
-                            top: 2.0,
-                            leading: 6.0,
-                            bottom: 2.0,
-                            trailing: 6.0
+                    Text(self.getBottomCaptionText())
+                        .font(Font(miniCaptionFont))
+                        .foregroundColor(.white)
+                        .padding(
+                            EdgeInsets(
+                                top: 2.0,
+                                leading: 6.0,
+                                bottom: 2.0,
+                                trailing: 6.0
+                            )
                         )
-                    ).background(
-                        aqiWindBackground.cornerRadius(aqiWindCornerRadius)
-                    )
+                        .background(aqiWindBackground.cornerRadius(aqiWindCornerRadius))
                 }
                 
-                if let uiImage = UIImage.getWeatherIcon(
+                Image.getWeatherIcon(
                     weatherCode: self.location.weather?.current.weatherCode ?? .clear,
                     daylight: self.location.daylight
-                )?.scaleToSize(
-                    CGSize(width: largeWeatherIconSize, height: largeWeatherIconSize)
-                ) {
-                    Image(uiImage: uiImage)
-                }
+                )?.resizable()
+                    .frame(width: largeWeatherIconSize, height: largeWeatherIconSize)
             }
         }
     }

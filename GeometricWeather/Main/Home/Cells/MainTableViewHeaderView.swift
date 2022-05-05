@@ -7,7 +7,11 @@
 
 import UIKit
 import SnapKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let minCountAnimationDuration = 2.0
 private let unitCountAnimationDeltaTemperature = 10.0

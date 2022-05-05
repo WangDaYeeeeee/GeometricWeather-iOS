@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
 
 // MARK: - daily view.
 
@@ -61,13 +63,9 @@ struct DailyView: View {
                     if i % 2 != 0 {
                         Spacer()
                     } else {
-                        Text(
-                            "--"
-                        ).font(
-                            Font(miniCaptionFont)
-                        ).foregroundColor(
-                            .white
-                        )
+                        Text("--")
+                            .font(Font(miniCaptionFont))
+                            .foregroundColor(.white)
                     }
                 }
                 Spacer()
@@ -162,13 +160,9 @@ struct HorizontalDailyView: View {
                     if i % 2 != 0 {
                         Spacer()
                     } else {
-                        Text(
-                            "--"
-                        ).font(
-                            Font(miniCaptionFont)
-                        ).foregroundColor(
-                            .white
-                        )
+                        Text("--")
+                            .font(Font(miniCaptionFont))
+                            .foregroundColor(.white)
                     }
                 }
                 
@@ -198,11 +192,8 @@ private struct VerticalWeekNameView: View {
                                 timezone: self.timezone
                             )
                         )
-                    ).font(
-                        Font(miniCaptionFont).weight(.bold)
-                    ).foregroundColor(
-                        .white
-                    )
+                    ).font(Font(miniCaptionFont).weight(.bold))
+                        .foregroundColor(.white)
                     
                     Spacer()
                 }
@@ -225,16 +216,13 @@ private struct VerticalIconView: View {
                 VStack {
                     Spacer()
                     
-                    if let uiImage = UIImage.getWeatherIcon(
+                    Image.getWeatherIcon(
                         weatherCode: self.daytime
                         ? self.weather.dailyForecasts[i].day.weatherCode
                         : self.weather.dailyForecasts[i].night.weatherCode,
                         daylight: self.daytime
-                    )?.scaleToSize(
-                        CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
-                    ) {
-                        Image(uiImage: uiImage)
-                    }
+                    )?.resizable()
+                        .frame(width: miniWeatherIconSize, height: miniWeatherIconSize)
                     
                     Spacer()
                 }
@@ -264,13 +252,9 @@ private struct VerticalTemperatureView: View {
                             : self.weather.dailyForecasts[i].night.temperature.temperature,
                             unit: "°"
                         )
-                    ).font(
-                        Font(miniCaptionFont).weight(.bold)
-                    ).foregroundColor(
-                        .white
-                    ).opacity(
-                        self.daytime ? 1.0 : secondaryTextOpacity
-                    )
+                    ).font(Font(miniCaptionFont).weight(.bold))
+                        .foregroundColor(.white)
+                        .opacity(self.daytime ? 1.0 : secondaryTextOpacity)
                     
                     Spacer()
                 }

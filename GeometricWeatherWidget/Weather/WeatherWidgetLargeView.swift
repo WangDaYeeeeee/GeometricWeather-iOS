@@ -7,7 +7,8 @@
 
 import WidgetKit
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
 
 // MARK: - view.
 
@@ -24,15 +25,10 @@ struct WeatherWidgetLargeView: View {
             )
             
             if !(self.location.weather?.alerts.isEmpty ?? true) {
-                Text(
-                    self.location.weather!.alerts[0].description
-                ).font(
-                    Font(miniCaptionFont)
-                ).foregroundColor(
-                    .white
-                ).padding(
-                    [.leading, .trailing]
-                )
+                Text(self.location.weather!.alerts[0].description)
+                    .font(Font(miniCaptionFont))
+                    .foregroundColor(.white)
+                    .padding([.leading, .trailing])
             }
             
             Color.white.opacity(0.0).frame(width: 1.0, height: 12.0, alignment: .center)

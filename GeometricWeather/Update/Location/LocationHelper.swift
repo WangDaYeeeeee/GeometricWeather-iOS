@@ -7,7 +7,11 @@
 
 import Foundation
 import CoreLocation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let timeOut = 10.0
 

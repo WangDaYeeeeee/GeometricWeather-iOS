@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let allergenReuseIdentifier = "allergen_trend_cell"
 private let seperatorReuseIdentifier = "allergen_trend_seperator"

@@ -7,7 +7,11 @@
 
 import UIKit
 import AudioToolbox
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let cellReuseId = "ManagementTableViewCell"
 

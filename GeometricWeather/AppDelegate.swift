@@ -7,7 +7,11 @@
 
 import UIKit
 import CoreData
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 @main
 class AppDelegate: UIResponder,
@@ -20,6 +24,9 @@ class AppDelegate: UIResponder,
     ) -> Bool {
         // register needle for di.
         registerProviderFactories()
+        
+        // register theme manager.
+        ThemeManager.shared.update(darkMode: SettingsManager.shared.darkMode)
         
         // request notification authorization and set delegate.
         UNUserNotificationCenter.current().requestAuthorization(

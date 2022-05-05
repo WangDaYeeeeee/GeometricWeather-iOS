@@ -7,7 +7,9 @@
 
 import WidgetKit
 import SwiftUI
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
 
 // MARK: - view.
 

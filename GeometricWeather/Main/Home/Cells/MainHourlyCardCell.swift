@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private let hourlyTrendViewHeight = 226.0
 private let minutelyTrendViewHeight = 56.0
@@ -219,9 +223,11 @@ class MainHourlyCardCell: MainTableViewCell,
                 make.trailing.equalToSuperview().offset(-normalMargin)
             }
             
-            self.minutelyView.polylineColor = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
-                weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
-                daylight: ThemeManager.shared.daylight.value
+            self.minutelyView.polylineColor = UIColor(
+                ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+                    weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
+                    daylight: ThemeManager.shared.daylight.value
+                )
             )
             self.minutelyView.polylineValues = getPrecipitationIntensityInPercentage(
                 intensityInRadarStandard: minutely.precipitationIntensityInPercentage
@@ -281,7 +287,7 @@ class MainHourlyCardCell: MainTableViewCell,
                 timezone: timezone,
                 index: indexPath.row
             ).showSelf(
-                inWindowOfView: self
+                inWindowOf: self
             )
         }
     }
@@ -372,11 +378,13 @@ class MainHourlyCardCell: MainTableViewCell,
     }
     
     func getUnselectedColor() -> UIColor {
-        return ThemeManager.shared.weatherThemeDelegate.getThemeColor(
-            weatherKind: weatherCodeToWeatherKind(
-                code: self.weather?.current.weatherCode ?? .clear
-            ),
-            daylight: ThemeManager.shared.daylight.value
+        return UIColor(
+            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(
+                    code: self.weather?.current.weatherCode ?? .clear
+                ),
+                daylight: ThemeManager.shared.daylight.value
+            )
         ).withAlphaComponent(0.33)
     }
     

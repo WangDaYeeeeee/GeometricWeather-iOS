@@ -12,9 +12,6 @@ target 'GeometricWeather' do
   pod 'Moya/RxSwift', '~> 15.0'
   pod 'Moya/ReactiveSwift', '~> 15.0'
   
-  # reachability.
-  pod 'ReachabilitySwift'
-  
   # snapkit.
   pod 'SnapKit', '~> 5.0.0'
   

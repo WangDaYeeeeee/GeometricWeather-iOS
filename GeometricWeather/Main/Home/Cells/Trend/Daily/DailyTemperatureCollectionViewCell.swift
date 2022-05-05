@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
@@ -248,11 +252,12 @@ class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrend
     }
     
     private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
-        let themeColor = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
-            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
-            daylight: daylight
+        self.trendView.color = UIColor(
+            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(code: weatherCode),
+                daylight: daylight
+            )
         )
-        self.trendView.color = themeColor
         self.trendView.bottomLabel.textColor = precipitationProbabilityColor
     }
 }

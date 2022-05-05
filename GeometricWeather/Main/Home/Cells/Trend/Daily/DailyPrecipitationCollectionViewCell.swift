@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 class DailyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     

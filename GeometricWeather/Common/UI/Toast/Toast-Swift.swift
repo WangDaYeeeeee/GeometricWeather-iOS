@@ -7,7 +7,11 @@
 
 import UIKit
 import ObjectiveC
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 private enum DisplayEnum: Int {
     case unknown

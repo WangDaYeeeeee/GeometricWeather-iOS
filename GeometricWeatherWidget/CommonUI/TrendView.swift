@@ -7,7 +7,10 @@
 
 import SwiftUI
 import WidgetKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherTheme
 
 private let polyLineWidth = 4.0
 
@@ -92,9 +95,9 @@ struct TrendView: View {
             weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
             daylight: weather.isDaylight(timezone: timezone)
         )
-        self.highPolylineColor = color
-        self.lowPolylineColor = color
-        self.histogramColor = color
+        self.highPolylineColor = UIColor(color)
+        self.lowPolylineColor = UIColor(color)
+        self.histogramColor = UIColor(color)
         
         self.highPolylineDescription = SettingsManager.shared.temperatureUnit.formatValueWithUnit(
             weather.dailyForecasts[index].day.temperature.temperature,
@@ -109,11 +112,9 @@ struct TrendView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 4.0) {
-            Text(self.highPolylineDescription).font(
-                Font(miniCaptionFont)
-            ).foregroundColor(
-                .white
-            )
+            Text(self.highPolylineDescription)
+                .font(Font(miniCaptionFont))
+                .foregroundColor(.white)
             
             GeometryReader { proxy in
                 ZStack {
@@ -128,11 +129,9 @@ struct TrendView: View {
                 }
             }
             
-            Text(self.lowPolylineDescription).font(
-                Font(miniCaptionFont)
-            ).foregroundColor(
-                .white
-            )
+            Text(self.lowPolylineDescription)
+                .font(Font(miniCaptionFont))
+                .foregroundColor(.white)
         }
     }
 }

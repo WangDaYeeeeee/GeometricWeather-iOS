@@ -6,7 +6,11 @@
 //
 
 import Foundation
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 import UIKit
 
 private let cellReuseId = "ManagementTableViewCell"
@@ -255,7 +259,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
                         StatementDialog(
                             title: getLocalizedText("feedback_resident_location"),
                             content: getLocalizedText("feedback_resident_location_description")
-                        ).showSelf(inWindowOfView: strongSelf.view)
+                        ).showSelf(inWindowOf: strongSelf.view)
                     } completion: { didTap in
                         // do nothing.
                     }

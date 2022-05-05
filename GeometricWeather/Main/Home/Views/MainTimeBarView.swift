@@ -7,7 +7,11 @@
 
 import UIKit
 import SnapKit
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 struct TimeBarManagementAction {}
 struct TimeBarAlertAction {}

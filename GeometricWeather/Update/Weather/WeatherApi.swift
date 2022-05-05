@@ -8,7 +8,11 @@
 import Foundation
 import Moya
 import RxSwift
-import GeometricWeatherBasic
+import GeometricWeatherCore
+import GeometricWeatherResources
+import GeometricWeatherSettings
+import GeometricWeatherDB
+import GeometricWeatherTheme
 
 func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
     if weatherSource == .caiYun {

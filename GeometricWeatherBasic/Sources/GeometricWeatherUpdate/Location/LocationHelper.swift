@@ -8,26 +8,22 @@
 import Foundation
 import CoreLocation
 import GeometricWeatherCore
-import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 private let timeOut = 10.0
 
-struct LocationResult {
+public struct LocationResult {
     let latitude: Double
     let longitude: Double
 }
 
-class LocationHelper: NSObject, CLLocationManagerDelegate {
+public class LocationHelper: NSObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
     
     private var timer: Timer?
     private var callback: ((LocationResult?) -> Void)?
     
-    func requestLocation(inBackground: Bool) async -> LocationResult? {
+    public func requestLocation(inBackground: Bool) async -> LocationResult? {
         await withCheckedContinuation { continuation in
             self.requestLocation(inBackground: inBackground) { result in
                 continuation.resume(returning: result)
@@ -35,7 +31,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func requestLocation(
+    public func requestLocation(
         inBackground: Bool,
         _ callback: @escaping (LocationResult?) -> Void
     ) {
@@ -78,7 +74,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
         self.stopRequest()
     }
     
-    func stopRequest() {
+    public func stopRequest() {
         self.locationManager.stopUpdatingLocation()
         self.callback = nil
         
@@ -113,7 +109,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
     
     // MARK: - delegate.
     
-    func locationManagerDidChangeAuthorization(
+    public func locationManagerDidChangeAuthorization(
         _ manager: CLLocationManager
     ) {
         if manager.authorizationStatus == .authorizedAlways
@@ -126,7 +122,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
         self.stopRequest()
     }
     
-    func locationManager(
+    public func locationManager(
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
     ) {
@@ -136,7 +132,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.publishResult(nil)
         self.stopRequest()
     }

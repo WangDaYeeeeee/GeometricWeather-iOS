@@ -51,21 +51,13 @@
 		376596E6281FA50D00164CAD /* GeometricWeatherWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 376596C6281FA50A00164CAD /* GeometricWeatherWatch.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		37659707281FB4DA00164CAD /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37659706281FB4DA00164CAD /* WatchKit.framework */; };
 		37659709281FB51500164CAD /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37659708281FB51500164CAD /* WidgetKit.framework */; };
-		3771D85628226FB800AEB8C1 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D84828226FB800AEB8C1 /* LocationHelper.swift */; };
-		3771D85728226FB800AEB8C1 /* CaiYunApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D84B28226FB800AEB8C1 /* CaiYunApi.swift */; };
-		3771D85828226FB800AEB8C1 /* CaiYunConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D84C28226FB800AEB8C1 /* CaiYunConvert.swift */; };
-		3771D85928226FB800AEB8C1 /* CaiYunJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D84D28226FB800AEB8C1 /* CaiYunJson.swift */; };
-		3771D85A28226FB800AEB8C1 /* ConvertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D84E28226FB800AEB8C1 /* ConvertUtils.swift */; };
-		3771D85B28226FB800AEB8C1 /* AccuConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85028226FB800AEB8C1 /* AccuConvert.swift */; };
-		3771D85C28226FB800AEB8C1 /* AccuApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85128226FB800AEB8C1 /* AccuApi.swift */; };
-		3771D85D28226FB800AEB8C1 /* AccuJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85228226FB800AEB8C1 /* AccuJson.swift */; };
-		3771D85E28226FB800AEB8C1 /* WeatherApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85328226FB800AEB8C1 /* WeatherApi.swift */; };
-		3771D85F28226FB800AEB8C1 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85428226FB800AEB8C1 /* UpdateHelper.swift */; };
-		3771D86028226FB800AEB8C1 /* PollingBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3771D85528226FB800AEB8C1 /* PollingBackgroundTask.swift */; };
 		3771D87A2822A28400AEB8C1 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 3771D8792822A28400AEB8C1 /* GeometricWeatherBasic */; };
 		3771D87C2822A29000AEB8C1 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 3771D87B2822A29000AEB8C1 /* GeometricWeatherBasic */; };
 		377B1D6626B6B93000E7E07E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6426B6B93000E7E07E /* SceneDelegate.swift */; };
 		377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377B1D6526B6B93000E7E07E /* AppDelegate.swift */; };
+		3780D06D2823DE57004205D2 /* AppBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D0632823DE57004205D2 /* AppBackgroundTask.swift */; };
+		3780D06F2823DEE1004205D2 /* DatabaseHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */; };
+		3780D0712823DF5F004205D2 /* UpdateHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */; };
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
 		3793419C2813D8780046AD88 /* MainTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */; };
 		379341AA28153AE30046AD88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379341A928153AE30046AD88 /* Assets.xcassets */; };
@@ -348,19 +340,11 @@
 		37659706281FB4DA00164CAD /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.5.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
 		37659708281FB51500164CAD /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/iOSSupport/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
 		376597172821131900164CAD /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = GeometricWeatherBasic/Package.swift; sourceTree = "<group>"; };
-		3771D84828226FB800AEB8C1 /* LocationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
-		3771D84B28226FB800AEB8C1 /* CaiYunApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaiYunApi.swift; sourceTree = "<group>"; };
-		3771D84C28226FB800AEB8C1 /* CaiYunConvert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaiYunConvert.swift; sourceTree = "<group>"; };
-		3771D84D28226FB800AEB8C1 /* CaiYunJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaiYunJson.swift; sourceTree = "<group>"; };
-		3771D84E28226FB800AEB8C1 /* ConvertUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertUtils.swift; sourceTree = "<group>"; };
-		3771D85028226FB800AEB8C1 /* AccuConvert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccuConvert.swift; sourceTree = "<group>"; };
-		3771D85128226FB800AEB8C1 /* AccuApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccuApi.swift; sourceTree = "<group>"; };
-		3771D85228226FB800AEB8C1 /* AccuJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccuJson.swift; sourceTree = "<group>"; };
-		3771D85328226FB800AEB8C1 /* WeatherApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherApi.swift; sourceTree = "<group>"; };
-		3771D85428226FB800AEB8C1 /* UpdateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateHelper.swift; sourceTree = "<group>"; };
-		3771D85528226FB800AEB8C1 /* PollingBackgroundTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollingBackgroundTask.swift; sourceTree = "<group>"; };
 		377B1D6426B6B93000E7E07E /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		377B1D6526B6B93000E7E07E /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3780D0632823DE57004205D2 /* AppBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundTask.swift; sourceTree = "<group>"; };
+		3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelperExt.swift; sourceTree = "<group>"; };
+		3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHelperExt.swift; sourceTree = "<group>"; };
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
 		3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		379341A928153AE30046AD88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -622,11 +606,11 @@
 			isa = PBXGroup;
 			children = (
 				379A8A9027C8C59000083BFF /* Common */,
-				3771D84628226FB800AEB8C1 /* Update */,
 				379A8B1C27C8C59000083BFF /* Settings */,
 				379A8A5327C8C59000083BFF /* Main */,
 				3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */,
 				377B1D6526B6B93000E7E07E /* AppDelegate.swift */,
+				3780D0632823DE57004205D2 /* AppBackgroundTask.swift */,
 				377B1D6426B6B93000E7E07E /* SceneDelegate.swift */,
 				37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */,
 				3799F4FF26D0AE9C00B49D20 /* GeometricWeather-Bridging-Header.h */,
@@ -665,6 +649,8 @@
 				374629F42823996B009FBB85 /* UILabelExt.swift */,
 				374629F228239945009FBB85 /* UIViewExt.swift */,
 				37462A00282399E5009FBB85 /* StringExt.swift */,
+				3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */,
+				3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -766,56 +752,6 @@
 				376596D9281FA50C00164CAD /* NotificationView.swift */,
 			);
 			path = Notification;
-			sourceTree = "<group>";
-		};
-		3771D84628226FB800AEB8C1 /* Update */ = {
-			isa = PBXGroup;
-			children = (
-				3771D84728226FB800AEB8C1 /* Location */,
-				3771D84928226FB800AEB8C1 /* Weather */,
-				3771D85428226FB800AEB8C1 /* UpdateHelper.swift */,
-				3771D85528226FB800AEB8C1 /* PollingBackgroundTask.swift */,
-			);
-			path = Update;
-			sourceTree = "<group>";
-		};
-		3771D84728226FB800AEB8C1 /* Location */ = {
-			isa = PBXGroup;
-			children = (
-				3771D84828226FB800AEB8C1 /* LocationHelper.swift */,
-			);
-			path = Location;
-			sourceTree = "<group>";
-		};
-		3771D84928226FB800AEB8C1 /* Weather */ = {
-			isa = PBXGroup;
-			children = (
-				3771D84A28226FB800AEB8C1 /* CaiYun */,
-				3771D84E28226FB800AEB8C1 /* ConvertUtils.swift */,
-				3771D84F28226FB800AEB8C1 /* Accu */,
-				3771D85328226FB800AEB8C1 /* WeatherApi.swift */,
-			);
-			path = Weather;
-			sourceTree = "<group>";
-		};
-		3771D84A28226FB800AEB8C1 /* CaiYun */ = {
-			isa = PBXGroup;
-			children = (
-				3771D84B28226FB800AEB8C1 /* CaiYunApi.swift */,
-				3771D84C28226FB800AEB8C1 /* CaiYunConvert.swift */,
-				3771D84D28226FB800AEB8C1 /* CaiYunJson.swift */,
-			);
-			path = CaiYun;
-			sourceTree = "<group>";
-		};
-		3771D84F28226FB800AEB8C1 /* Accu */ = {
-			isa = PBXGroup;
-			children = (
-				3771D85028226FB800AEB8C1 /* AccuConvert.swift */,
-				3771D85128226FB800AEB8C1 /* AccuApi.swift */,
-				3771D85228226FB800AEB8C1 /* AccuJson.swift */,
-			);
-			path = Accu;
 			sourceTree = "<group>";
 		};
 		379A8A5327C8C59000083BFF /* Main */ = {
@@ -1684,11 +1620,9 @@
 				379A8B2B27C8C59000083BFF /* DailyUVCollectionViewCell.swift in Sources */,
 				37D3B8CA27D6FA5000191C2A /* SettingsComponent.swift in Sources */,
 				379A8B6527C8C59100083BFF /* LinearProgressView.swift in Sources */,
-				3771D85E28226FB800AEB8C1 /* WeatherApi.swift in Sources */,
 				379A8B2F27C8C59000083BFF /* AllergenCollectionViewCell.swift in Sources */,
 				379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */,
 				379A8B5E27C8C59000083BFF /* GeoDialog.swift in Sources */,
-				3771D85928226FB800AEB8C1 /* CaiYunJson.swift in Sources */,
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,
 				379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */,
@@ -1696,7 +1630,6 @@
 				37D3B8C027D6DB3500191C2A /* ManagementComponent.swift in Sources */,
 				379A8B3D27C8C59000083BFF /* MainTableViewHeaderView.swift in Sources */,
 				379A8BD427CDFEC800083BFF /* EditViewController.swift in Sources */,
-				3771D85F28226FB800AEB8C1 /* UpdateHelper.swift in Sources */,
 				373F760627E35B750005875B /* MiddleUnitLabel.swift in Sources */,
 				377B1D6726B6B93000E7E07E /* AppDelegate.swift in Sources */,
 				374629FE28239985009FBB85 /* CGAffineTransformExt.swift in Sources */,
@@ -1705,7 +1638,6 @@
 				379A8B4027C8C59000083BFF /* PresentManagementViewController.swift in Sources */,
 				379A8B9727C8C59100083BFF /* GeoNavigationController.swift in Sources */,
 				379A8BBA27C8C59100083BFF /* AboutView.swift in Sources */,
-				3771D85628226FB800AEB8C1 /* LocationHelper.swift in Sources */,
 				379A8B3C27C8C59000083BFF /* MainNavigationBarTitleView.swift in Sources */,
 				379A8BBC27C8C59100083BFF /* AboutViewController.swift in Sources */,
 				379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */,
@@ -1713,9 +1645,8 @@
 				37462A01282399E5009FBB85 /* StringExt.swift in Sources */,
 				37D3B8C827D6FA0A00191C2A /* NeedleGenerated.swift in Sources */,
 				379A8B2E27C8C59000083BFF /* MainDetailsCardCell.swift in Sources */,
+				3780D0712823DF5F004205D2 /* UpdateHelperExt.swift in Sources */,
 				379A8B4A27C8C59000083BFF /* AlertViewController.swift in Sources */,
-				3771D85728226FB800AEB8C1 /* CaiYunApi.swift in Sources */,
-				3771D85C28226FB800AEB8C1 /* AccuApi.swift in Sources */,
 				379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */,
 				379A8B3127C8C59000083BFF /* MainDailyCardCell.swift in Sources */,
 				379A8B9827C8C59100083BFF /* GeoViewController.swift in Sources */,
@@ -1723,9 +1654,7 @@
 				379A8B5A27C8C59000083BFF /* ToastHelper.swift in Sources */,
 				379A8B2827C8C59000083BFF /* DailyWindCollectionViewCell.swift in Sources */,
 				379A8B6C27C8C59100083BFF /* AppNotificationHelper.swift in Sources */,
-				3771D85828226FB800AEB8C1 /* CaiYunConvert.swift in Sources */,
 				379A8B4827C8C59000083BFF /* DailyViewController.swift in Sources */,
-				3771D86028226FB800AEB8C1 /* PollingBackgroundTask.swift in Sources */,
 				379A8BBE27C8C59100083BFF /* SettingsView.swift in Sources */,
 				379A8B3E27C8C59000083BFF /* MainViewController.swift in Sources */,
 				379A8B3227C8C59000083BFF /* MainTableViewCell.swift in Sources */,
@@ -1739,6 +1668,7 @@
 				377B1D6626B6B93000E7E07E /* SceneDelegate.swift in Sources */,
 				379A8B6227C8C59100083BFF /* MoonPhaseView.swift in Sources */,
 				37462A102823A153009FBB85 /* WeatherViewController.swift in Sources */,
+				3780D06F2823DEE1004205D2 /* DatabaseHelperExt.swift in Sources */,
 				379A8B4127C8C59000083BFF /* SplitManagementViewController.swift in Sources */,
 				379A8B5C27C8C59000083BFF /* GeoDialog+Helper.swift in Sources */,
 				379A8B2727C8C59000083BFF /* HourlyTemperatureCollectionViewCell.swift in Sources */,
@@ -1751,6 +1681,7 @@
 				379A8B4B27C8C59000083BFF /* AlertTableViewCell.swift in Sources */,
 				379A8B3627C8C59000083BFF /* HomeViewController+PageIndicator.swift in Sources */,
 				379A8B3927C8C59000083BFF /* MainSelectableTagView.swift in Sources */,
+				3780D06D2823DE57004205D2 /* AppBackgroundTask.swift in Sources */,
 				379A8B4527C8C59000083BFF /* LocationTableViewCell.swift in Sources */,
 				379A8B3027C8C59000083BFF /* MainAllergenCardCell.swift in Sources */,
 				379A8BC927C92AD000083BFF /* MainHourlyCardCell+Tags.swift in Sources */,
@@ -1760,7 +1691,6 @@
 				379A8B4C27C8C59000083BFF /* MainRepository.swift in Sources */,
 				374629FB2823997A009FBB85 /* UICollectionViewExt.swift in Sources */,
 				379A8BD027CDB0A400083BFF /* EditView.swift in Sources */,
-				3771D85A28226FB800AEB8C1 /* ConvertUtils.swift in Sources */,
 				379A8BC727C9261100083BFF /* MainDailyCardCell+Tags.swift in Sources */,
 				379A8B2C27C8C59000083BFF /* MainTrendUtils.swift in Sources */,
 				379A8BC027C8C59100083BFF /* SettingsViewController.swift in Sources */,
@@ -1786,12 +1716,10 @@
 				374629F328239945009FBB85 /* UIViewExt.swift in Sources */,
 				379A8B5927C8C59000083BFF /* Toast-Swift.swift in Sources */,
 				379A8B2627C8C59000083BFF /* HourlyWindCollectionViewCell.swift in Sources */,
-				3771D85D28226FB800AEB8C1 /* AccuJson.swift in Sources */,
 				37F34B622818BD2B008C2CF3 /* LocationWeatherItemView.swift in Sources */,
 				379A8B3B27C8C59000083BFF /* MainTrendShaderCollectionView.swift in Sources */,
 				379A8B2227C8C59000083BFF /* HourlyViewController.swift in Sources */,
 				379A8B4627C8C59000083BFF /* ManagementCommon.swift in Sources */,
-				3771D85B28226FB800AEB8C1 /* AccuConvert.swift in Sources */,
 				379A8B4D27C8C59000083BFF /* MainViewModel.swift in Sources */,
 				37D3B8BE27D6D85600191C2A /* HomeComponent.swift in Sources */,
 				379A8B4F27C8C59000083BFF /* StaggeredCellAnimation.swift in Sources */,

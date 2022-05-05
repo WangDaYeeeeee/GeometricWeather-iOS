@@ -8,10 +8,6 @@
 import Foundation
 import SwiftUI
 import GeometricWeatherCore
-import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 func generateLocations(
     _ from: Array<AccuLocationResult>,
@@ -60,7 +56,8 @@ func generateWeather(
     dailyResult: AccuDailyResult,
     hourlyResults: [AccuHourlyResult],
     alertResults: [AccuAlertResult]?,
-    airQualityResult: AccuAirQualityResult?
+    airQualityResult: AccuAirQualityResult?,
+    units: UnitSet
 ) -> Weather? {
     return Weather(
         base: Base(
@@ -169,24 +166,24 @@ private func getWeatherCode(_ icon: Int) -> WeatherCode {
     }
 }
 
-private func convertUnit(_ str: String) -> String {
+private func convertUnit(_ str: String, units: UnitSet) -> String {
     if (str.isEmpty) {
         return str
     }
 
     // precipitation.
-    let precipitationUnit = SettingsManager.shared.precipitationUnit
+    
     // cm.
     var s = convertStrUnit(
         str,
         targetUnit: PrecipitationUnit["precipitation_unit_cm"],
-        resultUnit: precipitationUnit
+        resultUnit: units.precipitationUnit
     )
     // mm.
     s = convertStrUnit(
         str,
         targetUnit: PrecipitationUnit["precipitation_unit_mm"],
-        resultUnit: precipitationUnit
+        resultUnit: units.precipitationUnit
     )
     return s
 }

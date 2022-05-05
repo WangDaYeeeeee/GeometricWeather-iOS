@@ -9,7 +9,7 @@ let package = Package(
     platforms: [
         .iOS(.v14),
         // .macOS(.v11),
-        .watchOS(.v7)
+        .watchOS(.v7),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -21,6 +21,7 @@ let package = Package(
                 "GeometricWeatherSettings",
                 "GeometricWeatherTheme",
                 "GeometricWeatherDB",
+                "GeometricWeatherUpdate",
             ]
         ),
         .library(
@@ -29,12 +30,14 @@ let package = Package(
                 "GeometricWeatherCore",
                 "GeometricWeatherResources",
                 "GeometricWeatherTheme",
+                "GeometricWeatherDB",
+                "GeometricWeatherUpdate",
             ]
         ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/Moya/Moya.git", .upToNextMajor(from: "15.0.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -68,7 +71,17 @@ let package = Package(
             dependencies: [
                 "GeometricWeatherCore",
                 "GeometricWeatherResources",
-                "GeometricWeatherSettings",
+            ]
+        ),
+        .target(
+            name: "GeometricWeatherUpdate",
+            dependencies: [
+                "GeometricWeatherCore",
+                "GeometricWeatherResources",
+                "GeometricWeatherDB",
+                .product(name: "Moya", package: "Moya"),
+                .product(name: "RxMoya", package: "Moya"),
+                .product(name: "ReactiveMoya", package: "Moya"),
             ]
         ),
     ]

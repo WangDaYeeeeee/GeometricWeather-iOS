@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - temperature.
+
 public struct TemperatureUnit: Unit {
     
     public typealias ImplType = TemperatureUnit
@@ -82,6 +83,7 @@ public struct TemperatureUnit: Unit {
 }
 
 // MARK: - speed.
+
 public struct SpeedUnit: Unit {
     
     public typealias ImplType = SpeedUnit
@@ -170,6 +172,7 @@ public struct SpeedUnit: Unit {
 }
 
 // MARK: - pressure.
+
 public struct PressureUnit: Unit {
     
     public typealias ImplType = PressureUnit
@@ -272,6 +275,7 @@ public struct PressureUnit: Unit {
 }
 
 // MARK: - precipitation.
+
 public struct PrecipitationUnit: Unit {
     
     public typealias ImplType = PrecipitationUnit
@@ -353,6 +357,7 @@ public struct PrecipitationUnit: Unit {
 }
 
 // MARK: - precipitation intensity.
+
 public struct PrecipitationIntensityUnit: Unit {
     
     public typealias ImplType = PrecipitationIntensityUnit
@@ -434,6 +439,7 @@ public struct PrecipitationIntensityUnit: Unit {
 }
 
 // MARK: - distance.
+
 public struct DistanceUnit: Unit {
     
     public typealias ImplType = DistanceUnit

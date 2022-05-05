@@ -8,9 +8,6 @@
 import Foundation
 import GeometricWeatherCore
 import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 func caiYunGenerateLocationsByAccuSource(
     _ from: Array<AccuLocationResult>,

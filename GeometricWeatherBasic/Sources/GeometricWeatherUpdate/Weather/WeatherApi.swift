@@ -9,19 +9,15 @@ import Foundation
 import Moya
 import RxSwift
 import GeometricWeatherCore
-import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
-func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
+public func getWeatherApi(_ weatherSource: WeatherSource) -> WeatherApi {
     if weatherSource == .caiYun {
         return CaiYunApi()
     }
     return AccuApi()
 }
 
-protocol WeatherApi {
+public protocol WeatherApi {
         
     func getLocation(
         _ query: String,
@@ -35,18 +31,19 @@ protocol WeatherApi {
     
     func getWeather(
         target: Location,
+        units: UnitSet,
         callback: @escaping (Weather?) -> Void
     )
     
     func cancel()
 }
 
-struct CancelToken {
+public struct CancelToken {
     
     private let cancellable: Cancellable?
     private let disposable: Disposable?
     
-    init(
+    public init(
         cancellable: Cancellable? = nil,
         disposable: Disposable? = nil
     ) {
@@ -54,7 +51,7 @@ struct CancelToken {
         self.disposable = disposable
     }
     
-    func cancelRequest() {
+    public func cancelRequest() {
         cancellable?.cancel()
         disposable?.dispose()
     }

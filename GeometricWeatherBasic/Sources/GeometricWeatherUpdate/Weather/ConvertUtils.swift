@@ -7,10 +7,6 @@
 
 import Foundation
 import GeometricWeatherCore
-import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 func toInt(_ value: Double) -> Int {
   return Int(value + 0.5)
@@ -119,14 +115,6 @@ func getMoonPhaseAngle(phase: String) -> Int? {
     default:
         return 360;
   }
-}
-
-func getPrecipitationIntensityInPercentage(
-    intensityInRadarStandard: [Double]
-) -> [Double] {
-    return intensityInRadarStandard.map { value in
-        min(value / radarPrecipitationIntensityHeavy, 1.0)
-    }
 }
 
 func isDaylight(sunrise: Date, sunset: Date, current: Date) -> Bool {

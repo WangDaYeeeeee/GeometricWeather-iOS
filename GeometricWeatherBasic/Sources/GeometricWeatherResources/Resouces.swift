@@ -89,7 +89,7 @@ public let precipitationProbabilityColor = UIColor { traitCollection in
     }
 }
 #else
-public let precipitationProbabilityColor = UIColor.systemCyan
+public let precipitationProbabilityColor = UIColor.cyan
 #endif
 
 public func getLevelColor(_ level: Int) -> UIColor {

@@ -7,17 +7,14 @@
 
 import Foundation
 import GeometricWeatherCore
-import GeometricWeatherResources
-import GeometricWeatherSettings
 import GeometricWeatherDB
-import GeometricWeatherTheme
 
 private let backgroundPollingValidInterval = 0.25 // 15 minutes.
 
-struct UpdateResult {
-    let location: Location
-    let locationSucceed: Bool?
-    let weatherRequestSucceed: Bool
+public struct UpdateResult {
+    public let location: Location
+    public let locationSucceed: Bool?
+    public let weatherRequestSucceed: Bool
 }
 
 private struct _UpdateResult {
@@ -25,12 +22,21 @@ private struct _UpdateResult {
     let isSucceed: Bool
 }
 
-class UpdateHelper {
+public class UpdateHelper {
     
     private let locator = LocationHelper()
     private var api: WeatherApi?
     
-    func update(target: Location, inBackground: Bool) async -> UpdateResult {
+    public init() {
+        // do nothing.
+    }
+    
+    public func update(
+        for target: Location,
+        by units: UnitSet,
+        with defaultWeatherSource: WeatherSource,
+        inBackground: Bool
+    ) async -> UpdateResult {
         printLog(keyword: "update", content: "update for: \(target.formattedId)")
         self.cancelRequest()
         
@@ -45,7 +51,7 @@ class UpdateHelper {
         }
         
         self.api = self.getWeatherApi(
-            target.currentPosition ? SettingsManager.shared.weatherSource : target.weatherSource
+            target.currentPosition ? defaultWeatherSource : target.weatherSource
         )
         
         return await withTaskCancellationHandler {
@@ -76,16 +82,18 @@ class UpdateHelper {
                 // get geo position.
                 let geoResult = await self.getGeoPosition(api: self.api!, target: result.location)
                 result = UpdateResult(
-                    location: geoResult.location.copyOf(
-                        weatherSource: SettingsManager.shared.weatherSource
-                    ),
+                    location: geoResult.location.copyOf(weatherSource: defaultWeatherSource),
                     locationSucceed: result.locationSucceed == true && geoResult.isSucceed,
                     weatherRequestSucceed: false
                 )
             }
             
             // get weather.
-            let weatherResult = await self.getWeather(api: self.api!, target: result.location)
+            let weatherResult = await self.getWeather(
+                api: self.api!,
+                target: result.location,
+                units: units
+            )
             return UpdateResult(
                 location: weatherResult.location,
                 locationSucceed: result.locationSucceed,
@@ -145,13 +153,14 @@ class UpdateHelper {
     private func getWeather(
         api: WeatherApi,
         target: Location,
+        units: UnitSet,
         locationResult: Bool? = nil,
         geoPositionResult: Bool? = nil
     ) async -> _UpdateResult {
         await withCheckedContinuation { continuation in
             printLog(keyword: "update", content: "request weather for: \(target.formattedId)")
             
-            api.getWeather(target: target){ weather in
+            api.getWeather(target: target, units: units) { weather in
                 Task(priority: .background) {
                     if let result = weather {
                         await DatabaseHelper.shared.asyncWriteWeather(
@@ -172,8 +181,7 @@ class UpdateHelper {
                             location: target.copyOf(
                                 weather: await DatabaseHelper.shared.asyncReadWeather(
                                     formattedId: target.formattedId
-                                ),
-                                weatherSource: SettingsManager.shared.weatherSource
+                                )
                             ),
                             isSucceed: false
                         )

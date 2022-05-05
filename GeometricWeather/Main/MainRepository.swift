@@ -11,6 +11,7 @@ import GeometricWeatherResources
 import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
+import GeometricWeatherUpdate
 
 struct MainRepository {
     

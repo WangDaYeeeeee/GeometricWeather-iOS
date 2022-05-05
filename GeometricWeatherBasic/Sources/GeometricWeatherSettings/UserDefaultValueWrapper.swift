@@ -37,12 +37,12 @@ private struct _UserDefaultValueWrapper<ValueType> {
 }
 
 @propertyWrapper
-struct UserDefaultValueWrapper<ValueType, NotificationType>
+public struct UserDefaultValueWrapper<ValueType, NotificationType>
 where NotificationType: SettingsValueEvent<ValueType> {
     
     private var impl: _UserDefaultValueWrapper<ValueType>
     
-    var wrappedValue: ValueType {
+    public var wrappedValue: ValueType {
         get {
             return self.impl.wrappedValue
         }
@@ -54,7 +54,7 @@ where NotificationType: SettingsValueEvent<ValueType> {
         }
     }
     
-    init(
+    public init(
         key: String,
         defaultValue: ValueType
     ) {
@@ -63,14 +63,14 @@ where NotificationType: SettingsValueEvent<ValueType> {
 }
 
 @propertyWrapper
-struct ConvertableUserDefaultValueWrapper<OriginValueType, InterfaceValueType, NotificationType>
+public struct ConvertableUserDefaultValueWrapper<OriginValueType, InterfaceValueType, NotificationType>
 where NotificationType: SettingsValueEvent<InterfaceValueType> {
     
     private var impl: _UserDefaultValueWrapper<OriginValueType>
     let interfaceTypeToOrigin: (InterfaceValueType) -> OriginValueType
     let originTypeToInterface: (OriginValueType) -> InterfaceValueType
     
-    var wrappedValue: InterfaceValueType {
+    public var wrappedValue: InterfaceValueType {
         get {
             return self.originTypeToInterface(self.impl.wrappedValue)
         }
@@ -82,7 +82,7 @@ where NotificationType: SettingsValueEvent<InterfaceValueType> {
         }
     }
     
-    init(
+    public init(
         key: String,
         defaultValue: InterfaceValueType,
         interfaceTypeToOrigin: @escaping (InterfaceValueType) -> OriginValueType,

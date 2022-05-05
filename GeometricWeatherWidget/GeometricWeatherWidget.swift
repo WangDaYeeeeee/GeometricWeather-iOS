@@ -13,8 +13,9 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 
 func readLocationWithWeatherCache() async -> Location {
-    let location = await DatabaseHelper.shared.asyncReadLocations().first
-    ?? Location.buildDefaultLocation(
+    let location = await DatabaseHelper.shared.asyncReadLocations(
+        defualtWeatherSource: SettingsManager.shared.weatherSource
+    ).first ?? Location.buildDefaultLocation(
         weatherSource: WeatherSource[0],
         residentPosition: false
     )

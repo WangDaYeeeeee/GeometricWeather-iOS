@@ -10,9 +10,6 @@ import Moya
 import RxSwift
 import GeometricWeatherCore
 import GeometricWeatherResources
-import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 // MARK: - implementation.
 
@@ -57,11 +54,11 @@ private func getLanguageForAccuApi() -> String {
     return "en-US"
 }
 
-class CaiYunApi: WeatherApi {
+public class CaiYunApi: WeatherApi {
     
-    var taskCancelToken: CancelToken?
+    private var taskCancelToken: CancelToken?
     
-    func getLocation(
+    public func getLocation(
         _ query: String,
         callback: @escaping (Array<Location>) -> Void
     ) {
@@ -99,7 +96,7 @@ class CaiYunApi: WeatherApi {
         self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
-    func getGeoPosition(
+    public func getGeoPosition(
         target: Location,
         callback: @escaping (Location?) -> Void
     ) {
@@ -137,8 +134,9 @@ class CaiYunApi: WeatherApi {
         self.taskCancelToken = CancelToken(cancellable: cancellable)
     }
     
-    func getWeather(
+    public func getWeather(
         target: Location,
+        units: UnitSet,
         callback: @escaping (Weather?) -> Void
     ) {
         let disposable = Observable.zip(
@@ -205,7 +203,7 @@ class CaiYunApi: WeatherApi {
         self.taskCancelToken = CancelToken(disposable: disposable)
     }
     
-    func cancel() {
+    public func cancel() {
         self.taskCancelToken?.cancelRequest()
         self.taskCancelToken = nil
     }

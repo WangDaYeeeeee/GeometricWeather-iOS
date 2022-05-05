@@ -22,6 +22,14 @@ enum HourlyTag: String {
     case precipitationIntensity = "hourly_precipitation_intensity"
 }
 
+private func getPrecipitationIntensityInPercentage(
+    intensityInRadarStandard: [Double]
+) -> [Double] {
+    return intensityInRadarStandard.map { value in
+        min(value / radarPrecipitationIntensityHeavy, 1.0)
+    }
+}
+
 class MainHourlyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout,

@@ -9,7 +9,6 @@ import Foundation
 import CoreData
 import GeometricWeatherCore
 import GeometricWeatherResources
-import GeometricWeatherSettings
 
 extension URL {
 
@@ -131,13 +130,15 @@ public class DatabaseHelper {
         return nil
     }
     
-    public func asyncReadLocations() async -> [Location] {
+    public func asyncReadLocations(defualtWeatherSource: WeatherSource) async -> [Location] {
         await withCheckedContinuation { continuation in
-            continuation.resume(returning: readLocations())
+            continuation.resume(
+                returning: readLocations(defualtWeatherSource: defualtWeatherSource)
+            )
         }
     }
     @available(*, deprecated, renamed: "asyncReadLocations", message: "Prefer to use an alernative async method.")
-    public func readLocations() -> [Location] {
+    public func readLocations(defualtWeatherSource: WeatherSource) -> [Location] {
         var locations = [Location]()
         
         if let context = self.persistentContainer?.viewContext {
@@ -146,7 +147,7 @@ public class DatabaseHelper {
                 
                 if locations.isEmpty {
                     locations.append(
-                        Location.buildLocal(weatherSource: SettingsManager.shared.weatherSource)
+                        Location.buildLocal(weatherSource: defualtWeatherSource)
                     )
                     DAOs.writeLocations(context: context, locations: locations)
                 }

@@ -13,7 +13,7 @@ public func isDaylight() -> Bool {
 }
 
 public func isDaylight(location: Location) -> Bool {
-    return location.daylight
+    return location.isDaylight
 }
 
 public struct Location: Equatable {
@@ -38,6 +38,21 @@ public struct Location: Equatable {
     private static let nullId = "NULL_ID"
     public static let currentLocationId = "CURRENT_POSITION"
     
+    enum CodingKeys: String, CodingKey {
+        case cityId
+        case latitude
+        case longitude
+        case timezone
+        case country
+        case province
+        case city
+        case district
+        case weather
+        case weatherSource
+        case currentPosition
+        case residentPosition
+    }
+    
     public var usable: Bool {
         get {
             return cityId != Self.nullId
@@ -52,7 +67,7 @@ public struct Location: Equatable {
         }
     }
     
-    public var daylight: Bool {
+    public var isDaylight: Bool {
         get {
             if let weather = self.weather {
                 return weather.isDaylight(timezone: timezone)
@@ -244,5 +259,46 @@ public struct Location: Equatable {
         
         return fabs(latitude - location.latitude) < 0.8
             && fabs(longitude - location.longitude) < 0.8
+    }
+}
+
+extension Location: Decodable {
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            cityId: try values.decode(String.self, forKey: .cityId),
+            latitude: try values.decode(Double.self, forKey: .latitude),
+            longitude: try values.decode(Double.self, forKey: .longitude),
+            timezone: TimeZone(identifier: try values.decode(String.self, forKey: .timezone))!,
+            country: try values.decode(String.self, forKey: .country),
+            province: try values.decode(String.self, forKey: .province),
+            city: try values.decode(String.self, forKey: .city),
+            district: try values.decode(String.self, forKey: .district),
+            weather: try values.decodeIfPresent(Weather.self, forKey: .weather),
+            weatherSource: WeatherSource[try values.decode(String.self, forKey: .weatherSource)],
+            currentPosition: try values.decode(Bool.self, forKey: .currentPosition),
+            residentPosition: try values.decode(Bool.self, forKey: .residentPosition)
+        )
+    }
+}
+
+extension Location: Encodable {
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(self.cityId, forKey: .cityId)
+        try container.encode(self.latitude, forKey: .latitude)
+        try container.encode(self.longitude, forKey: .longitude)
+        try container.encode(self.timezone.identifier, forKey: .timezone)
+        try container.encode(self.province, forKey: .province)
+        try container.encode(self.city, forKey: .city)
+        try container.encode(self.district, forKey: .district)
+        try container.encodeIfPresent(self.weather, forKey: .weather)
+        try container.encode(self.weatherSource.key, forKey: .weatherSource)
+        try container.encode(self.currentPosition, forKey: .currentPosition)
+        try container.encode(self.residentPosition, forKey: .residentPosition)
+        try container.encode(self.cityId, forKey: .cityId)
     }
 }

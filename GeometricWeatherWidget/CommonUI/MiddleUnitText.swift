@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 private func stringStartWithSign(_ string: String) -> Bool {
     return string.starts(with: "-")
@@ -81,9 +82,11 @@ struct MiddleUnitText_Previews: PreviewProvider {
     static var previews: some View {
         MiddleUnitText(
             value: "-1",
-            unit: "a",
+            unit: "aaaaa",
             font: .title3,
             textColor: .black
+        ).previewContext(
+            WidgetPreviewContext(family: .systemSmall)
         )
     }
 }

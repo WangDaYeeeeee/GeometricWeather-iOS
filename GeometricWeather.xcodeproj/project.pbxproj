@@ -10,7 +10,6 @@
 		370BA59F269C398F006BB1CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370BA59E269C398F006BB1CE /* Preview Assets.xcassets */; };
 		370BA5C3269C5E37006BB1CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C2269C5E37006BB1CE /* LaunchScreen.storyboard */; };
 		370BA5C6269C6091006BB1CE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 370BA5C8269C6091006BB1CE /* InfoPlist.strings */; };
-		3732D84927DB939700F5DC81 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732D84827DB939700F5DC81 /* TrendView.swift */; };
 		373F760627E35B750005875B /* MiddleUnitLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760527E35B750005875B /* MiddleUnitLabel.swift */; };
 		373F760727E35D370005875B /* MiddleUnitText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760327E357720005875B /* MiddleUnitText.swift */; };
 		373F760927E40C500005875B /* DailyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */; };
@@ -58,6 +57,7 @@
 		3780D06D2823DE57004205D2 /* AppBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D0632823DE57004205D2 /* AppBackgroundTask.swift */; };
 		3780D06F2823DEE1004205D2 /* DatabaseHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */; };
 		3780D0712823DF5F004205D2 /* UpdateHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */; };
+		37904789282A554500EC7579 /* WatchConnectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904788282A554500EC7579 /* WatchConnectionHelper.swift */; };
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
 		3793419C2813D8780046AD88 /* MainTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */; };
 		379341AA28153AE30046AD88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379341A928153AE30046AD88 /* Assets.xcassets */; };
@@ -295,7 +295,6 @@
 		370BA5C7269C6091006BB1CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		370BA5C9269C609B006BB1CE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeometricWeather.entitlements; sourceTree = "<group>"; };
-		3732D84827DB939700F5DC81 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
 		373F760327E357720005875B /* MiddleUnitText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleUnitText.swift; sourceTree = "<group>"; };
 		373F760527E35B750005875B /* MiddleUnitLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiddleUnitLabel.swift; sourceTree = "<group>"; };
 		373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPrecipitationCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -345,6 +344,7 @@
 		3780D0632823DE57004205D2 /* AppBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundTask.swift; sourceTree = "<group>"; };
 		3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelperExt.swift; sourceTree = "<group>"; };
 		3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHelperExt.swift; sourceTree = "<group>"; };
+		37904788282A554500EC7579 /* WatchConnectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectionHelper.swift; sourceTree = "<group>"; };
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
 		3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		379341A928153AE30046AD88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -980,6 +980,7 @@
 		379A8AB927C8C59000083BFF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				37904788282A554500EC7579 /* WatchConnectionHelper.swift */,
 				379A8ABB27C8C59000083BFF /* AppNotificationHelper.swift */,
 				379A8ABC27C8C59000083BFF /* AppExtensionHelper.swift */,
 			);
@@ -1255,7 +1256,6 @@
 				37E5D418271022550052A690 /* DailyView.swift */,
 				37E5D41B271022D60052A690 /* HourlyView.swift */,
 				374BA61C26FC89160080B5CA /* ItemViews.swift */,
-				3732D84827DB939700F5DC81 /* TrendView.swift */,
 				373F760327E357720005875B /* MiddleUnitText.swift */,
 				376596BD281D338500164CAD /* ProgressViews.swift */,
 				37C18C1028156545001A46A3 /* PlaceholderView.swift */,
@@ -1698,6 +1698,7 @@
 				379A8B2427C8C59000083BFF /* MainHourlyCardCell.swift in Sources */,
 				374BA60826FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,
 				37D3B8C627D6F6A500191C2A /* EditComponent.swift in Sources */,
+				37904789282A554500EC7579 /* WatchConnectionHelper.swift in Sources */,
 				379A8B5327C8C59000083BFF /* HistogramPolylineView.swift in Sources */,
 				379A8B3327C8C59000083BFF /* HomeViewController+Events.swift in Sources */,
 				379A8B6D27C8C59100083BFF /* AppExtensionHelper.swift in Sources */,
@@ -1746,7 +1747,6 @@
 				37E5D419271022550052A690 /* DailyView.swift in Sources */,
 				37E5D41C271022D60052A690 /* HourlyView.swift in Sources */,
 				376596BE281D338500164CAD /* ProgressViews.swift in Sources */,
-				3732D84927DB939700F5DC81 /* TrendView.swift in Sources */,
 				376596BB281D2D2A00164CAD /* AirQualityWidget.swift in Sources */,
 				37C18C1128156545001A46A3 /* PlaceholderView.swift in Sources */,
 				374BA60726FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,

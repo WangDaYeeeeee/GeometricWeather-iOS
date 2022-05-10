@@ -121,7 +121,7 @@ class LocationWeatherItemView: UIView {
         
         self.weatherIcon.image = UIImage.getWeatherIcon(
             weatherCode: weather.current.weatherCode,
-            daylight: location.daylight
+            daylight: location.isDaylight
         )
         self.residientIcon.alpha = location.residentPosition ? 1 : 0
         self.titleLabel1.text = location.currentPosition

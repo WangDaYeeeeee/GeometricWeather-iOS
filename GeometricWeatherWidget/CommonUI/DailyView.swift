@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import WidgetKit
 import GeometricWeatherCore
 import GeometricWeatherResources
 import GeometricWeatherSettings
+
+private let verticalItemCount = 6
+private let horizontalItemCount = 4
 
 // MARK: - daily view.
 
@@ -16,9 +20,7 @@ struct DailyView: View {
     
     let location: Location
     let temperatureRange: (min: Int, max: Int)
-    
-    let itemCount = 6
-    
+        
     init(location: Location) {
         self.location = location
         
@@ -31,7 +33,7 @@ struct DailyView: View {
             min: weather.dailyForecasts[0].night.temperature.temperature,
             max: weather.dailyForecasts[0].day.temperature.temperature
         )
-        for i in 1 ..< itemCount {
+        for i in 1 ..< verticalItemCount {
             if range.min > weather.dailyForecasts[i].night.temperature.temperature {
                 range.min = weather.dailyForecasts[i].night.temperature.temperature
             }
@@ -45,31 +47,18 @@ struct DailyView: View {
     var body: some View {
         if let weather = self.location.weather {
             HStack(alignment: .center, spacing: 0) {
-                ForEach(0 ..< self.itemCount) { i in
+                ForEach(0 ..< verticalItemCount, id: \.self) { i in
                     DailyItemView(
                         weather: weather,
                         timezone: self.location.timezone,
                         index: i,
-                        total: self.itemCount,
+                        total: verticalItemCount,
                         temperatureRange: self.temperatureRange
                     )
                 }
             }
         } else {
-            HStack(alignment: .center) {
-                Spacer()
-
-                ForEach(0 ..< self.itemCount) { i in
-                    if i % 2 != 0 {
-                        Spacer()
-                    } else {
-                        Text("--")
-                            .font(Font(miniCaptionFont))
-                            .foregroundColor(.white)
-                    }
-                }
-                Spacer()
-            }
+            Color.clear
         }
     }
 }
@@ -112,21 +101,18 @@ struct HorizontalDailyView: View {
                 // week name.
                 VerticalWeekNameView(
                     weather: weather,
-                    timezone: self.location.timezone,
-                    itemCount: self.itemCount
+                    timezone: self.location.timezone
                 )
                 
                 // night icon.
                 VerticalIconView(
                     weather: weather,
-                    itemCount: self.itemCount,
                     daytime: false
                 ).padding(.trailing, 4.0)
                 
                 // night temperature.
                 VerticalTemperatureView(
                     weather: weather,
-                    itemCount: self.itemCount,
                     daytime: false
                 )
                 
@@ -134,40 +120,23 @@ struct HorizontalDailyView: View {
                 VerticalHistogramView(
                     weather: weather,
                     timeZone: self.location.timezone,
-                    itemCount: self.itemCount,
                     temperatureRange: self.temperatureRange
                 )
                 
                 // day temperature.
                 VerticalTemperatureView(
                     weather: weather,
-                    itemCount: self.itemCount,
                     daytime: true
                 )
 
                 // day icon.
                 VerticalIconView(
                     weather: weather,
-                    itemCount: self.itemCount,
                     daytime: true
                 ).padding(.leading, 4.0)
             }
         } else {
-            VStack(alignment: .center) {
-                Spacer()
-
-                ForEach(0 ..< 2 * itemCount - 1) { i in
-                    if i % 2 != 0 {
-                        Spacer()
-                    } else {
-                        Text("--")
-                            .font(Font(miniCaptionFont))
-                            .foregroundColor(.white)
-                    }
-                }
-                
-                Spacer()
-            }
+            Color.cyan
         }
     }
 }
@@ -176,25 +145,35 @@ struct HorizontalDailyView: View {
 
 private struct VerticalWeekNameView: View {
     
-    let weather: Weather
-    let timezone: TimeZone
-    let itemCount: Int
+    let hours: [String]
+    
+    init(hours: [String]) {
+        self.hours = hours
+    }
+    
+    init(
+        weather: Weather,
+        timezone: TimeZone
+    ) {
+        var hours = [String]()
+        for i in 0 ..< horizontalItemCount {
+            hours.append(
+                getWeekText(
+                    week: weather.dailyForecasts[i].getWeek(timezone: timezone)
+                )
+            )
+        }
+        self.hours = hours
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0 ..< self.itemCount) { i in
+            ForEach(self.hours.indices, id: \.self) { i in
                 VStack {
                     Spacer()
-                    
-                    Text(
-                        getWeekText(
-                            week: self.weather.dailyForecasts[i].getWeek(
-                                timezone: self.timezone
-                            )
-                        )
-                    ).font(Font(miniCaptionFont).weight(.bold))
+                    Text(self.hours[i])
+                        .font(Font(miniCaptionFont).weight(.bold))
                         .foregroundColor(.white)
-                    
                     Spacer()
                 }
             }
@@ -206,24 +185,44 @@ private struct VerticalWeekNameView: View {
 
 private struct VerticalIconView: View {
     
-    let weather: Weather
-    let itemCount: Int
+    let weatherCodes: [WeatherCode]
     let daytime: Bool
+    
+    init(
+        weatherCodes: [WeatherCode],
+        daytime: Bool
+    ) {
+        self.weatherCodes = weatherCodes
+        self.daytime = daytime
+    }
+    
+    init(
+        weather: Weather,
+        daytime: Bool
+    ) {
+        var weatherCodes = [WeatherCode]()
+        for i in 0 ..< horizontalItemCount {
+            weatherCodes.append(
+                daytime
+                ? weather.dailyForecasts[i].day.weatherCode
+                : weather.dailyForecasts[i].night.weatherCode
+            )
+        }
+        self.weatherCodes = weatherCodes
+        
+        self.daytime = daytime
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0 ..< self.itemCount) { i in
+            ForEach(self.weatherCodes.indices, id: \.self) { i in
                 VStack {
                     Spacer()
-                    
                     Image.getWeatherIcon(
-                        weatherCode: self.daytime
-                        ? self.weather.dailyForecasts[i].day.weatherCode
-                        : self.weather.dailyForecasts[i].night.weatherCode,
+                        weatherCode: self.weatherCodes[i],
                         daylight: self.daytime
                     )?.resizable()
                         .frame(width: miniWeatherIconSize, height: miniWeatherIconSize)
-                    
                     Spacer()
                 }
             }
@@ -235,27 +234,47 @@ private struct VerticalIconView: View {
 
 private struct VerticalTemperatureView: View {
     
-    let weather: Weather
-    let itemCount: Int
+    let temperatures: [Int]
     let daytime: Bool
+    
+    init(
+        temperatures: [Int],
+        daytime: Bool
+    ) {
+        self.temperatures = temperatures
+        self.daytime = daytime
+    }
+    
+    init(
+        weather: Weather,
+        daytime: Bool
+    ) {
+        var temperatures = [Int]()
+        for i in 0 ..< horizontalItemCount {
+            temperatures.append(
+                daytime
+                ? weather.dailyForecasts[i].day.temperature.temperature
+                : weather.dailyForecasts[i].night.temperature.temperature
+            )
+        }
+        self.temperatures = temperatures
+        
+        self.daytime = daytime
+    }
     
     var body: some View {
         VStack(alignment: .trailing) {
-            ForEach(0 ..< self.itemCount) { i in
+            ForEach(self.temperatures.indices, id: \.self) { i in
                 VStack {
                     Spacer()
-                    
                     Text(
                         SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                            self.daytime
-                            ? self.weather.dailyForecasts[i].day.temperature.temperature
-                            : self.weather.dailyForecasts[i].night.temperature.temperature,
+                            self.temperatures[i],
                             unit: "°"
                         )
                     ).font(Font(miniCaptionFont).weight(.bold))
                         .foregroundColor(.white)
                         .opacity(self.daytime ? 1.0 : secondaryTextOpacity)
-                    
                     Spacer()
                 }
             }
@@ -265,16 +284,59 @@ private struct VerticalTemperatureView: View {
 
 // MARK: - vertical histogram view.
 
+private func getTemperatureValue(
+    _ temperature: Int,
+    in temperatureRange: (min: Int, max: Int)
+) -> Double {
+    return Double(
+        temperature - temperatureRange.min
+    ) / Double(
+        temperatureRange.max - temperatureRange.min
+    )
+}
+
 private struct VerticalHistogramView: View {
     
-    let weather: Weather
-    let timeZone: TimeZone
-    let itemCount: Int
-    let temperatureRange: (min: Int, max: Int)
+    let dayValues: [Double] // 0 - 1.
+    let nightValues: [Double] // 0 - 1.
+    
+    init(
+        dayValues: [Double],
+        nightValues: [Double]
+    ) {
+        self.dayValues = dayValues
+        self.nightValues = nightValues
+    }
+    
+    init(
+        weather: Weather,
+        timeZone: TimeZone,
+        temperatureRange: (min: Int, max: Int)
+    ) {
+        var dayValues = [Double]()
+        var nightValues = [Double]()
+        for i in 0 ..< horizontalItemCount {
+            dayValues.append(
+                getTemperatureValue(
+                    weather.dailyForecasts[i].day.temperature.temperature,
+                    in: temperatureRange
+                )
+            )
+            nightValues.append(
+                getTemperatureValue(
+                    weather.dailyForecasts[i].night.temperature.temperature,
+                    in: temperatureRange
+                )
+            )
+        }
+        
+        self.dayValues = dayValues
+        self.nightValues = nightValues
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0 ..< self.itemCount) { i in
+            ForEach(self.dayValues.indices, id: \.self) { i in
                 Spacer()
                 
                 GeometryReader { proxy in
@@ -300,25 +362,15 @@ private struct VerticalHistogramView: View {
                         Path { path in
                             path.move(
                                 to: CGPoint(
-                                    x: 6.0 + self.getTemperaturePercent(
-                                        self.weather.dailyForecasts[
-                                            i
-                                        ].night.temperature.temperature
-                                    ) * (
-                                        proxy.size.width - 12.0
-                                    ),
+                                    x: 6.0
+                                    + self.nightValues[i] * (proxy.size.width - 12.0),
                                     y: proxy.size.height * 0.5
                                 )
                             )
                             path.addLine(
                                 to: CGPoint(
-                                    x: 6.0 + self.getTemperaturePercent(
-                                        self.weather.dailyForecasts[
-                                            i
-                                        ].day.temperature.temperature
-                                    ) * (
-                                        proxy.size.width - 12.0
-                                    ),
+                                    x: 6.0
+                                    + self.dayValues[i] * (proxy.size.width - 12.0),
                                     y: proxy.size.height * 0.5
                                 )
                             )
@@ -338,12 +390,68 @@ private struct VerticalHistogramView: View {
             }
         }
     }
-    
-    private func getTemperaturePercent(_ temperature: Int) -> Double {
-        return Double(
-            temperature - self.temperatureRange.min
-        ) / Double(
-            self.temperatureRange.max - self.temperatureRange.min
+}
+
+struct DailyView_Previews: PreviewProvider {
+    static var previews: some View {
+        HStack(alignment: .center, spacing: 0) {
+            ForEach(0 ..< verticalItemCount, id: \.self) { i in
+                DailyItemView(
+                    weekText: "week1",
+                    dayWeatherCode: .clear,
+                    dayTemperature: 8,
+                    dayValue: 0.8,
+                    nightWeatherCode: .rain(.heavy),
+                    nightTemperature: -9,
+                    nightValue: 0.3
+                )
+            }
+        }.background(
+            Color.cyan
+        ).previewContext(
+            WidgetPreviewContext(family: .systemMedium)
+        )
+        
+        HStack(alignment: .center, spacing: 0) {
+            // week name.
+            VerticalWeekNameView(
+                hours: ["hour1", "hour1", "hour1", "hour1"]
+            )
+            
+            // night icon.
+            VerticalIconView(
+                weatherCodes: [.clear, .clear, .clear, .clear],
+                daytime: false
+            ).padding(.trailing, 4.0)
+            
+            // night temperature.
+            VerticalTemperatureView(
+                temperatures: [7, 7, 9, 8],
+                daytime: false
+            )
+            
+            // histogram.
+            VerticalHistogramView(
+                dayValues: [0.2, 0.2, 0.2, 0.2],
+                nightValues: [0.8, 0.8, 0.8, 0.8]
+            )
+            
+            // day temperature.
+            VerticalTemperatureView(
+                temperatures: [7, 7, 9, 8],
+                daytime: true
+            )
+
+            // day icon.
+            VerticalIconView(
+                weatherCodes: [.clear, .clear, .clear, .clear],
+                daytime: true
+            ).padding(.leading, 4.0)
+        }.background(
+            Color.cyan
+        ).previewContext(
+            WidgetPreviewContext(family: .systemSmall)
         )
     }
 }
+

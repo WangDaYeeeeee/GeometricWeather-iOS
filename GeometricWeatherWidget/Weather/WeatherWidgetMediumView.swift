@@ -130,7 +130,7 @@ struct WeatherWidgetMediumHeaderView: View {
                 
                 Image.getWeatherIcon(
                     weatherCode: self.location.weather?.current.weatherCode ?? .clear,
-                    daylight: self.location.daylight
+                    daylight: self.location.isDaylight
                 )?.resizable()
                     .frame(width: largeWeatherIconSize, height: largeWeatherIconSize)
             }

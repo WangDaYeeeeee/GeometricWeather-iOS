@@ -50,7 +50,7 @@ struct CurrentWidgetEntryView : View {
                 
                 Image.getWeatherIcon(
                     weatherCode: self.entry.location.weather!.current.weatherCode,
-                    daylight: self.entry.location.daylight
+                    daylight: self.entry.location.isDaylight
                 )?.resizable().frame(
                     width: elementSize,
                     height: elementSize
@@ -65,7 +65,7 @@ struct CurrentWidgetEntryView : View {
                         weatherKind: weatherCodeToWeatherKind(
                             code: self.entry.location.weather?.current.weatherCode ?? .clear
                         ),
-                        daylight: self.entry.location.daylight
+                        daylight: self.entry.location.isDaylight
                     )
                 )
         }

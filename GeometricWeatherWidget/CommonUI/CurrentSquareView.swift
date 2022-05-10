@@ -6,78 +6,129 @@
 //
 
 import SwiftUI
+import WidgetKit
 import GeometricWeatherCore
 import GeometricWeatherResources
 import GeometricWeatherSettings
+import GeometricWeatherTheme
 
 struct CurrentSquareView: View {
     
-    let location: Location
+    let locationText: String
+    let currentTemperature: Int
+    let subtitle: String
+    
+    let currentWeatherCode: WeatherCode
+    let currentDaylight: Bool
+    let currentWeatherText: String
+    
+    init(
+        locationText: String,
+        currentTemperature: Int,
+        subtitle: String,
+        currentWeatherCode: WeatherCode,
+        currentDaylight: Bool,
+        currentWeatherText: String
+    ) {
+        self.locationText = locationText
+        self.currentTemperature = currentTemperature
+        self.subtitle = subtitle
+        self.currentWeatherCode = currentWeatherCode
+        self.currentDaylight = currentDaylight
+        self.currentWeatherText = currentWeatherText
+    }
+    
+    init(location: Location) {
+        self.locationText = getLocationText(location: location)
+        self.currentTemperature = location.weather?.current.temperature.temperature ?? 0
+        
+        if let weather = location.weather {
+            self.subtitle = weather.current.airQuality.isValid()
+            ? getAirQualityText(level: weather.current.airQuality.aqiLevel ?? 0)
+            : getShortWindText(wind: weather.current.wind)
+        } else {
+            self.subtitle = ""
+        }
+        
+        self.currentWeatherCode = location.weather?.current.weatherCode ?? .clear
+        self.currentDaylight = location.isDaylight
+        self.currentWeatherText = location.weather?.current.weatherText ?? ""
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            Text(getLocationText(location: self.location))
+            Text(self.locationText)
                 .font(Font(miniCaptionFont).weight(.semibold))
                 .foregroundColor(.white)
             
-            Text(self.getTemperatureTitleText())
-                .font(largeTemperatureFont)
-                .foregroundColor(.white)
-            
-            Text(self.getBottomCaptionText())
-                .font(Font(miniCaptionFont))
-                .foregroundColor(.white)
-                .padding(
-                    EdgeInsets(
-                        top: 2.0,
-                        leading: 6.0,
-                        bottom: 2.0,
-                        trailing: 6.0
+            HStack(alignment: .center, spacing: 0) {
+                Text(
+                    SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                        self.currentTemperature,
+                        unit: "°"
                     )
-                )
-                .background(aqiWindBackground.cornerRadius(aqiWindCornerRadius))
+                ).font(largeTemperatureFont)
+                    .foregroundColor(.white)
+            }
+            
+            if !self.subtitle.replacingOccurrences(of: " ", with: "").isEmpty {
+                Text(self.subtitle)
+                    .font(Font(miniCaptionFont))
+                    .foregroundColor(.white)
+                    .padding(
+                        EdgeInsets(
+                            top: 2.0,
+                            leading: 6.0,
+                            bottom: 2.0,
+                            trailing: 6.0
+                        )
+                    )
+                    .background(aqiWindBackground.cornerRadius(aqiWindCornerRadius))
+            }
             
             Spacer()
             
             HStack(spacing: 4.0) {
-                Text(self.getBottomBodyText())
-                    .font(Font(captionFont).weight(.bold))
-                    .foregroundColor(.white)
-                
                 Image.getWeatherIcon(
-                    weatherCode: self.location.weather?.current.weatherCode ?? .clear,
-                    daylight: self.location.daylight
+                    weatherCode: self.currentWeatherCode,
+                    daylight: self.currentDaylight
                 )?.resizable().frame(
                     width: miniWeatherIconSize,
                     height: miniWeatherIconSize
                 )
+                
+                Text(self.currentWeatherText)
+                    .font(Font(captionFont).weight(.bold))
+                    .foregroundColor(.white)
+                    .lineLimit(1)
             }
         }
     }
-    
-    private func getTemperatureTitleText() -> String {
-        if let weather = self.location.weather {
-            return SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                weather.current.temperature.temperature,
-                unit: "°"
+}
+
+struct CurrentSquareView_Previews: PreviewProvider {
+        
+    static var previews: some View {
+        HStack {
+            CurrentSquareView(
+                locationText: "Beijing",
+                currentTemperature: -99,
+                subtitle: "Clear",
+                currentWeatherCode: .clear,
+                currentDaylight: true,
+                currentWeatherText: "Clear"
             )
-        }
-        return "--"
-    }
-    
-    private func getBottomBodyText() -> String {
-        if let weather = location.weather {
-            return weather.current.weatherText
-        }
-        return "--"
-    }
-    
-    private func getBottomCaptionText() -> String {
-        if let weather = location.weather {
-            return weather.current.airQuality.isValid() ? getAirQualityText(
-                level: weather.current.airQuality.aqiLevel ?? 0
-            ) : getShortWindText(wind: weather.current.wind)
-        }
-        return "----"
+            Spacer()
+        }.padding(
+            [.all]
+        ).background(
+            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                weatherKind: .clear,
+                daylight: true
+            )
+        ).previewContext(
+            WidgetPreviewContext(family: .systemSmall)
+        )
     }
 }
+

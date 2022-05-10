@@ -37,7 +37,7 @@ struct WeatherWidgetEntryView : View {
                     weatherKind: weatherCodeToWeatherKind(
                         code: self.entry.location.weather?.current.weatherCode ?? .clear
                     ),
-                    daylight: self.entry.location.daylight
+                    daylight: self.entry.location.isDaylight
                 )
             )
         }

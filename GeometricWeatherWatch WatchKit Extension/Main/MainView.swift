@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import GeometricWeatherCore
 
 struct MainView: View {
     
-    
+    let location: Location
     
     var body: some View {
         VStack {
@@ -20,6 +21,11 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        MainView(
+            location: Location.buildDefaultLocation(
+                weatherSource: WeatherSource[0],
+                residentPosition: false
+            )
+        )
     }
 }

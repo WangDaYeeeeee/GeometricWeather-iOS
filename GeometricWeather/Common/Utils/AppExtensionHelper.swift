@@ -37,6 +37,15 @@ func updateAppExtensions() {
     Task(priority: .background) {
         // app shortcut items.
         await updateAppShortcutItems()
+        
+        // watch app.
+        var location = await DatabaseHelper.shared.asyncReadLocations()[0]
+        location = location.copyOf(
+            weather: await DatabaseHelper.shared.asyncReadWeather(
+                formattedId: location.formattedId
+            )
+        )
+        await WatchConnectionHelper.shared.shareLocationUpdateResult(location: location)
     }
 }
 

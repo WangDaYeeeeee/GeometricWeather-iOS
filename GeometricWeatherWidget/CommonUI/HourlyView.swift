@@ -6,30 +6,52 @@
 //
 
 import SwiftUI
+import WidgetKit
 import GeometricWeatherCore
 import GeometricWeatherResources
+
+private let itemCount = 6
 
 struct HourlyView: View {
     
     let location: Location
     
-    let itemCount = 6
-    
     var body: some View {
-        HStack(alignment: .center) {
-            ForEach(0 ..< self.itemCount) { i in
-                if let weather = self.location.weather {
+        if let weather = self.location.weather {
+            HStack(alignment: .center) {
+                ForEach(0 ..< itemCount, id: \.self) { i in
                     HourlyItemView(
                         weather: weather,
                         timezone: self.location.timezone,
                         index: i / 2
                     )
-                } else {
-                    Text("--")
-                        .font(Font(miniCaptionFont))
-                        .foregroundColor(.white)
                 }
             }
+        } else {
+            Color.clear
         }
+    }
+}
+
+struct HourlyView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            Spacer()
+            HStack {
+                ForEach(0 ..< itemCount, id: \.self) { i in
+                    HourlyItemView(
+                        hourText: "hour1",
+                        weatherCode: .clear,
+                        daylight: false,
+                        temperature: 6
+                    )
+                }
+            }
+            Spacer()
+        }.background(
+            Color.cyan
+        ).previewContext(
+            WidgetPreviewContext(family: .systemMedium)
+        )
     }
 }

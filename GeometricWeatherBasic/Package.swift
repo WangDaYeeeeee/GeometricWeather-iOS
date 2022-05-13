@@ -24,16 +24,6 @@ let package = Package(
                 "GeometricWeatherUpdate",
             ]
         ),
-        .library(
-            name: "GeometricWeatherWatchBasic",
-            targets: [
-                "GeometricWeatherCore",
-                "GeometricWeatherResources",
-                "GeometricWeatherTheme",
-                "GeometricWeatherDB",
-                "GeometricWeatherUpdate",
-            ]
-        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.

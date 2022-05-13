@@ -202,7 +202,7 @@ class MainDailyCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        EventBus.shared.post(
+        self.window?.windowScene?.eventBus.post(
             DailyTrendCellTapAction(index: indexPath.row)
         )
     }
@@ -298,11 +298,11 @@ class MainDailyCardCell: MainTableViewCell,
     
     func getUnselectedColor() -> UIColor {
         return UIColor(
-            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: ThemeManager.shared.daylight.value
+                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
             )
         ).withAlphaComponent(0.33)
     }

@@ -62,8 +62,8 @@ class SearchResultController: GeoViewController<Bool>,
             SearchTableViewCell.self,
             forCellReuseIdentifier: cellReuseId
         )
-        self.tableView.hideKeyboardExecutor = {
-            EventBus.shared.post(HideKeyboardEvent())
+        self.tableView.hideKeyboardExecutor = { [weak self] in
+            self?.view.window?.windowScene?.eventBus.post(HideKeyboardEvent())
         }
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.view.addSubview(self.tableView)
@@ -171,7 +171,7 @@ class SearchResultController: GeoViewController<Bool>,
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        EventBus.shared.post(
+        self.view.window?.windowScene?.eventBus.post(
             AddLocationEvent(
                 location: self.locationList[indexPath.row]
             )
@@ -179,6 +179,6 @@ class SearchResultController: GeoViewController<Bool>,
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        EventBus.shared.post(HideKeyboardEvent())
+        self.view.window?.windowScene?.eventBus.post(HideKeyboardEvent())
     }
 }

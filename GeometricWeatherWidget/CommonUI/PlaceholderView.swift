@@ -31,7 +31,6 @@ struct PlaceholderView: View {
                 }
                 
                 ThemeManager
-                    .shared
                     .weatherThemeDelegate
                     .getWidgetBackgroundView(
                         weatherKind: weatherCodeToWeatherKind(code: .clear),

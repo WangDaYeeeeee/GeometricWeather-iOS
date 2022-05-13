@@ -9,9 +9,9 @@ import Foundation
 
 public struct SharedLocationUpdateResult: Codable {
     
-    public let location: Location
+    public let locations: [Location]
     
-    public init(location: Location) {
-        self.location = location
+    public init(locations: [Location]) {
+        self.locations = locations
     }
 }

@@ -7,25 +7,34 @@
 
 import SwiftUI
 import GeometricWeatherCore
+import GeometricWeatherTheme
 
 struct MainView: View {
     
-    let location: Location
-    
     var body: some View {
-        VStack {
-            
-        }
+        GeometryReader { proxy in
+            MainHeaderView(
+                currentTemperature: 56,
+                currentWeatherCode: .clear,
+                currentDaylight: true,
+                currentWeatherText: "Clear",
+                currentSubtitle: "Middle pollution",
+                screenSize: proxy.size
+            )
+        }.ignoresSafeArea()
+            .navigationTitle {
+                MainNavigationTitleView(
+                    locationText: "Beijing",
+                    isCurrentLocation: true
+                )
+            }
     }
 }
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView(
-            location: Location.buildDefaultLocation(
-                weatherSource: WeatherSource[0],
-                residentPosition: false
-            )
-        )
+        NavigationView {
+            MainView()
+        }
     }
 }

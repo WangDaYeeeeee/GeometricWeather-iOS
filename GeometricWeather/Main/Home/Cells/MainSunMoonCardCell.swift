@@ -120,19 +120,6 @@ class MainSunMoonCardCell: MainTableViewCell {
             make.trailing.equalTo(self.moonIcon.snp.leading).offset(-innerMargin)
             make.centerY.equalTo(self.moonIcon.snp.centerY)
         }
-        
-        ThemeManager.shared.daylight.addNonStickyObserver(
-            self
-        ) { [weak self] daylight in
-            guard let weather = self?.weather else {
-                return
-            }
-            
-            self?.updateThemeColors(
-                weatherCode: weather.current.weatherCode,
-                daylight: daylight
-            )
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -207,7 +194,23 @@ class MainSunMoonCardCell: MainTableViewCell {
             // theme colors.
             self.updateThemeColors(
                 weatherCode: weather.current.weatherCode,
-                daylight: ThemeManager.shared.daylight.value
+                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
+            )
+        }
+    }
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(
+            self
+        ) { [weak self] daylight in
+            guard let weather = self?.weather else {
+                return
+            }
+            
+            self?.updateThemeColors(
+                weatherCode: weather.current.weatherCode,
+                daylight: daylight
             )
         }
     }
@@ -221,14 +224,14 @@ class MainSunMoonCardCell: MainTableViewCell {
             if let weatherCode = self.weather?.current.weatherCode {
                 self.updateThemeColors(
                     weatherCode: weatherCode,
-                    daylight: ThemeManager.shared.daylight.value
+                    daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
                 )
             }
         }
     }
     
     private func updateThemeColors(weatherCode: WeatherCode, daylight: Bool) {
-        let color = ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+        let color = ThemeManager.weatherThemeDelegate.getThemeColor(
             weatherKind: weatherCodeToWeatherKind(code: weatherCode),
             daylight: daylight
         )

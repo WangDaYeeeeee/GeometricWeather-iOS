@@ -21,7 +21,6 @@ protocol HomeBuilder {
 protocol HomeDependency: Dependency {
     
     var mainViewModel: MainViewModel { get }
-    var managementComponent: ManagementConponent { get }
     var editComponent: EditComponent { get }
     var settingsComponent: SettingsComponent { get }
 }
@@ -32,7 +31,6 @@ class HomeComponent: Component<HomeDependency>, HomeBuilder {
         return HomeViewController(
             vm: self.dependency.mainViewModel,
             splitView: splitView,
-            managementBuilder: self.dependency.managementComponent,
             editBuilder: self.dependency.editComponent,
             settingsBuilder: self.dependency.settingsComponent
         )

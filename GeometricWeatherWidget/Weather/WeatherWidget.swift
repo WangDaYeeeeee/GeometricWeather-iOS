@@ -33,7 +33,7 @@ struct WeatherWidgetEntryView : View {
                     WeatherWidgetLargeView(location: self.entry.location)
                 }
             }.background(
-                ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+                ThemeManager.weatherThemeDelegate.getWidgetBackgroundView(
                     weatherKind: weatherCodeToWeatherKind(
                         code: self.entry.location.weather?.current.weatherCode ?? .clear
                     ),

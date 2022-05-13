@@ -102,17 +102,6 @@ class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrend
             make.trailing.equalToSuperview()
             make.bottom.equalTo(self.nighttimeIcon.snp.top)
         }
-        
-        ThemeManager.shared.daylight.addNonStickyObserver(self) { daylight in
-            if self.weatherCode == nil {
-                return
-            }
-            
-            self.updateTrendColors(
-                weatherCode: self.weatherCode ?? .clear,
-                daylight: daylight
-            )
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -231,7 +220,7 @@ class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrend
         
         self.updateTrendColors(
             weatherCode: weatherCode,
-            daylight: ThemeManager.shared.daylight.value
+            daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
         )
         
         let tempUnit = SettingsManager.shared.temperatureUnit
@@ -253,11 +242,25 @@ class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrend
     
     private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
         self.trendView.color = UIColor(
-            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(code: weatherCode),
                 daylight: daylight
             )
         )
         self.trendView.bottomLabel.textColor = precipitationProbabilityColor
+    }
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(self) { daylight in
+            if self.weatherCode == nil {
+                return
+            }
+            
+            self.updateTrendColors(
+                weatherCode: self.weatherCode ?? .clear,
+                daylight: daylight
+            )
+        }
     }
 }

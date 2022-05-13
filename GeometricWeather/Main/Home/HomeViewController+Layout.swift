@@ -58,8 +58,8 @@ extension HomeViewController {
             action: #selector(self.onPullRefresh),
             for: .valueChanged
         )
-        self.tableView.hideKeyboardExecutor = {
-            EventBus.shared.post(HideKeyboardEvent())
+        self.tableView.hideKeyboardExecutor = { [weak self] in
+            self?.view.window?.windowScene?.eventBus.post(HideKeyboardEvent())
         }
         self.dragSwitchView.contentView.addSubview(self.tableView)
         

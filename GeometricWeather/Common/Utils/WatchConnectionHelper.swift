@@ -54,7 +54,7 @@ class WatchConnectionHelper: NSObject,
     
     // MARK: - location.
     
-    func shareLocationUpdateResult(location: Location) {
+    func shareLocationUpdateResult(locations: [Location]) {
         self.checkToHandshake()
         
         if !self.isHandshaking && !self.isConnecting {
@@ -62,7 +62,7 @@ class WatchConnectionHelper: NSObject,
         }
         
         self.executeOrPending {
-            let model = SharedLocationUpdateResult(location: location)
+            let model = SharedLocationUpdateResult(locations: locations)
             
             do {
                 let data = try JSONEncoder().encode(model)

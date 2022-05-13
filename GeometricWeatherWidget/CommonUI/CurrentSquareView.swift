@@ -122,7 +122,7 @@ struct CurrentSquareView_Previews: PreviewProvider {
         }.padding(
             [.all]
         ).background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+            ThemeManager.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: .clear,
                 daylight: true
             )

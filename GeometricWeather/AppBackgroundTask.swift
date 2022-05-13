@@ -65,24 +65,23 @@ private func polling(onTask task: BGTask) {
     schedulePollingBackgroundTask()
     
     let asyncTask = Task(priority: .high) {
-        let succeed = await polling()
+        let (locations, succeed) = await polling()
         
         printLog(keyword: "polling", content: "polling complete with result: \(succeed)")
-        updateAppExtensionsAndPrintLog()
+        updateAppExtensionsAndPrintLog(locations: locations)
         
         task.setTaskCompleted(success: succeed)
     }
     
     printLog(keyword: "polling", content: "register expiration handler")
     task.expirationHandler = {
-        printLog(keyword: "polling", content: "expiration")
-        updateAppExtensionsAndPrintLog()
-        
+        printLog(keyword: "polling", content: "expiration handler executing")
+        updateAppExtensions(locations: nil)
         asyncTask.cancel()
     }
 }
 
-private func polling() async -> Bool {
+private func polling() async -> (locations: [Location], succeed: Bool) {
     printLog(keyword: "polling", content: "read locations")
     // read weather cache for default weather for alert comparison.
     var locations = await DatabaseHelper.shared.asyncReadLocations()
@@ -96,7 +95,8 @@ private func polling() async -> Bool {
         UpdateHelper()
     }
     
-    return await withTaskGroup(of: _PollingResult.self) { group -> Bool in
+    return await withTaskGroup(of: _PollingResult.self) { group -> ([Location], Bool) in
+        var locations = locations
         var succeed = true
         
         for (index, location) in locations.enumerated() {
@@ -112,16 +112,17 @@ private func polling() async -> Bool {
             }
         }
         for await result in group {
+            locations[result.index] = result.inner.location
             succeed = succeed
             && result.inner.locationSucceed != false
             && result.inner.weatherRequestSucceed
         }
         
-        return succeed
+        return (locations, succeed)
     }
 }
 
-private func updateAppExtensionsAndPrintLog() {
+private func updateAppExtensionsAndPrintLog(locations: [Location]?) {
     printLog(keyword: "widget", content: "update app extensions cause polling updated")
-    updateAppExtensions()
+    updateAppExtensions(locations: locations)
 }

@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         self.window = UIWindow(windowScene: scene)
-        self.window?.rootViewController = MainComponent().mainViewController
+        self.window?.rootViewController = MainComponent(scene: scene).mainViewController
         self.window?.makeKeyAndVisible()
         
         if let item = connectionOptions.shortcutItem {

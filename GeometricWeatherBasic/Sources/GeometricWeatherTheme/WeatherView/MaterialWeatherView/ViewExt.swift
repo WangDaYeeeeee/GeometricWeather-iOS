@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     
     func onRotate(perform action: @escaping () -> Void) -> some View {
-        #if canImport(UIDevice)
+        #if !os(watchOS)
         self.modifier(DeviceRotationViewModifier(action: action))
         #else
         self
@@ -18,7 +18,7 @@ extension View {
     }
 }
 
-#if canImport(UIDevice)
+#if !os(watchOS)
 struct DeviceRotationViewModifier: ViewModifier {
     
     @State private var orientation = UIInterfaceOrientation.unknown

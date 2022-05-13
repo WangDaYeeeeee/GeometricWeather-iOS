@@ -83,11 +83,11 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     
     func bindData(location: Location, timeBar: MainTimeBarView?) {
         self.cardContainer.contentView.backgroundColor = UIColor(
-            ThemeManager.shared.weatherThemeDelegate.getCardBackgroundColor(
+            ThemeManager.weatherThemeDelegate.getCardBackgroundColor(
                 weatherKind: weatherCodeToWeatherKind(
                     code: location.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: ThemeManager.shared.daylight.value
+                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
             )
         )
         

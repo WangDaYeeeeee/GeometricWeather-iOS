@@ -67,7 +67,7 @@ class MainFooterCell: UITableViewCell, AbstractMainItem {
     }
     
     @objc private func onEditTapped() {
-        EventBus.shared.post(
+        self.window?.windowScene?.eventBus.post(
             MainFooterEditButtonTapAction()
         )
     }

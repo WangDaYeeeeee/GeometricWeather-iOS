@@ -183,12 +183,6 @@ private class TagCell: UICollectionViewCell {
             make.left.equalToSuperview().offset(littleMargin)
             make.right.equalToSuperview()
         }
-        
-        ThemeManager.shared.daylight.addNonStickyObserver(
-            self
-        ) { [weak self] daylight in
-            self?.updateColors(selected: self?.isSelectedCell ?? false)
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -206,6 +200,15 @@ private class TagCell: UICollectionViewCell {
         super.traitCollectionDidChange(previousTraitCollection)
         DispatchQueue.main.async {
             self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
+        }
+    }
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(
+            self
+        ) { [weak self] daylight in
+            self?.updateColors(selected: self?.isSelectedCell ?? false)
         }
     }
     

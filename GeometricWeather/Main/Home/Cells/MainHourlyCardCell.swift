@@ -232,9 +232,9 @@ class MainHourlyCardCell: MainTableViewCell,
             }
             
             self.minutelyView.polylineColor = UIColor(
-                ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+                ThemeManager.weatherThemeDelegate.getThemeColor(
                     weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
-                    daylight: ThemeManager.shared.daylight.value
+                    daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
                 )
             )
             self.minutelyView.polylineValues = getPrecipitationIntensityInPercentage(
@@ -387,11 +387,11 @@ class MainHourlyCardCell: MainTableViewCell,
     
     func getUnselectedColor() -> UIColor {
         return UIColor(
-            ThemeManager.shared.weatherThemeDelegate.getThemeColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(
                     code: self.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: ThemeManager.shared.daylight.value
+                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
             )
         ).withAlphaComponent(0.33)
     }

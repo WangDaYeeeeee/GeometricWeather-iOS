@@ -226,7 +226,7 @@ struct ProgressViews_Previews: PreviewProvider {
                 )
             }
         }.background(
-            ThemeManager.shared.weatherThemeDelegate.getWidgetBackgroundView(
+            ThemeManager.weatherThemeDelegate.getWidgetBackgroundView(
                 weatherKind: .wind, daylight: true
             )
         ).previewContext(

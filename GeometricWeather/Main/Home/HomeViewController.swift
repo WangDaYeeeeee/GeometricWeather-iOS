@@ -23,7 +23,6 @@ class HomeViewController: UIViewController,
     
     // MARK: - router.
     
-    let managementBuilder: ManagementBuilder
     let editBuilder: EditBuilder
     let settingsBuilder: SettingsBuilder
     
@@ -93,10 +92,7 @@ class HomeViewController: UIViewController,
             daylight: isDaylight()
         )
         return WeatherViewController(
-            ThemeManager
-                .shared
-                .weatherThemeDelegate
-                .getWeatherView(state: state),
+            ThemeManager.weatherThemeDelegate.getWeatherView(state: state),
             state: state
         )
     }()
@@ -117,13 +113,11 @@ class HomeViewController: UIViewController,
     init(
         vm: MainViewModel,
         splitView: Bool,
-        managementBuilder: ManagementBuilder,
         editBuilder: EditBuilder,
         settingsBuilder: SettingsBuilder
     ) {
         self.vm = vm
         self.splitView = splitView
-        self.managementBuilder = managementBuilder
         self.editBuilder = editBuilder
         self.settingsBuilder = settingsBuilder
         
@@ -140,8 +134,8 @@ class HomeViewController: UIViewController,
         self.initSubviewsAndLayoutThem()
         
         // observe theme changed.
-        
-        ThemeManager.shared.homeOverrideUIStyle.addObserver(
+                
+        self.navigationController?.view.window?.windowScene?.themeManager.homeOverrideUIStyle.addObserver(
             self
         ) { [weak self] newValue in
             self?.overrideUserInterfaceStyle = newValue
@@ -154,7 +148,9 @@ class HomeViewController: UIViewController,
             ? UIColor.black.withAlphaComponent(0.2).cgColor
             : UIColor.white.withAlphaComponent(0.2).cgColor
         }
-        ThemeManager.shared.daylight.addObserver(self) { [weak self] _ in
+        self.navigationController?.view.window?.windowScene?.themeManager.daylight.addObserver(
+            self
+        ) { [weak self] _ in
             self?.updatePreviewableSubviews()
         }
         
@@ -227,16 +223,6 @@ class HomeViewController: UIViewController,
         self.vm.checkToUpdate()
     }
     
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        self.vm.encodeRestorableState(with: coder)
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-        super.decodeRestorableState(with: coder)
-        self.vm.decodeRestorableState(with: coder)
-    }
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -257,9 +243,7 @@ class HomeViewController: UIViewController,
             offset: self.previewOffset
         )
         
-        let daylight = self.previewOffset == 0
-        ? ThemeManager.shared.daylight.value
-        : isDaylight(location: location)
+        let daylight = isDaylight(location: location)
         
         self.navigationBarTitleView.title = getLocationText(location: location)
         self.navigationBarTitleView.showCurrentPositionIcon = location.currentPosition
@@ -325,14 +309,8 @@ class HomeViewController: UIViewController,
     // MARK: - actions.
     
     @objc func onManagementButtonClicked() {
-        if self.navigationController?.presentedViewController != nil {
-            return
-        }
-        
-        self.navigationController?.present(
-            self.managementBuilder.presentManagementViewController,
-            animated: true,
-            completion: nil
+        self.navigationController?.view.window?.windowScene?.eventBus.post(
+            TimeBarManagementAction()
         )
     }
     
@@ -344,7 +322,7 @@ class HomeViewController: UIViewController,
     }
     
     @objc func onPullRefresh() {
-        self.vm.updateWithUpdatingChecking()
+        self.vm.updateCurrentLocationWithChecking()
 
         if let refreshControl = self.tableView.refreshControl {
             refreshControl.endRefreshing()
@@ -394,7 +372,7 @@ class HomeViewController: UIViewController,
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.showPageIndicator()
-        EventBus.shared.post(HideKeyboardEvent())
+        self.view.window?.windowScene?.eventBus.post(HideKeyboardEvent())
     }
     
     func scrollViewDidEndDragging(

@@ -55,7 +55,7 @@ class GeoViewController<T>: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
+        self.navigationController?.view?.window?.windowScene?.themeManager.globalOverrideUIStyle.syncAddObserver(
             self
         ) { [weak self] newValue in
             guard let strongSelf = self else {

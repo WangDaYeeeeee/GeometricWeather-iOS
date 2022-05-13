@@ -25,9 +25,6 @@ class AppDelegate: UIResponder,
         // register needle for di.
         registerProviderFactories()
         
-        // register theme manager.
-        ThemeManager.shared.update(darkMode: SettingsManager.shared.darkMode)
-        
         // request notification authorization and set delegate.
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .sound, .badge]
@@ -37,9 +34,8 @@ class AppDelegate: UIResponder,
         UNUserNotificationCenter.current().delegate = self
         
         // register background fetch task.
-        updateAppExtensions()
         registerPollingBackgroundTask()
-        
+
         EventBus.shared.register(self, for: UpdateIntervalChanged.self) { event in
             registerPollingBackgroundTask()
         }

@@ -110,7 +110,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
+        self.navigationController?.view.window?.windowScene?.themeManager.globalOverrideUIStyle.syncAddObserver(
             self
         ) { [weak self] newValue in
             guard let strongSelf = self else {

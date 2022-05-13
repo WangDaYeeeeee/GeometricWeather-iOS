@@ -84,18 +84,13 @@ class ToastWrapperView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        ThemeManager.shared.globalOverrideUIStyle.syncAddObserver(
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        newWindow?.windowScene?.themeManager.globalOverrideUIStyle.syncAddObserver(
             self
         ) { [weak self] newValue in
             self?.overrideUserInterfaceStyle = newValue
         }
-    }
-    
-    override func removeFromSuperview() {
-        super.removeFromSuperview()
-        ThemeManager.shared.globalOverrideUIStyle.removeObserver(self)
     }
     
     // MARK: - action.

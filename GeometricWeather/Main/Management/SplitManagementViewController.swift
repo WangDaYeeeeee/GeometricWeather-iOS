@@ -15,6 +15,8 @@ import GeometricWeatherTheme
 
 private let cellReuseId = "ManagementTableViewCell"
 
+struct SplitManagementViewDismissEvent {}
+
 class SplitManagementViewController: BaseManagementController,
                                         UISearchControllerDelegate,
                                         UISearchResultsUpdating,
@@ -65,7 +67,10 @@ class SplitManagementViewController: BaseManagementController,
             make.edges.equalToSuperview()
         }
         
-        EventBus.shared.register(self, for: HideKeyboardEvent.self) { [weak self] event in
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: HideKeyboardEvent.self
+        ) { [weak self] event in
             if (self?.resultController.locationCount ?? 0) == 0 && (
                 self?.searchController.searchBar.text?.isEmpty ?? true
             ) {
@@ -74,7 +79,10 @@ class SplitManagementViewController: BaseManagementController,
                 self?.searchController.searchBar.endEditing(true)
             }
         }
-        EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: AddLocationEvent.self
+        ) { [weak self] event in
             guard let strongSelf = self else {
                 return
             }
@@ -109,6 +117,15 @@ class SplitManagementViewController: BaseManagementController,
                 strongSelf.searchController.searchBar.showsBookmarkButton = showBookmarkButton
             }
         }
+    }
+    
+    // MARK: - ui.
+    
+    override func dismiss() {
+        super.dismiss()
+        self.navigationController?.view.window?.windowScene?.eventBus.post(
+            SplitManagementViewDismissEvent()
+        )
     }
     
     // MARK: - search controller delegate.

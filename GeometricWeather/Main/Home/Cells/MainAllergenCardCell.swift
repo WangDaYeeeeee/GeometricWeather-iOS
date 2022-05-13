@@ -114,7 +114,7 @@ class MainAllergenCardCell: MainTableViewCell,
     }
     
     @objc private func onCollectionViewTapped() {
-        EventBus.shared.post(AllergenCollectionViewTapAction())
+        self.window?.windowScene?.eventBus.post(AllergenCollectionViewTapAction())
     }
     
     // MARK: - delegates.

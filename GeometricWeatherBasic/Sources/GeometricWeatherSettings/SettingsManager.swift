@@ -34,7 +34,9 @@ public class SettingsManager {
     public static let shared = SettingsManager()
 
     private init() {
+        #if !os(watchOS)
         SettingsSync.start(withPrefix: prefixSync)
+        #endif
     }
     
     // MARK: - basic.

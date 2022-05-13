@@ -6,15 +6,9 @@
 //
 
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
 
 @available(iOS 14.0, *)
 @available(watchOS 7.0, *)
-@available(macOS 11.0, *)
 public extension Color {
     
     var components: (
@@ -28,13 +22,9 @@ public extension Color {
         var b: CGFloat = 0
         var o: CGFloat = 0
 
-        #if canImport(UIKit)
         guard UIColor(self).getRed(&r, green: &g, blue: &b, alpha: &o) else {
             return (0, 0, 0, 0)
         }
-        #elseif canImport(AppKit)
-        NSColor(self).getRed(&r, green: &g, blue: &b, alpha: &o)
-        #endif
 
         return (r, g, b, o)
     }

@@ -78,7 +78,10 @@ class PresentManagementViewController: BaseManagementController,
             make.edges.equalTo(self.tableView)
         }
         
-        EventBus.shared.register(self, for: HideKeyboardEvent.self) { [weak self] event in
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: HideKeyboardEvent.self
+        ) { [weak self] event in
             if (self?.searchViewController.locationCount ?? 0) == 0 && (
                 self?.searchBar.text?.isEmpty ?? true
             ) {
@@ -87,7 +90,10 @@ class PresentManagementViewController: BaseManagementController,
                 self?.searchBar.endEditing(true)
             }
         }
-        EventBus.shared.register(self, for: AddLocationEvent.self) { [weak self] event in
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: AddLocationEvent.self
+        ) { [weak self] event in
             guard let strongSelf = self else {
                 return
             }
@@ -155,7 +161,12 @@ class PresentManagementViewController: BaseManagementController,
         self.searching.value = false
     }
     
-    // MARK: - interfaces.
+    // MARK: - ui.
+    
+    override func dismiss() {
+        super.dismiss()
+        self.dismiss(animated: true)
+    }
     
     override func updateLocationList(_ newList: SelectableLocationArray) {
         

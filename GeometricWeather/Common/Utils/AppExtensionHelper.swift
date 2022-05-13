@@ -30,28 +30,35 @@ func responseAppShortcutItemAction(
 
 // MARK: - update.
 
-func updateAppExtensions() {
+struct LocationListUpdateEvent {
+    let locations: [Location]
+}
+
+func updateAppExtensions(locations: [Location]?) {
     // app widgets.
     WidgetCenter.shared.reloadAllTimelines()
     
-    Task(priority: .background) {
+    if let locations = locations {
         // app shortcut items.
-        await updateAppShortcutItems()
+        updateAppShortcutItems(locations: locations)
         
-        // watch app.
-        var location = await DatabaseHelper.shared.asyncReadLocations()[0]
-        location = location.copyOf(
-            weather: await DatabaseHelper.shared.asyncReadWeather(
-                formattedId: location.formattedId
-            )
+        // multi-scene compat.
+        EventBus.shared.post(
+            LocationListUpdateEvent(locations: locations)
         )
-        await WatchConnectionHelper.shared.shareLocationUpdateResult(location: location)
+    }
+    
+    // watch app.
+    Task(priority: .background) {
+        if let locations = locations {
+            await WatchConnectionHelper.shared.shareLocationUpdateResult(locations: locations)
+        }
     }
 }
 
-private func updateAppShortcutItems() async {
+private func updateAppShortcutItems(locations: [Location]) {
     let items = Location.excludeInvalidResidentLocation(
-        locationArray: await DatabaseHelper.shared.asyncReadLocations()
+        locationArray: locations
     ).map { location in
         UIApplicationShortcutItem(
             type: location.formattedId,
@@ -66,7 +73,5 @@ private func updateAppShortcutItems() async {
         )
     }
     
-    await MainActor.run {
-        UIApplication.shared.shortcutItems = items
-    }
+    UIApplication.shared.shortcutItems = items
 }

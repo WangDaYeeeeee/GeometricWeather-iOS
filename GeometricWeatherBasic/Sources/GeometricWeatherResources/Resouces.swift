@@ -24,7 +24,7 @@ public let maxPhoneAdaptiveWidth = 480.0
 public let maxTabletAdaptiveWidth = 512.0
 
 public func isTablet() -> Bool {
-    #if canImport(UIDevice)
+    #if !os(watchOS)
     return UIDevice.current.userInterfaceIdiom != UIUserInterfaceIdiom.phone
     #else
     return false
@@ -32,7 +32,7 @@ public func isTablet() -> Bool {
 }
 
 public func isLandscape() -> Bool {
-    #if canImport(UIDevice)
+    #if !os(watchOS)
     return UIApplication
         .shared
         .windows

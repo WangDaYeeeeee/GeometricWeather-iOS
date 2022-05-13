@@ -5,27 +5,19 @@
 //  Created by 王大爷 on 2021/7/24.
 //
 
-#if canImport(UIKit)
 import UIKit
-#endif
 import SwiftUI
 import GeometricWeatherCore
 
 public class ThemeManager {
     
-    public let weatherThemeDelegate = AnyWeatherThemeDelegate(
+    public static let weatherThemeDelegate = AnyWeatherThemeDelegate(
         MaterialWeatherThemeDelegate()
     )
     
     #if !os(watchOS)
-
-    // singleton.
     
-    public static let shared = ThemeManager(
-        darkMode: DarkMode[0]
-    )
-    
-    private init(darkMode: DarkMode) {
+    public init(darkMode: DarkMode) {
         self.homeOverrideUIStyle = EqualtableLiveData(
             Self.generateHomeUIUserInterfaceStyle(
                 darkMode: darkMode,
@@ -53,6 +45,10 @@ public class ThemeManager {
     private var darkMode: DarkMode
     
     // interfaces.
+    
+    public func update(location: Location) {
+        self.update(darkMode: nil, location: location)
+    }
     
     public func update(
         darkMode: DarkMode? = nil,
@@ -106,9 +102,7 @@ public class ThemeManager {
     }
     #else
     
-    public static let shared = ThemeManager()
-    
-    private init() {
+    public init() {
         // do nothing.
     }
     #endif

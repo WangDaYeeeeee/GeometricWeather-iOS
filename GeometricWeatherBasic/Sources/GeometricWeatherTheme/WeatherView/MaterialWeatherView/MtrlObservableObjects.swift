@@ -137,7 +137,7 @@ class GravityReactionData: ObservableObject {
             var rotation2D = acos(cos2d) * (ax >= 0 ? 1 : -1) * 180.0 / Double.pi
             let rotation3D = acos(cos3d) * (az >= 0 ? 1 : -1) * 180.0 / Double.pi
             
-            #if canImport(UIApplication)
+            #if !os(watchOS)
             switch UIApplication
                 .shared
                 .windows

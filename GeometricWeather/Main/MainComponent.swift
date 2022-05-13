@@ -10,14 +10,22 @@ import NeedleFoundation
 
 class MainComponent: BootstrapComponent {
     
+    private weak var scene: UIWindowScene?
+    
+    init(scene: UIWindowScene) {
+        self.scene = scene
+        super.init()
+    }
+    
     var mainViewModel: MainViewModel {
         return shared {
-            MainViewModel()
+            MainViewModel(scene: self.scene)
         }
     }
     
     var mainViewController: MainViewController {
         return MainViewController(
+            scene: self.scene,
             homeBuilder: self.homeComponent,
             managementBuilder: self.managementComponent
         )

@@ -192,10 +192,10 @@ class MainTimeBarView: UIStackView {
     // MARK: - actions.
     
     @objc private func managementAction() {
-        EventBus.shared.post(TimeBarManagementAction())
+        self.window?.windowScene?.eventBus.post(TimeBarManagementAction())
     }
     
     @objc private func alertAction() {
-        EventBus.shared.post(TimeBarAlertAction())
+        self.window?.windowScene?.eventBus.post(TimeBarAlertAction())
     }
 }

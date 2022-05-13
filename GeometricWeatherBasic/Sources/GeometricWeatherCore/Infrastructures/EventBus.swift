@@ -13,7 +13,7 @@ public class EventBus {
     
     public static let shared = EventBus()
     
-    private init() {
+    public init() {
         // do nothing.
     }
     

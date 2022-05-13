@@ -16,7 +16,6 @@
 		373F760D27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */; };
 		373F761B27E858070005875B /* AllergenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373F761A27E858070005875B /* AllergenViewController.swift */; };
 		3741444627DB40C700E55800 /* AnimationCompletionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */; };
-		374629E6282341B7009FBB85 /* GeometricWeatherWatchBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 374629E5282341B7009FBB85 /* GeometricWeatherWatchBasic */; };
 		374629F328239945009FBB85 /* UIViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374629F228239945009FBB85 /* UIViewExt.swift */; };
 		374629F52823996B009FBB85 /* UILabelExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374629F42823996B009FBB85 /* UILabelExt.swift */; };
 		374629F728239971009FBB85 /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374629F628239971009FBB85 /* UIImageExt.swift */; };
@@ -58,6 +57,12 @@
 		3780D06F2823DEE1004205D2 /* DatabaseHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */; };
 		3780D0712823DF5F004205D2 /* UpdateHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */; };
 		37904789282A554500EC7579 /* WatchConnectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904788282A554500EC7579 /* WatchConnectionHelper.swift */; };
+		37904796282AA6E900EC7579 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904795282AA6E900EC7579 /* MainHeaderView.swift */; };
+		37904798282AABA900EC7579 /* GeometricWeatherBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 37904797282AABA900EC7579 /* GeometricWeatherBasic */; };
+		3790479A282AAD5A00EC7579 /* MainNavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904799282AAD5A00EC7579 /* MainNavigationTitleView.swift */; };
+		3790479C282B946600EC7579 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479B282B946600EC7579 /* MainViewModel.swift */; };
+		3790479E282CF56400EC7579 /* UIWindowSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479D282CF56400EC7579 /* UIWindowSceneExt.swift */; };
+		379047A0282DD66100EC7579 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479F282DD66100EC7579 /* SettingsViewModel.swift */; };
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
 		3793419C2813D8780046AD88 /* MainTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */; };
 		379341AA28153AE30046AD88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379341A928153AE30046AD88 /* Assets.xcassets */; };
@@ -345,6 +350,11 @@
 		3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelperExt.swift; sourceTree = "<group>"; };
 		3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHelperExt.swift; sourceTree = "<group>"; };
 		37904788282A554500EC7579 /* WatchConnectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectionHelper.swift; sourceTree = "<group>"; };
+		37904795282AA6E900EC7579 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
+		37904799282AAD5A00EC7579 /* MainNavigationTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationTitleView.swift; sourceTree = "<group>"; };
+		3790479B282B946600EC7579 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		3790479D282CF56400EC7579 /* UIWindowSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowSceneExt.swift; sourceTree = "<group>"; };
+		3790479F282DD66100EC7579 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
 		3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		379341A928153AE30046AD88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -565,7 +575,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				374629E6282341B7009FBB85 /* GeometricWeatherWatchBasic in Frameworks */,
+				37904798282AABA900EC7579 /* GeometricWeatherBasic in Frameworks */,
 				37659707281FB4DA00164CAD /* WatchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -610,8 +620,8 @@
 				379A8A5327C8C59000083BFF /* Main */,
 				3723224F26AA8DB000A11139 /* GeometricWeather.entitlements */,
 				377B1D6526B6B93000E7E07E /* AppDelegate.swift */,
-				3780D0632823DE57004205D2 /* AppBackgroundTask.swift */,
 				377B1D6426B6B93000E7E07E /* SceneDelegate.swift */,
+				3780D0632823DE57004205D2 /* AppBackgroundTask.swift */,
 				37D3B8C727D6FA0A00191C2A /* NeedleGenerated.swift */,
 				3799F4FF26D0AE9C00B49D20 /* GeometricWeather-Bridging-Header.h */,
 				370BA5C2269C5E37006BB1CE /* LaunchScreen.storyboard */,
@@ -651,6 +661,7 @@
 				37462A00282399E5009FBB85 /* StringExt.swift */,
 				3780D06E2823DEE1004205D2 /* DatabaseHelperExt.swift */,
 				3780D0702823DF5F004205D2 /* UpdateHelperExt.swift */,
+				3790479D282CF56400EC7579 /* UIWindowSceneExt.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -740,7 +751,10 @@
 		376596F9281FAB2400164CAD /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				3790479B282B946600EC7579 /* MainViewModel.swift */,
 				376596D5281FA50C00164CAD /* MainView.swift */,
+				37904795282AA6E900EC7579 /* MainHeaderView.swift */,
+				37904799282AAD5A00EC7579 /* MainNavigationTitleView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1013,6 +1027,7 @@
 				379A8B1827C8C59000083BFF /* About */,
 				379A8B2027C8C59000083BFF /* SettingsViewController.swift */,
 				379A8B1E27C8C59000083BFF /* SettingsView.swift */,
+				3790479F282DD66100EC7579 /* SettingsViewModel.swift */,
 				379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */,
 				379A8B1D27C8C59000083BFF /* SettingsTextViews.swift */,
 				37D3B8C927D6FA5000191C2A /* SettingsComponent.swift */,
@@ -1376,7 +1391,7 @@
 			);
 			name = "GeometricWeatherWatch WatchKit Extension";
 			packageProductDependencies = (
-				374629E5282341B7009FBB85 /* GeometricWeatherWatchBasic */,
+				37904797282AABA900EC7579 /* GeometricWeatherBasic */,
 			);
 			productName = "GeometricWeatherWatch WatchKit Extension";
 			productReference = 376596CE281FA50C00164CAD /* GeometricWeatherWatch WatchKit Extension.appex */;
@@ -1661,6 +1676,7 @@
 				379A8B3727C8C59000083BFF /* HomeViewController.swift in Sources */,
 				379A8B3527C8C59000083BFF /* HomeViewController+Layout.swift in Sources */,
 				374629F52823996B009FBB85 /* UILabelExt.swift in Sources */,
+				3790479E282CF56400EC7579 /* UIWindowSceneExt.swift in Sources */,
 				379A8B4727C8C59000083BFF /* DailyView.swift in Sources */,
 				379A8B6427C8C59100083BFF /* CircularProgressView.swift in Sources */,
 				374629F728239971009FBB85 /* UIImageExt.swift in Sources */,
@@ -1682,6 +1698,7 @@
 				379A8B3627C8C59000083BFF /* HomeViewController+PageIndicator.swift in Sources */,
 				379A8B3927C8C59000083BFF /* MainSelectableTagView.swift in Sources */,
 				3780D06D2823DE57004205D2 /* AppBackgroundTask.swift in Sources */,
+				379047A0282DD66100EC7579 /* SettingsViewModel.swift in Sources */,
 				379A8B4527C8C59000083BFF /* LocationTableViewCell.swift in Sources */,
 				379A8B3027C8C59000083BFF /* MainAllergenCardCell.swift in Sources */,
 				379A8BC927C92AD000083BFF /* MainHourlyCardCell+Tags.swift in Sources */,
@@ -1759,10 +1776,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				376596D8281FA50C00164CAD /* NotificationController.swift in Sources */,
+				3790479A282AAD5A00EC7579 /* MainNavigationTitleView.swift in Sources */,
 				376596D6281FA50C00164CAD /* MainView.swift in Sources */,
 				376596DC281FA50C00164CAD /* ComplicationController.swift in Sources */,
 				376596D4281FA50C00164CAD /* GeometricWeatherApp.swift in Sources */,
+				37904796282AA6E900EC7579 /* MainHeaderView.swift in Sources */,
 				376596DA281FA50C00164CAD /* NotificationView.swift in Sources */,
+				3790479C282B946600EC7579 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2242,15 +2262,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		374629E5282341B7009FBB85 /* GeometricWeatherWatchBasic */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GeometricWeatherWatchBasic;
-		};
 		3771D8792822A28400AEB8C1 /* GeometricWeatherBasic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GeometricWeatherBasic;
 		};
 		3771D87B2822A29000AEB8C1 /* GeometricWeatherBasic */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GeometricWeatherBasic;
+		};
+		37904797282AABA900EC7579 /* GeometricWeatherBasic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GeometricWeatherBasic;
 		};

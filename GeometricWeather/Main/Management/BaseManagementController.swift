@@ -70,6 +70,10 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     
     // MARK: - ui.
     
+    func dismiss() {
+        // do nothing.
+    }
+    
     func updateLocationList(_ newList: SelectableLocationArray) {
         // new.
         if self.itemList.isEmpty {
@@ -231,7 +235,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         self.param.setLocation(
             formattedId: self.itemList[indexPath.row].location.formattedId
         )
-        self.dismiss(animated: true)
+        self.dismiss()
     }
     
     // swipe reaction.

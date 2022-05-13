@@ -14,51 +14,7 @@ import GeometricWeatherTheme
 
 struct SettingsView: View {
     
-    // MARK: - basic.
-    
-    @State private var alertEnabled = SettingsManager.shared.alertEnabled
-    
-    @State private var precipitationAlertEnabled = SettingsManager.shared.precipitationAlertEnabled
-        
-    // MARK: - appearance.
-    
-    @State private var darkModeIndex = DarkMode.all.firstIndex(
-        of: SettingsManager.shared.darkMode
-    ) ?? 0
-    
-    // MARK: - unit.
-    
-    @State private var temperatureUnitIndex = TemperatureUnit.all.firstIndex(
-        of: SettingsManager.shared.temperatureUnit
-    ) ?? 0
-    
-    @State private var precipitationUnitIndex = PrecipitationUnit.all.firstIndex(
-        of: SettingsManager.shared.precipitationUnit
-    ) ?? 0
-    
-    @State private var speedUnitIndex = SpeedUnit.all.firstIndex(
-        of: SettingsManager.shared.speedUnit
-    ) ?? 0
-    
-    @State private var pressureUnitIndex = PressureUnit.all.firstIndex(
-        of: SettingsManager.shared.pressureUnit
-    ) ?? 0
-    
-    @State private var distanceUnitIndex = DistanceUnit.all.firstIndex(
-        of: SettingsManager.shared.distanceUnit
-    ) ?? 0
-    
-    // MARK: - forecast.
-    
-    @State private var todayForecastEnabled = SettingsManager.shared.todayForecastEnabled
-    
-    @State private var todayForecastDate = SettingsManager.shared.todayForecastDate
-    
-    @State private var tomorrowForecastEnabled = SettingsManager.shared.tomorrowForecastEnabled
-    
-    @State private var tomorrowForecastDate = SettingsManager.shared.tomorrowForecastDate
-    
-    // MARK: - life cycle.
+    @StateObject private var model = SettingsViewModel()
     
     var body: some View {
         List {
@@ -69,11 +25,11 @@ struct SettingsView: View {
             ) {
                 SettingsToggleCellView(
                     titleKey: "settings_title_alert_notification_switch",
-                    toggleOn: self.$alertEnabled
+                    toggleOn: self.$model.alertEnabled
                 )
                 SettingsToggleCellView(
                     titleKey: "settings_title_precipitation_notification_switch",
-                    toggleOn: self.$precipitationAlertEnabled
+                    toggleOn: self.$model.precipitationAlertEnabled
                 )
             }
             
@@ -85,7 +41,7 @@ struct SettingsView: View {
                 SettingsListCellView(
                     titleKey: "settings_title_dark_mode",
                     keys: DarkMode.allKey,
-                    selectedIndex: self.$darkModeIndex
+                    selectedIndex: self.$model.darkModeIndex
                 )
             }
             
@@ -97,27 +53,27 @@ struct SettingsView: View {
                 SettingsListCellView(
                     titleKey: "settings_title_temperature_unit",
                     keys: TemperatureUnit.allKey,
-                    selectedIndex: self.$temperatureUnitIndex
+                    selectedIndex: self.$model.temperatureUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_distance_unit",
                     keys: DistanceUnit.allKey,
-                    selectedIndex: self.$distanceUnitIndex
+                    selectedIndex: self.$model.distanceUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_precipitation_unit",
                     keys: PrecipitationUnit.allKey,
-                    selectedIndex: self.$precipitationUnitIndex
+                    selectedIndex: self.$model.precipitationUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_pressure_unit",
                     keys: PressureUnit.allKey,
-                    selectedIndex: self.$pressureUnitIndex
+                    selectedIndex: self.$model.pressureUnitIndex
                 )
                 SettingsListCellView(
                     titleKey: "settings_title_speed_unit",
                     keys: SpeedUnit.allKey,
-                    selectedIndex: self.$speedUnitIndex
+                    selectedIndex: self.$model.speedUnitIndex
                 )
             }
             
@@ -128,60 +84,59 @@ struct SettingsView: View {
             ) {
                 SettingsToggleCellView(
                     titleKey: "settings_title_forecast_today",
-                    toggleOn: self.$todayForecastEnabled
+                    toggleOn: self.$model.todayForecastEnabled
                 )
                 SettingsTimePickerCellView(
                     titleKey: "settings_title_forecast_today_time",
-                    enabled: self.todayForecastEnabled,
-                    selectedDate: self.$todayForecastDate
+                    enabled: self.model.todayForecastEnabled,
+                    selectedDate: self.$model.todayForecastDate
                 )
                 SettingsToggleCellView(
                     titleKey: "settings_title_forecast_tomorrow",
-                    toggleOn: self.$tomorrowForecastEnabled
+                    toggleOn: self.$model.tomorrowForecastEnabled
                 )
                 SettingsTimePickerCellView(
                     titleKey: "settings_title_forecast_tomorrow_time",
-                    enabled: self.tomorrowForecastEnabled,
-                    selectedDate: self.$tomorrowForecastDate
+                    enabled: self.model.tomorrowForecastEnabled,
+                    selectedDate: self.$model.tomorrowForecastDate
                 )
             }
         }.listStyle(
             .insetGrouped
-        ).onChange(of: self.alertEnabled) { newValue in
+        ).onChange(of: self.model.alertEnabled) { newValue in
             SettingsManager.shared.alertEnabled = newValue
-        }.onChange(of: self.precipitationAlertEnabled) { newValue in
+        }.onChange(of: self.model.precipitationAlertEnabled) { newValue in
             SettingsManager.shared.precipitationAlertEnabled = newValue
-        }.onChange(of: self.darkModeIndex) { newValue in
+        }.onChange(of: self.model.darkModeIndex) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
-            ThemeManager.shared.update(darkMode: DarkMode[newValue])
-        }.onChange(of: self.temperatureUnitIndex) { newValue in
+        }.onChange(of: self.model.temperatureUnitIndex) { newValue in
             SettingsManager.shared.temperatureUnit = TemperatureUnit[
                 newValue
             ]
-        }.onChange(of: self.precipitationUnitIndex) { newValue in
+        }.onChange(of: self.model.precipitationUnitIndex) { newValue in
             SettingsManager.shared.precipitationUnit = PrecipitationUnit[
                 newValue
             ]
-        }.onChange(of: self.speedUnitIndex) { newValue in
+        }.onChange(of: self.model.speedUnitIndex) { newValue in
             SettingsManager.shared.speedUnit = SpeedUnit[newValue]
-        }.onChange(of: self.pressureUnitIndex) { newValue in
+        }.onChange(of: self.model.pressureUnitIndex) { newValue in
             SettingsManager.shared.pressureUnit = PressureUnit[
                 newValue
             ]
-        }.onChange(of: self.distanceUnitIndex) { newValue in
+        }.onChange(of: self.model.distanceUnitIndex) { newValue in
             SettingsManager.shared.distanceUnit = DistanceUnit[
                 newValue
             ]
-        }.onChange(of: self.todayForecastEnabled) { newValue in
+        }.onChange(of: self.model.todayForecastEnabled) { newValue in
             SettingsManager.shared.todayForecastEnabled = newValue
             resetTodayForecastPendingIntentInTask()
-        }.onChange(of: self.todayForecastDate) { newValue in
+        }.onChange(of: self.model.todayForecastDate) { newValue in
             SettingsManager.shared.todayForecastDate = newValue
             resetTodayForecastPendingIntentInTask()
-        }.onChange(of: self.tomorrowForecastEnabled) { newValue in
+        }.onChange(of: self.model.tomorrowForecastEnabled) { newValue in
             SettingsManager.shared.tomorrowForecastEnabled = newValue
             resetTomorrowForecastPendingIntentInTask()
-        }.onChange(of: self.tomorrowForecastDate) { newValue in
+        }.onChange(of: self.model.tomorrowForecastDate) { newValue in
             SettingsManager.shared.tomorrowForecastDate = newValue
             resetTomorrowForecastPendingIntentInTask()
         }

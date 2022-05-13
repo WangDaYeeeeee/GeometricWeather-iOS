@@ -147,9 +147,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         heightForHeaderInSection section: Int
     ) -> CGFloat {
-        return ThemeManager.shared.weatherThemeDelegate.getHeaderHeight(
-            tableView.frame.height
-        ) - self.view.safeAreaInsets.top
+        return max(
+            0.0,
+            ThemeManager.weatherThemeDelegate.getHeaderHeight(
+                tableView.frame.height
+            ) - tableView.safeAreaInsets.top
+        )
     }
     
     func tableView(
@@ -162,9 +165,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        let height = ThemeManager.shared.weatherThemeDelegate.getHeaderHeight(
-            tableView.frame.height
-        ) - self.view.safeAreaInsets.top
+        let height = max(
+            0.0,
+            ThemeManager.weatherThemeDelegate.getHeaderHeight(
+                tableView.frame.height
+            ) - tableView.safeAreaInsets.top
+        )
         self.cellHeightCache[cellKeyHeader] = height
         return height
     }
@@ -258,9 +264,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     // scroll.
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let headerHeight = ThemeManager.shared.weatherThemeDelegate.getHeaderHeight(
-            scrollView.frame.height
-        ) - scrollView.safeAreaInsets.top
+        let headerHeight = max(
+            0.0,
+            ThemeManager.weatherThemeDelegate.getHeaderHeight(
+                scrollView.frame.height
+            ) - scrollView.safeAreaInsets.top
+        )
         
         let blur = scrollView.contentOffset.y > headerHeight - 256.0
         && headerHeight > 0

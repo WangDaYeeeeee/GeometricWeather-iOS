@@ -49,12 +49,12 @@ struct MainRepository {
     
     func getWeatherCacheForLocations(
         oldList: [Location],
-        ignoredFormattedId: String
+        ignoredFormattedId: Set<String>
     ) async -> [Location] {
         var locations = oldList
                 
         for i in locations.indices {
-            if locations[i].formattedId == ignoredFormattedId {
+            if ignoredFormattedId.contains(locations[i].formattedId) {
                 continue
             }
             
@@ -66,6 +66,12 @@ struct MainRepository {
         }
         
         return locations
+    }
+    
+    func readWeatherCache(for location: Location) -> Location {
+        return location.copyOf(
+            weather: DatabaseHelper.shared.readWeather(formattedId: location.formattedId)
+        )
     }
     
     func writeLocations(locations: [Location]) async {

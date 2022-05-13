@@ -38,9 +38,6 @@ private class HomeDependency887e91671f4424758155BaseProvider: HomeDependency {
     var mainViewModel: MainViewModel {
         return mainComponent.mainViewModel
     }
-    var managementComponent: ManagementConponent {
-        return mainComponent.managementComponent
-    }
     var editComponent: EditComponent {
         return mainComponent.editComponent
     }

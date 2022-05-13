@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import GeometricWeatherTheme
+import GeometricWeatherSettings
 
 let largeTemperatureFont = Font.system(
     size: 48.0,

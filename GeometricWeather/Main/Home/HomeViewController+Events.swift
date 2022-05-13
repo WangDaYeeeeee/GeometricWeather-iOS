@@ -13,7 +13,7 @@ import GeometricWeatherDB
 import GeometricWeatherTheme
 
 extension HomeViewController {
-        
+    
     func registerEventObservers() {
         
         // MARK: - background updated.
@@ -38,7 +38,7 @@ extension HomeViewController {
         
         // MARK: - daily cell tapped.
         
-        EventBus.shared.register(
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
             self,
             for: DailyTrendCellTapAction.self
         ) { [weak self] event in
@@ -54,22 +54,9 @@ extension HomeViewController {
             )
         }
         
-        // MARK: - time bar tapped.
-        
-        EventBus.shared.register(
-            self,
-            for: TimeBarManagementAction.self
-        ) { [weak self] _ in
-            if self?.splitView ?? false {
-                return
-            }
-            
-            self?.onManagementButtonClicked()
-        }
-        
         // MARK: - time bar alert tapped.
         
-        EventBus.shared.register(
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
             self,
             for: TimeBarAlertAction.self
         ) { [weak self] _ in
@@ -87,7 +74,7 @@ extension HomeViewController {
         
         // MARK: - allergen collection view tapped.
         
-        EventBus.shared.register(
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
             self,
             for: AllergenCollectionViewTapAction.self
         ) { [weak self] _ in
@@ -106,7 +93,7 @@ extension HomeViewController {
         
         // MARK: - edit button tapped.
         
-        EventBus.shared.register(
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
             self,
             for: MainFooterEditButtonTapAction.self
         ) { [weak self] _ in

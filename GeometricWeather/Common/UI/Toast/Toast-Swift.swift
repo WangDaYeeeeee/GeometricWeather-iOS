@@ -161,7 +161,7 @@ extension UIView {
         let timer = Timer(
             timeInterval: duration,
             target: self,
-            selector: #selector(UIView.toastTimerDidFinish(_:)),
+            selector: #selector(toastTimerDidFinish(_:)),
             userInfo: toast,
             repeats: false
         )
@@ -214,10 +214,8 @@ extension UIView {
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
             
-            if let wrapper = objc_getAssociatedObject(
-                toast,
-                &ToastKeys.completion
-            ) as? ToastCompletionWrapper, let completion = wrapper.completion {
+            if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.completion) as? ToastCompletionWrapper,
+                let completion = wrapper.completion {
                 completion(fromTap)
             }
             
@@ -253,8 +251,7 @@ extension UIView {
     
     // MARK: - Events
     
-    @objc
-    private func toastTimerDidFinish(_ timer: Timer) {
+    @objc private func toastTimerDidFinish(_ timer: Timer) {
         guard let toast = timer.userInfo as? ToastWrapperView else {
             return
         }

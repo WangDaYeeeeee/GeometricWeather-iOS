@@ -286,21 +286,21 @@ class HomeViewController: UIViewController,
         case .backgroundUpdate:
             ToastHelper.showToastMessage(
                 getLocalizedText("feedback_updated_in_background"),
-                inWindowOfView: self.view
+                inWindowOf: self.view
             )
             return
             
         case .locationFailed:
             ToastHelper.showToastMessage(
                 getLocalizedText("feedback_location_failed"),
-                inWindowOfView: self.view
+                inWindowOf: self.view
             )
             return
             
         case .weatherRequestFailed:
             ToastHelper.showToastMessage(
                 getLocalizedText("feedback_get_weather_failed"),
-                inWindowOfView: self.view
+                inWindowOf: self.view
             )
             return
         }

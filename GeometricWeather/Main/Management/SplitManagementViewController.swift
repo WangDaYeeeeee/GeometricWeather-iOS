@@ -27,7 +27,9 @@ class SplitManagementViewController: BaseManagementController,
     private lazy var searchController = {
         return UISearchController(searchResultsController: self.resultController)
     }()
-    private let resultController = SearchResultController(param: true)
+    private lazy var resultController = {
+        return SearchResultController(param: true, in: self.scene)
+    }()
     
     // inner data.
     
@@ -67,7 +69,7 @@ class SplitManagementViewController: BaseManagementController,
             make.edges.equalToSuperview()
         }
         
-        self.navigationController?.view.window?.windowScene?.eventBus.register(
+        self.scene?.eventBus.register(
             self,
             for: HideKeyboardEvent.self
         ) { [weak self] event in
@@ -79,7 +81,7 @@ class SplitManagementViewController: BaseManagementController,
                 self?.searchController.searchBar.endEditing(true)
             }
         }
-        self.navigationController?.view.window?.windowScene?.eventBus.register(
+        self.scene?.eventBus.register(
             self,
             for: AddLocationEvent.self
         ) { [weak self] event in
@@ -93,12 +95,12 @@ class SplitManagementViewController: BaseManagementController,
                 
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_collect_succeed"),
-                    inWindowOfView: strongSelf.view
+                    inWindowOf: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_collect_failed"),
-                    inWindowOfView: strongSelf.view
+                    inWindowOf: strongSelf.view
                 )
             }
         }
@@ -123,7 +125,7 @@ class SplitManagementViewController: BaseManagementController,
     
     override func dismiss() {
         super.dismiss()
-        self.navigationController?.view.window?.windowScene?.eventBus.post(
+        self.scene?.eventBus.post(
             SplitManagementViewDismissEvent()
         )
     }
@@ -171,7 +173,7 @@ class SplitManagementViewController: BaseManagementController,
         ) {
             ToastHelper.showToastMessage(
                 getLocalizedText("feedback_collect_succeed"),
-                inWindowOfView: self.view
+                inWindowOf: self.view
             )
         }
     }

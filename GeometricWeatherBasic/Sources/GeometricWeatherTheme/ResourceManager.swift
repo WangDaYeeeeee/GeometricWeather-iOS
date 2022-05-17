@@ -21,18 +21,18 @@ public extension UIImage {
         weatherCode: WeatherCode,
         daylight: Bool
     ) -> UIImage? {
-        return ResourceManager.shared.getWeatherIcon(
+        return MaterialResourceProvider.shared.getWeatherIcon(
             weatherCode: weatherCode,
             daylight: daylight
         )
     }
     
     static func getSunIcon() -> UIImage? {
-        return ResourceManager.shared.getSunIcon()
+        return MaterialResourceProvider.shared.getSunIcon()
     }
     
     static func getMoonIcon() -> UIImage? {
-        return ResourceManager.shared.getMoonIcon()
+        return MaterialResourceProvider.shared.getMoonIcon()
     }
 }
 
@@ -48,34 +48,49 @@ public extension Image {
         weatherCode: WeatherCode,
         daylight: Bool
     ) -> Image? {
-        return ResourceManager.shared.getWeatherIcon(
+        return MaterialResourceProvider.shared.getWeatherIcon(
             weatherCode: weatherCode,
             daylight: daylight
         )
     }
     
     static func getSunIcon() -> Image? {
-        return ResourceManager.shared.getSunIcon()
+        return MaterialResourceProvider.shared.getSunIcon()
     }
     
     static func getMoonIcon() -> Image? {
-        return ResourceManager.shared.getMoonIcon()
+        return MaterialResourceProvider.shared.getMoonIcon()
     }
 }
 
-// MARK: - mtrl res manager.
+// MARK: - res provider.
 
-class ResourceManager {
+public protocol ResourceProvider {
     
-    // singleton.
+    // ui image.
     
-    static let shared = ResourceManager()
+    func getWeatherIcon(weatherCode: WeatherCode, daylight: Bool) -> UIImage?
+    func getSunIcon() -> UIImage?
+    func getMoonIcon() -> UIImage?
+    
+    // swiftUI image.
+    
+    func getWeatherIcon(weatherCode: WeatherCode, daylight: Bool) -> Image?
+    func getSunIcon() -> Image?
+    func getMoonIcon() -> Image?
+}
+
+// MARK: - mtrl res provider.
+
+public class MaterialResourceProvider: ResourceProvider {
+    
+    public static let shared = MaterialResourceProvider()
     
     private init() {
-        // do nothing.
+        
     }
     
-    // MARK: - ui image.
+    // ui image.
     
     public func getWeatherIcon(
         weatherCode: WeatherCode,
@@ -107,7 +122,7 @@ class ResourceManager {
         )
     }
     
-    // MARK: - swiftUI image.
+    // swiftUI image.
     
     public func getWeatherIcon(
         weatherCode: WeatherCode,
@@ -139,7 +154,7 @@ class ResourceManager {
         )
     }
     
-    // MARK: - image name.
+    // image name.
     
     private func getWeatherIconName(
         weatherCode: WeatherCode,
@@ -181,5 +196,114 @@ class ResourceManager {
         _ daylight: Bool
     ) -> String {
         return daylight ? "_day" : "_night"
+    }
+}
+
+// MARK: - sf res provider.
+
+public class SFResourceProvider: ResourceProvider {
+    
+    public static let shared = SFResourceProvider()
+    
+    private init() {
+        
+    }
+    
+    // ui image.
+    
+    public func getWeatherIcon(
+        weatherCode: WeatherCode,
+        daylight: Bool
+    ) -> UIImage? {
+        return UIImage(
+            systemName: self.getWeatherIconName(
+                weatherCode: weatherCode,
+                daylight: daylight
+            )
+        )
+    }
+    
+    public func getSunIcon() -> UIImage? {
+        return UIImage(
+            systemName: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: true
+            )
+        )
+    }
+    
+    public func getMoonIcon() -> UIImage? {
+        return UIImage(
+            systemName: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: false
+            )
+        )
+    }
+    
+    // swiftUI image.
+    
+    public func getWeatherIcon(
+        weatherCode: WeatherCode,
+        daylight: Bool
+    ) -> Image? {
+        return Image(
+            systemName: self.getWeatherIconName(
+                weatherCode: weatherCode,
+                daylight: daylight
+            )
+        )
+    }
+    
+    public func getSunIcon() -> Image? {
+        return Image(
+            systemName: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: true
+            )
+        )
+    }
+    
+    public func getMoonIcon() -> Image? {
+        return Image(
+            systemName: self.getWeatherIconName(
+                weatherCode: .clear,
+                daylight: false
+            )
+        )
+    }
+    
+    // image name.
+    
+    public func getWeatherIconName(
+        weatherCode: WeatherCode,
+        daylight: Bool
+    ) -> String {
+        switch weatherCode {
+        case .clear:
+            return daylight ? "sun.max" : "moon.stars"
+        case .partlyCloudy:
+            return daylight ? "cloud.sun" : "cloud.moon"
+        case .cloudy:
+            return "cloud"
+        case .rain(_):
+            return "cloud.rain"
+        case .snow(_):
+            return "cloud.snow"
+        case .sleet(_):
+            return "cloud.sleet"
+        case .wind:
+            return "wind"
+        case .fog:
+            return "cloud.fog"
+        case .haze:
+            return "aqi.medium"
+        case .hail:
+            return "cloud.hail"
+        case .thunder:
+            return "cloud.bolt"
+        case .thunderstorm:
+            return "cloud.bolt.rain"
+        }
     }
 }

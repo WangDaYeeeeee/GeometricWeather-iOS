@@ -34,7 +34,9 @@ class PresentManagementViewController: BaseManagementController,
         effect: UIBlurEffect(style: .prominent)
     )
     private let searchBar = UISearchBar(frame: .zero)
-    private let searchViewController = SearchResultController(param: false)
+    private lazy var searchViewController = {
+        return SearchResultController(param: false, in: self.scene)
+    }()
     
     // MARK: - life cycle.
     
@@ -78,7 +80,7 @@ class PresentManagementViewController: BaseManagementController,
             make.edges.equalTo(self.tableView)
         }
         
-        self.navigationController?.view.window?.windowScene?.eventBus.register(
+        self.scene?.eventBus.register(
             self,
             for: HideKeyboardEvent.self
         ) { [weak self] event in
@@ -90,7 +92,8 @@ class PresentManagementViewController: BaseManagementController,
                 self?.searchBar.endEditing(true)
             }
         }
-        self.navigationController?.view.window?.windowScene?.eventBus.register(
+        
+        self.scene?.eventBus.register(
             self,
             for: AddLocationEvent.self
         ) { [weak self] event in
@@ -104,12 +107,12 @@ class PresentManagementViewController: BaseManagementController,
                 
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_collect_succeed"),
-                    inWindowOfView: strongSelf.view
+                    inWindowOf: strongSelf.view
                 )
             } else {
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_collect_failed"),
-                    inWindowOfView: strongSelf.view
+                    inWindowOf: strongSelf.view
                 )
             }
         }
@@ -214,7 +217,7 @@ class PresentManagementViewController: BaseManagementController,
         ) {
             ToastHelper.showToastMessage(
                 getLocalizedText("feedback_collect_succeed"),
-                inWindowOfView: self.view
+                inWindowOf: self.view
             )
         }
     }

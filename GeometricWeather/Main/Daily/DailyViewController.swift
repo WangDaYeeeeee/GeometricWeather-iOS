@@ -44,8 +44,8 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
     
     // MARK: - life cycle.
     
-    override init(param: (location: Location, initIndex: Int)) {
-        super.init(param: param)
+    override init(param: (location: Location, initIndex: Int), in scene: UIWindowScene?) {
+        super.init(param: param, in: scene)
         
         guard let weather = self.param.location.weather else {
             return
@@ -110,7 +110,7 @@ class DailyViewController: GeoViewController<(location: Location, initIndex: Int
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.view.window?.windowScene?.themeManager.globalOverrideUIStyle.syncAddObserver(
+        self.scene?.themeManager.globalOverrideUIStyle.syncAddObserver(
             self
         ) { [weak self] newValue in
             guard let strongSelf = self else {

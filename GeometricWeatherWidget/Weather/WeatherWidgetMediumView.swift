@@ -73,9 +73,10 @@ struct WeatherWidgetMediumHeaderView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            Text(getLocationText(location: self.location))
-                .font(Font(miniCaptionFont).weight(.semibold))
-                .foregroundColor(.white)
+            LocationTextView(
+                locationText: getLocationText(location: self.location),
+                isCurrentLocation: self.location.currentPosition
+            )
             
             HStack(alignment: .center) {
                 Text(

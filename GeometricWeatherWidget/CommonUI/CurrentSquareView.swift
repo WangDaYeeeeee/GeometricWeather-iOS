@@ -15,6 +15,7 @@ import GeometricWeatherTheme
 struct CurrentSquareView: View {
     
     let locationText: String
+    let isCurrentLocation: Bool
     let currentTemperature: Int
     let subtitle: String
     
@@ -24,6 +25,7 @@ struct CurrentSquareView: View {
     
     init(
         locationText: String,
+        isCurrentLocation: Bool,
         currentTemperature: Int,
         subtitle: String,
         currentWeatherCode: WeatherCode,
@@ -31,6 +33,7 @@ struct CurrentSquareView: View {
         currentWeatherText: String
     ) {
         self.locationText = locationText
+        self.isCurrentLocation = isCurrentLocation
         self.currentTemperature = currentTemperature
         self.subtitle = subtitle
         self.currentWeatherCode = currentWeatherCode
@@ -40,6 +43,7 @@ struct CurrentSquareView: View {
     
     init(location: Location) {
         self.locationText = getLocationText(location: location)
+        self.isCurrentLocation = location.currentPosition
         self.currentTemperature = location.weather?.current.temperature.temperature ?? 0
         
         if let weather = location.weather {
@@ -57,9 +61,10 @@ struct CurrentSquareView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            Text(self.locationText)
-                .font(Font(miniCaptionFont).weight(.semibold))
-                .foregroundColor(.white)
+            LocationTextView(
+                locationText: self.locationText,
+                isCurrentLocation: self.isCurrentLocation
+            )
             
             HStack(alignment: .center, spacing: 0) {
                 Text(
@@ -111,7 +116,8 @@ struct CurrentSquareView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             CurrentSquareView(
-                locationText: "Beijing",
+                locationText: "South of Market",
+                isCurrentLocation: true,
                 currentTemperature: -99,
                 subtitle: "Clear",
                 currentWeatherCode: .clear,

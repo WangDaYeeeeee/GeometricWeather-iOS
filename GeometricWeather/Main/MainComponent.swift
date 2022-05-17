@@ -36,14 +36,14 @@ class MainComponent: BootstrapComponent {
     }
     
     var managementComponent: ManagementConponent {
-        return ManagementConponent(parent: self)
+        return ManagementConponent(parent: self, scene: self.scene)
     }
     
     var editComponent: EditComponent {
-        return EditComponent(parent: self)
+        return EditComponent(parent: self, scene: self.scene)
     }
     
     var settingsComponent: SettingsComponent {
-        return SettingsComponent(parent: self)
+        return SettingsComponent(parent: self, scene: self.scene)
     }
 }

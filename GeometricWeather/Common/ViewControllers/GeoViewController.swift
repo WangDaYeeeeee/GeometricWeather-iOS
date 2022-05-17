@@ -11,15 +11,18 @@ import GeometricWeatherResources
 import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
+import UIKit
 
 class GeoViewController<T>: UIViewController {
     
     // MARK: - parameter.
     
     let param: T
+    private(set) weak var scene: UIWindowScene?
     
-    init(param: T) {
+    init(param: T, in scene: UIWindowScene?) {
         self.param = param
+        self.scene = scene
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,9 +58,7 @@ class GeoViewController<T>: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.view?.window?.windowScene?.themeManager.globalOverrideUIStyle.syncAddObserver(
-            self
-        ) { [weak self] newValue in
+        self.scene?.themeManager.globalOverrideUIStyle.syncAddObserver(self) { [weak self] newValue in
             guard let strongSelf = self else {
                 return
             }

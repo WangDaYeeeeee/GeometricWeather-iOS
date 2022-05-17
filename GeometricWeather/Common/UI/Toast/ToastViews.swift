@@ -30,6 +30,8 @@ private enum ToastStatus {
     case executingHideAnimation
 }
 
+// MARK: - wrapper view.
+
 class ToastWrapperView: UIView {
     
     private let toast: UIView
@@ -281,13 +283,13 @@ class ToastWrapperView: UIView {
     }
 }
 
+// MARK: - message toast view.
+
 class MessageToastView: UIVisualEffectView {
-    
-    // MARK: - subviews.
-    
+        
     private let messageLabel = UILabel(frame: .zero)
     
-    // MARK: - life cycle.
+    // life cycle.
     
     init(
         message: String
@@ -329,16 +331,16 @@ class MessageToastView: UIVisualEffectView {
     }
 }
 
+// MARK: - actionable toast view.
+
 class ActionableToastView: UIVisualEffectView {
-    
-    // MARK: - subviews.
-    
+        
     private let messageLabel = UILabel(frame: .zero)
     private let actionButton = CornerButton(frame: .zero)
     
     private let actionCallback: () -> Void
     
-    // MARK: - life cycle.
+    // life cycle.
     
     init(
         message: String,
@@ -396,7 +398,7 @@ class ActionableToastView: UIVisualEffectView {
         self.layer.masksToBounds = true
     }
     
-    // MARK: - actions.
+    // actions.
     
     @objc private func onAction() {
         self.actionCallback()

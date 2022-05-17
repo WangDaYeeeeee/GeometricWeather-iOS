@@ -11,6 +11,7 @@ import GeometricWeatherResources
 import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
+import UIKit
 
 private let allergenReuseIdentifier = "allergen_trend_cell"
 private let seperatorReuseIdentifier = "allergen_trend_seperator"

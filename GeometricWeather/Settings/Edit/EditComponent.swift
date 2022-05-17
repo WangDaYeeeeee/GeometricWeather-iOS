@@ -15,7 +15,14 @@ protocol EditBuilder {
 
 class EditComponent: Component<EmptyDependency>, EditBuilder {
     
+    private weak var scene: UIWindowScene?
+    
+    init(parent: Scope, scene: UIWindowScene?) {
+        self.scene = scene
+        super.init(parent: parent)
+    }
+    
     var editViewController: EditViewController {
-        return EditViewController(param: ())
+        return EditViewController(param: (), in: self.scene)
     }
 }

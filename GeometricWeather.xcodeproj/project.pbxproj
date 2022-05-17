@@ -63,6 +63,7 @@
 		3790479C282B946600EC7579 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479B282B946600EC7579 /* MainViewModel.swift */; };
 		3790479E282CF56400EC7579 /* UIWindowSceneExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479D282CF56400EC7579 /* UIWindowSceneExt.swift */; };
 		379047A0282DD66100EC7579 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790479F282DD66100EC7579 /* SettingsViewModel.swift */; };
+		379047A32833517E00EC7579 /* LocationTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379047A22833517E00EC7579 /* LocationTextView.swift */; };
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
 		3793419C2813D8780046AD88 /* MainTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */; };
 		379341AA28153AE30046AD88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379341A928153AE30046AD88 /* Assets.xcassets */; };
@@ -355,6 +356,7 @@
 		3790479B282B946600EC7579 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		3790479D282CF56400EC7579 /* UIWindowSceneExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowSceneExt.swift; sourceTree = "<group>"; };
 		3790479F282DD66100EC7579 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		379047A22833517E00EC7579 /* LocationTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTextView.swift; sourceTree = "<group>"; };
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
 		3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		379341A928153AE30046AD88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -957,8 +959,8 @@
 			isa = PBXGroup;
 			children = (
 				379A8AA027C8C59000083BFF /* Toast-Swift.swift */,
-				379A8AA127C8C59000083BFF /* ToastHelper.swift */,
 				379A8AA227C8C59000083BFF /* ToastViews.swift */,
+				379A8AA127C8C59000083BFF /* ToastHelper.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -1274,6 +1276,7 @@
 				373F760327E357720005875B /* MiddleUnitText.swift */,
 				376596BD281D338500164CAD /* ProgressViews.swift */,
 				37C18C1028156545001A46A3 /* PlaceholderView.swift */,
+				379047A22833517E00EC7579 /* LocationTextView.swift */,
 			);
 			path = CommonUI;
 			sourceTree = "<group>";
@@ -1754,6 +1757,7 @@
 				373F760727E35D370005875B /* MiddleUnitText.swift in Sources */,
 				374BA62326FC89170080B5CA /* WeatherWidgetLargeView.swift in Sources */,
 				374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */,
+				379047A32833517E00EC7579 /* LocationTextView.swift in Sources */,
 				37E5D42D271433630052A690 /* Contants.swift in Sources */,
 				37E5D417271021A00052A690 /* DailyWidget.swift in Sources */,
 				374BA60226FC78E00080B5CA /* GeometricWeatherWidget.swift in Sources */,

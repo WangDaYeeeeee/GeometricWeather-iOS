@@ -316,7 +316,8 @@ class MainHourlyCardCell: MainTableViewCell,
             identifier: NSNumber(value: indexPath.row)
         ) {
             let vc = HourlyViewController(
-                param: (weather, timezone, indexPath.row)
+                param: (weather, timezone, indexPath.row),
+                in: self.window?.windowScene
             )
             vc.measureAndSetPreferredContentSize()
             return vc

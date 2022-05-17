@@ -15,7 +15,14 @@ protocol SettingsBuilder {
 
 class SettingsComponent: Component<EmptyDependency>, SettingsBuilder {
     
+    private weak var scene: UIWindowScene?
+    
+    init(parent: Scope, scene: UIWindowScene?) {
+        self.scene = scene
+        super.init(parent: parent)
+    }
+    
     var settingsViewController: SettingsViewController {
-        return SettingsViewController(param: ())
+        return SettingsViewController(param: (), in: self.scene)
     }
 }

@@ -256,7 +256,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
                 if !location.residentPosition {
                     ToastHelper.showToastMessage(
                         getLocalizedText("feedback_resident_location"),
-                        inWindowOfView: strongSelf.view,
+                        inWindowOf: strongSelf.view,
                         WithAction: getLocalizedText("learn_more"),
                         andDuration: longToastInterval
                     ) {
@@ -291,7 +291,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
             if let view = self?.view {
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_delete_succeed"),
-                    inWindowOfView: view
+                    inWindowOf: view
                 )
             }
             

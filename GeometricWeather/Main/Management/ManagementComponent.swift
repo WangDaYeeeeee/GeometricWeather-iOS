@@ -21,11 +21,18 @@ protocol ManagementDependency: Dependency {
 
 class ManagementConponent: Component<ManagementDependency>, ManagementBuilder {
     
+    private weak var scene: UIWindowScene?
+    
+    init(parent: Scope, scene: UIWindowScene?) {
+        self.scene = scene
+        super.init(parent: parent)
+    }
+    
     var presentManagementViewController: PresentManagementViewController {
-        return PresentManagementViewController(param: self.dependency.mainViewModel)
+        return PresentManagementViewController(param: self.dependency.mainViewModel, in: self.scene)
     }
     
     var splitManagementViewController: SplitManagementViewController {
-        return SplitManagementViewController(param: self.dependency.mainViewModel)
+        return SplitManagementViewController(param: self.dependency.mainViewModel, in: self.scene)
     }
 }

@@ -57,7 +57,7 @@ func updateAppExtensions(locations: [Location]?) {
 }
 
 private func updateAppShortcutItems(locations: [Location]) {
-    let items = Location.excludeInvalidResidentLocation(
+    UIApplication.shared.shortcutItems = Location.excludeInvalidResidentLocation(
         locationArray: locations
     ).map { location in
         UIApplicationShortcutItem(
@@ -65,13 +65,12 @@ private func updateAppShortcutItems(locations: [Location]) {
             localizedTitle: getLocationText(location: location),
             localizedSubtitle: location.toString(),
             icon: UIApplicationShortcutIcon(
-                type: location.currentPosition
-                ? .location
-                : .markLocation
+                systemImageName: SFResourceProvider.shared.getWeatherIconName(
+                    weatherCode: location.weather?.current.weatherCode ?? .clear,
+                    daylight: location.isDaylight
+                )
             ),
             userInfo: nil
         )
     }
-    
-    UIApplication.shared.shortcutItems = items
 }

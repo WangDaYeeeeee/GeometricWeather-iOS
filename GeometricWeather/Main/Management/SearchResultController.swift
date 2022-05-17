@@ -117,7 +117,7 @@ class SearchResultController: GeoViewController<Bool>,
             if locations.isEmpty {
                 ToastHelper.showToastMessage(
                     getLocalizedText("feedback_search_nothing"),
-                    inWindowOfView: strongSelf.view
+                    inWindowOf: strongSelf.view
                 )
             }
             

@@ -43,7 +43,7 @@ class SettingsViewController: GeoViewController<Void> {
     
     @objc private func onAboutButtonClicked() {
         self.navigationController?.pushViewController(
-            AboutViewController(param: ()),
+            AboutViewController(param: (), in: self.scene),
             animated: true
         )
     }

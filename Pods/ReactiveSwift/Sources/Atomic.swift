@@ -59,7 +59,7 @@ internal struct UnsafeAtomicState<State: RawRepresentable> where State.RawValue 
 		                                       value)
 	}
 #else
-	private let value: Atomic<Int32>
+	private let value: Synchronized<Int32>
 
 	/// Create a finite state machine with the specified initial state.
 	///

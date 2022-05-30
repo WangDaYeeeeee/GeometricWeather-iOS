@@ -24,19 +24,37 @@ public class LiveData<T> {
     
     // properties.
     
+    @Synchronized(nil)
+    private var innerValue: T?
+    
     public var value: T {
-        willSet {
-            self.checkMainThread()
-        }
-        didSet {
+        set {
+            var initSet = false
+            self._innerValue.synchronizedRun { val in
+                initSet = val == nil
+                val = newValue
+            }
+            
+            if initSet {
+                return
+            }
+            
             DispatchQueue.main.async {
-                guard let values = self.observerCallbackMap.objectEnumerator()?.allObjects as? [CallbackWrapper<T>] else {
+                guard let wrappers = self
+                    .observerCallbackMap
+                    .objectEnumerator()?
+                    .allObjects as? [CallbackWrapper<T>] else {
                     return
                 }
-                values.forEach { wrapper in
-                    wrapper.callback(self.value)
+                if let value = self.innerValue {
+                    wrappers.forEach { wrapper in
+                        wrapper.callback(value)
+                    }
                 }
             }
+        }
+        get {
+            self.innerValue!
         }
     }
     
@@ -44,12 +62,6 @@ public class LiveData<T> {
         keyOptions: .weakMemory,
         valueOptions: .strongMemory
     )
-    
-    var observerCount: Int {
-        get {
-            return self.observerCallbackMap.count
-        }
-    }
     
     // life cycle.
     
@@ -70,8 +82,10 @@ public class LiveData<T> {
         self.addNonStickyObserver(observer, to: callback)
         
         // invoke callback at first register.
-        DispatchQueue.main.async {
-            callback(self.value)
+        DispatchQueue.main.async { [weak self] in
+            if let value = self?.value {
+                callback(value)
+            }
         }
     }
     
@@ -82,31 +96,39 @@ public class LiveData<T> {
         self.addNonStickyObserver(observer, to: callback)
         
         // invoke callback at first register.
-        callback(self.value)
+        self.ensureRunOnMainThread { [weak self] in
+            if let value = self?.value {
+                callback(value)
+            }
+        }
     }
     
     public func addNonStickyObserver(
         _ observer: AnyObject,
         to callback: @escaping (T) -> Void
     ) {
-        self.checkMainThread()
-        
-        // register callback.
-        self.observerCallbackMap.setObject(
-            CallbackWrapper(callback),
-            forKey: observer
-        )
+        self.ensureRunOnMainThread { [weak self] in
+            self?.observerCallbackMap.setObject(
+                CallbackWrapper(callback),
+                forKey: observer
+            )
+        }
     }
     
     public func removeObserver(_ observer: AnyObject) {
-        self.checkMainThread()
-        
-        self.observerCallbackMap.removeObject(forKey: observer)
+        self.ensureRunOnMainThread { [weak self] in
+            self?.observerCallbackMap.removeObject(forKey: observer)
+        }
     }
     
-    fileprivate func checkMainThread() {
-        guard Thread.isMainThread else {
-            fatalError("You need update value in main thread.")
+    private func ensureRunOnMainThread(_ runnable: @escaping () -> Void) {
+        if Thread.isMainThread {
+            runnable()
+            return
+        }
+        
+        DispatchQueue.main.async {
+            runnable()
         }
     }
 }
@@ -115,34 +137,45 @@ public class LiveData<T> {
 
 public class EqualtableLiveData<T: Equatable>: LiveData<T> {
     
+    @Synchronized(nil)
+    private var innerValue: T?
+    
     public override var value: T {
         set {
-            if self.innerValue != newValue {
-                self.innerValue = newValue
+            var initSet = false
+            var valueChanged = false
+            
+            self._innerValue.synchronizedRun { val in
+                initSet = val == nil
+                
+                if val != newValue {
+                    val = newValue
+                    valueChanged = true
+                }
+            }
+            
+            if initSet {
+                return
+            }
+            
+            if valueChanged {
+                DispatchQueue.main.async {
+                    guard let wrappers = self
+                        .observerCallbackMap
+                        .objectEnumerator()?
+                        .allObjects as? [CallbackWrapper<T>] else {
+                        return
+                    }
+                    if let value = self.innerValue {
+                        wrappers.forEach { wrapper in
+                            wrapper.callback(value)
+                        }
+                    }
+                }
             }
         }
         get {
-            return self.innerValue
+            return self.innerValue!
         }
-    }
-    private var innerValue: T {
-        willSet {
-            self.checkMainThread()
-        }
-        didSet {
-            DispatchQueue.main.async {
-                guard let values = self.observerCallbackMap.objectEnumerator()?.allObjects as? [CallbackWrapper<T>] else {
-                    return
-                }
-                values.forEach { wrapper in
-                    wrapper.callback(self.innerValue)
-                }
-            }
-        }
-    }
-        
-    public override init(_ value: T) {
-        self.innerValue = value
-        super.init(value)
     }
 }

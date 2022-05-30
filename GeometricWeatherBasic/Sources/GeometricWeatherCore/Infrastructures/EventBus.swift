@@ -21,7 +21,8 @@ public class EventBus {
     
     // key:   string reflection of event type.
     // value: LiveData<T?>
-    var typeLiveDataMap = Dictionary<String, Any>()
+    @Synchronized(Dictionary<String, Any>())
+    private var typeLiveDataMap: Dictionary<String, Any>
     
     // MARK: - inner functions.
     

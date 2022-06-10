@@ -284,56 +284,13 @@ private func getPathProgress(
     setTime: TimeInterval,
     timezone: TimeZone
 ) -> Double {
-    let riseDate = Date(timeIntervalSince1970: riseTime)
-    let riseHourMinutes = Calendar.current.component(
-        .hour, from: riseDate
-    ) * 60 + Calendar.current.component(
-        .minute, from: riseDate
-    )
-    
-    let setDate = Date(timeIntervalSince1970: setTime)
-    let setHourMinutes = Calendar.current.component(
-        .hour, from: setDate
-    ) * 60 + Calendar.current.component(
-        .minute, from: setDate
-    )
-    
-    let timezoneDate = Date(
+    let currentTime = Date(
         timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
             timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
         )
-    )
-    let timezoneHourMinutes = Calendar.current.component(
-        .hour, from: timezoneDate
-    ) * 60 + Calendar.current.component(
-        .minute, from: timezoneDate
-    )
+    ).timeIntervalSince1970
 
-    var progress = 0.0
-    if (setHourMinutes > riseHourMinutes) {
-        progress = Double(
-            timezoneHourMinutes - riseHourMinutes
-        ) / Double(
-            setHourMinutes - riseHourMinutes
-        );
-    } else if (timezoneHourMinutes <= setHourMinutes) {
-        // for example: 23:00 rise, 07:00 set, 05:00 currently.
-        progress = Double(
-            timezoneHourMinutes - riseHourMinutes + 24 * 60
-        ) / Double(
-            setHourMinutes - riseHourMinutes + 24 * 60
-        );
-    } else if (timezoneHourMinutes < riseHourMinutes) {
-        // for example: 23:00 rise, 07:00 set, 13:00 currently.
-        progress = 0.0;
-    } else {
-        // for example: 23:00 rise, 07:00 set, 23:23 currently.
-        progress = Double(
-            timezoneHourMinutes - riseHourMinutes
-        ) / Double(
-            setHourMinutes - riseHourMinutes + 24 * 60
-        );
-    }
+    var progress = (currentTime - riseTime) / (setTime - riseTime)
 
     progress = max(0.0, progress);
     progress = min(1.0, progress);

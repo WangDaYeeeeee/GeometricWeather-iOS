@@ -187,15 +187,6 @@ class HomeViewController: UIViewController,
             }
         }
         
-        // observe app enter foreground.
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.viewWillEnterForeground),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
-        
         // register event observers.
         
         self.registerEventObservers()
@@ -217,10 +208,6 @@ class HomeViewController: UIViewController,
         DispatchQueue.main.async {
             self.rotateHeaderAndCells()
         }
-    }
-    
-    @objc private func viewWillEnterForeground() {
-        self.vm.checkToUpdate()
     }
     
     override func viewWillLayoutSubviews() {

@@ -53,33 +53,13 @@ public struct Weather: Codable, Equatable {
         if let riseTime = dailyForecasts[0].sun.riseTime,
            let setTime = dailyForecasts[0].sun.setTime {
             
-            let timezoneDate = Date(
+            let currentTime = Date(
                 timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
                     timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
                 )
-            )
-            let timezoneHourMinutes = Calendar.current.component(
-                .hour, from: timezoneDate
-            ) * 60 + Calendar.current.component(
-                .minute, from: timezoneDate
-            )
+            ).timeIntervalSince1970
             
-            let sunriseDate = Date(timeIntervalSince1970: riseTime)
-            let sunriseHourMinutes = Calendar.current.component(
-                .hour, from: sunriseDate
-            ) * 60 + Calendar.current.component(
-                .minute, from: sunriseDate
-            )
-            
-            let sunsetDate = Date(timeIntervalSince1970: setTime)
-            let sunsetHourMinutes = Calendar.current.component(
-                .hour, from: sunsetDate
-            ) * 60 + Calendar.current.component(
-                .minute, from: sunsetDate
-            )
-            
-            return sunriseHourMinutes <= timezoneHourMinutes
-                && timezoneHourMinutes < sunsetHourMinutes
+            return riseTime <= currentTime && currentTime < setTime
         } else {
             let timezoneDate = Date(
                 timeIntervalSince1970: Date().timeIntervalSince1970 + Double(

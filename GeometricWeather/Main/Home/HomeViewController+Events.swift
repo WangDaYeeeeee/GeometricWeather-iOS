@@ -36,6 +36,15 @@ extension HomeViewController {
             self?.updateTableView()
         }
         
+        // MARK: - scene enter foreground.
+        
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: SceneEnterForegroundEvent.self
+        ) { [weak self] event in
+            self?.vm.checkToUpdate()
+        }
+        
         // MARK: - daily cell tapped.
         
         self.navigationController?.view.window?.windowScene?.eventBus.register(

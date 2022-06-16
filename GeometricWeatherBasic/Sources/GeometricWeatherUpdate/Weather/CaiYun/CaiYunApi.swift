@@ -246,12 +246,16 @@ extension CaiYunService: TargetType {
     var task: Task {
         switch self {
         case .weather(_, _, let language):
-            return .requestParameters(parameters: [
-                "lang": language,
-                "dailysteps": 15,
-                "hourlysteps" : 48,
-                "alert": "true",
-            ], encoding: URLEncoding.queryString)
+            return .requestParameters(
+                parameters: [
+                    "lang": language,
+                    "dailysteps": 15,
+                    "hourlysteps" : 48,
+                    "alert": "true",
+                    "unit": "metric:v2",
+                ],
+                encoding: URLEncoding.queryString
+            )
         }
     }
     

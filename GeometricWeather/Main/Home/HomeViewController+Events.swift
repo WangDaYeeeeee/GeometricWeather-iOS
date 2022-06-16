@@ -57,7 +57,26 @@ extension HomeViewController {
                     
             strongSelf.navigationController?.pushViewController(
                 DailyViewController(
-                    param: (strongSelf.vm.currentLocation.value, event.index),
+                    param: (strongSelf.vm.currentLocation.value.location, event.index),
+                    in: strongSelf.navigationController?.view.window?.windowScene
+                ),
+                animated: true
+            )
+        }
+        
+        // MARK: - hourly cell tapped.
+        
+        self.navigationController?.view.window?.windowScene?.eventBus.register(
+            self,
+            for: HourlyTrendCellTapAction.self
+        ) { [weak self] event in
+            guard let strongSelf = self else {
+                return
+            }
+                    
+            strongSelf.navigationController?.pushViewController(
+                HourlyViewController(
+                    param: (strongSelf.vm.currentLocation.value.location, event.index),
                     in: strongSelf.navigationController?.view.window?.windowScene
                 ),
                 animated: true
@@ -75,7 +94,7 @@ extension HomeViewController {
             }
             self?.navigationController?.present(
                 AlertViewController(
-                    param: self?.vm.currentLocation.value.weather?.alerts ?? [],
+                    param: self?.vm.currentLocation.value.location.weather?.alerts ?? [],
                     in: self?.navigationController?.view.window?.windowScene
                 ),
                 animated: true,
@@ -97,7 +116,7 @@ extension HomeViewController {
             }
             strongSelf.navigationController?.present(
                 AllergenViewController(
-                    param: strongSelf.vm.currentLocation.value,
+                    param: strongSelf.vm.currentLocation.value.location,
                     in: strongSelf.navigationController?.view.window?.windowScene
                 ),
                 animated: true,
@@ -140,7 +159,7 @@ extension HomeViewController {
                 presentedVC.dismiss(animated: true) {
                     strongSelf.navigationController?.present(
                         AlertViewController(
-                            param: strongSelf.vm.currentLocation.value.weather?.alerts ?? [],
+                            param: strongSelf.vm.currentLocation.value.location.weather?.alerts ?? [],
                             in: strongSelf.navigationController?.view.window?.windowScene
                         ),
                         animated: true,
@@ -152,7 +171,7 @@ extension HomeViewController {
             
             strongSelf.navigationController?.present(
                 AlertViewController(
-                    param: strongSelf.vm.currentLocation.value.weather?.alerts ?? [],
+                    param: strongSelf.vm.currentLocation.value.location.weather?.alerts ?? [],
                     in: strongSelf.navigationController?.view.window?.windowScene
                 ),
                 animated: true,

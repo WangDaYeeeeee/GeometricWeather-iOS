@@ -26,7 +26,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - interfaces.
     
     @objc func updateTableView() {
-        let location = self.vm.currentLocation.value
+        let location = self.vm.currentLocation.value.location
         
         if self.tableView.numberOfSections != 0
             && self.tableView.numberOfRows(inSection: 0) != 0 {
@@ -74,9 +74,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         var keys = SettingsManager.shared.mainCards.filter { card in
-            return card.validator(weather)
+            card.validator(weather)
         }.map { card in
-            return card.key
+            card.key
         }
         keys.append(cellKeyFooter)
         return keys

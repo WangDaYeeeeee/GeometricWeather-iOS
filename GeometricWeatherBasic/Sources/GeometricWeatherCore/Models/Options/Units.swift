@@ -7,6 +7,34 @@
 
 import Foundation
 
+// MARK: - set.
+
+public struct UnitSet {
+    
+    public let temperatureUnit: TemperatureUnit
+    public let speedUnit: SpeedUnit
+    public let pressureUnit: PressureUnit
+    public let precipitationUnit: PrecipitationUnit
+    public let precipitationIntensityUnit: PrecipitationIntensityUnit
+    public let distanceUnit: DistanceUnit
+    
+    public init(
+        temperatureUnit: TemperatureUnit,
+        speedUnit: SpeedUnit,
+        pressureUnit: PressureUnit,
+        precipitationUnit: PrecipitationUnit,
+        precipitationIntensityUnit: PrecipitationIntensityUnit,
+        distanceUnit: DistanceUnit
+    ) {
+        self.temperatureUnit = temperatureUnit
+        self.speedUnit = speedUnit
+        self.pressureUnit = pressureUnit
+        self.precipitationUnit = precipitationUnit
+        self.precipitationIntensityUnit = precipitationIntensityUnit
+        self.distanceUnit = distanceUnit
+    }
+}
+
 // MARK: - temperature.
 
 public struct TemperatureUnit: Unit {
@@ -59,7 +87,7 @@ public struct TemperatureUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Int>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Int>
@@ -148,7 +176,7 @@ public struct SpeedUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Double>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Double>
@@ -251,7 +279,7 @@ public struct PressureUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Double>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Double>
@@ -266,7 +294,7 @@ public struct PressureUnit: Unit {
     }
     
     public func formatValue(_ valueInDefaultType: Double) -> String {
-        return getValue(valueInDefaultType).toString(2)
+        return getValue(valueInDefaultType).toString(1)
     }
     
     public func formatValueWithUnit(_ valueInDefaultType: Double, unit: String) -> String {
@@ -333,7 +361,7 @@ public struct PrecipitationUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Double>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Double>
@@ -415,7 +443,7 @@ public struct PrecipitationIntensityUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Double>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Double>
@@ -504,7 +532,7 @@ public struct DistanceUnit: Unit {
     public let voiceKey: String
     public let valueConterver: ValueConverter<Double>
     
-    public init(
+    private init(
         key: String,
         voiceKey: String,
         valueConterver: @escaping ValueConverter<Double>

@@ -13,6 +13,110 @@ import GeometricWeatherDB
 import GeometricWeatherTheme
 import SwiftUI
 
+// MARK: - generator.
+
+class HourlyWindTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private var maxWindSpeed: Double
+    
+    // properties.
+    
+    var dispayName: String {
+        return getLocalizedText("wind")
+    }
+    
+    var isValid: Bool {
+        return self.maxWindSpeed > 0.0
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var maxWind = 0.0
+        location.weather?.hourlyForecasts.forEach { hourly in
+            if maxWind < hourly.wind?.speed ?? 0.0 {
+                maxWind = hourly.wind?.speed ?? 0.0
+            }
+        }
+        self.maxWindSpeed = maxWind
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            HourlyWindCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? HourlyWindCollectionViewCell {
+            
+             var useAccentColorForDate = indexPath.row == 0
+             if weather.hourlyForecasts[
+                 indexPath.row
+             ].getHour(
+                 false,
+                 timezone: self.location.timezone
+             ) == 0 {
+                 useAccentColorForDate = true
+             }
+            
+            cell.bindData(
+                hourly: weather.hourlyForecasts[indexPath.row],
+                maxWindSpeed: self.maxWindSpeed,
+                timezone: self.location.timezone,
+                useAccentColorForDate: useAccentColorForDate
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = naturalTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        let highLines = [
+            (speed: windSpeedLevel3, desc: getLocalizedText("wind_3")),
+            (speed: windSpeedLevel5, desc: getLocalizedText("wind_5")),
+            (speed: windSpeedLevel7, desc: getLocalizedText("wind_7")),
+            (speed: windSpeedLevel10, desc: getLocalizedText("wind_10")),
+        ].filter { item in
+            item.speed <= self.maxWindSpeed
+        }.map { item in
+            HorizontalLine(
+                value: item.speed / self.maxWindSpeed,
+                leadingDescription: SettingsManager.shared.speedUnit.formatValue(item.speed),
+                trailingDescription: item.desc
+            )
+        }
+        trendBackgroundView.bindData(
+            highLines: highLines,
+            lowLines: [],
+            lineColor: mainTrendBackgroundLineColor,
+            paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+            paddingBottom: naturalTrendPaddingBottom
+        )
+    }
+}
+
+// MARK: - cell.
+
 private func toRadians(_ degrees: Double) -> Double {
     return degrees * .pi / 180.0
 }

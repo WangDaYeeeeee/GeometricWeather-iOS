@@ -67,9 +67,15 @@
 		379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379341922813978C0046AD88 /* MainTrendBackgroundView.swift */; };
 		3793419C2813D8780046AD88 /* MainTrendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */; };
 		379341AA28153AE30046AD88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 379341A928153AE30046AD88 /* Assets.xcassets */; };
-		379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5527C8C59000083BFF /* HourlyView.swift */; };
-		379A8B2227C8C59000083BFF /* HourlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5627C8C59000083BFF /* HourlyViewController.swift */; };
-		379A8B2327C8C59000083BFF /* HourlyDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5727C8C59000083BFF /* HourlyDialog.swift */; };
+		3798CA9128595BD10002BD18 /* MainTrendGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CA9028595BD10002BD18 /* MainTrendGenerator.swift */; };
+		3798CA9E2859AC670002BD18 /* DailyHumidityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CA9D2859AC670002BD18 /* DailyHumidityCollectionViewCell.swift */; };
+		3798CAA22859B96E0002BD18 /* DailyVisibilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAA12859B96E0002BD18 /* DailyVisibilityCollectionViewCell.swift */; };
+		3798CAA42859F1710002BD18 /* HourlyAirQualityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAA32859F1710002BD18 /* HourlyAirQualityCollectionViewCell.swift */; };
+		3798CAA62859F4880002BD18 /* HourlyHumidityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAA52859F4880002BD18 /* HourlyHumidityCollectionViewCell.swift */; };
+		3798CAA82859F7480002BD18 /* HourlyVisibilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAA72859F7480002BD18 /* HourlyVisibilityCollectionViewCell.swift */; };
+		3798CAAB285AA3240002BD18 /* DetailsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAAA285AA3240002BD18 /* DetailsViews.swift */; };
+		3798CAAD285AA6930002BD18 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAAC285AA6930002BD18 /* HourlyView.swift */; };
+		3798CAAF285AA8720002BD18 /* HourlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3798CAAE285AA8720002BD18 /* HourlyViewController.swift */; };
 		379A8B2427C8C59000083BFF /* MainHourlyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5A27C8C59000083BFF /* MainHourlyCardCell.swift */; };
 		379A8B2527C8C59000083BFF /* MainAirQualityCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5B27C8C59000083BFF /* MainAirQualityCardCell.swift */; };
 		379A8B2627C8C59000083BFF /* HourlyWindCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8A5E27C8C59000083BFF /* HourlyWindCollectionViewCell.swift */; };
@@ -142,8 +148,6 @@
 		379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */; };
 		379A8BC027C8C59100083BFF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8B2027C8C59000083BFF /* SettingsViewController.swift */; };
 		379A8BC527C91D1000083BFF /* BaseManagementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC427C91D1000083BFF /* BaseManagementController.swift */; };
-		379A8BC727C9261100083BFF /* MainDailyCardCell+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */; };
-		379A8BC927C92AD000083BFF /* MainHourlyCardCell+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BC827C92AD000083BFF /* MainHourlyCardCell+Tags.swift */; };
 		379A8BCB27CCFA7C00083BFF /* MainFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BCA27CCFA7C00083BFF /* MainFooterCell.swift */; };
 		379A8BD027CDB0A400083BFF /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BCF27CDB0A400083BFF /* EditView.swift */; };
 		379A8BD227CDC1D600083BFF /* MainCardTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379A8BD127CDC1D600083BFF /* MainCardTagView.swift */; };
@@ -360,10 +364,16 @@
 		379341922813978C0046AD88 /* MainTrendBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendBackgroundView.swift; sourceTree = "<group>"; };
 		3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTrendCollectionViewCell.swift; sourceTree = "<group>"; };
 		379341A928153AE30046AD88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3798CA9028595BD10002BD18 /* MainTrendGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrendGenerator.swift; sourceTree = "<group>"; };
+		3798CA9D2859AC670002BD18 /* DailyHumidityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyHumidityCollectionViewCell.swift; sourceTree = "<group>"; };
+		3798CAA12859B96E0002BD18 /* DailyVisibilityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyVisibilityCollectionViewCell.swift; sourceTree = "<group>"; };
+		3798CAA32859F1710002BD18 /* HourlyAirQualityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyAirQualityCollectionViewCell.swift; sourceTree = "<group>"; };
+		3798CAA52859F4880002BD18 /* HourlyHumidityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyHumidityCollectionViewCell.swift; sourceTree = "<group>"; };
+		3798CAA72859F7480002BD18 /* HourlyVisibilityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyVisibilityCollectionViewCell.swift; sourceTree = "<group>"; };
+		3798CAAA285AA3240002BD18 /* DetailsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViews.swift; sourceTree = "<group>"; };
+		3798CAAC285AA6930002BD18 /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
+		3798CAAE285AA8720002BD18 /* HourlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyViewController.swift; sourceTree = "<group>"; };
 		3799F4FF26D0AE9C00B49D20 /* GeometricWeather-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GeometricWeather-Bridging-Header.h"; sourceTree = "<group>"; };
-		379A8A5527C8C59000083BFF /* HourlyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
-		379A8A5627C8C59000083BFF /* HourlyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourlyViewController.swift; sourceTree = "<group>"; };
-		379A8A5727C8C59000083BFF /* HourlyDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourlyDialog.swift; sourceTree = "<group>"; };
 		379A8A5A27C8C59000083BFF /* MainHourlyCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainHourlyCardCell.swift; sourceTree = "<group>"; };
 		379A8A5B27C8C59000083BFF /* MainAirQualityCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAirQualityCardCell.swift; sourceTree = "<group>"; };
 		379A8A5E27C8C59000083BFF /* HourlyWindCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourlyWindCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -436,8 +446,6 @@
 		379A8B1F27C8C59000083BFF /* SettingsCellViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCellViews.swift; sourceTree = "<group>"; };
 		379A8B2027C8C59000083BFF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		379A8BC427C91D1000083BFF /* BaseManagementController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseManagementController.swift; sourceTree = "<group>"; };
-		379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainDailyCardCell+Tags.swift"; sourceTree = "<group>"; };
-		379A8BC827C92AD000083BFF /* MainHourlyCardCell+Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainHourlyCardCell+Tags.swift"; sourceTree = "<group>"; };
 		379A8BCA27CCFA7C00083BFF /* MainFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFooterCell.swift; sourceTree = "<group>"; };
 		379A8BCF27CDB0A400083BFF /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		379A8BD127CDC1D600083BFF /* MainCardTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCardTagView.swift; sourceTree = "<group>"; };
@@ -770,13 +778,22 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		3798CAA9285AA30A0002BD18 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				379A8A8627C8C59000083BFF /* Daily */,
+				379A8A5427C8C59000083BFF /* Hourly */,
+				3798CAAA285AA3240002BD18 /* DetailsViews.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
 		379A8A5327C8C59000083BFF /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				379A8A5827C8C59000083BFF /* Home */,
 				379A8A7A27C8C59000083BFF /* Management */,
-				379A8A8627C8C59000083BFF /* Daily */,
-				379A8A5427C8C59000083BFF /* Hourly */,
+				3798CAA9285AA30A0002BD18 /* Details */,
 				379A8A8A27C8C59000083BFF /* Alerts */,
 				373F760F27E857BC0005875B /* Allergen */,
 				379A8A7927C8C59000083BFF /* MainViewController.swift */,
@@ -791,9 +808,8 @@
 		379A8A5427C8C59000083BFF /* Hourly */ = {
 			isa = PBXGroup;
 			children = (
-				379A8A5727C8C59000083BFF /* HourlyDialog.swift */,
-				379A8A5627C8C59000083BFF /* HourlyViewController.swift */,
-				379A8A5527C8C59000083BFF /* HourlyView.swift */,
+				3798CAAE285AA8720002BD18 /* HourlyViewController.swift */,
+				3798CAAC285AA6930002BD18 /* HourlyView.swift */,
 			);
 			path = Hourly;
 			sourceTree = "<group>";
@@ -821,9 +837,7 @@
 				379A8A7827C8C59000083BFF /* MainTableViewHeaderView.swift */,
 				379A8A6C27C8C59000083BFF /* MainTableViewCell.swift */,
 				379A8A6B27C8C59000083BFF /* MainDailyCardCell.swift */,
-				379A8BC627C9261100083BFF /* MainDailyCardCell+Tags.swift */,
 				379A8A5A27C8C59000083BFF /* MainHourlyCardCell.swift */,
-				379A8BC827C92AD000083BFF /* MainHourlyCardCell+Tags.swift */,
 				379A8A6627C8C59000083BFF /* MainSunMoonCardCell.swift */,
 				379A8A5B27C8C59000083BFF /* MainAirQualityCardCell.swift */,
 				379A8A6A27C8C59000083BFF /* MainAllergenCardCell.swift */,
@@ -840,6 +854,7 @@
 				379A8A5D27C8C59000083BFF /* Hourly */,
 				379A8A6527C8C59000083BFF /* MainTrendUtils.swift */,
 				3793419B2813D8780046AD88 /* MainTrendCollectionViewCell.swift */,
+				3798CA9028595BD10002BD18 /* MainTrendGenerator.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -849,7 +864,10 @@
 			children = (
 				379A8A5F27C8C59000083BFF /* HourlyTemperatureCollectionViewCell.swift */,
 				379A8A5E27C8C59000083BFF /* HourlyWindCollectionViewCell.swift */,
+				3798CAA32859F1710002BD18 /* HourlyAirQualityCollectionViewCell.swift */,
 				373F760C27E40E260005875B /* HourlyPrecipitationCollectionViewCell.swift */,
+				3798CAA52859F4880002BD18 /* HourlyHumidityCollectionViewCell.swift */,
+				3798CAA72859F7480002BD18 /* HourlyVisibilityCollectionViewCell.swift */,
 			);
 			path = Hourly;
 			sourceTree = "<group>";
@@ -862,6 +880,8 @@
 				379A8A6327C8C59000083BFF /* DailyAirQualityCollectionViewCell.swift */,
 				379A8A6427C8C59000083BFF /* DailyUVCollectionViewCell.swift */,
 				373F760827E40C500005875B /* DailyPrecipitationCollectionViewCell.swift */,
+				3798CA9D2859AC670002BD18 /* DailyHumidityCollectionViewCell.swift */,
+				3798CAA12859B96E0002BD18 /* DailyVisibilityCollectionViewCell.swift */,
 			);
 			path = Daily;
 			sourceTree = "<group>";
@@ -1641,6 +1661,7 @@
 				379A8B2F27C8C59000083BFF /* AllergenCollectionViewCell.swift in Sources */,
 				379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */,
 				379A8B5E27C8C59000083BFF /* GeoDialog.swift in Sources */,
+				3798CAA62859F4880002BD18 /* HourlyHumidityCollectionViewCell.swift in Sources */,
 				379A8BBD27C8C59100083BFF /* SettingsTextViews.swift in Sources */,
 				379A8B2D27C8C59000083BFF /* MainSunMoonCardCell.swift in Sources */,
 				379A8B5727C8C59000083BFF /* TrendUtils.swift in Sources */,
@@ -1653,12 +1674,14 @@
 				374629FE28239985009FBB85 /* CGAffineTransformExt.swift in Sources */,
 				379A8B5027C8C59000083BFF /* DotPagerIndicator.swift in Sources */,
 				379A8B2A27C8C59000083BFF /* DailyAirQualityCollectionViewCell.swift in Sources */,
+				3798CAA82859F7480002BD18 /* HourlyVisibilityCollectionViewCell.swift in Sources */,
 				379A8B4027C8C59000083BFF /* PresentManagementViewController.swift in Sources */,
+				3798CAAB285AA3240002BD18 /* DetailsViews.swift in Sources */,
+				3798CA9E2859AC670002BD18 /* DailyHumidityCollectionViewCell.swift in Sources */,
 				379A8B9727C8C59100083BFF /* GeoNavigationController.swift in Sources */,
 				379A8BBA27C8C59100083BFF /* AboutView.swift in Sources */,
 				379A8B3C27C8C59000083BFF /* MainNavigationBarTitleView.swift in Sources */,
 				379A8BBC27C8C59100083BFF /* AboutViewController.swift in Sources */,
-				379A8B2127C8C59000083BFF /* HourlyView.swift in Sources */,
 				37C6AE3027D5F3FA00E88738 /* UIViewPropertyAnimatorExt.swift in Sources */,
 				37462A01282399E5009FBB85 /* StringExt.swift in Sources */,
 				37D3B8C827D6FA0A00191C2A /* NeedleGenerated.swift in Sources */,
@@ -1666,11 +1689,13 @@
 				3780D0712823DF5F004205D2 /* UpdateHelperExt.swift in Sources */,
 				379A8B4A27C8C59000083BFF /* AlertViewController.swift in Sources */,
 				379A8BBF27C8C59100083BFF /* SettingsCellViews.swift in Sources */,
+				3798CAAF285AA8720002BD18 /* HourlyViewController.swift in Sources */,
 				379A8B3127C8C59000083BFF /* MainDailyCardCell.swift in Sources */,
 				379A8B9827C8C59100083BFF /* GeoViewController.swift in Sources */,
 				37FE8C7427E16C8800807B6B /* ResizeableShadowView.swift in Sources */,
 				379A8B5A27C8C59000083BFF /* ToastHelper.swift in Sources */,
 				379A8B2827C8C59000083BFF /* DailyWindCollectionViewCell.swift in Sources */,
+				3798CAA42859F1710002BD18 /* HourlyAirQualityCollectionViewCell.swift in Sources */,
 				379A8B6C27C8C59100083BFF /* AppNotificationHelper.swift in Sources */,
 				379A8B4827C8C59000083BFF /* DailyViewController.swift in Sources */,
 				379A8BBE27C8C59100083BFF /* SettingsView.swift in Sources */,
@@ -1701,17 +1726,16 @@
 				379A8B3627C8C59000083BFF /* HomeViewController+PageIndicator.swift in Sources */,
 				379A8B3927C8C59000083BFF /* MainSelectableTagView.swift in Sources */,
 				3780D06D2823DE57004205D2 /* AppBackgroundTask.swift in Sources */,
+				3798CAAD285AA6930002BD18 /* HourlyView.swift in Sources */,
 				379047A0282DD66100EC7579 /* SettingsViewModel.swift in Sources */,
 				379A8B4527C8C59000083BFF /* LocationTableViewCell.swift in Sources */,
 				379A8B3027C8C59000083BFF /* MainAllergenCardCell.swift in Sources */,
-				379A8BC927C92AD000083BFF /* MainHourlyCardCell+Tags.swift in Sources */,
 				379A8B4E27C8C59000083BFF /* MainModels.swift in Sources */,
 				379A8BD227CDC1D600083BFF /* MainCardTagView.swift in Sources */,
 				379A8B3A27C8C59000083BFF /* MainTimeBarView.swift in Sources */,
 				379A8B4C27C8C59000083BFF /* MainRepository.swift in Sources */,
 				374629FB2823997A009FBB85 /* UICollectionViewExt.swift in Sources */,
 				379A8BD027CDB0A400083BFF /* EditView.swift in Sources */,
-				379A8BC727C9261100083BFF /* MainDailyCardCell+Tags.swift in Sources */,
 				379A8B2C27C8C59000083BFF /* MainTrendUtils.swift in Sources */,
 				379A8BC027C8C59100083BFF /* SettingsViewController.swift in Sources */,
 				379A8B5827C8C59000083BFF /* HorizontalLinesBackgroundView.swift in Sources */,
@@ -1719,6 +1743,7 @@
 				374BA60826FC78E10080B5CA /* GeometricWeatherWidget.intentdefinition in Sources */,
 				37D3B8C627D6F6A500191C2A /* EditComponent.swift in Sources */,
 				37904789282A554500EC7579 /* WatchConnectionHelper.swift in Sources */,
+				3798CA9128595BD10002BD18 /* MainTrendGenerator.swift in Sources */,
 				379A8B5327C8C59000083BFF /* HistogramPolylineView.swift in Sources */,
 				379A8B3327C8C59000083BFF /* HomeViewController+Events.swift in Sources */,
 				379A8B6D27C8C59100083BFF /* AppExtensionHelper.swift in Sources */,
@@ -1726,8 +1751,8 @@
 				379A8B5D27C8C59000083BFF /* StatementDialog.swift in Sources */,
 				379A8BC527C91D1000083BFF /* BaseManagementController.swift in Sources */,
 				379A8BBB27C8C59100083BFF /* AboutItemViews.swift in Sources */,
+				3798CAA22859B96E0002BD18 /* DailyVisibilityCollectionViewCell.swift in Sources */,
 				37D3B8BC27D6D76C00191C2A /* MainComponent.swift in Sources */,
-				379A8B2327C8C59000083BFF /* HourlyDialog.swift in Sources */,
 				379A8B3827C8C59000083BFF /* MainDetailItemView.swift in Sources */,
 				379A8B6027C8C59000083BFF /* UIViewEffect.swift in Sources */,
 				379A8B6627C8C59100083BFF /* UIRefreshControlExt.swift in Sources */,
@@ -1739,7 +1764,6 @@
 				379A8B2627C8C59000083BFF /* HourlyWindCollectionViewCell.swift in Sources */,
 				37F34B622818BD2B008C2CF3 /* LocationWeatherItemView.swift in Sources */,
 				379A8B3B27C8C59000083BFF /* MainTrendShaderCollectionView.swift in Sources */,
-				379A8B2227C8C59000083BFF /* HourlyViewController.swift in Sources */,
 				379A8B4627C8C59000083BFF /* ManagementCommon.swift in Sources */,
 				379A8B4D27C8C59000083BFF /* MainViewModel.swift in Sources */,
 				37D3B8BE27D6D85600191C2A /* HomeComponent.swift in Sources */,
@@ -1960,7 +1984,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1754;
+				CURRENT_PROJECT_VERSION = 1755;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -1971,7 +1995,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.54;
+				MARKETING_VERSION = 1.7.55;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2000,7 +2024,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1754;
+				CURRENT_PROJECT_VERSION = 1755;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2011,7 +2035,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.54;
+				MARKETING_VERSION = 1.7.55;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2097,14 +2121,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1753;
+				CURRENT_PROJECT_VERSION = 1755;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = GeometricWeatherWatch_WatchKit_Extension;
 				INFOPLIST_KEY_CFBundleDisplayName = GeometricWeatherWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wangdaye.com.GeometricWeather;
-				MARKETING_VERSION = 1.7.53;
+				MARKETING_VERSION = 1.7.55;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -2127,14 +2151,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1753;
+				CURRENT_PROJECT_VERSION = 1755;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = GeometricWeatherWatch_WatchKit_Extension;
 				INFOPLIST_KEY_CFBundleDisplayName = GeometricWeatherWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = wangdaye.com.GeometricWeather;
-				MARKETING_VERSION = 1.7.53;
+				MARKETING_VERSION = 1.7.55;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;

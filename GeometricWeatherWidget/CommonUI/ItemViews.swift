@@ -93,6 +93,8 @@ struct DailyItemView: View {
                 weatherCode: self.dayWeatherCode,
                 daylight: true
             )?.resizable()
+                .antialiased(true)
+                .scaledToFit()
                 .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
                 .padding(.bottom, 2.0)
             
@@ -173,6 +175,8 @@ struct DailyItemView: View {
                 weatherCode: self.nightWeatherCode,
                 daylight: false
             )?.resizable()
+                .antialiased(true)
+                .scaledToFit()
                 .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
         }
     }
@@ -228,6 +232,8 @@ struct HourlyItemView: View {
                     weatherCode: self.weatherCode,
                     daylight: self.daylight
                 )?.resizable()
+                    .antialiased(true)
+                    .scaledToFit()
                     .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
                 
                 MiddleUnitText(

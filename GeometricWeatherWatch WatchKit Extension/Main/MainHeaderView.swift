@@ -34,6 +34,8 @@ struct MainHeaderView: View {
                     weatherCode: self.currentWeatherCode,
                     daylight: self.currentDaylight
                 )?.resizable()
+                    .antialiased(true)
+                    .scaledToFit()
                     .frame(width: 42, height: 42)
             }
             

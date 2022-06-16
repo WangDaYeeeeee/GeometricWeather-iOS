@@ -12,6 +12,148 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+// MARK: - generator.
+
+class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private let temperatureRange: ClosedRange<Int>
+    private let histogramType: HourlyPrecipitationHistogramType
+    
+    // properties.
+    
+    var dispayName: String {
+        return getLocalizedText("temperature")
+    }
+    
+    var isValid: Bool {
+        return true
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var maxTemp = location.weather?.yesterday?.daytimeTemperature ?? Int.min
+        var minTemp = location.weather?.yesterday?.nighttimeTemperature ?? Int.max
+        var histogramType = HourlyPrecipitationHistogramType.none
+        location.weather?.hourlyForecasts.forEach { hourly in
+            if maxTemp < hourly.temperature.temperature {
+                maxTemp = hourly.temperature.temperature
+            }
+            if minTemp > hourly.temperature.temperature {
+                minTemp = hourly.temperature.temperature
+            }
+            
+            if histogramType != .none {
+                return
+            }
+            if hourly.precipitationProbability != nil {
+                histogramType = .precipitationProb
+                return
+            }
+            if hourly.precipitationIntensity != nil {
+                histogramType = .precipitationIntensity(max: precipitationIntensityHeavy)
+                return
+            }
+        }
+        self.temperatureRange = minTemp...maxTemp
+        self.histogramType = histogramType
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            HourlyTemperatureCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? HourlyTemperatureCollectionViewCell {
+            
+            var useAccentColorForDate = indexPath.row == 0
+            if weather.hourlyForecasts[
+                indexPath.row
+            ].getHour(
+                false,
+                timezone: self.location.timezone
+            ) == 0 {
+                useAccentColorForDate = true
+            }
+            
+            cell.bindData(
+                hourly: weather.hourlyForecasts[indexPath.row],
+                temperatureRange: self.temperatureRange,
+                weatherCode: weather.current.weatherCode,
+                timezone: self.location.timezone,
+                daylight: self.location.isDaylight,
+                histogramType: self.histogramType,
+                useAccentColorForDate: useAccentColorForDate
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = temperatureTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        guard let weather = self.location.weather else {
+            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
+            return
+        }
+        
+        guard
+            let yesterdayHigh = weather.yesterday?.daytimeTemperature,
+            let yesterdayLow = weather.yesterday?.nighttimeTemperature
+        else {
+            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
+            return
+        }
+        trendBackgroundView.bindData(
+            highLines: [HorizontalLine(
+                value: Double(
+                    yesterdayHigh - self.temperatureRange.lowerBound
+                ) / Double(
+                    self.temperatureRange.upperBound - self.temperatureRange.lowerBound
+                ),
+                leadingDescription: SettingsManager.shared.temperatureUnit.formatValue(yesterdayHigh) + "º",
+                trailingDescription: getLocalizedText("yesterday")
+            )],
+            lowLines: [HorizontalLine(
+                value: Double(
+                    yesterdayLow - self.temperatureRange.lowerBound
+                ) / Double(
+                    self.temperatureRange.upperBound - self.temperatureRange.lowerBound
+                ),
+                leadingDescription: SettingsManager.shared.temperatureUnit.formatValue(yesterdayLow) + "º",
+                trailingDescription: getLocalizedText("yesterday")
+            )],
+            lineColor: mainTrendBackgroundLineColor,
+            paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+            paddingBottom: temperatureTrendPaddingBottom + naturalBackgroundIconPadding
+        )
+    }
+}
+
+// MARK: - cell.
+
+// MARK: - cell.
+
 class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
@@ -100,6 +242,7 @@ class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTren
         temperatureRange: ClosedRange<Int>,
         weatherCode: WeatherCode,
         timezone: TimeZone,
+        daylight: Bool,
         histogramType: HourlyPrecipitationHistogramType,
         useAccentColorForDate: Bool
     ) {
@@ -171,10 +314,13 @@ class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTren
             self.trendView.bottomDescription = nil
         }
         
-        self.updateTrendColors(
-            weatherCode: weatherCode,
-            daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
+        self.trendView.color = UIColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(code: weatherCode),
+                daylight: daylight
+            )
         )
+        self.trendView.bottomLabel.textColor = precipitationProbabilityColor
         
         let tempUnit = SettingsManager.shared.temperatureUnit
         self.trendView.highDescription = (
@@ -187,26 +333,6 @@ class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTren
     }
     
     private func updateTrendColors(weatherCode: WeatherCode, daylight: Bool) {
-        self.trendView.color = UIColor(
-            ThemeManager.weatherThemeDelegate.getThemeColor(
-                weatherKind: weatherCodeToWeatherKind(code: weatherCode),
-                daylight: daylight
-            )
-        )
-        self.trendView.bottomLabel.textColor = precipitationProbabilityColor
-    }
-    
-    override func willMove(toWindow newWindow: UIWindow?) {
-        super.willMove(toWindow: newWindow)
-        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(self) { daylight in
-            if self.weatherCode == nil {
-                return
-            }
-            
-            self.updateTrendColors(
-                weatherCode: self.weatherCode ?? .clear,
-                daylight: daylight
-            )
-        }
+        
     }
 }

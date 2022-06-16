@@ -314,7 +314,10 @@ private func getDailies(
                             speed: forecast.day.windGust?.speed?.metric?.value ?? 0
                         )
                     ),
-                    cloudCover: forecast.day.cloudCover
+                    cloudCover: forecast.day.cloudCover,
+                    pressure: nil,
+                    visibility: nil,
+                    humidity: nil
                 ),
                 night: HalfDay(
                     weatherText: forecast.night.longPhrase ?? "",
@@ -342,7 +345,10 @@ private func getDailies(
                             speed: forecast.night.windGust?.speed?.metric?.value ?? 0
                         )
                     ),
-                    cloudCover: forecast.night.cloudCover
+                    cloudCover: forecast.night.cloudCover,
+                    pressure: nil,
+                    visibility: nil,
+                    humidity: nil
                 ),
                 sun: Astro(
                     riseTime: forecast.sun?.epochRise == nil ? nil : Double(
@@ -379,7 +385,11 @@ private func getDailies(
                 airQuality: getDailyAirQuality(array: forecast.airAndPollen ?? []),
                 pollen: getDailyPollen(array: forecast.airAndPollen ?? []),
                 uv: getDailyUV(array: forecast.airAndPollen ?? []),
-                hoursOfSun: forecast.hoursOfSun
+                hoursOfSun: forecast.hoursOfSun,
+                pressure: nil,
+                cloudrate: nil,
+                visibility: nil,
+                humidity: nil
             )
         )
     }

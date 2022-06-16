@@ -1,8 +1,8 @@
 //
-//  DailyAirQualityCollectionViewCell.swift
+//  HourlyHumidityCollectionViewCell.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2022/2/24.
+//  Created by 王大爷 on 2022/6/15.
 //
 
 import UIKit
@@ -14,21 +14,21 @@ import GeometricWeatherTheme
 
 // MARK: - generator.
 
-class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+class HourlyHumidityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
     
     // data.
     
     private let location: Location
-    private var maxAqiIndex: Int
-    
+    private let maxHumidity: Double
+
     // properties.
     
     var dispayName: String {
-        return getLocalizedText("air_quality")
+        return getLocalizedText("humidity")
     }
     
     var isValid: Bool {
-        return self.maxAqiIndex > 0
+        return self.maxHumidity > 0
     }
     
     // life cycle.
@@ -36,20 +36,20 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
     required init(_ location: Location) {
         self.location = location
         
-        var maxAqi = 0
-        location.weather?.dailyForecasts.forEach { daily in
-            if maxAqi < daily.airQuality.aqiIndex ?? 0 {
-                maxAqi = daily.airQuality.aqiIndex ?? 0
+        var maxHumidity = 0.0
+        location.weather?.hourlyForecasts.forEach { hourly in
+            if maxHumidity < hourly.humidity ?? 0.0 {
+                maxHumidity = hourly.humidity ?? 0.0
             }
         }
-        self.maxAqiIndex = maxAqi
+        self.maxHumidity = maxHumidity
     }
     
     // interfaces.
     
     func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
-            DailyAirQualityCollectionViewCell.self,
+            HourlyHumidityCollectionViewCell.self,
             forCellWithReuseIdentifier: self.key
         )
     }
@@ -64,11 +64,24 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
         )
         
         if let weather = self.location.weather,
-           let cell = cell as? DailyAirQualityCollectionViewCell {
-            cell.bindData(
-                daily: weather.dailyForecasts[indexPath.row],
-                maxAqiIndex: self.maxAqiIndex,
+           let cell = cell as? HourlyHumidityCollectionViewCell {
+            
+            var useAccentColorForDate = indexPath.row == 0
+            if weather.hourlyForecasts[
+                indexPath.row
+            ].getHour(
+                false,
                 timezone: self.location.timezone
+            ) == 0 {
+                useAccentColorForDate = true
+            }
+            
+            cell.bindData(
+                hourly: weather.hourlyForecasts[indexPath.row],
+                weatherCode: weather.current.weatherCode,
+                daylight: self.location.isDaylight,
+                timezone: self.location.timezone,
+                useAccentColorForDate: useAccentColorForDate
             )
             cell.trendPaddingTop = naturalTrendPaddingTop
             cell.trendPaddingBottom = naturalTrendPaddingBottom
@@ -78,23 +91,10 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
     }
     
     func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
-        let highLines = [
-            (index: aqiIndexLevel1, desc: getLocalizedText("aqi_1")),
-            (index: aqiIndexLevel3, desc: getLocalizedText("aqi_3")),
-            (index: aqiIndexLevel5, desc: getLocalizedText("aqi_5")),
-        ].filter { item in
-            item.index <= maxAqiIndex
-        }.map { item in
-            HorizontalLine(
-                value: Double(item.index) / Double(maxAqiIndex),
-                leadingDescription: String(item.index),
-                trailingDescription: item.desc
-            )
-        }
         trendBackgroundView.bindData(
-            highLines: highLines,
+            highLines: [],
             lowLines: [],
-            lineColor: mainTrendBackgroundLineColor,
+            lineColor: .clear,
             paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
             paddingBottom: naturalTrendPaddingBottom
         )
@@ -103,11 +103,11 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
 
 // MARK: - cell.
 
-class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
+class HourlyHumidityCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
-    private let weekLabel = UILabel(frame: .zero)
+    private let hourLabel = UILabel(frame: .zero)
     private let dateLabel = UILabel(frame: .zero)
     
     private let histogramView = HistogramView(frame: .zero)
@@ -138,11 +138,11 @@ class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
         super.init(frame: frame)
         self.backgroundColor = .clear
         
-        self.weekLabel.font = bodyFont
-        self.weekLabel.textColor = .label
-        self.weekLabel.textAlignment = .center
-        self.weekLabel.numberOfLines = 1
-        self.contentView.addSubview(self.weekLabel)
+        self.hourLabel.font = bodyFont
+        self.hourLabel.textColor = .label
+        self.hourLabel.textAlignment = .center
+        self.hourLabel.numberOfLines = 1
+        self.contentView.addSubview(self.hourLabel)
         
         self.dateLabel.font = miniCaptionFont
         self.dateLabel.textColor = .secondaryLabel
@@ -152,13 +152,13 @@ class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
         
         self.contentView.addSubview(self.histogramView)
         
-        self.weekLabel.snp.makeConstraints { make in
+        self.hourLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(mainTrendInnerMargin)
             make.leading.equalToSuperview().offset(mainTrendInnerMargin)
             make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
         }
         self.dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.weekLabel.snp.bottom).offset(mainTrendInnerMargin)
+            make.top.equalTo(self.hourLabel.snp.bottom).offset(mainTrendInnerMargin)
             make.leading.equalToSuperview().offset(mainTrendInnerMargin)
             make.trailing.equalToSuperview().offset(-mainTrendInnerMargin)
         }
@@ -177,35 +177,40 @@ class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
     }
     
     func bindData(
-        daily: Daily,
-        maxAqiIndex: Int,
-        timezone: TimeZone
+        hourly: Hourly,
+        weatherCode: WeatherCode,
+        daylight: Bool,
+        timezone: TimeZone,
+        useAccentColorForDate: Bool
     ) {
-        self.weekLabel.text = daily.isToday(timezone: timezone)
-        ? getLocalizedText("today")
-        : getWeekText(week: daily.getWeek(timezone: timezone))
-        
-        self.dateLabel.text = daily.getDate(
-            format: getLocalizedText("date_format_short")
+        self.hourLabel.text = getHourText(
+            hour: hourly.getHour(
+                isTwelveHour(),
+                timezone: timezone
+            )
         )
         
-        if maxAqiIndex > 0 {
-            self.histogramView.highValue = Double(
-                (daily.airQuality.aqiIndex ?? 0)
-            ) / Double(
-                maxAqiIndex
-            )
-        } else {
-            self.histogramView.highValue = 0.0
-        }
+        self.dateLabel.text = hourly.formatDate(
+            format: getLocalizedText("date_format_short")
+        )
+        self.dateLabel.textColor = useAccentColorForDate
+        ? .secondaryLabel
+        : .tertiaryLabel
+        
+        let humidity = hourly.humidity ?? 0.0
+        
+        self.histogramView.highValue = humidity / 100.0
         self.histogramView.lowValue = nil
         
         self.histogramView.highDescription = (
-            daily.airQuality.aqiIndex?.description ?? "",
+            getPercentTextWithoutUnit(humidity, decimal: 1),
             ""
         )
-        self.histogramView.color = getLevelColor(
-            daily.airQuality.getAqiLevel()
+        self.histogramView.color = UIColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(code: weatherCode),
+                daylight: daylight
+            )
         )
     }
 }

@@ -15,17 +15,7 @@ import SwiftUI
 
 private let dailyTrendViewHeight = 286
 
-enum DailyTag: String {
-    
-    case temperature = "daily_temperature"
-    case wind = "daily_wind"
-    case aqi = "daily_aqi"
-    case uv = "daily_uv"
-    case precipitationIntensity = "daily_precipitation_intensity"
-}
-
 struct DailyTrendCellTapAction {
-    
     let index: Int
 }
 
@@ -33,21 +23,6 @@ class MainDailyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout,
                             MainSelectableTagDelegate {
-    
-    // MARK: - data.
-    
-    private var weather: Weather?
-    private var timezone: TimeZone?
-    
-    private var temperatureRange: ClosedRange<Int>?
-    private var maxWindSpeed: Double?
-    private var maxAqiIndex: Int?
-    private var maxUVIndex: Int?
-    
-    private var source: WeatherSource?
-    
-    private var tagList = [(tag: DailyTag, title: String)]()
-    private var currentTag = DailyTag.temperature
     
     // MARK: - subviews.
     
@@ -57,6 +32,10 @@ class MainDailyCardCell: MainTableViewCell,
     
     private let dailyCollectionView = MainTrendShaderCollectionView(frame: .zero)
     private var dailyBackgroundView = MainTrendBackgroundView(frame: .zero)
+    
+    // MARK: - data.
+    
+    private var validTrendGenerators = [MainTrendGeneratorProtocol]()
     
     // MARK: - life cycle.
     
@@ -74,7 +53,6 @@ class MainDailyCardCell: MainTableViewCell,
         self.dailyTagView.tagDelegate = self
         self.cardContainer.contentView.addSubview(self.dailyTagView)
         
-        self.registerCells(collectionView: self.dailyCollectionView)
         self.dailyCollectionView.delegate = self
         self.dailyCollectionView.dataSource = self
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
@@ -99,7 +77,7 @@ class MainDailyCardCell: MainTableViewCell,
             make.height.equalTo(44)
         }
         self.dailyBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(self.dailyTagView.snp.bottom)
+            make.top.equalTo(self.dailyTagView.snp.bottom).offset(littleMargin)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.height.equalTo(dailyTrendViewHeight)
@@ -125,49 +103,34 @@ class MainDailyCardCell: MainTableViewCell,
     }
     
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
+        let firstBind = self.location == nil
         super.bindData(location: location, timeBar: timeBar)
         
-        if let weather = location.weather {
-            self.weather = weather
-            self.timezone = location.timezone
-            
-            var maxTemp = weather.yesterday?.daytimeTemperature ?? Int.min
-            var minTemp = weather.yesterday?.nighttimeTemperature ?? Int.max
-            var maxWind = 0.0
-            var maxAqi = 0
-            var maxUV = 0
-            for daily in weather.dailyForecasts {
-                if maxTemp < daily.day.temperature.temperature {
-                    maxTemp = daily.day.temperature.temperature
-                }
-                if minTemp > daily.night.temperature.temperature {
-                    minTemp = daily.night.temperature.temperature
-                }
-                if maxWind < daily.wind?.speed ?? 0.0 {
-                    maxWind = daily.wind?.speed ?? 0.0
-                }
-                if maxAqi < daily.airQuality.aqiIndex ?? 0 {
-                    maxAqi = daily.airQuality.aqiIndex ?? 0
-                }
-                if maxUV < daily.uv.index ?? 0 {
-                    maxUV = daily.uv.index ?? 0
-                }
+        guard let weather = location.weather else {
+            return
+        }
+        
+        self.summaryLabel.text = weather.current.dailyForecast
+        
+        let generators = self.ensureTrendGenerators(for: location)
+        if firstBind {
+            generators.total.forEach { item in
+                item.registerCellClass(to: self.dailyCollectionView)
             }
-            self.temperatureRange = minTemp...maxTemp
-            self.maxWindSpeed = maxWind
-            self.maxAqiIndex = maxAqi
-            self.maxUVIndex = maxUV
-            
-            self.source = location.weatherSource
-            
-            self.summaryLabel.text = weather.current.dailyForecast
-            
-            self.tagList = self.buildTagList(weather: weather)
-            var titles = [String]()
-            for tagPair in self.tagList {
-                titles.append(tagPair.title)
-            }
-            self.dailyTagView.tagList = titles
+        }
+        
+        self.validTrendGenerators = generators.valid
+        self.dailyTagView.tagList = generators.valid.map { item in
+            item.dispayName
+        }
+        
+        if self.dailyCollectionView.numberOfSections != 0
+            && self.dailyCollectionView.numberOfItems(inSection: 0) != 0 {
+            self.dailyCollectionView.scrollToItem(
+                at: IndexPath(row: 0, section: 0),
+                at: .left,
+                animated: false
+            )
         }
     }
     
@@ -184,6 +147,29 @@ class MainDailyCardCell: MainTableViewCell,
         if !self.dailyCollectionView.indexPathsForVisibleItems.isEmpty {
             self.dailyCollectionView.reloadData()
         }
+    }
+    
+    // MARK: - generators.
+    
+    private func ensureTrendGenerators(
+        for location: Location
+    ) -> (
+        total: [MainTrendGeneratorProtocol],
+        valid: [MainTrendGeneratorProtocol]
+    ) {
+        let total: [MainTrendGeneratorProtocol] = [
+            DailyTemperatureTrendGenerator(location),
+            DailyWindTrendGenerator(location),
+            DailyAirQualityTrendGenerator(location),
+            DailyUVTrendGenerator(location),
+            DailyPrecipitationTrendGenerator(location),
+            DailyHumidityTrendGenerator(location),
+            DailyVisibilityTrendGenerator(location),
+        ]
+        let valid = total.filter { item in
+            item.isValid
+        }
+        return (total: total, valid: valid)
     }
     
     // MARK: - collection view delegate.
@@ -213,8 +199,8 @@ class MainDailyCardCell: MainTableViewCell,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard
-            let weather = self.weather,
-            let timezone = self.timezone
+            let weather = self.location?.weather,
+            let timezone = self.location?.timezone
         else {
             return nil
         }
@@ -269,24 +255,18 @@ class MainDailyCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return weather?.dailyForecasts.count ?? 0
+        return self.location?.weather?.dailyForecasts.count ?? 0
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        return buildCell(
-            collectionView: self.dailyCollectionView,
-            currentTag: self.currentTag,
-            indexPath: indexPath,
-            weather: self.weather,
-            source: self.source,
-            timezone: self.timezone ?? .current,
-            temperatureRange: self.temperatureRange ?? 0...0,
-            maxWindSpeed: self.maxWindSpeed ?? 0,
-            maxAqiIndex: self.maxAqiIndex ?? 0,
-            maxUVIndex: self.maxUVIndex ?? 0
+        return self.validTrendGenerators[
+            self.dailyTagView.selectedIndex
+        ].bindCellData(
+            at: indexPath,
+            to: collectionView
         )
     }
     
@@ -300,34 +280,21 @@ class MainDailyCardCell: MainTableViewCell,
         return UIColor(
             ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(
-                    code: self.weather?.current.weatherCode ?? .clear
+                    code: self.location?.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
+                daylight: self.location?.isDaylight ?? true
             )
         ).withAlphaComponent(0.33)
     }
     
     func onSelectedChanged(newSelectedIndex: Int) {
-        self.currentTag = self.tagList[newSelectedIndex].tag
-        
-        self.dailyCollectionView.scrollToItem(
-            at: IndexPath(row: 0, section: 0),
-            at: .left,
-            animated: false
-        )
         self.dailyCollectionView.collectionViewLayout.invalidateLayout()
         self.dailyCollectionView.reloadData()
         
-        self.bindTrendBackground(
-            trendBackgroundView: self.dailyBackgroundView,
-            currentTag: self.currentTag,
-            weather: self.weather,
-            source: self.source,
-            timezone: self.timezone ?? .current,
-            temperatureRange: self.temperatureRange ?? 0...0,
-            maxWindSpeed: self.maxWindSpeed ?? 0,
-            maxAqiIndex: self.maxAqiIndex ?? 0,
-            maxUVIndex: self.maxUVIndex ?? 0
+        self.validTrendGenerators[
+            newSelectedIndex
+        ].bindCellBackground(
+            to: self.dailyBackgroundView
         )
     }
 }

@@ -146,6 +146,8 @@ struct CaiYunDaily: Codable {
     let precipitation: [CaiYunDailyCloudrate]
     let temperature: [CaiYunDailyCloudrate]
     let wind: [CaiYunDailyWind]
+    let wind08H20H: [CaiYunDailyWind]
+    let wind20H32H: [CaiYunDailyWind]
     let humidity: [CaiYunDailyCloudrate]
     let cloudrate: [CaiYunDailyCloudrate]
     let pressure: [CaiYunDailyCloudrate]
@@ -163,6 +165,8 @@ struct CaiYunDaily: Codable {
         case precipitation = "precipitation"
         case temperature = "temperature"
         case wind = "wind"
+        case wind08H20H = "wind_08h_20h"
+        case wind20H32H = "wind_20h_32h"
         case humidity = "humidity"
         case cloudrate = "cloudrate"
         case pressure = "pressure"
@@ -431,6 +435,7 @@ struct CaiYunHourly: Codable {
     let hourlyDescription: String
     let precipitation: [CaiYunHourlyCloudrate]
     let temperature: [CaiYunHourlyCloudrate]
+    let apparentTemperature: [CaiYunHourlyCloudrate]
     let wind: [CaiYunHourlyWind]
     let humidity: [CaiYunHourlyCloudrate]
     let cloudrate: [CaiYunHourlyCloudrate]
@@ -445,6 +450,7 @@ struct CaiYunHourly: Codable {
         case hourlyDescription = "description"
         case precipitation = "precipitation"
         case temperature = "temperature"
+        case apparentTemperature = "apparent_temperature"
         case wind = "wind"
         case humidity = "humidity"
         case cloudrate = "cloudrate"

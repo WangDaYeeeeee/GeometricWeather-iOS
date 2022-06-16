@@ -12,6 +12,104 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+// MARK: - generator.
+
+class DailyWindTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private var maxWindSpeed: Double
+    
+    // properties.
+    
+    var dispayName: String {
+        return getLocalizedText("wind")
+    }
+    
+    var isValid: Bool {
+        return self.maxWindSpeed > 0.0
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var maxWind = 0.0
+        location.weather?.dailyForecasts.forEach { daily in
+            if maxWind < daily.wind?.speed ?? 0.0 {
+                maxWind = daily.wind?.speed ?? 0.0
+            }
+            if maxWind < daily.day.wind?.speed ?? 0.0 {
+                maxWind = daily.day.wind?.speed ?? 0.0
+            }
+            if maxWind < daily.night.wind?.speed ?? 0.0 {
+                maxWind = daily.night.wind?.speed ?? 0.0
+            }
+        }
+        self.maxWindSpeed = maxWind
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            DailySingleWindCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? DailySingleWindCollectionViewCell {
+            cell.bindData(
+                daily: weather.dailyForecasts[indexPath.row],
+                maxWindSpeed: self.maxWindSpeed,
+                timezone: self.location.timezone
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = naturalTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        let highLines = [
+            (speed: windSpeedLevel3, desc: getLocalizedText("wind_3")),
+            (speed: windSpeedLevel5, desc: getLocalizedText("wind_5")),
+            (speed: windSpeedLevel7, desc: getLocalizedText("wind_7")),
+            (speed: windSpeedLevel10, desc: getLocalizedText("wind_10")),
+        ].filter { item in
+            item.speed <= self.maxWindSpeed
+        }.map { item in
+            HorizontalLine(
+                value: item.speed / self.maxWindSpeed,
+                leadingDescription: SettingsManager.shared.speedUnit.formatValue(item.speed),
+                trailingDescription: item.desc
+            )
+        }
+        trendBackgroundView.bindData(
+            highLines: highLines,
+            lowLines: [],
+            lineColor: mainTrendBackgroundLineColor,
+            paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+            paddingBottom: naturalTrendPaddingBottom
+        )
+    }
+}
+
+// MARK: - cell.
+
 private func toRadians(_ degrees: Double) -> Double {
     return degrees * .pi / 180.0
 }
@@ -111,7 +209,14 @@ class DailySingleWindCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
             format: getLocalizedText("date_format_short")
         )
         
-        if !(daily.wind?.degree.noDirection ?? true) {
+        let wind = daily.day.wind != nil && daily.night.wind != nil
+        ? (
+            daily.day.wind?.speed ?? 0.0 > daily.night.wind?.speed ?? 0.0
+            ? daily.day.wind
+            : daily.night.wind
+        ) : daily.wind
+        
+        if wind?.degree.noDirection == false {
             self.dailyIcon.image = UIImage(
                 systemName: "arrow.down"
             )?.withTintColor(
@@ -123,7 +228,7 @@ class DailySingleWindCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
                 )
             )
             self.dailyIcon.transform = CGAffineTransform(
-                rotationAngle: toRadians(daily.wind?.degree.degree ?? 0.0)
+                rotationAngle: toRadians(wind?.degree.degree ?? 0.0)
             )
         } else {
             self.dailyIcon.image = UIImage(
@@ -140,7 +245,7 @@ class DailySingleWindCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
         }
         
         if maxWindSpeed > 0 {
-            self.histogramView.highValue = (daily.wind?.speed ?? 0.0) / maxWindSpeed
+            self.histogramView.highValue = (wind?.speed ?? 0.0) / maxWindSpeed
         } else {
             self.histogramView.highValue = 0.0
         }
@@ -149,13 +254,13 @@ class DailySingleWindCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
         let speedUnit = SettingsManager.shared.speedUnit
         self.histogramView.highDescription = (
             speedUnit.formatValueWithUnit(
-                daily.wind?.speed ?? 0.0,
+                wind?.speed ?? 0.0,
                 unit: ""
             ),
             ""
         )
         self.histogramView.color = getLevelColor(
-            daily.wind?.getWindLevel() ?? 1
+            wind?.getWindLevel() ?? 1
         )
     }
 }

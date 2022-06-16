@@ -20,6 +20,9 @@ public struct HalfDay: Codable {
     public let wind: Wind?
     
     public let cloudCover: Int?
+    public let pressure: Double?
+    public let visibility: Double?
+    public let humidity: Double?
     
     public init(
         weatherText: String,
@@ -30,7 +33,10 @@ public struct HalfDay: Codable {
         precipitationIntensity: Double?,
         precipitationProbability: Double?,
         wind: Wind?,
-        cloudCover: Int?
+        cloudCover: Int?,
+        pressure: Double?,
+        visibility: Double?,
+        humidity: Double?
     ) {
         self.weatherText = weatherText
         self.weatherPhase = weatherPhase
@@ -41,6 +47,9 @@ public struct HalfDay: Codable {
         self.precipitationProbability = precipitationProbability
         self.wind = wind
         self.cloudCover = cloudCover
+        self.pressure = pressure
+        self.visibility = visibility
+        self.humidity = humidity
     }
     
 }

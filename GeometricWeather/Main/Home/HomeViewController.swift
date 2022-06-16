@@ -148,11 +148,6 @@ class HomeViewController: UIViewController,
             ? UIColor.black.withAlphaComponent(0.2).cgColor
             : UIColor.white.withAlphaComponent(0.2).cgColor
         }
-        self.navigationController?.view.window?.windowScene?.themeManager.daylight.addObserver(
-            self
-        ) { [weak self] _ in
-            self?.updatePreviewableSubviews()
-        }
         
         // observe live data.
         

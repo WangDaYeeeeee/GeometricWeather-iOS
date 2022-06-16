@@ -33,6 +33,14 @@ class MainSelectableTagView: UICollectionView,
     
     var tagList = [String]() {
         didSet {
+            if self.numberOfSections != 0
+                && self.numberOfItems(inSection: 0) != 0 {
+                self.scrollToItem(
+                    at: IndexPath(row: 0, section: 0),
+                    at: .left,
+                    animated: false
+                )
+            }
             self.reloadData()
             self.selectedIndex = 0
         }
@@ -200,15 +208,6 @@ private class TagCell: UICollectionViewCell {
         super.traitCollectionDidChange(previousTraitCollection)
         DispatchQueue.main.async {
             self.tagView.layer.shadowColor = self.tagView.backgroundColor?.cgColor
-        }
-    }
-    
-    override func willMove(toWindow newWindow: UIWindow?) {
-        super.willMove(toWindow: newWindow)
-        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(
-            self
-        ) { [weak self] daylight in
-            self?.updateColors(selected: self?.isSelectedCell ?? false)
         }
     }
     

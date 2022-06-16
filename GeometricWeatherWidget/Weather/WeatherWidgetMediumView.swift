@@ -133,6 +133,8 @@ struct WeatherWidgetMediumHeaderView: View {
                     weatherCode: self.location.weather?.current.weatherCode ?? .clear,
                     daylight: self.location.isDaylight
                 )?.resizable()
+                    .antialiased(true)
+                    .scaledToFit()
                     .frame(width: largeWeatherIconSize, height: largeWeatherIconSize)
             }
         }

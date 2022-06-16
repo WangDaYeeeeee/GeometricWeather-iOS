@@ -18,11 +18,6 @@ private let innerMargin = 4.0
 
 class MainSunMoonCardCell: MainTableViewCell {
     
-    // MARK: - data.
-    
-    private var weather: Weather?
-    private var timezone: TimeZone?
-    
     // MARK: - subviews.
     
     private let moonPhaseView = MoonPhaseView(frame: .zero)
@@ -129,111 +124,72 @@ class MainSunMoonCardCell: MainTableViewCell {
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
         super.bindData(location: location, timeBar: timeBar)
         
-        if let weather = location.weather {
-            self.weather = weather
-            self.timezone = location.timezone
-            
-            // moon phase.
-            
-            if let angle = weather.dailyForecasts[0].moonPhase.angle,
-                let _ = weather.dailyForecasts[0].moonPhase.description {
-                self.moonPhaseView.alpha = 1.0
-                self.moonPhaseLabel.alpha = 1.0
-                
-                self.moonPhaseView.angle = Double(angle)
-                self.moonPhaseView.lightColor = .white
-                
-                self.moonPhaseLabel.text = getLocalizedText(
-                    weather.dailyForecasts[0].moonPhase.getMoonPhaseKey()
-                )
-            } else {
-                self.moonPhaseView.alpha = 0.0
-                self.moonPhaseLabel.alpha = 0.0
-            }
-            
-            // sun moon path view.
-            
-            self.sunMoonPathView.sunIconImage = UIImage.getSunIcon()
-            self.sunMoonPathView.moonIconImage = UIImage.getMoonIcon()
-            
-            // sun moon description.
-            
-            if let riseTime = weather.dailyForecasts[0].sun.riseTime,
-                let setTime = weather.dailyForecasts[0].sun.setTime {
-                self.sunIcon.alpha = 1.0
-                self.sunLabel.alpha = 1.0
-                
-                self.sunLabel.text = formateTime(
-                    timeIntervalSine1970: riseTime,
-                    twelveHour: isTwelveHour()
-                ) + "↑" + "\n" + formateTime(
-                    timeIntervalSine1970: setTime,
-                    twelveHour: isTwelveHour()
-                ) + "↓"
-            } else {
-                self.sunIcon.alpha = 0.0
-                self.sunLabel.alpha = 0.0
-            }
-            if let riseTime = weather.dailyForecasts[0].moon.riseTime,
-                let setTime = weather.dailyForecasts[0].moon.setTime {
-                self.moonIcon.alpha = 1.0
-                self.moonLabel.alpha = 1.0
-                
-                self.moonLabel.text = formateTime(
-                    timeIntervalSine1970: riseTime,
-                    twelveHour: isTwelveHour()
-                ) + "↑" + "\n" + formateTime(
-                    timeIntervalSine1970: setTime,
-                    twelveHour: isTwelveHour()
-                ) + "↓"
-            } else {
-                self.moonIcon.alpha = 0.0
-                self.moonLabel.alpha = 0.0
-            }
-            
-            // theme colors.
-            self.updateThemeColors(
-                weatherCode: weather.current.weatherCode,
-                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
-            )
+        guard let weather = location.weather else {
+            return
         }
-    }
-    
-    override func willMove(toWindow newWindow: UIWindow?) {
-        super.willMove(toWindow: newWindow)
-        newWindow?.windowScene?.themeManager.daylight.addNonStickyObserver(
-            self
-        ) { [weak self] daylight in
-            guard let weather = self?.weather else {
-                return
-            }
-            
-            self?.updateThemeColors(
-                weatherCode: weather.current.weatherCode,
-                daylight: daylight
-            )
-        }
-    }
-    
-    override func traitCollectionDidChange(
-        _ previousTraitCollection: UITraitCollection?
-    ) {
-        super.traitCollectionDidChange(previousTraitCollection)
         
-        DispatchQueue.main.async {
-            if let weatherCode = self.weather?.current.weatherCode {
-                self.updateThemeColors(
-                    weatherCode: weatherCode,
-                    daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
-                )
-            }
+        // moon phase.
+        
+        if let angle = weather.dailyForecasts[0].moonPhase.angle,
+            let _ = weather.dailyForecasts[0].moonPhase.description {
+            self.moonPhaseView.alpha = 1.0
+            self.moonPhaseLabel.alpha = 1.0
+            
+            self.moonPhaseView.angle = Double(angle)
+            self.moonPhaseView.lightColor = .white
+            
+            self.moonPhaseLabel.text = getLocalizedText(
+                weather.dailyForecasts[0].moonPhase.getMoonPhaseKey()
+            )
+        } else {
+            self.moonPhaseView.alpha = 0.0
+            self.moonPhaseLabel.alpha = 0.0
         }
-    }
-    
-    private func updateThemeColors(weatherCode: WeatherCode, daylight: Bool) {
+        
+        // sun moon path view.
+        
+        self.sunMoonPathView.sunIconImage = UIImage.getSunIcon()
+        self.sunMoonPathView.moonIconImage = UIImage.getMoonIcon()
+        
+        // sun moon description.
+        
+        if let riseTime = weather.dailyForecasts[0].sun.riseTime,
+            let setTime = weather.dailyForecasts[0].sun.setTime {
+            self.sunIcon.alpha = 1.0
+            self.sunLabel.alpha = 1.0
+            
+            self.sunLabel.text = formateTime(
+                timeIntervalSine1970: riseTime,
+                twelveHour: isTwelveHour()
+            ) + "↑" + "\n" + formateTime(
+                timeIntervalSine1970: setTime,
+                twelveHour: isTwelveHour()
+            ) + "↓"
+        } else {
+            self.sunIcon.alpha = 0.0
+            self.sunLabel.alpha = 0.0
+        }
+        if let riseTime = weather.dailyForecasts[0].moon.riseTime,
+            let setTime = weather.dailyForecasts[0].moon.setTime {
+            self.moonIcon.alpha = 1.0
+            self.moonLabel.alpha = 1.0
+            
+            self.moonLabel.text = formateTime(
+                timeIntervalSine1970: riseTime,
+                twelveHour: isTwelveHour()
+            ) + "↑" + "\n" + formateTime(
+                timeIntervalSine1970: setTime,
+                twelveHour: isTwelveHour()
+            ) + "↓"
+        } else {
+            self.moonIcon.alpha = 0.0
+            self.moonLabel.alpha = 0.0
+        }
+        
+        // theme colors.
         let color = ThemeManager.weatherThemeDelegate.getThemeColor(
-            weatherKind: weatherCodeToWeatherKind(code: weatherCode),
-            daylight: daylight
+            weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
+            daylight: location.isDaylight
         )
         
         self.moonPhaseView.lightColor = UIColor(color * 0.5 + .white * 0.5)
@@ -249,20 +205,20 @@ class MainSunMoonCardCell: MainTableViewCell {
         if atFirstTime {
             var sunProgress = -1.0
             var moonProgress = -1.0
-            if let riseTime = weather?.dailyForecasts[0].sun.riseTime,
-                let setTime = weather?.dailyForecasts[0].sun.setTime {
+            if let riseTime = self.location?.weather?.dailyForecasts[0].sun.riseTime,
+               let setTime = self.location?.weather?.dailyForecasts[0].sun.setTime {
                 sunProgress = getPathProgress(
                     riseTime: riseTime,
                     setTime: setTime,
-                    timezone: timezone ?? .current
+                    timezone: self.location?.timezone ?? .current
                 )
             }
-            if let riseTime = weather?.dailyForecasts[0].moon.riseTime,
-                let setTime = weather?.dailyForecasts[0].moon.setTime {
+            if let riseTime = self.location?.weather?.dailyForecasts[0].moon.riseTime,
+               let setTime = self.location?.weather?.dailyForecasts[0].moon.setTime {
                 moonProgress = getPathProgress(
                     riseTime: riseTime,
                     setTime: setTime,
-                    timezone: timezone ?? .current
+                    timezone: self.location?.timezone ?? .current
                 )
             }
             

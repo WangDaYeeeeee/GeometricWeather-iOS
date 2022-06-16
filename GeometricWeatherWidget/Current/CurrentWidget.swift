@@ -51,13 +51,11 @@ struct CurrentWidgetEntryView : View {
                 Image.getWeatherIcon(
                     weatherCode: self.entry.location.weather!.current.weatherCode,
                     daylight: self.entry.location.isDaylight
-                )?.resizable().frame(
-                    width: elementSize,
-                    height: elementSize
-                ).offset(
-                    x: elementOffsetX,
-                    y: -elementOffsetY
-                )
+                )?.resizable()
+                    .antialiased(true)
+                    .scaledToFit()
+                    .frame(width: elementSize, height: elementSize)
+                    .offset(x: elementOffsetX, y: -elementOffsetY)
                 Spacer()
             }.padding()
                 .background(

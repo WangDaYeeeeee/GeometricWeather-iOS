@@ -21,11 +21,6 @@ class MainAllergenCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout {
     
-    // MARK: - data.
-    
-    private var weather: Weather?
-    private var timezone: TimeZone?
-    
     // MARK: - subviews.
         
     private lazy var allergenCollectionView: UICollectionView = {
@@ -88,18 +83,16 @@ class MainAllergenCardCell: MainTableViewCell,
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
         super.bindData(location: location, timeBar: timeBar)
         
-        if let weather = location.weather {
-            self.weather = weather
-            self.timezone = location.timezone
-            
+        if self.allergenCollectionView.numberOfSections != 0
+            && self.allergenCollectionView.numberOfItems(inSection: 0) != 0 {
             self.allergenCollectionView.scrollToItem(
                 at: IndexPath(row: 0, section: 0),
                 at: .left,
                 animated: false
             )
-            self.allergenCollectionView.collectionViewLayout.invalidateLayout()
-            self.allergenCollectionView.reloadData()
         }
+        self.allergenCollectionView.collectionViewLayout.invalidateLayout()
+        self.allergenCollectionView.reloadData()
     }
     
     @objc private func onDeviceOrientationChanged() {
@@ -138,7 +131,7 @@ class MainAllergenCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return weather?.dailyForecasts.count ?? 0
+        return self.location?.weather?.dailyForecasts.count ?? 0
     }
     
     func collectionView(
@@ -149,10 +142,10 @@ class MainAllergenCardCell: MainTableViewCell,
             withReuseIdentifier: allergenReuseIdentifier,
             for: indexPath
         )
-        if let weather = self.weather {
+        if let weather = self.location?.weather {
            (cell as? AllergenCollectionViewCell)?.bindData(
                 daily: weather.dailyForecasts[indexPath.row],
-                timezone: self.timezone ?? .current,
+                timezone: self.location?.timezone ?? .current,
                 index: indexPath.row,
                 total: weather.dailyForecasts.count
            )

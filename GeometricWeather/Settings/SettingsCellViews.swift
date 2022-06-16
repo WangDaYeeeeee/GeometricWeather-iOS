@@ -49,18 +49,22 @@ struct SettingsListCellView: View {
             
             Spacer()
             
-            Picker(
-                getLocalizedText(self.keys[self.selectedIndex.wrappedValue]),
-                selection: self.selectedIndex
+            Menu(
+                getLocalizedText(
+                    self.keys[self.selectedIndex.wrappedValue]
+                )
             ) {
-                ForEach(self.keys.indices) { index in
-                    Text(
-                        getLocalizedText(self.keys[index])
-                    )
+                ForEach(self.keys.indices, id: \.self) { index in
+                    Button {
+                        self.selectedIndex.wrappedValue = index
+                    } label: {
+                        Label(
+                            getLocalizedText(self.keys[index]),
+                            systemImage: self.selectedIndex.wrappedValue == index ? "checkmark" : ""
+                        )
+                    }
                 }
-            }.pickerStyle(
-                .menu
-            ).accentColor(
+            }.foregroundColor(
                 Color(UIColor.systemBlue)
             )
         }.padding(

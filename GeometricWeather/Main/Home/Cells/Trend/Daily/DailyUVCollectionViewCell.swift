@@ -12,6 +12,97 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+// MARK: - generator.
+
+class DailyUVTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private var maxUVIndex: Int
+    
+    // properties.
+    
+    var dispayName: String {
+        return getLocalizedText("uv_index")
+    }
+    
+    var isValid: Bool {
+        return self.maxUVIndex > 0
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var maxUV = 0
+        location.weather?.dailyForecasts.forEach { daily in
+            if maxUV < daily.uv.index ?? 0 {
+                maxUV = daily.uv.index ?? 0
+            }
+        }
+        self.maxUVIndex = maxUV
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            DailyUVCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? DailyUVCollectionViewCell {
+            cell.bindData(
+                daily: weather.dailyForecasts[indexPath.row],
+                maxAqiIndex: self.maxUVIndex,
+                timezone: self.location.timezone
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = naturalTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        let highLines = [
+            uvIndexLevelLow,
+            uvIndexLevelMiddle,
+            uvIndexLevelHigh,
+        ].filter { item in
+            item <= maxUVIndex
+        }.map { item in
+            HorizontalLine(
+                value: Double(item) / Double(maxUVIndex),
+                leadingDescription: String(item),
+                trailingDescription: ""
+            )
+        }
+        trendBackgroundView.bindData(
+            highLines: highLines,
+            lowLines: [],
+            lineColor: mainTrendBackgroundLineColor,
+            paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+            paddingBottom: naturalTrendPaddingBottom
+        )
+    }
+}
+
+// MARK: - cell.
+
 class DailyUVCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.

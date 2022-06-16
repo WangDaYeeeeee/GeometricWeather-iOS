@@ -14,10 +14,6 @@ import GeometricWeatherTheme
 
 class MainDetailsCardCell: MainTableViewCell {
     
-    // MARK: - data.
-    
-    private var weather: Weather?
-    
     // MARK: - subviews.
     
     private let vstack = UIStackView(frame: .zero)
@@ -52,105 +48,105 @@ class MainDetailsCardCell: MainTableViewCell {
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
         super.bindData(location: location, timeBar: timeBar)
         
-        if let weather = location.weather {
-            self.weather = weather
-            
-            // remove all detail item view.
-            for subview in self.vstack.arrangedSubviews {
-                subview.removeFromSuperview()
-            }
-            
-            // generate detial item views.
-            
-            // wind.
-            if let wind = weather.dailyForecasts.get(0)?.wind {
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "wind",
-                        title: getLocalizedText("live") + ": " + getWindText(
-                            wind: weather.current.wind,
-                            unit: SettingsManager.shared.speedUnit
-                        ),
-                        body: getLocalizedText("today") + ": " + getWindText(
-                            wind: wind,
-                            unit: SettingsManager.shared.speedUnit
-                        )
+        guard let weather = location.weather else {
+            return
+        }
+        
+        // remove all detail item view.
+        for subview in self.vstack.arrangedSubviews {
+            subview.removeFromSuperview()
+        }
+        
+        // generate detial item views.
+        
+        // wind.
+        if let wind = weather.dailyForecasts.get(0)?.wind {
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "wind",
+                    title: getLocalizedText("live") + ": " + getWindText(
+                        wind: weather.current.wind,
+                        unit: SettingsManager.shared.speedUnit
+                    ),
+                    body: getLocalizedText("today") + ": " + getWindText(
+                        wind: wind,
+                        unit: SettingsManager.shared.speedUnit
                     )
                 )
-            } else if let daytime = weather.dailyForecasts.get(0)?.day.wind,
-                      let nighttime = weather.dailyForecasts.get(0)?.night.wind {
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "wind",
-                        title: getLocalizedText("live") + ": " + getWindText(
-                            wind: weather.current.wind,
-                            unit: SettingsManager.shared.speedUnit
-                        ),
-                        body: getLocalizedText("daytime") + ": " + getWindText(
-                            wind: daytime,
-                            unit: SettingsManager.shared.speedUnit
-                        ) + "\n" + getLocalizedText("nighttime") + ": " + getWindText(
-                            wind: nighttime,
-                            unit: SettingsManager.shared.speedUnit
-                        )
+            )
+        } else if let daytime = weather.dailyForecasts.get(0)?.day.wind,
+                  let nighttime = weather.dailyForecasts.get(0)?.night.wind {
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "wind",
+                    title: getLocalizedText("live") + ": " + getWindText(
+                        wind: weather.current.wind,
+                        unit: SettingsManager.shared.speedUnit
+                    ),
+                    body: getLocalizedText("daytime") + ": " + getWindText(
+                        wind: daytime,
+                        unit: SettingsManager.shared.speedUnit
+                    ) + "\n" + getLocalizedText("nighttime") + ": " + getWindText(
+                        wind: nighttime,
+                        unit: SettingsManager.shared.speedUnit
                     )
                 )
-            }
-            
-            // humidity.
-            if let humidity = weather.current.relativeHumidity {
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "drop",
-                        title: getLocalizedText("humidity"),
-                        body: getPercentText(
-                            humidity,
-                            decimal: 1
-                        )
+            )
+        }
+        
+        // humidity.
+        if let humidity = weather.current.relativeHumidity {
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "drop",
+                    title: getLocalizedText("humidity"),
+                    body: getPercentText(
+                        humidity,
+                        decimal: 1
                     )
                 )
-            }
-            
-            // uv.
-            if weather.current.uv.isValid() {
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "sun.max",
-                        title: getLocalizedText("uv_index"),
-                        body: weather.current.uv.getUVDescription()
+            )
+        }
+        
+        // uv.
+        if weather.current.uv.isValid() {
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "sun.max",
+                    title: getLocalizedText("uv_index"),
+                    body: weather.current.uv.getUVDescription()
+                )
+            )
+        }
+        
+        // pressure.
+        if let pressure = weather.current.pressure {
+            let unit = SettingsManager.shared.pressureUnit
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "gauge",
+                    title: getLocalizedText("pressure"),
+                    body: unit.formatValueWithUnit(
+                        pressure,
+                        unit: getLocalizedText(unit.key)
                     )
                 )
-            }
-            
-            // pressure.
-            if let pressure = weather.current.pressure {
-                let unit = SettingsManager.shared.pressureUnit
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "gauge",
-                        title: getLocalizedText("pressure"),
-                        body: unit.formatValueWithUnit(
-                            pressure,
-                            unit: getLocalizedText(unit.key)
-                        )
+            )
+        }
+        
+        // visibility.
+        if let visibility = weather.current.visibility {
+            let unit = SettingsManager.shared.distanceUnit
+            self.vstack.addArrangedSubview(
+                self.generateDetailItemView(
+                    iconName: "eye",
+                    title: getLocalizedText("visibility"),
+                    body: unit.formatValueWithUnit(
+                        visibility,
+                        unit: getLocalizedText(unit.key)
                     )
                 )
-            }
-            
-            // visibility.
-            if let visibility = weather.current.visibility {
-                let unit = SettingsManager.shared.distanceUnit
-                self.vstack.addArrangedSubview(
-                    self.generateDetailItemView(
-                        iconName: "eye",
-                        title: getLocalizedText("visibility"),
-                        body: unit.formatValueWithUnit(
-                            visibility,
-                            unit: getLocalizedText(unit.key)
-                        )
-                    )
-                )
-            }
+            )
         }
     }
     

@@ -85,7 +85,7 @@ struct MetroShowerForegroundView: View {
             ).opacity(
                 Double(
                     1 - self.scrollOffset / (self.headerHeight - 256.0 - 80.0)
-                ).keepIn(range: 0...1)
+                ).keepIn(range: 0...1) * 0.8 + 0.2
             )
         }
     }

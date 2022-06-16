@@ -107,7 +107,7 @@ public struct DarkMode: Option {
     
     public let key: String
     
-    public init(key: String) {
+    private init(key: String) {
         self.key = key
     }
 }

@@ -13,15 +13,21 @@ public struct Minutely: Codable {
     public let beginTime: TimeInterval
     public let endTime: TimeInterval
     
+    // compatible for legacy json coding!!!!!!!!!!!!!!!!!!!
     public let precipitationIntensityInPercentage: [Double]
+    public var precipitationIntensities: [Double] {
+        get {
+            return self.precipitationIntensityInPercentage
+        }
+    }
     
     public init(
         beginTime: TimeInterval,
         endTime: TimeInterval,
-        precipitationIntensityInPercentage: [Double]
+        precipitationIntensities: [Double]
     ) {
         self.beginTime = beginTime
         self.endTime = endTime
-        self.precipitationIntensityInPercentage = precipitationIntensityInPercentage
+        self.precipitationIntensityInPercentage = precipitationIntensities
     }
 }

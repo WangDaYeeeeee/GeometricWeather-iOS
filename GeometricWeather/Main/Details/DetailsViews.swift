@@ -1,16 +1,14 @@
 //
-//  DailyView.swift
+//  DetailsViews.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2021/10/27.
+//  Created by 王大爷 on 2022/6/16.
 //
 
 import SwiftUI
 import GeometricWeatherCore
 import GeometricWeatherResources
 import GeometricWeatherSettings
-import GeometricWeatherDB
-import GeometricWeatherTheme
 
 private let itemVerticalMargin = 8.0
 private let itemHorizontalMargin = littleMargin
@@ -22,214 +20,9 @@ private let itemEdgeInsets = EdgeInsets(
     trailing: itemHorizontalMargin
 )
 
-// MARK: - daily view.
-
-struct DailyView: View {
-    
-    let weather: Weather
-    let index: Int
-    let timezone: TimeZone
-    
-    var body: some View {
-        List {
-            Section(
-                header: DailySectionTitleView(key: "daytime")
-            ) {
-                HalfDayHeaderView(
-                    halfDay: self.weather.dailyForecasts[index].day,
-                    daylight: true
-                )
-                
-                if let realFeelTemp = self.weather.dailyForecasts[index].day.temperature.realFeelTemperature {
-                    DailyValueItemView(
-                        title: getLocalizedText("real_feel_temperature"),
-                        content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                            realFeelTemp,
-                            unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
-                        )
-                    )
-                }
-                if let precipitationTotal = self.weather.dailyForecasts[index].day.precipitationTotal {
-                    if precipitationTotal > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation"),
-                            content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
-                                precipitationTotal,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationIntensity = self.weather.dailyForecasts[index].day.precipitationIntensity {
-                    if precipitationIntensity > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_intensity"),
-                            content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
-                                precipitationIntensity,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationProb = self.weather.dailyForecasts[index].day.precipitationProbability {
-                    if precipitationProb > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_probability"),
-                            content: getPercentText(precipitationProb, decimal: 1)
-                        )
-                    }
-                }
-                if let wind = self.weather.dailyForecasts[index].day.wind {
-                    DailyValueItemView(
-                        title: getLocalizedText("wind"),
-                        content: getWindText(
-                            wind: wind,
-                            unit: SettingsManager.shared.speedUnit
-                        )
-                    )
-                }
-            }
-            
-            Section(
-                header: DailySectionTitleView(key: "nighttime")
-            ) {
-                HalfDayHeaderView(
-                    halfDay: self.weather.dailyForecasts[index].night,
-                    daylight: false
-                )
-                
-                if let realFeelTemp = self.weather.dailyForecasts[index].night.temperature.realFeelTemperature {
-                    DailyValueItemView(
-                        title: getLocalizedText("real_feel_temperature"),
-                        content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                            realFeelTemp,
-                            unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
-                        )
-                    )
-                }
-                if let precipitationTotal = self.weather.dailyForecasts[index].night.precipitationTotal {
-                    if precipitationTotal > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation"),
-                            content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
-                                precipitationTotal,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationIntensity = self.weather.dailyForecasts[index].night.precipitationIntensity {
-                    if precipitationIntensity > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_intensity"),
-                            content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
-                                precipitationIntensity,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationProb = self.weather.dailyForecasts[index].night.precipitationProbability {
-                    if precipitationProb > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_probability"),
-                            content: getPercentText(precipitationProb, decimal: 1)
-                        )
-                    }
-                }
-                if let wind = self.weather.dailyForecasts[index].night.wind {
-                    DailyValueItemView(
-                        title: getLocalizedText("wind"),
-                        content: getWindText(
-                            wind: wind,
-                            unit: SettingsManager.shared.speedUnit
-                        )
-                    )
-                }
-            }
-            
-            Section(
-                header: DailySectionTitleView(key: "daily_overview")
-            ) {
-                if let precipitationTotal = self.weather.dailyForecasts[index].precipitationTotal {
-                    if precipitationTotal > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation"),
-                            content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
-                                precipitationTotal,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationIntensity = self.weather.dailyForecasts[index].precipitationIntensity {
-                    if precipitationIntensity > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_intensity"),
-                            content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
-                                precipitationIntensity,
-                                unit: getLocalizedText(SettingsManager.shared.precipitationIntensityUnit.key)
-                            )
-                        )
-                    }
-                }
-                if let precipitationProb = self.weather.dailyForecasts[index].precipitationProbability {
-                    if precipitationProb > 0 {
-                        DailyValueItemView(
-                            title: getLocalizedText("precipitation_probability"),
-                            content: getPercentText(precipitationProb, decimal: 1)
-                        )
-                    }
-                }
-                if let wind = self.weather.dailyForecasts[index].wind {
-                    DailyValueItemView(
-                        title: getLocalizedText("wind"),
-                        content: getWindText(
-                            wind: wind,
-                            unit: SettingsManager.shared.speedUnit
-                        )
-                    )
-                }
-                
-                if self.weather.dailyForecasts[index].airQuality.isValid() {
-                    DailyAirQualityItemView(
-                        aqi: self.weather.dailyForecasts[index].airQuality
-                    )
-                }
-                
-                if self.weather.dailyForecasts[index].pollen.isValid() {
-                    DailyPollenView(
-                        pollen: self.weather.dailyForecasts[index].pollen
-                    )
-                }
-                
-                if self.weather.dailyForecasts[index].sun.isValid()
-                    || self.weather.dailyForecasts[index].moon.isValid() {
-                    DailySunMoonItemView(
-                        sun: self.weather.dailyForecasts[index].sun,
-                        moon: self.weather.dailyForecasts[index].moon,
-                        moonPhase: self.weather.dailyForecasts[index].moonPhase
-                    )
-                }
-                
-                if self.weather.dailyForecasts[index].uv.isValid() {
-                    DailyValueItemView(
-                        title: getLocalizedText("uv_index"),
-                        content: self.weather.dailyForecasts[index].uv.getUVDescription()
-                    )
-                }
-            }
-        }.listStyle(
-            .insetGrouped
-        ).background(
-            Color.clear
-        )
-    }
-}
-
 // MARK: - section title.
 
-struct DailySectionTitleView: View {
+struct DetailsSectionTitleView: View {
     
     let key: String
     
@@ -244,42 +37,63 @@ struct DailySectionTitleView: View {
     }
 }
 
-// MARK: - half day header.
 
-struct HalfDayHeaderView: View {
+// MARK: - weather header.
+
+struct DetailsWeatherHeaderView: View {
     
-    let halfDay: HalfDay
+    let weatherCode: WeatherCode
     let daylight: Bool
+    
+    let weatherText: String
+    let temperature: Temperature
     
     var body: some View {
         HStack(alignment: .center, spacing: littleMargin) {
             Image.getWeatherIcon(
-                weatherCode: halfDay.weatherCode,
-                daylight: daylight
+                weatherCode: self.weatherCode,
+                daylight: self.daylight
             )?.resizable().frame(
                 width: 56,
                 height: 56
             )
             
-            Text(
-                halfDay.weatherPhase
-                + ", "
-                + SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                    halfDay.temperature.temperature,
-                    unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
+            VStack(alignment: .leading, spacing: 2.0) {
+                Text(
+                    self.weatherText
+                    + ", "
+                    + SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                        self.temperature.temperature,
+                        unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
+                    )
+                ).font(
+                    Font(titleFont)
+                ).foregroundColor(
+                    Color(UIColor.label)
                 )
-            ).font(
-                Font(titleFont)
-            ).foregroundColor(
-                Color(UIColor.label)
-            )
+                
+                if let apparentTemperature = temperature.apparentTemperature {
+                    Text(
+                        getLocalizedText("feels_like")
+                        + " "
+                        + SettingsManager.shared.temperatureUnit.formatValueWithUnit(
+                            apparentTemperature,
+                            unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
+                        )
+                    ).font(
+                        Font(captionFont)
+                    ).foregroundColor(
+                        Color(UIColor.secondaryLabel)
+                    )
+                }
+            }
         }.padding(itemEdgeInsets)
     }
 }
 
 // MARK: - value item.
 
-struct DailyValueItemView: View {
+struct DetailsValueItemView: View {
     
     let title: String
     let content: String
@@ -307,7 +121,7 @@ struct DailyValueItemView: View {
 
 // MARK: - sun moon item.
 
-struct DailySunMoonItemView: View {
+struct DetailsSunMoonItemView: View {
     
     let sun: Astro
     let moon: Astro
@@ -386,14 +200,14 @@ struct DailySunMoonItemView: View {
 
 // MARK: - daily air quality item.
 
-struct DailyAirQualityItemView: View {
+struct DetailsAirQualityItemView: View {
     
     let aqi: AirQuality
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let aqi = self.aqi.aqiIndex {
-                DailyProgressView(
+                DetailsProgressView(
                     title: getLocalizedText("air_quality"),
                     description: aqi.description + " / " + getAirQualityText(
                         level: self.aqi.getAqiLevel()
@@ -410,7 +224,7 @@ struct DailyAirQualityItemView: View {
             
             if let pm25 = aqi.pm25 {
                 if pm25 > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "PM2.5",
                         description: "\(Int(pm25))μg/m³",
                         progress: min(
@@ -426,7 +240,7 @@ struct DailyAirQualityItemView: View {
             
             if let pm10 = aqi.pm10 {
                 if pm10 > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "PM10",
                         description: "\(Int(pm10))μg/m³",
                         progress: min(
@@ -442,7 +256,7 @@ struct DailyAirQualityItemView: View {
             
             if let no2 = aqi.no2 {
                 if no2 > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "NO₂",
                         description: "\(Int(no2))μg/m³",
                         progress: min(
@@ -458,7 +272,7 @@ struct DailyAirQualityItemView: View {
             
             if let so2 = aqi.so2 {
                 if so2 > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "SO₂",
                         description: "\(Int(so2))μg/m³",
                         progress: min(
@@ -474,7 +288,7 @@ struct DailyAirQualityItemView: View {
             
             if let o3 = aqi.o3 {
                 if o3 > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "O₃",
                         description: "\(Int(o3))μg/m³",
                         progress: min(
@@ -490,7 +304,7 @@ struct DailyAirQualityItemView: View {
             
             if let co = aqi.co {
                 if co > 0 {
-                    DailyProgressView(
+                    DetailsProgressView(
                         title: "CO",
                         description: "\(Int(co))mg/m³",
                         progress: min(
@@ -516,7 +330,7 @@ struct DailyAirQualityItemView: View {
 
 // MARK: - daily progress.
 
-struct DailyProgressView: View {
+struct DetailsProgressView: View {
     
     let title: String
     let description: String
@@ -623,14 +437,14 @@ struct DailyProgressView: View {
 
 // MARK: - daily pollen.
 
-struct DailyPollenView: View {
+struct DetailsPollenView: View {
     
     let pollen: Pollen
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
-                DailyDotValueItemView(
+                DetailsDotValueItemView(
                     title: getLocalizedText("grass"),
                     description: (
                         self.pollen.grassIndex?.description ?? "0"
@@ -640,7 +454,7 @@ struct DailyPollenView: View {
                     color: getLevelColor(self.pollen.grassLevel ?? 0)
                 )
                 
-                DailyDotValueItemView(
+                DetailsDotValueItemView(
                     title: getLocalizedText("mold"),
                     description: (
                         self.pollen.moldIndex?.description ?? "0"
@@ -652,7 +466,7 @@ struct DailyPollenView: View {
             }
             
             HStack(alignment: .center, spacing: 0) {
-                DailyDotValueItemView(
+                DetailsDotValueItemView(
                     title: getLocalizedText("ragweed"),
                     description: (
                         self.pollen.ragweedIndex?.description ?? "0"
@@ -662,7 +476,7 @@ struct DailyPollenView: View {
                     color: getLevelColor(self.pollen.ragweedLevel ?? 0)
                 )
                 
-                DailyDotValueItemView(
+                DetailsDotValueItemView(
                     title: getLocalizedText("tree"),
                     description: (
                         self.pollen.treeIndex?.description ?? "0"
@@ -678,7 +492,7 @@ struct DailyPollenView: View {
 
 // MARK: - daily dot value item.
 
-struct DailyDotValueItemView: View {
+struct DetailsDotValueItemView: View {
     
     let title: String
     let description: String
@@ -699,7 +513,7 @@ struct DailyDotValueItemView: View {
                 y: 2.0
             )
             
-            VStack(alignment: .leading, spacing: 2.0) {                
+            VStack(alignment: .leading, spacing: 2.0) {
                 Text(
                     self.title
                 ).font(

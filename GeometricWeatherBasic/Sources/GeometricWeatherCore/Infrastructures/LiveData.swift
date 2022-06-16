@@ -18,26 +18,34 @@ private class CallbackWrapper<T> {
     }
 }
 
+// MARK: - thread protection.
+
+private func withMainThread<T>(_ run: () -> T) -> T {
+    if Thread.isMainThread {
+        return run()
+    }
+    
+    return DispatchQueue.main.sync {
+        run()
+    }
+}
+
 // MARK: - live data.
 
 public class LiveData<T> {
     
     // properties.
     
-    @Synchronized(nil)
-    private var innerValue: T?
-    
-    public var value: T {
-        set {
-            var initSet = false
-            self._innerValue.synchronizedRun { val in
-                initSet = val == nil
-                val = newValue
+    fileprivate var innerValue: T {
+        didSet {
+            let hasNoCallback = withMainThread {
+                self.observerCallbackMap.count == 0
             }
-            
-            if initSet {
+            if hasNoCallback {
                 return
             }
+            
+            let value = self.innerValue
             
             DispatchQueue.main.async {
                 guard let wrappers = self
@@ -46,15 +54,23 @@ public class LiveData<T> {
                     .allObjects as? [CallbackWrapper<T>] else {
                     return
                 }
-                if let value = self.innerValue {
-                    wrappers.forEach { wrapper in
-                        wrapper.callback(value)
-                    }
+                wrappers.forEach { wrapper in
+                    wrapper.callback(value)
                 }
             }
         }
+    }
+    
+    public var value: T {
+        set {
+            withMainThread {
+                self.innerValue = newValue
+            }
+        }
         get {
-            self.innerValue!
+            return withMainThread {
+                self.innerValue
+            }
         }
     }
     
@@ -66,7 +82,7 @@ public class LiveData<T> {
     // life cycle.
     
     public init(_ value: T) {
-        self.value = value
+        self.innerValue = value
     }
     
     deinit {
@@ -96,10 +112,8 @@ public class LiveData<T> {
         self.addNonStickyObserver(observer, to: callback)
         
         // invoke callback at first register.
-        self.ensureRunOnMainThread { [weak self] in
-            if let value = self?.value {
-                callback(value)
-            }
+        withMainThread {
+            callback(self.value)
         }
     }
     
@@ -107,8 +121,8 @@ public class LiveData<T> {
         _ observer: AnyObject,
         to callback: @escaping (T) -> Void
     ) {
-        self.ensureRunOnMainThread { [weak self] in
-            self?.observerCallbackMap.setObject(
+        withMainThread {
+            self.observerCallbackMap.setObject(
                 CallbackWrapper(callback),
                 forKey: observer
             )
@@ -116,19 +130,8 @@ public class LiveData<T> {
     }
     
     public func removeObserver(_ observer: AnyObject) {
-        self.ensureRunOnMainThread { [weak self] in
-            self?.observerCallbackMap.removeObject(forKey: observer)
-        }
-    }
-    
-    private func ensureRunOnMainThread(_ runnable: @escaping () -> Void) {
-        if Thread.isMainThread {
-            runnable()
-            return
-        }
-        
-        DispatchQueue.main.async {
-            runnable()
+        withMainThread {
+            self.observerCallbackMap.removeObject(forKey: observer)
         }
     }
 }
@@ -137,45 +140,18 @@ public class LiveData<T> {
 
 public class EqualtableLiveData<T: Equatable>: LiveData<T> {
     
-    @Synchronized(nil)
-    private var innerValue: T?
-    
     public override var value: T {
         set {
-            var initSet = false
-            var valueChanged = false
-            
-            self._innerValue.synchronizedRun { val in
-                initSet = val == nil
-                
-                if val != newValue {
-                    val = newValue
-                    valueChanged = true
-                }
-            }
-            
-            if initSet {
-                return
-            }
-            
-            if valueChanged {
-                DispatchQueue.main.async {
-                    guard let wrappers = self
-                        .observerCallbackMap
-                        .objectEnumerator()?
-                        .allObjects as? [CallbackWrapper<T>] else {
-                        return
-                    }
-                    if let value = self.innerValue {
-                        wrappers.forEach { wrapper in
-                            wrapper.callback(value)
-                        }
-                    }
+            withMainThread {
+                if self.innerValue != newValue {
+                    self.innerValue = newValue
                 }
             }
         }
         get {
-            return self.innerValue!
+            return withMainThread {
+                self.innerValue
+            }
         }
     }
 }

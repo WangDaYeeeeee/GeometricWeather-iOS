@@ -20,6 +20,11 @@ public struct Hourly: Codable {
     public let precipitationIntensity: Double?
     public let precipitationProbability: Double?
     public let wind: Wind?
+    public let cloudrate: Double? // 0 - 1.
+    public let pressure: Double?
+    public let visibility: Double?
+    public let airQuality: AirQuality?
+    public let humidity: Double?
     
     public init(
         time: TimeInterval,
@@ -29,7 +34,12 @@ public struct Hourly: Codable {
         temperature: Temperature,
         precipitationIntensity: Double?,
         precipitationProbability: Double?,
-        wind: Wind? = nil
+        wind: Wind? = nil,
+        cloudrate: Double? = nil, // 0 - 1.
+        pressure: Double? = nil,
+        visibility: Double? = nil,
+        airQuality: AirQuality? = nil,
+        humidity: Double? = nil
     ) {
         self.time = time
         self.daylight = daylight
@@ -39,6 +49,11 @@ public struct Hourly: Codable {
         self.precipitationIntensity = precipitationIntensity
         self.precipitationProbability = precipitationProbability
         self.wind = wind
+        self.cloudrate = cloudrate
+        self.pressure = pressure
+        self.visibility = visibility
+        self.airQuality = airQuality
+        self.humidity = humidity
     }
 
     public func getHour(_ twelveHour: Bool, timezone: TimeZone) -> Int {

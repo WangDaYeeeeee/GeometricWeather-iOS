@@ -31,8 +31,8 @@ public class ThemeManager {
                 daylight: isDaylight()
             )
         )
-        self.daylight = EqualtableLiveData(isDaylight())
-                        
+             
+        self.daylight = isDaylight()
         self.darkMode = darkMode
     }
     
@@ -40,8 +40,8 @@ public class ThemeManager {
    
     public let homeOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
     public let globalOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
-    public let daylight: EqualtableLiveData<Bool>
     
+    private var daylight: Bool
     private var darkMode: DarkMode
     
     // interfaces.
@@ -55,7 +55,7 @@ public class ThemeManager {
         location: Location? = nil
     ) {
         if let loc = location {
-            self.daylight.value = isDaylight(location: loc)
+            self.daylight = isDaylight(location: loc)
         }
         if let dm = darkMode {
             self.darkMode = dm
@@ -63,11 +63,11 @@ public class ThemeManager {
         
         homeOverrideUIStyle.value = Self.generateHomeUIUserInterfaceStyle(
             darkMode: self.darkMode,
-            daylight: self.daylight.value
+            daylight: self.daylight
         )
         globalOverrideUIStyle.value = Self.generateGlobalUIUserInterfaceStyle(
             darkMode: self.darkMode,
-            daylight: self.daylight.value
+            daylight: self.daylight
         )
     }
     
@@ -76,7 +76,7 @@ public class ThemeManager {
         daylight: Bool
     ) -> UIUserInterfaceStyle {
         if darkMode.key == "dark_mode_system" {
-            return UIScreen.main.traitCollection.userInterfaceStyle
+            return UITraitCollection.current.userInterfaceStyle
         } else if darkMode.key == "dark_mode_light" {
             return .light
         } else if darkMode.key == "dark_mode_dark" {
@@ -90,14 +90,12 @@ public class ThemeManager {
         darkMode: DarkMode,
         daylight: Bool
     ) -> UIUserInterfaceStyle {
-        if darkMode.key == "dark_mode_system" {
-            return UIScreen.main.traitCollection.userInterfaceStyle
-        } else if darkMode.key == "dark_mode_light" {
+        if darkMode.key == "dark_mode_light" {
             return .light
         } else if darkMode.key == "dark_mode_dark" {
             return .dark
         } else {
-            return .unspecified
+            return UITraitCollection.current.userInterfaceStyle
         }
     }
     #else

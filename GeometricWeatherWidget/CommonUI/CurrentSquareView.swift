@@ -97,10 +97,13 @@ struct CurrentSquareView: View {
                 Image.getWeatherIcon(
                     weatherCode: self.currentWeatherCode,
                     daylight: self.currentDaylight
-                )?.resizable().frame(
-                    width: miniWeatherIconSize,
-                    height: miniWeatherIconSize
-                )
+                )?.resizable()
+                    .antialiased(true)
+                    .scaledToFit()
+                    .frame(
+                        width: miniWeatherIconSize,
+                        height: miniWeatherIconSize
+                    )
                 
                 Text(self.currentWeatherText)
                     .font(Font(captionFont).weight(.bold))

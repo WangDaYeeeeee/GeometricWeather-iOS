@@ -222,6 +222,8 @@ private struct VerticalIconView: View {
                         weatherCode: self.weatherCodes[i],
                         daylight: self.daytime
                     )?.resizable()
+                        .antialiased(true)
+                        .scaledToFit()
                         .frame(width: miniWeatherIconSize, height: miniWeatherIconSize)
                     Spacer()
                 }

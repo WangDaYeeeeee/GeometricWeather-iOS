@@ -124,5 +124,5 @@ private func polling() async -> (locations: [Location], succeed: Bool) {
 
 private func updateAppExtensionsAndPrintLog(locations: [Location]?) {
     printLog(keyword: "widget", content: "update app extensions cause polling updated")
-    updateAppExtensions(locations: locations)
+    updateAppExtensions(locations: locations, scene: nil)
 }

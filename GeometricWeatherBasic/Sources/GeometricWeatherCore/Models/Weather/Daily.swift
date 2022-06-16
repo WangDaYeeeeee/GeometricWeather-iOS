@@ -27,6 +27,10 @@ public struct Daily: Codable {
     public let pollen: Pollen
     public let uv: UV
     public let hoursOfSun: Double?
+    public let pressure: Double?
+    public let cloudrate: Double? // 0 - 1.
+    public let visibility: Double?
+    public let humidity: Double?
     
     public init(
         time: TimeInterval,
@@ -42,7 +46,11 @@ public struct Daily: Codable {
         airQuality: AirQuality,
         pollen: Pollen,
         uv: UV,
-        hoursOfSun: Double?
+        hoursOfSun: Double?,
+        pressure: Double?,
+        cloudrate: Double?, // 0 - 1.
+        visibility: Double?,
+        humidity: Double?
     ) {
         self.time = time
         self.day = day
@@ -58,6 +66,10 @@ public struct Daily: Codable {
         self.pollen = pollen
         self.uv = uv
         self.hoursOfSun = hoursOfSun
+        self.pressure = pressure
+        self.cloudrate = cloudrate
+        self.visibility = visibility
+        self.humidity = humidity
     }
     
     public func getDate(format: String) -> String {

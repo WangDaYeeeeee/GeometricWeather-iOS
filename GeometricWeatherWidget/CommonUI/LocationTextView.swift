@@ -24,6 +24,8 @@ struct LocationTextView: View {
             if self.isCurrentLocation {
                 Image(systemName: "location.fill")
                     .resizable()
+                    .antialiased(true)
+                    .scaledToFit()
                     .frame(width: 10.0, height: 10.0)
                     .foregroundColor(.white)
             }

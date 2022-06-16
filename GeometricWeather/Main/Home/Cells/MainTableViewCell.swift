@@ -21,6 +21,8 @@ protocol AbstractMainItem {
 
 class MainTableViewCell: UITableViewCell, AbstractMainItem {
     
+    // MARK: - subviews.
+    
     let cardContainer = UIVisualEffectView(
         effect: UIBlurEffect(style: blurStyle)
     )
@@ -41,6 +43,12 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
         ),
         cornerRadius: cardRadius
     )
+    
+    // MARK: - data.
+    
+    private(set) var location: Location?
+    
+    // MARK: - life cycles.
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,12 +90,14 @@ class MainTableViewCell: UITableViewCell, AbstractMainItem {
     }
     
     func bindData(location: Location, timeBar: MainTimeBarView?) {
+        self.location = location
+        
         self.cardContainer.contentView.backgroundColor = UIColor(
             ThemeManager.weatherThemeDelegate.getCardBackgroundColor(
                 weatherKind: weatherCodeToWeatherKind(
                     code: location.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
+                daylight: location.isDaylight
             )
         )
         

@@ -15,7 +15,7 @@ import GeometricWeatherTheme
 class MainViewModel: NSObject {
     
     // state.
-    let currentLocation: EqualtableLiveData<Location>
+    let currentLocation: EqualtableLiveData<CurrentLocation>
     let indicator: EqualtableLiveData<Indicator>
     let selectableValidLocations: LiveData<SelectableLocationArray>
     let selectableTotalLocations: LiveData<SelectableLocationArray>
@@ -23,7 +23,7 @@ class MainViewModel: NSObject {
     let toastMessage: LiveData<MainToastMessage?>
     
     // inner data.
-    private var scene: UIWindowScene?
+    private weak var scene: UIWindowScene?
     private var initCompleted: Bool
     
     // repository.
@@ -41,7 +41,9 @@ class MainViewModel: NSObject {
         self.initCompleted = false
         
         // init state properties.
-        self.currentLocation = EqualtableLiveData(data.valid[0])
+        self.currentLocation = EqualtableLiveData(
+            CurrentLocation(data.valid[0])
+        )
         self.indicator = EqualtableLiveData(
             Indicator(total: data.valid.count, index: 0)
         )
@@ -74,9 +76,15 @@ class MainViewModel: NSObject {
             guard let strongSelf = self else {
                 return
             }
+            if event.scene == strongSelf.scene {
+                return
+            }
+            
+            strongSelf.cancelRequest()
+            
             strongSelf.initCompleted = true
-            strongSelf.updateInnerData(total: event.locations)
             strongSelf.loading.value = false
+            strongSelf.updateInnerData(total: event.locations)
         }
                 
         // read weather caches.
@@ -96,7 +104,7 @@ class MainViewModel: NSObject {
                 self?.initCompleted = true
                 self?.updateInnerData(total: locations)
                 
-                updateAppExtensions(locations: locations)
+                updateAppExtensions(locations: locations, scene: self?.scene)
             }
         }
     }
@@ -163,13 +171,9 @@ class MainViewModel: NSObject {
         )
     }
     
-    private func setCurrentLocationIfNecessary(
-        location: Location
-    ) {
-        if self.currentLocation.value != location {
-            self.currentLocation.value = location
-        }
-        self.scene?.themeManager.update(location: self.currentLocation.value)
+    private func setCurrentLocationIfNecessary(location: Location) {
+        self.currentLocation.value = CurrentLocation(location)
+        self.scene?.themeManager.update(location: location)
         
         self.checkToUpdateCurrentLocation()
     }
@@ -196,7 +200,7 @@ class MainViewModel: NSObject {
     }
     
     private func currentLocationIsValid() -> Bool {
-        return currentLocation.value.weather?.isValid(
+        return currentLocation.value.location.weather?.isValid(
             pollingIntervalHours: SettingsManager.shared.updateInterval.hours
         ) ?? false
     }
@@ -210,7 +214,7 @@ class MainViewModel: NSObject {
         
         self.loading.value = true
         
-        let location = self.currentLocation.value
+        let location = self.currentLocation.value.location
         self.currentUpdateTask = Task(priority: .background) {
             let result = await self.repository.update(location: location)
             
@@ -226,7 +230,10 @@ class MainViewModel: NSObject {
                 self.loading.value = false
                 
                 printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-                updateAppExtensions(locations: self.selectableTotalLocations.value.locations)
+                updateAppExtensions(
+                    locations: self.selectableTotalLocations.value.locations,
+                    scene: self.scene
+                )
             }
         }
     }
@@ -239,10 +246,12 @@ class MainViewModel: NSObject {
     }
     
     func checkToUpdate() {
-        self.scene?.themeManager.update(location: currentLocation.value)
+        self.currentLocation.value = CurrentLocation(self.currentLocation.value.location)
+        self.scene?.themeManager.update(location: self.currentLocation.value.location)
         
         let total = self.selectableTotalLocations.value.locations
         self.initCompleted = false
+        self.loading.value = true
         
         Task(priority: .userInitiated) { [weak self] in
             let locations = await self?.repository.getWeatherCacheForLocations(
@@ -258,9 +267,10 @@ class MainViewModel: NSObject {
                 }
                 
                 self?.initCompleted = true
+                self?.loading.value = false
                 self?.updateInnerData(total: locations)
                 
-                updateAppExtensions(locations: locations)
+                updateAppExtensions(locations: locations, scene: self?.scene)
             }
         }
     }
@@ -272,7 +282,7 @@ class MainViewModel: NSObject {
             return
         }
         
-        if self.currentLocation.value.formattedId == location.formattedId {
+        if self.currentLocation.value.location.formattedId == location.formattedId {
             if self.loading.value {
                 self.toastMessage.value = .backgroundUpdate
             }
@@ -317,12 +327,12 @@ class MainViewModel: NSObject {
     func offsetLocation(offset: Int) -> Bool {
         self.cancelRequest()
         
-        let oldFormattedId = self.currentLocation.value.formattedId
+        let oldFormattedId = self.currentLocation.value.location.formattedId
         
         // ensure current index.
         var index = 0
         for (i, location) in self.selectableValidLocations.value.locations.enumerated() {
-            if location.formattedId == self.currentLocation.value.formattedId {
+            if location.formattedId == self.currentLocation.value.location.formattedId {
                 index = i
                 break
             }
@@ -345,14 +355,14 @@ class MainViewModel: NSObject {
         
         self.selectableTotalLocations.value = SelectableLocationArray(
             locations: self.selectableTotalLocations.value.locations,
-            selectedId: self.currentLocation.value.formattedId
+            selectedId: self.currentLocation.value.location.formattedId
         )
         self.selectableValidLocations.value = SelectableLocationArray(
             locations: self.selectableValidLocations.value.locations,
-            selectedId: self.currentLocation.value.formattedId
+            selectedId: self.currentLocation.value.location.formattedId
         )
         
-        return self.currentLocation.value.formattedId != oldFormattedId
+        return self.currentLocation.value.location.formattedId != oldFormattedId
     }
     
     // MARK: - list.
@@ -381,7 +391,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total)
+        updateAppExtensions(locations: total, scene: self.scene)
         
         return true
     }
@@ -401,7 +411,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total)
+        updateAppExtensions(locations: total, scene: self.scene)
     }
     
     func updateLocation(location: Location) {
@@ -413,7 +423,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total)
+        updateAppExtensions(locations: total, scene: self.scene)
     }
     
     func deleteLocation(position: Int) {
@@ -426,7 +436,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total)
+        updateAppExtensions(locations: total, scene: self.scene)
     }
     
     // MARK: - getter.
@@ -437,7 +447,7 @@ class MainViewModel: NSObject {
         for (
             i, location
         ) in self.selectableValidLocations.value.locations.enumerated() {
-            if location.formattedId == self.currentLocation.value.formattedId {
+            if location.formattedId == self.currentLocation.value.location.formattedId {
                 index = i
                 break
             }

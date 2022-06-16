@@ -12,6 +12,136 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+// MARK: - generator.
+
+class HourlyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private let maxPrecipitationValue: Double
+    private let histogramType: HourlyPrecipitationHistogramType
+    
+    // properties.
+    
+    var dispayName: String {
+        switch self.histogramType {
+            
+        case .precipitationIntensity(_):
+            return getLocalizedText("precipitation_intensity")
+            
+        default:
+            return ""
+        }
+    }
+    
+    var isValid: Bool {
+        return self.maxPrecipitationValue > 0.0
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var histogramType = HourlyPrecipitationHistogramType.none
+        for hourly in location.weather?.hourlyForecasts ?? [] {
+            if hourly.precipitationIntensity != nil {
+                histogramType = .precipitationIntensity(max: precipitationIntensityHeavy)
+                break
+            }
+        }
+        self.histogramType = histogramType
+        
+        switch histogramType {
+            
+        case .precipitationIntensity(let max):
+            self.maxPrecipitationValue = max
+            
+        default:
+            self.maxPrecipitationValue = 0.0
+        }
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            HourlyPrecipitationCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? HourlyPrecipitationCollectionViewCell {
+            
+            var useAccentColorForDate = indexPath.row == 0
+            if weather.hourlyForecasts[
+                indexPath.row
+            ].getHour(
+                false,
+                timezone: self.location.timezone
+            ) == 0 {
+                useAccentColorForDate = true
+            }
+            
+            cell.bindData(
+                hourly: weather.hourlyForecasts[indexPath.row],
+                timezone: self.location.timezone,
+                histogramType: self.histogramType,
+                useAccentColorForDate: useAccentColorForDate
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = naturalTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        switch self.histogramType {
+            
+        case .precipitationIntensity(let max):
+            let highLines = [
+                (mmph: precipitationIntensityMiddle, desc: getLocalizedText("precipitation_middle")),
+                (mmph: precipitationIntensityHeavy, desc: getLocalizedText("precipitation_heavy")),
+                (mmph: precipitationIntensityRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
+            ].filter { item in
+                item.mmph <= max
+            }.map { item in
+                HorizontalLine(
+                    value: item.mmph / max,
+                    leadingDescription: SettingsManager.shared.precipitationIntensityUnit.formatValue(item.mmph),
+                    trailingDescription: item.desc
+                )
+            }
+            trendBackgroundView.bindData(
+                highLines: highLines,
+                lowLines: [],
+                lineColor: mainTrendBackgroundLineColor,
+                paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+                paddingBottom: naturalTrendPaddingBottom + naturalBackgroundIconPadding
+            )
+            break
+            
+        default:
+            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
+            break
+        }
+    }
+}
+
+// MARK: - cell.
+
 class HourlyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
@@ -45,7 +175,6 @@ class HourlyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTr
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .clear
         self.backgroundColor = .clear
         
         self.hourLabel.font = bodyFont
@@ -162,7 +291,7 @@ class HourlyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTr
             let precipitationIntensity = hourly.precipitationIntensity ?? 0.0
             if precipitationIntensity > 0 {
                 self.trendView.highValue = min(
-                    precipitationIntensity / radarPrecipitationIntensityHeavy,
+                    precipitationIntensity / precipitationIntensityHeavy,
                     1.0
                 )
                 

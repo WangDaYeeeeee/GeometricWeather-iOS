@@ -1,8 +1,8 @@
 //
-//  DailyAirQualityCollectionViewCell.swift
+//  DailyVisibilityCollectionViewCell.swift
 //  GeometricWeather
 //
-//  Created by 王大爷 on 2022/2/24.
+//  Created by 王大爷 on 2022/6/15.
 //
 
 import UIKit
@@ -14,21 +14,21 @@ import GeometricWeatherTheme
 
 // MARK: - generator.
 
-class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+class DailyVisibilityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
     
     // data.
     
     private let location: Location
-    private var maxAqiIndex: Int
+    private let maxVisibility: Double
     
     // properties.
     
     var dispayName: String {
-        return getLocalizedText("air_quality")
+        return getLocalizedText("visibility")
     }
     
     var isValid: Bool {
-        return self.maxAqiIndex > 0
+        return self.maxVisibility > 0
     }
     
     // life cycle.
@@ -36,20 +36,26 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
     required init(_ location: Location) {
         self.location = location
         
-        var maxAqi = 0
+        var maxVisibility = 0.0
         location.weather?.dailyForecasts.forEach { daily in
-            if maxAqi < daily.airQuality.aqiIndex ?? 0 {
-                maxAqi = daily.airQuality.aqiIndex ?? 0
+            if maxVisibility < daily.visibility ?? 0.0 {
+                maxVisibility = daily.visibility ?? 0.0
+            }
+            if maxVisibility < daily.day.visibility ?? 0.0 {
+                maxVisibility = daily.visibility ?? 0.0
+            }
+            if maxVisibility < daily.night.visibility ?? 0.0 {
+                maxVisibility = daily.visibility ?? 0.0
             }
         }
-        self.maxAqiIndex = maxAqi
+        self.maxVisibility = maxVisibility
     }
     
     // interfaces.
     
     func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
-            DailyAirQualityCollectionViewCell.self,
+            DailyVisiblityCollectionViewCell.self,
             forCellWithReuseIdentifier: self.key
         )
     }
@@ -64,11 +70,11 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
         )
         
         if let weather = self.location.weather,
-           let cell = cell as? DailyAirQualityCollectionViewCell {
+           let cell = cell as? DailyVisiblityCollectionViewCell {
             cell.bindData(
                 daily: weather.dailyForecasts[indexPath.row],
-                maxAqiIndex: self.maxAqiIndex,
-                timezone: self.location.timezone
+                timezone: self.location.timezone,
+                maxVisibility: self.maxVisibility
             )
             cell.trendPaddingTop = naturalTrendPaddingTop
             cell.trendPaddingBottom = naturalTrendPaddingBottom
@@ -78,23 +84,10 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
     }
     
     func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
-        let highLines = [
-            (index: aqiIndexLevel1, desc: getLocalizedText("aqi_1")),
-            (index: aqiIndexLevel3, desc: getLocalizedText("aqi_3")),
-            (index: aqiIndexLevel5, desc: getLocalizedText("aqi_5")),
-        ].filter { item in
-            item.index <= maxAqiIndex
-        }.map { item in
-            HorizontalLine(
-                value: Double(item.index) / Double(maxAqiIndex),
-                leadingDescription: String(item.index),
-                trailingDescription: item.desc
-            )
-        }
         trendBackgroundView.bindData(
-            highLines: highLines,
+            highLines: [],
             lowLines: [],
-            lineColor: mainTrendBackgroundLineColor,
+            lineColor: .clear,
             paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
             paddingBottom: naturalTrendPaddingBottom
         )
@@ -103,7 +96,7 @@ class DailyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProto
 
 // MARK: - cell.
 
-class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
+class DailyVisiblityCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
     
@@ -178,8 +171,8 @@ class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
     
     func bindData(
         daily: Daily,
-        maxAqiIndex: Int,
-        timezone: TimeZone
+        timezone: TimeZone,
+        maxVisibility: Double
     ) {
         self.weekLabel.text = daily.isToday(timezone: timezone)
         ? getLocalizedText("today")
@@ -189,23 +182,20 @@ class DailyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrendP
             format: getLocalizedText("date_format_short")
         )
         
-        if maxAqiIndex > 0 {
-            self.histogramView.highValue = Double(
-                (daily.airQuality.aqiIndex ?? 0)
-            ) / Double(
-                maxAqiIndex
-            )
-        } else {
-            self.histogramView.highValue = 0.0
-        }
+        let visibility = max(
+            daily.visibility ?? 0.0,
+            max(daily.day.visibility ?? 0.0, daily.night.visibility ?? 0.0)
+        )
+        
+        self.histogramView.highValue = visibility / max(maxVisibility, 1.0)
         self.histogramView.lowValue = nil
         
         self.histogramView.highDescription = (
-            daily.airQuality.aqiIndex?.description ?? "",
+            SettingsManager.shared.distanceUnit.formatValueWithUnit(visibility, unit: ""),
             ""
         )
         self.histogramView.color = getLevelColor(
-            daily.airQuality.getAqiLevel()
+            getVisibilityLevel(visibility)
         )
     }
 }

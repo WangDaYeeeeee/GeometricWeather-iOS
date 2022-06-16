@@ -32,9 +32,13 @@ func responseAppShortcutItemAction(
 
 struct LocationListUpdateEvent {
     let locations: [Location]
+    weak var scene: UIWindowScene?
 }
 
-func updateAppExtensions(locations: [Location]?) {
+func updateAppExtensions(
+    locations: [Location]?,
+    scene: UIWindowScene? = nil
+) {
     // app widgets.
     WidgetCenter.shared.reloadAllTimelines()
     
@@ -44,7 +48,7 @@ func updateAppExtensions(locations: [Location]?) {
         
         // multi-scene compat.
         EventBus.shared.post(
-            LocationListUpdateEvent(locations: locations)
+            LocationListUpdateEvent(locations: locations, scene: scene)
         )
     }
     

@@ -12,6 +12,21 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+struct CurrentLocation: Equatable {
+    
+    let location: Location
+    let daylight: Bool
+    
+    init(_ location: Location) {
+        self.location = location
+        self.daylight = isDaylight(location: location)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.location == rhs.location && lhs.daylight == rhs.daylight
+    }
+}
+
 struct Indicator: Equatable {
     
     let total: Int

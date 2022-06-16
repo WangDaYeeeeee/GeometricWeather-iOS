@@ -12,6 +12,161 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+// MARK: - generator.
+
+class DailyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtocol {
+    
+    // data.
+    
+    private let location: Location
+    private let maxPrecipitationValue: Double
+    private let histogramType: DailyPrecipitationHistogramType
+    
+    // properties.
+    
+    var dispayName: String {
+        switch self.histogramType {
+            
+        case .precipitationIntensity(_):
+            return getLocalizedText("precipitation_intensity")
+            
+        case .precipitationTotal(_):
+            return getLocalizedText("precipitation")
+            
+        default:
+            return ""
+        }
+    }
+    
+    var isValid: Bool {
+        return self.maxPrecipitationValue > 0.0
+    }
+    
+    // life cycle.
+    
+    required init(_ location: Location) {
+        self.location = location
+        
+        var histogramType = DailyPrecipitationHistogramType.none
+        for daily in location.weather?.dailyForecasts ?? [] {
+            if daily.precipitationTotal != nil
+                || daily.day.precipitationTotal != nil
+                || daily.night.precipitationTotal != nil {
+                histogramType = .precipitationTotal(max: dailyPrecipitationHeavy)
+                break
+            }
+            if daily.precipitationIntensity != nil
+                || daily.day.precipitationIntensity != nil
+                || daily.night.precipitationIntensity != nil {
+                histogramType = .precipitationIntensity(max: precipitationIntensityHeavy)
+                break
+            }
+        }
+        self.histogramType = histogramType
+        
+        switch histogramType {
+            
+        case .precipitationIntensity(let max):
+            self.maxPrecipitationValue = max
+            
+        case .precipitationTotal(let max):
+            self.maxPrecipitationValue = max
+            
+        default:
+            self.maxPrecipitationValue = 0.0
+        }
+    }
+    
+    // interfaces.
+    
+    func registerCellClass(to collectionView: UICollectionView) {
+        collectionView.register(
+            DailyPrecipitationCollectionViewCell.self,
+            forCellWithReuseIdentifier: self.key
+        )
+    }
+    
+    func bindCellData(
+        at indexPath: IndexPath,
+        to collectionView: UICollectionView
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: self.key,
+            for: indexPath
+        )
+        
+        if let weather = self.location.weather,
+           let cell = cell as? DailyPrecipitationCollectionViewCell {
+            cell.bindData(
+                daily: weather.dailyForecasts[indexPath.row],
+                timezone: self.location.timezone,
+                histogramType: self.histogramType
+            )
+            cell.trendPaddingTop = naturalTrendPaddingTop
+            cell.trendPaddingBottom = naturalTrendPaddingBottom
+        }
+        
+        return cell
+    }
+    
+    func bindCellBackground(to trendBackgroundView: MainTrendBackgroundView) {
+        switch self.histogramType {
+            
+        case .precipitationTotal(let max):
+            let highLines = [
+                (mmph: precipitationIntensityMiddle, desc: getLocalizedText("precipitation_middle")),
+                (mmph: precipitationIntensityHeavy, desc: getLocalizedText("precipitation_heavy")),
+                (mmph: precipitationIntensityRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
+            ].filter { item in
+                item.mmph <= max
+            }.map { item in
+                HorizontalLine(
+                    value: item.mmph / max,
+                    leadingDescription: SettingsManager.shared.precipitationIntensityUnit.formatValue(item.mmph),
+                    trailingDescription: item.desc
+                )
+            }
+            trendBackgroundView.bindData(
+                highLines: highLines,
+                lowLines: [],
+                lineColor: mainTrendBackgroundLineColor,
+                paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+                paddingBottom: naturalTrendPaddingBottom + naturalBackgroundIconPadding
+            )
+            break
+            
+        case .precipitationIntensity(let max):
+            let highLines = [
+                (mmph: precipitationIntensityMiddle, desc: getLocalizedText("precipitation_middle")),
+                (mmph: precipitationIntensityHeavy, desc: getLocalizedText("precipitation_heavy")),
+                (mmph: precipitationIntensityRainstrom, desc: getLocalizedText("precipitation_rainstorm")),
+            ].filter { item in
+                item.mmph <= max
+            }.map { item in
+                HorizontalLine(
+                    value: item.mmph / max,
+                    leadingDescription: SettingsManager.shared.precipitationIntensityUnit.formatValue(item.mmph),
+                    trailingDescription: item.desc
+                )
+            }
+            trendBackgroundView.bindData(
+                highLines: highLines,
+                lowLines: [],
+                lineColor: mainTrendBackgroundLineColor,
+                paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
+                paddingBottom: naturalTrendPaddingBottom + naturalBackgroundIconPadding
+            )
+            break
+            
+        default:
+            trendBackgroundView.bindData(highLines: [], lowLines: [], lineColor: .clear)
+            break
+        }
+    }
+}
+
+// MARK: - cell.
+
 class DailyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
@@ -251,7 +406,7 @@ class DailyPrecipitationCollectionViewCell: MainTrendCollectionViewCell, MainTre
             self.trendView.lowValue = nil
             
             self.trendView.color = getLevelColor(
-                getPrecipitationIntensityLevel(precipitationIntensity)
+                getDailyPrecipitationLevel(precipitationIntensity)
             )
             break
             

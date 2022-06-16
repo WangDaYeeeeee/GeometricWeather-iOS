@@ -11,42 +11,19 @@ import GeometricWeatherResources
 import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
+import SwiftUI
 
 private let hourlyTrendViewHeight = 226.0
 private let minutelyTrendViewHeight = 56.0
 
-enum HourlyTag: String {
-    
-    case temperature = "hourly_temperature"
-    case wind = "hourly_wind"
-    case precipitationIntensity = "hourly_precipitation_intensity"
-}
-
-private func getPrecipitationIntensityInPercentage(
-    intensityInRadarStandard: [Double]
-) -> [Double] {
-    return intensityInRadarStandard.map { value in
-        min(value / radarPrecipitationIntensityHeavy, 1.0)
-    }
+struct HourlyTrendCellTapAction {
+    let index: Int
 }
 
 class MainHourlyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout,
                             MainSelectableTagDelegate {
-    
-    // MARK: - data.
-    
-    private var weather: Weather?
-    private var timezone: TimeZone?
-    
-    private var temperatureRange: ClosedRange<Int>?
-    private var maxWindSpeed: Double?
-    
-    private var source: WeatherSource?
-    
-    private var tagList = [(tag: HourlyTag, title: String)]()
-    private var currentTag = HourlyTag.temperature
     
     // MARK: - subviews.
     
@@ -69,6 +46,10 @@ class MainHourlyCardCell: MainTableViewCell,
     private let minutelyTitle = UILabel(frame: .zero)
     
     private let minutelyView = HistogramPolylineView(frame: .zero)
+    
+    // MARK: - data.
+    
+    private var validTrendGenerators = [MainTrendGeneratorProtocol]()
     
     // MARK: - life cycle.
     
@@ -93,7 +74,6 @@ class MainHourlyCardCell: MainTableViewCell,
         self.hourlyTagView.tagDelegate = self
         self.vstack.addArrangedSubview(self.hourlyTagView)
         
-        self.registerCells(collectionView: self.hourlyCollectionView)
         self.hourlyCollectionView.delegate = self
         self.hourlyCollectionView.dataSource = self
         self.hourlyTrendGroupView.addSubview(self.hourlyCollectionView)
@@ -170,90 +150,89 @@ class MainHourlyCardCell: MainTableViewCell,
     }
     
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
+        let firstBind = self.location == nil
         super.bindData(location: location, timeBar: timeBar)
         
         self.minutelyTitleVibrancyContainer.removeFromSuperview()
         self.minutelyView.removeFromSuperview()
         
-        if let weather = location.weather {
-            self.weather = weather
-            self.timezone = location.timezone
-            
-            var maxTemp = weather.yesterday?.daytimeTemperature ?? Int.min
-            var minTemp = weather.yesterday?.nighttimeTemperature ?? Int.max
-            var maxWind = 0.0
-            for hourly in weather.hourlyForecasts {
-                if maxTemp < hourly.temperature.temperature {
-                    maxTemp = hourly.temperature.temperature
-                }
-                if minTemp > hourly.temperature.temperature {
-                    minTemp = hourly.temperature.temperature
-                }
-                if maxWind < hourly.wind?.speed ?? 0.0 {
-                    maxWind = hourly.wind?.speed ?? 0.0
-                }
-            }
-            self.temperatureRange = minTemp...maxTemp
-            self.maxWindSpeed = maxWind
-            self.source = location.weatherSource
+        guard let weather = location.weather else {
+            return
+        }
 
-            self.summaryLabel.text = weather.current.hourlyForecast
-            
-            self.tagList = self.buildTagList(weather: weather)
-            var titles = [String]()
-            for tagPair in self.tagList {
-                titles.append(tagPair.title)
+        self.summaryLabel.text = weather.current.hourlyForecast
+        
+        let generators = self.ensureTrendGenerators(for: location)
+        if firstBind {
+            generators.total.forEach { item in
+                item.registerCellClass(to: self.hourlyCollectionView)
             }
-            self.hourlyTagView.tagList = titles
-            
-            // minutely.
-            
-            guard let minutely = weather.minutelyForecast else {
-                return
-            }
-            if minutely.precipitationIntensityInPercentage.count < 2 {
-                return
-            }
-            var allZero = true
-            for value in minutely.precipitationIntensityInPercentage {
-                if value >= radarPrecipitationIntensityLight {
-                    allZero = false
-                    break
-                }
-            }
-            if allZero {
-                return
-            }
-            
-            self.vstack.addArrangedSubview(self.minutelyTitleVibrancyContainer)
-            self.minutelyTitleVibrancyContainer.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(normalMargin)
-                make.trailing.equalToSuperview().offset(-normalMargin)
-            }
-            
-            self.minutelyView.polylineColor = UIColor(
-                ThemeManager.weatherThemeDelegate.getThemeColor(
-                    weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
-                    daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
-                )
+        }
+        
+        self.validTrendGenerators = generators.valid
+        self.hourlyTagView.tagList = generators.valid.map { item in
+            item.dispayName
+        }
+        
+        if self.hourlyCollectionView.numberOfSections != 0
+            && self.hourlyCollectionView.numberOfItems(inSection: 0) != 0 {
+            self.hourlyCollectionView.scrollToItem(
+                at: IndexPath(row: 0, section: 0),
+                at: .left,
+                animated: false
             )
-            self.minutelyView.polylineValues = getPrecipitationIntensityInPercentage(
-                intensityInRadarStandard: minutely.precipitationIntensityInPercentage
-            )
-            self.minutelyView.beginTime = formateTime(
-                timeIntervalSine1970: minutely.beginTime,
-                twelveHour: isTwelveHour()
-            )
-            self.minutelyView.endTime = formateTime(
-                timeIntervalSine1970: minutely.endTime,
-                twelveHour: isTwelveHour()
-            )
-            self.vstack.addArrangedSubview(self.minutelyView)
-            self.minutelyView.snp.makeConstraints { make in
-                make.leading.equalToSuperview()
-                make.trailing.equalToSuperview()
-                make.height.equalTo(minutelyTrendViewHeight)
+        }
+        
+        // minutely.
+        
+        guard let minutely = weather.minutelyForecast else {
+            return
+        }
+        if minutely.precipitationIntensities.count < 2 {
+            return
+        }
+        var allZero = true
+        for value in minutely.precipitationIntensities {
+            if value >= precipitationIntensityLight {
+                allZero = false
+                break
             }
+        }
+        if allZero {
+            return
+        }
+        
+        self.vstack.addArrangedSubview(self.minutelyTitleVibrancyContainer)
+        self.minutelyTitleVibrancyContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(normalMargin)
+            make.trailing.equalToSuperview().offset(-normalMargin)
+        }
+        
+        self.minutelyView.polylineColor = UIColor(
+            ThemeManager.weatherThemeDelegate.getThemeColor(
+                weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
+                daylight: location.isDaylight
+            )
+        )
+        self.minutelyView.polylineValues = minutely.precipitationIntensities.map { intensity in
+            min(
+                1.0,
+                intensity / precipitationIntensityHeavy
+            )
+        }
+        self.minutelyView.beginTime = formateTime(
+            timeIntervalSine1970: minutely.beginTime,
+            twelveHour: isTwelveHour()
+        )
+        self.minutelyView.endTime = formateTime(
+            timeIntervalSine1970: minutely.endTime,
+            twelveHour: isTwelveHour()
+        )
+        self.vstack.addArrangedSubview(self.minutelyView)
+        self.minutelyView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(minutelyTrendViewHeight)
         }
     }
     
@@ -270,6 +249,28 @@ class MainHourlyCardCell: MainTableViewCell,
         if !self.hourlyCollectionView.indexPathsForVisibleItems.isEmpty {
             self.hourlyCollectionView.reloadData()
         }
+    }
+    
+    // MARK: - generators.
+    
+    private func ensureTrendGenerators(
+        for location: Location
+    ) -> (
+        total: [MainTrendGeneratorProtocol],
+        valid: [MainTrendGeneratorProtocol]
+    ) {
+        let total: [MainTrendGeneratorProtocol] = [
+            HourlyTemperatureTrendGenerator(location),
+            HourlyWindTrendGenerator(location),
+            HourlyAirQualityTrendGenerator(location),
+            HourlyPrecipitationTrendGenerator(location),
+            HourlyHumidityTrendGenerator(location),
+            HourlyVisibilityTrendGenerator(location),
+        ]
+        let valid = total.filter { item in
+            item.isValid
+        }
+        return (total: total, valid: valid)
     }
         
     // MARK: - collection view delegate.
@@ -288,16 +289,9 @@ class MainHourlyCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        if let weather = self.weather,
-            let timezone = self.timezone {
-            HourlyDialog(
-                weather: weather,
-                timezone: timezone,
-                index: indexPath.row
-            ).showSelf(
-                inWindowOf: self
-            )
-        }
+        self.window?.windowScene?.eventBus.post(
+            HourlyTrendCellTapAction(index: indexPath.row)
+        )
     }
     
     func collectionView(
@@ -306,8 +300,8 @@ class MainHourlyCardCell: MainTableViewCell,
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard
-            let weather = self.weather,
-            let timezone = self.timezone
+            let weather = self.location?.weather,
+            let timezone = self.location?.timezone
         else {
             return nil
         }
@@ -315,12 +309,13 @@ class MainHourlyCardCell: MainTableViewCell,
         return UIContextMenuConfiguration(
             identifier: NSNumber(value: indexPath.row)
         ) {
-            let vc = HourlyViewController(
-                param: (weather, timezone, indexPath.row),
-                in: self.window?.windowScene
+            return UIHostingController<HourlyView>(
+                rootView: HourlyView(
+                    weather: weather,
+                    index: indexPath.row,
+                    timezone: timezone
+                )
             )
-            vc.measureAndSetPreferredContentSize()
-            return vc
         } actionProvider: { _ in
             return nil
         }
@@ -361,22 +356,18 @@ class MainHourlyCardCell: MainTableViewCell,
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return weather?.hourlyForecasts.count ?? 0
+        return self.location?.weather?.hourlyForecasts.count ?? 0
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        return self.buildCell(
-            collectionView: self.hourlyCollectionView,
-            currentTag: self.currentTag,
-            indexPath: indexPath,
-            weather: self.weather,
-            source: self.source,
-            timezone: self.timezone ?? .current,
-            temperatureRange: self.temperatureRange ?? 0...0,
-            maxWindSpeed: self.maxWindSpeed ?? 0
+        return self.validTrendGenerators[
+            self.hourlyTagView.selectedIndex
+        ].bindCellData(
+            at: indexPath,
+            to: collectionView
         )
     }
     
@@ -390,32 +381,21 @@ class MainHourlyCardCell: MainTableViewCell,
         return UIColor(
             ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(
-                    code: self.weather?.current.weatherCode ?? .clear
+                    code: self.location?.weather?.current.weatherCode ?? .clear
                 ),
-                daylight: self.window?.windowScene?.themeManager.daylight.value ?? true
+                daylight: self.location?.isDaylight ?? true
             )
         ).withAlphaComponent(0.33)
     }
     
     func onSelectedChanged(newSelectedIndex: Int) {
-        self.currentTag = self.tagList[newSelectedIndex].tag
-        
-        self.hourlyCollectionView.scrollToItem(
-            at: IndexPath(row: 0, section: 0),
-            at: .left,
-            animated: false
-        )
         self.hourlyCollectionView.collectionViewLayout.invalidateLayout()
         self.hourlyCollectionView.reloadData()
         
-        self.bindTrendBackground(
-            trendBackgroundView: self.hourlyBackgroundView,
-            currentTag: self.currentTag,
-            weather: self.weather,
-            source: self.source,
-            timezone: self.timezone ?? .current,
-            temperatureRange: self.temperatureRange ?? 0...0,
-            maxWindSpeed: self.maxWindSpeed ?? 0
+        self.validTrendGenerators[
+            newSelectedIndex
+        ].bindCellBackground(
+            to: self.hourlyBackgroundView
         )
     }
 }

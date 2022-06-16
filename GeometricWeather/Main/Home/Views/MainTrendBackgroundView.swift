@@ -41,6 +41,7 @@ class MainTrendBackgroundView: UIView {
         self.dateLabel.textAlignment = .center
         self.dateLabel.numberOfLines = 1
         self.addSubview(self.dateLabel)
+        
         self.addSubview(self.horizontalLinesView)
         
         self.weekLabel.snp.makeConstraints { make in

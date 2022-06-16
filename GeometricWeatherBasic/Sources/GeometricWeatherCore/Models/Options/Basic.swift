@@ -50,7 +50,7 @@ public struct UpdateInterval: Option {
     public let key: String
     public let hours: Double
     
-    public init(key: String, hours: Double) {
+    private init(key: String, hours: Double) {
         self.key = key
         self.hours = hours
     }

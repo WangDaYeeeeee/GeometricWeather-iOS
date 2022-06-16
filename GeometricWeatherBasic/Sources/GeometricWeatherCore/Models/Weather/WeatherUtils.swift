@@ -55,39 +55,58 @@ public func getDailyPrecipitationLevel(_ precipitation: Double) -> Int {
     return 6
 }
 
-public func getHourlyPrecipitationLevel(_ precipitation: Double) -> Int {
-    if precipitation < hourlyPrecipitationLight {
+public func getPrecipitationIntensityLevel(_ precipitation: Double) -> Int {
+    if precipitation < precipitationIntensityLight {
         return 1
     }
-    if precipitation < hourlyPrecipitationMiddle {
+    if precipitation < precipitationIntensityMiddle {
         return 2
     }
-    if precipitation < hourlyPrecipitationHeavy {
+    if precipitation < precipitationIntensityHeavy {
         return 3
     }
-    if precipitation < hourlyPrecipitationRainstrom {
+    if precipitation < precipitationIntensityRainstrom {
         return 4
     }
-    if precipitation < hourlyPrecipitationRainstrom * 2 {
+    if precipitation < precipitationIntensityRainstrom * 2 {
         return 5
     }
     return 6
 }
 
-public func getPrecipitationIntensityLevel(_ intensity: Double) -> Int {
-    if intensity < radarPrecipitationIntensityLight {
+public func getVisibilityLevel(_ visibility: Double) -> Int {
+    if visibility >= 10.0 {
         return 1
     }
-    if intensity < radarPrecipitationIntensityMiddle {
+    if visibility >= 8.0 {
         return 2
     }
-    if intensity < radarPrecipitationIntensityHeavy {
+    if visibility >= 6.0 {
         return 3
     }
-    if intensity < radarPrecipitationIntensityRainstrom {
+    if visibility >= 4.0 {
         return 4
     }
-    if intensity < radarPrecipitationIntensityRainstrom * 2 {
+    if visibility >= 2.0 {
+        return 5
+    }
+    return 6
+}
+
+public func getCloudrateLevel(_ cloudrate: Double) -> Int {
+    if cloudrate <= 2.0 / 8.0 {
+        return 1
+    }
+    if cloudrate <= 4.0 / 8.0 {
+        return 2
+    }
+    if cloudrate <= 5.0 / 8.0 {
+        return 3
+    }
+    if cloudrate <= 6.0 / 8.0 {
+        return 4
+    }
+    if cloudrate <= 7.0 / 8.0 {
         return 5
     }
     return 6

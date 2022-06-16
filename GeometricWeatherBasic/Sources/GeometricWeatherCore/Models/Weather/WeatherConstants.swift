@@ -7,20 +7,15 @@
 
 import Foundation
 
-public let dailyPrecipitationLight = 10.0
-public let dailyPrecipitationMiddle = 25.0
-public let dailyPrecipitationHeavy = 50.0
-public let dailyPrecipitationRainstrom = 100.0
+public let dailyPrecipitationLight = 10.0 // mm.
+public let dailyPrecipitationMiddle = 25.0 // mm.
+public let dailyPrecipitationHeavy = 50.0 // mm.
+public let dailyPrecipitationRainstrom = 100.0 // mm.
 
-public let hourlyPrecipitationLight = 0.08
-public let hourlyPrecipitationMiddle = 3.44
-public let hourlyPrecipitationHeavy = 11.33
-public let hourlyPrecipitationRainstrom = 51.3
-
-public let radarPrecipitationIntensityLight = 2.5
-public let radarPrecipitationIntensityMiddle = 7.6
-public let radarPrecipitationIntensityHeavy = 50.0
-public let radarPrecipitationIntensityRainstrom = 70.0
+public let precipitationIntensityLight = 0.08 // mm/h.
+public let precipitationIntensityMiddle = 3.44 // mm/h.
+public let precipitationIntensityHeavy = 11.33 // mm/h.
+public let precipitationIntensityRainstrom = 51.3 // mm/h.
 
 public let aqiIndexLevel1 = 50
 public let aqiIndexLevel2 = 100

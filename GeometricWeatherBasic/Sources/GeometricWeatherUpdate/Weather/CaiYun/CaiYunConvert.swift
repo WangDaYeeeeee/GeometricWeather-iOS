@@ -147,7 +147,7 @@ func generateWeather(
             endTime: Date().timeIntervalSince1970 + Double(
                 location.timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
             ) + 2 * 60 * 60,
-            precipitationIntensityInPercentage: weatherResult.result.minutely.precipitation2H
+            precipitationIntensities: weatherResult.result.minutely.precipitation2H
         ),
         alerts: getAlertList(weatherResult)
     )
@@ -319,7 +319,10 @@ private func getDailyList(
                     precipitationIntensity: nil,
                     precipitationProbability: nil,
                     wind: nil,
-                    cloudCover: nil
+                    cloudCover: nil,
+                    pressure: nil,
+                    visibility: nil,
+                    humidity: nil
                 ),
                 night: HalfDay(
                     weatherText: getWeatherText(
@@ -338,7 +341,10 @@ private func getDailyList(
                     precipitationIntensity: nil,
                     precipitationProbability: nil,
                     wind: nil,
-                    cloudCover: nil
+                    cloudCover: nil,
+                    pressure: nil,
+                    visibility: nil,
+                    humidity: nil
                 ),
                 sun: Astro(
                     riseTime: forecast?.sun?.epochRise == nil ? nil : Double(
@@ -369,7 +375,7 @@ private func getDailyList(
                     description: forecast?.moon?.phase
                 ),
                 precipitationTotal: nil,
-                precipitationIntensity: weatherResult.result.daily.precipitation[i].avg,
+                precipitationIntensity: weatherResult.result.daily.precipitation[i].max,
                 precipitationProbability: nil,
                 wind: Wind(
                     direction: getWindDirectionText(
@@ -410,7 +416,11 @@ private func getDailyList(
                     level: weatherResult.result.daily.lifeIndex.ultraviolet[i].desc,
                     description: nil
                 ),
-                hoursOfSun: nil
+                hoursOfSun: nil,
+                pressure: weatherResult.result.daily.pressure[i].avg / 100.0,
+                cloudrate: weatherResult.result.daily.cloudrate[i].avg,
+                visibility: weatherResult.result.daily.visibility[i].avg,
+                humidity: weatherResult.result.daily.humidity[i].avg * 100.0
             )
         )
     }
@@ -488,7 +498,8 @@ private func getHourlyList(
                     weatherResult.result.hourly.skycon[i].value
                 ),
                 temperature: Temperature(
-                    temperature: Int(weatherResult.result.hourly.temperature[i].value)
+                    temperature: Int(weatherResult.result.hourly.temperature[i].value),
+                    apparentTemperature: Int(weatherResult.result.hourly.apparentTemperature[i].value)
                 ),
                 precipitationIntensity: weatherResult.result.hourly.precipitation[i].value,
                 precipitationProbability: nil,
@@ -504,7 +515,29 @@ private func getHourlyList(
                     level: getWindLevelInt(
                         speed: weatherResult.result.hourly.wind[i].speed
                     )
-                )
+                ),
+                cloudrate: weatherResult.result.hourly.cloudrate[i].value,
+                pressure: weatherResult.result.hourly.pressure[i].value / 100.0,
+                visibility: weatherResult.result.hourly.visibility[i].value,
+                airQuality: AirQuality(
+                    aqiLevel: weatherResult.result.hourly.airQuality.aqi[i].value.usa == 0
+                    ? nil
+                    : getAqiQualityInt(
+                        index: Int(weatherResult.result.hourly.airQuality.aqi[i].value.usa)
+                    ),
+                    aqiIndex: weatherResult.result.hourly.airQuality.aqi[i].value.usa == 0
+                    ? nil
+                    : Int(weatherResult.result.hourly.airQuality.aqi[i].value.usa),
+                    pm25: weatherResult.result.hourly.airQuality.pm25[i].value == 0
+                    ? nil
+                    : weatherResult.result.hourly.airQuality.pm25[i].value,
+                    pm10: nil,
+                    so2: nil,
+                    no2: nil,
+                    o3: nil,
+                    co: nil
+                ),
+                humidity: weatherResult.result.hourly.humidity[i].value * 100.0
             )
         )
     }

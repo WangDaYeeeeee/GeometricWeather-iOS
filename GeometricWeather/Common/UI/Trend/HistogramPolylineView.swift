@@ -136,7 +136,7 @@ class HistogramPolylineView: UIView {
     
     // MARK: - reactor.
     
-    private let dragSwitchImpactor = UIImpactFeedbackGenerator(style: .light)
+    private let dragSwitchImpactor = UIImpactFeedbackGenerator(style: .soft)
     
     // MARK: - init.
     

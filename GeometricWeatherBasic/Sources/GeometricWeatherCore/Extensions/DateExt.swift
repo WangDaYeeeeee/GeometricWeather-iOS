@@ -9,6 +9,14 @@ import Foundation
 
 public extension Date {
     
+    static func now(in timezone: TimeZone) -> Date {
+        return Date(
+            timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
+                timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
+            )
+        )
+    }
+    
     func isToday() -> Bool{
         let nowComps = Calendar.current.dateComponents(
             [.day,.month,.year],

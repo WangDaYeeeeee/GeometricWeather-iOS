@@ -52,18 +52,10 @@ struct DaySection: View {
                 temperature: self.weather.dailyForecasts[index].day.temperature
             )
             
-            if let realFeelTemp = self.weather.dailyForecasts[index].day.temperature.realFeelTemperature {
-                DetailsValueItemView(
-                    title: getLocalizedText("real_feel_temperature"),
-                    content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                        realFeelTemp,
-                        unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
-                    )
-                )
-            }
             if let precipitationTotal = self.weather.dailyForecasts[index].day.precipitationTotal {
                 if precipitationTotal > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation"),
                         content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                             precipitationTotal,
@@ -75,6 +67,7 @@ struct DaySection: View {
             if let precipitationIntensity = self.weather.dailyForecasts[index].day.precipitationIntensity {
                 if precipitationIntensity > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_intensity"),
                         content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                             precipitationIntensity,
@@ -86,6 +79,7 @@ struct DaySection: View {
             if let precipitationProb = self.weather.dailyForecasts[index].day.precipitationProbability {
                 if precipitationProb > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_probability"),
                         content: getPercentText(precipitationProb, decimal: 1)
                     )
@@ -93,6 +87,7 @@ struct DaySection: View {
             }
             if let wind = self.weather.dailyForecasts[index].day.wind {
                 DetailsValueItemView(
+                    iconName: "wind",
                     title: getLocalizedText("wind"),
                     content: getWindText(
                         wind: wind,
@@ -102,6 +97,7 @@ struct DaySection: View {
             }
             if let pressure = self.weather.dailyForecasts[index].day.pressure {
                 DetailsValueItemView(
+                    iconName: "gauge",
                     title: getLocalizedText("pressure"),
                     content: SettingsManager.shared.pressureUnit.formatValueWithUnit(
                         pressure,
@@ -111,12 +107,14 @@ struct DaySection: View {
             }
             if let humidity = self.weather.dailyForecasts[index].day.humidity {
                 DetailsValueItemView(
+                    iconName: "humidity",
                     title: getLocalizedText("humidity"),
                     content: getPercentText(humidity, decimal: 1)
                 )
             }
             if let visibility = self.weather.dailyForecasts[index].day.visibility {
                 DetailsValueItemView(
+                    iconName: "eye",
                     title: getLocalizedText("visibility"),
                     content: SettingsManager.shared.distanceUnit.formatValueWithUnit(
                         visibility,
@@ -147,18 +145,10 @@ struct NightSection: View {
                 temperature: self.weather.dailyForecasts[index].night.temperature
             )
             
-            if let realFeelTemp = self.weather.dailyForecasts[index].night.temperature.realFeelTemperature {
-                DetailsValueItemView(
-                    title: getLocalizedText("real_feel_temperature"),
-                    content: SettingsManager.shared.temperatureUnit.formatValueWithUnit(
-                        realFeelTemp,
-                        unit: getLocalizedText(SettingsManager.shared.temperatureUnit.key)
-                    )
-                )
-            }
             if let precipitationTotal = self.weather.dailyForecasts[index].night.precipitationTotal {
                 if precipitationTotal > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation"),
                         content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                             precipitationTotal,
@@ -170,6 +160,7 @@ struct NightSection: View {
             if let precipitationIntensity = self.weather.dailyForecasts[index].night.precipitationIntensity {
                 if precipitationIntensity > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_intensity"),
                         content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                             precipitationIntensity,
@@ -181,6 +172,7 @@ struct NightSection: View {
             if let precipitationProb = self.weather.dailyForecasts[index].night.precipitationProbability {
                 if precipitationProb > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_probability"),
                         content: getPercentText(precipitationProb, decimal: 1)
                     )
@@ -188,6 +180,7 @@ struct NightSection: View {
             }
             if let wind = self.weather.dailyForecasts[index].night.wind {
                 DetailsValueItemView(
+                    iconName: "wind",
                     title: getLocalizedText("wind"),
                     content: getWindText(
                         wind: wind,
@@ -197,6 +190,7 @@ struct NightSection: View {
             }
             if let pressure = self.weather.dailyForecasts[index].night.pressure {
                 DetailsValueItemView(
+                    iconName: "gauge",
                     title: getLocalizedText("pressure"),
                     content: SettingsManager.shared.pressureUnit.formatValueWithUnit(
                         pressure,
@@ -206,12 +200,14 @@ struct NightSection: View {
             }
             if let humidity = self.weather.dailyForecasts[index].night.humidity {
                 DetailsValueItemView(
+                    iconName: "humidity",
                     title: getLocalizedText("humidity"),
                     content: getPercentText(humidity, decimal: 1)
                 )
             }
             if let visibility = self.weather.dailyForecasts[index].night.visibility {
                 DetailsValueItemView(
+                    iconName: "eye",
                     title: getLocalizedText("visibility"),
                     content: SettingsManager.shared.distanceUnit.formatValueWithUnit(
                         visibility,
@@ -257,13 +253,6 @@ struct DailySection: View {
                     moonPhase: self.weather.dailyForecasts[index].moonPhase
                 )
             }
-            
-            if self.weather.dailyForecasts[index].uv.isValid() {
-                DetailsValueItemView(
-                    title: getLocalizedText("uv_index"),
-                    content: self.weather.dailyForecasts[index].uv.getUVDescription()
-                )
-            }
         }
     }
 }
@@ -279,6 +268,7 @@ struct DailyValuePart: View {
             if let precipitationTotal = self.weather.dailyForecasts[index].precipitationTotal {
                 if precipitationTotal > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation"),
                         content: SettingsManager.shared.precipitationUnit.formatValueWithUnit(
                             precipitationTotal,
@@ -290,6 +280,7 @@ struct DailyValuePart: View {
             if let precipitationIntensity = self.weather.dailyForecasts[index].precipitationIntensity {
                 if precipitationIntensity > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_intensity"),
                         content: SettingsManager.shared.precipitationIntensityUnit.formatValueWithUnit(
                             precipitationIntensity,
@@ -301,6 +292,7 @@ struct DailyValuePart: View {
             if let precipitationProb = self.weather.dailyForecasts[index].precipitationProbability {
                 if precipitationProb > 0 {
                     DetailsValueItemView(
+                        iconName: "drop",
                         title: getLocalizedText("precipitation_probability"),
                         content: getPercentText(precipitationProb, decimal: 1)
                     )
@@ -308,6 +300,7 @@ struct DailyValuePart: View {
             }
             if let wind = self.weather.dailyForecasts[index].wind {
                 DetailsValueItemView(
+                    iconName: "wind",
                     title: getLocalizedText("wind"),
                     content: getWindText(
                         wind: wind,
@@ -317,6 +310,7 @@ struct DailyValuePart: View {
             }
             if let pressure = self.weather.dailyForecasts[index].pressure {
                 DetailsValueItemView(
+                    iconName: "gauge",
                     title: getLocalizedText("pressure"),
                     content: SettingsManager.shared.pressureUnit.formatValueWithUnit(
                         pressure,
@@ -326,17 +320,26 @@ struct DailyValuePart: View {
             }
             if let humidity = self.weather.dailyForecasts[index].humidity {
                 DetailsValueItemView(
+                    iconName: "humidity",
                     title: getLocalizedText("humidity"),
                     content: getPercentText(humidity, decimal: 1)
                 )
             }
             if let visibility = self.weather.dailyForecasts[index].visibility {
                 DetailsValueItemView(
+                    iconName: "eye",
                     title: getLocalizedText("visibility"),
                     content: SettingsManager.shared.distanceUnit.formatValueWithUnit(
                         visibility,
                         unit: getLocalizedText(SettingsManager.shared.distanceUnit.key)
                     )
+                )
+            }
+            if self.weather.dailyForecasts[index].uv.isValid() {
+                DetailsValueItemView(
+                    iconName: "sun.max",
+                    title: getLocalizedText("uv_index"),
+                    content: self.weather.dailyForecasts[index].uv.getUVDescription()
                 )
             }
         }

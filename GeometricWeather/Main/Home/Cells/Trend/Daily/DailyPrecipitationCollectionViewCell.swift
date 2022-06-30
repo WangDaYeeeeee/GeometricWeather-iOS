@@ -48,32 +48,50 @@ class DailyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorPr
         self.location = location
         
         var histogramType = DailyPrecipitationHistogramType.none
+        var maxPrecipitationData = 0.0
         for daily in location.weather?.dailyForecasts ?? [] {
-            if daily.precipitationTotal != nil
-                || daily.day.precipitationTotal != nil
-                || daily.night.precipitationTotal != nil {
-                histogramType = .precipitationTotal(max: dailyPrecipitationHeavy)
-                break
+            if histogramType == .none {
+                if daily.precipitationTotal != nil
+                    || daily.day.precipitationTotal != nil
+                    || daily.night.precipitationTotal != nil {
+                    histogramType = .precipitationTotal(max: 0.0)
+                }
+                if daily.precipitationIntensity != nil
+                    || daily.day.precipitationIntensity != nil
+                    || daily.night.precipitationIntensity != nil {
+                    histogramType = .precipitationIntensity(max: 0.0)
+                }
             }
-            if daily.precipitationIntensity != nil
-                || daily.day.precipitationIntensity != nil
-                || daily.night.precipitationIntensity != nil {
-                histogramType = .precipitationIntensity(max: precipitationIntensityHeavy)
+            
+            switch histogramType {
+            case .precipitationTotal(_):
+                maxPrecipitationData = max(maxPrecipitationData, daily.precipitationTotal ?? 0.0)
+                maxPrecipitationData = max(maxPrecipitationData, daily.day.precipitationTotal ?? 0.0)
+                maxPrecipitationData = max(maxPrecipitationData, daily.night.precipitationTotal ?? 0.0)
+                break
+            case .precipitationIntensity(_):
+                maxPrecipitationData = max(maxPrecipitationData, daily.precipitationIntensity ?? 0.0)
+                maxPrecipitationData = max(maxPrecipitationData, daily.day.precipitationIntensity ?? 0.0)
+                maxPrecipitationData = max(maxPrecipitationData, daily.night.precipitationIntensity ?? 0.0)
+                break
+            default:
                 break
             }
         }
-        self.histogramType = histogramType
         
         switch histogramType {
-            
-        case .precipitationIntensity(let max):
-            self.maxPrecipitationValue = max
-            
-        case .precipitationTotal(let max):
-            self.maxPrecipitationValue = max
-            
+        case .precipitationIntensity(_):
+            self.histogramType = .precipitationIntensity(max: maxPrecipitationData)
+            self.maxPrecipitationValue = maxPrecipitationData
+            break
+        case .precipitationTotal(_):
+            self.histogramType = .precipitationTotal(max: maxPrecipitationData)
+            self.maxPrecipitationValue = maxPrecipitationData
+            break
         default:
+            self.histogramType = .none
             self.maxPrecipitationValue = 0.0
+            break
         }
     }
     

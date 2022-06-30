@@ -7,13 +7,13 @@
 
 import Foundation
 
-public func isDaylight() -> Bool {
-    let hour = Calendar.current.component(.hour, from: Date())
-    return 6 <= hour && hour < 18;
-}
-
-public func isDaylight(location: Location) -> Bool {
-    return location.isDaylight
+public func isDaylight(location: Location? = nil) -> Bool {
+    let sunRiseProgress = Astro.getRiseProgress(
+        for: location?.weather?.dailyForecasts.get(0)?.sun,
+        in: location?.timezone ?? .current
+    )
+    
+    return 0.0 < sunRiseProgress && sunRiseProgress < 1.0
 }
 
 public struct Location: Equatable {
@@ -69,17 +69,7 @@ public struct Location: Equatable {
     
     public var isDaylight: Bool {
         get {
-            if let weather = self.weather {
-                return weather.isDaylight(timezone: timezone)
-            } else {
-                let timezoneDate = Date(
-                    timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-                        timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-                    )
-                )
-                let hour = Calendar.current.component(.hour, from: timezoneDate)
-                return 6 <= hour && hour < 18;
-            }
+            return GeometricWeatherCore.isDaylight(location: self)
         }
     }
     

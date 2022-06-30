@@ -44,22 +44,33 @@ class HourlyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorP
     required init(_ location: Location) {
         self.location = location
         
-        var histogramType = HourlyPrecipitationHistogramType.none
+        var histogramType = DailyPrecipitationHistogramType.none
+        var maxPrecipitationData = 0.0
         for hourly in location.weather?.hourlyForecasts ?? [] {
-            if hourly.precipitationIntensity != nil {
-                histogramType = .precipitationIntensity(max: precipitationIntensityHeavy)
+            if histogramType == .none {
+                if hourly.precipitationIntensity != nil {
+                    histogramType = .precipitationIntensity(max: 0.0)
+                }
+            }
+            
+            switch histogramType {
+            case .precipitationIntensity(_):
+                maxPrecipitationData = max(maxPrecipitationData, hourly.precipitationIntensity ?? 0.0)
+                break
+            default:
                 break
             }
         }
-        self.histogramType = histogramType
         
         switch histogramType {
-            
-        case .precipitationIntensity(let max):
-            self.maxPrecipitationValue = max
-            
+        case .precipitationIntensity(_):
+            self.histogramType = .precipitationIntensity(max: maxPrecipitationData)
+            self.maxPrecipitationValue = maxPrecipitationData
+            break
         default:
+            self.histogramType = .none
             self.maxPrecipitationValue = 0.0
+            break
         }
     }
     

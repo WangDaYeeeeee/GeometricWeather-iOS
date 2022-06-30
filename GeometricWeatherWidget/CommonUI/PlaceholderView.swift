@@ -18,8 +18,6 @@ struct PlaceholderView: View {
                 Spacer()
                 Image(namedInBasic: "launch_icon")?
                     .resizable()
-                    .antialiased(true)
-                    .scaledToFit()
                     .frame(width: 96, height: 96)
                 Spacer()
             }

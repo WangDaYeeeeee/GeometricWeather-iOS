@@ -20,8 +20,6 @@ struct MainNavigationTitleView: View {
             if self.isCurrentLocation {
                 Image(systemName: "location.fill")
                     .resizable()
-                    .antialiased(true)
-                    .scaledToFit()
                     .frame(width: 10, height: 10)
             }
             

@@ -89,13 +89,12 @@ struct DailyItemView: View {
                 .foregroundColor(.white)
             
             
-            Image.getWeatherIcon(
+            UIImage.getWeatherIcon(
                 weatherCode: self.dayWeatherCode,
                 daylight: true
-            )?.resizable()
-                .antialiased(true)
-                .scaledToFit()
-                .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            )?.resize(
+                to: CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            )?.toImage()
                 .padding(.bottom, 2.0)
             
             MiddleUnitText(
@@ -170,14 +169,13 @@ struct DailyItemView: View {
             ).padding(
                 .bottom, 2.0
             )
-
-            Image.getWeatherIcon(
+            
+            UIImage.getWeatherIcon(
                 weatherCode: self.nightWeatherCode,
                 daylight: false
-            )?.resizable()
-                .antialiased(true)
-                .scaledToFit()
-                .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            )?.resize(
+                to: CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+            )?.toImage()
         }
     }
 }
@@ -228,13 +226,12 @@ struct HourlyItemView: View {
                     .font(Font(miniCaptionFont).weight(.bold))
                     .foregroundColor(.white)
                 
-                Image.getWeatherIcon(
+                UIImage.getWeatherIcon(
                     weatherCode: self.weatherCode,
                     daylight: self.daylight
-                )?.resizable()
-                    .antialiased(true)
-                    .scaledToFit()
-                    .frame(width: normalWeatherIconSize, height: normalWeatherIconSize)
+                )?.resize(
+                    to: CGSize(width: normalWeatherIconSize, height: normalWeatherIconSize)
+                )?.toImage()
                 
                 MiddleUnitText(
                     value: SettingsManager.shared.temperatureUnit.formatValueWithUnit(

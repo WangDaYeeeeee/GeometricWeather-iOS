@@ -98,11 +98,7 @@ public struct Daily: Codable {
         let month = Calendar.current.component(.month, from: dailyDate)
         let day = Calendar.current.component(.day, from: dailyDate)
         
-        let localDate = Date(
-            timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-                timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-            )
-        )
+        let localDate = Date.now(in: timezone)
         let localYear = Calendar.current.component(.year, from: localDate)
         let localMonth = Calendar.current.component(.month, from: localDate)
         let localDay = Calendar.current.component(.day, from: localDate)

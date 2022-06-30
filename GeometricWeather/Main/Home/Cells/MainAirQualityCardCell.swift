@@ -87,7 +87,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let pm25 = aqi.pm25 {
             if pm25 > 0 {
                 self.linearProgressViews.append((
-                    pm25 / 250.0,
+                    (pm25 / 250.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getPm25Level()),
                     self.generateLinearProgressView(
                         topDescription: "PM2.5",
@@ -99,7 +99,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let pm10 = aqi.pm10 {
             if pm10 > 0 {
                 self.linearProgressViews.append((
-                    pm10 / 420.0,
+                    (pm10 / 420.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getPm10Level()),
                     self.generateLinearProgressView(
                         topDescription: "PM10",
@@ -111,7 +111,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let no2 = aqi.no2 {
             if no2 > 0 {
                 self.linearProgressViews.append((
-                    no2 / 565.0,
+                    (no2 / 565.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getNo2Level()),
                     self.generateLinearProgressView(
                         topDescription: "NO₂",
@@ -123,7 +123,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let so2 = aqi.so2 {
             if so2 > 0 {
                 self.linearProgressViews.append((
-                    so2 / 1600.0,
+                    (so2 / 1600.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getSo2Level()),
                     self.generateLinearProgressView(
                         topDescription: "SO₂",
@@ -135,7 +135,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let o3 = aqi.o3 {
             if o3 > 0 {
                 self.linearProgressViews.append((
-                    o3 / 800.0,
+                    (o3 / 800.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getO3Level()),
                     self.generateLinearProgressView(
                         topDescription: "O₃",
@@ -147,7 +147,7 @@ class MainAirQualityCardCell: MainTableViewCell {
         if let co = aqi.co {
             if co > 0 {
                 self.linearProgressViews.append((
-                    co / 90.0,
+                    (co / 90.0).keepIn(range: 0...1),
                     getLevelColor(aqi.getCOLevel()),
                     self.generateLinearProgressView(
                         topDescription: "CO",

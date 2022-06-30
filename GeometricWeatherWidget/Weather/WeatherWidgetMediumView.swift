@@ -129,13 +129,12 @@ struct WeatherWidgetMediumHeaderView: View {
                         .background(aqiWindBackground.cornerRadius(aqiWindCornerRadius))
                 }
                 
-                Image.getWeatherIcon(
+                UIImage.getWeatherIcon(
                     weatherCode: self.location.weather?.current.weatherCode ?? .clear,
                     daylight: self.location.isDaylight
-                )?.resizable()
-                    .antialiased(true)
-                    .scaledToFit()
-                    .frame(width: largeWeatherIconSize, height: largeWeatherIconSize)
+                )?.resize(
+                    to: CGSize(width: largeWeatherIconSize, height: largeWeatherIconSize)
+                )?.toImage()
             }
         }
     }

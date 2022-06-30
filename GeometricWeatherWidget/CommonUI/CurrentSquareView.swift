@@ -94,16 +94,12 @@ struct CurrentSquareView: View {
             Spacer()
             
             HStack(spacing: 4.0) {
-                Image.getWeatherIcon(
+                UIImage.getWeatherIcon(
                     weatherCode: self.currentWeatherCode,
                     daylight: self.currentDaylight
-                )?.resizable()
-                    .antialiased(true)
-                    .scaledToFit()
-                    .frame(
-                        width: miniWeatherIconSize,
-                        height: miniWeatherIconSize
-                    )
+                )?.resize(
+                    to: CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
+                )?.toImage()
                 
                 Text(self.currentWeatherText)
                     .font(Font(captionFont).weight(.bold))

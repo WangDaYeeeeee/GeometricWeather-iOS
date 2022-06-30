@@ -218,13 +218,12 @@ private struct VerticalIconView: View {
             ForEach(self.weatherCodes.indices, id: \.self) { i in
                 VStack {
                     Spacer()
-                    Image.getWeatherIcon(
+                    UIImage.getWeatherIcon(
                         weatherCode: self.weatherCodes[i],
                         daylight: self.daytime
-                    )?.resizable()
-                        .antialiased(true)
-                        .scaledToFit()
-                        .frame(width: miniWeatherIconSize, height: miniWeatherIconSize)
+                    )?.resize(
+                        to: CGSize(width: miniWeatherIconSize, height: miniWeatherIconSize)
+                    )?.toImage()
                     Spacer()
                 }
             }

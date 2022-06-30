@@ -37,7 +37,6 @@ struct DetailsSectionTitleView: View {
     }
 }
 
-
 // MARK: - weather header.
 
 struct DetailsWeatherHeaderView: View {
@@ -95,26 +94,29 @@ struct DetailsWeatherHeaderView: View {
 
 struct DetailsValueItemView: View {
     
+    let iconName: String
     let title: String
     let content: String
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(
-                self.title
-            ).font(
-                Font(titleFont)
-            ).foregroundColor(
-                Color(UIColor.label)
-            )
+        HStack(alignment: .center, spacing: littleMargin) {
+            if !iconName.isEmpty {
+                Image(systemName: self.iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20.0, height: 20.0, alignment: .center)
+                    .foregroundColor(Color(UIColor.label))
+            }
             
-            Text(
-                self.content
-            ).font(
-                Font(bodyFont)
-            ).foregroundColor(
-                Color(UIColor.secondaryLabel)
-            )
+            VStack(alignment: .leading) {
+                Text(self.title)
+                    .font(Font(titleFont))
+                    .foregroundColor(Color(UIColor.label))
+                
+                Text(self.content)
+                    .font(Font(bodyFont))
+                    .foregroundColor(Color(UIColor.secondaryLabel))
+            }
         }.padding(itemEdgeInsets)
     }
 }
@@ -198,7 +200,7 @@ struct DetailsSunMoonItemView: View {
     }
 }
 
-// MARK: - daily air quality item.
+// MARK: - details air quality item.
 
 struct DetailsAirQualityItemView: View {
     
@@ -328,7 +330,7 @@ struct DetailsAirQualityItemView: View {
     }
 }
 
-// MARK: - daily progress.
+// MARK: - details progress.
 
 struct DetailsProgressView: View {
     
@@ -435,7 +437,7 @@ struct DetailsProgressView: View {
     }
 }
 
-// MARK: - daily pollen.
+// MARK: - details pollen.
 
 struct DetailsPollenView: View {
     
@@ -490,7 +492,7 @@ struct DetailsPollenView: View {
     }
 }
 
-// MARK: - daily dot value item.
+// MARK: - details dot value item.
 
 struct DetailsDotValueItemView: View {
     
@@ -514,21 +516,15 @@ struct DetailsDotValueItemView: View {
             )
             
             VStack(alignment: .leading, spacing: 2.0) {
-                Text(
-                    self.title
-                ).font(
-                    Font(titleFont)
-                ).foregroundColor(
-                    Color(UIColor.label)
-                )
+                Text(self.title)
+                    .font(Font(titleFont))
+                    .lineLimit(1)
+                    .foregroundColor(Color(UIColor.label))
                 
-                Text(
-                    self.description
-                ).font(
-                    Font(miniCaptionFont)
-                ).foregroundColor(
-                    Color(UIColor.tertiaryLabel)
-                )
+                Text(self.description)
+                    .font(Font(miniCaptionFont))
+                    .lineLimit(1)
+                    .foregroundColor(Color(UIColor.tertiaryLabel))
             }
             
             Spacer()

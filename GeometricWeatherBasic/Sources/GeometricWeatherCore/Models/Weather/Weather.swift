@@ -48,26 +48,4 @@ public struct Weather: Codable, Equatable {
         return currentTime >= updateTime
                 && currentTime - updateTime < pollingIntervalHours * 60 * 60;
     }
-    
-    public func isDaylight(timezone: TimeZone) -> Bool {
-        if let riseTime = dailyForecasts[0].sun.riseTime,
-           let setTime = dailyForecasts[0].sun.setTime {
-            
-            let currentTime = Date(
-                timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-                    timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-                )
-            ).timeIntervalSince1970
-            
-            return riseTime <= currentTime && currentTime < setTime
-        } else {
-            let timezoneDate = Date(
-                timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-                    timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-                )
-            )
-            let hour = Calendar.current.component(.hour, from: timezoneDate)
-            return 6 <= hour && hour < 18;
-        }
-    }
 }

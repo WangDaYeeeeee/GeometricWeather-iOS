@@ -156,9 +156,15 @@ class HomeViewController: UIViewController,
             self?.updateTableView()
         }
         self.vm.loading.addObserver(self) { [weak self] newValue in
-            if newValue == self?.tableView.refreshControl?.isRefreshing {
+            if newValue != self?.vm.loading.value {
+                // this value is not the final state.
                 return
             }
+            if newValue == self?.tableView.refreshControl?.isRefreshing {
+                // this value is equal to current state of UI.
+                return
+            }
+            
             if newValue {
                 self?.tableView.refreshControl?.beginRefreshingWithOffset()
             } else {

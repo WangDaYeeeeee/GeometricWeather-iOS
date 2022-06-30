@@ -145,15 +145,9 @@ class HourlyViewController: GeoViewController<(location: Location, initIndex: In
     // MARK: - ui.
     
     private func updateTitle(_ index: Int) {
-        self.navigationItem.title = getHourText(
-            hour: self.param.location.weather?.hourlyForecasts.get(index)?.getHour(
-                isTwelveHour(),
-                timezone: self.param.location.timezone
-            ) ?? 0
-        ) + ", " + (
-            self.param.location.weather?.hourlyForecasts.get(index)?.formatDate(
-                format: getLocalizedText("date_format_long")
-            ) ?? ""
+        self.navigationItem.title = formateTime(
+            timeIntervalSine1970: self.param.location.weather?.hourlyForecasts.get(index)?.time ?? 0.0,
+            twelveHour: isTwelveHour()
         )
     }
     

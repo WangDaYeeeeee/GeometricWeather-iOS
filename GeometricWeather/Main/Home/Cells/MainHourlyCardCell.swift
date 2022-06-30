@@ -208,20 +208,33 @@ class MainHourlyCardCell: MainTableViewCell,
             make.trailing.equalToSuperview().offset(-normalMargin)
         }
         
-        self.minutelyView.polylineColor = UIColor(
+        let color = UIColor(
             ThemeManager.weatherThemeDelegate.getThemeColor(
                 weatherKind: weatherCodeToWeatherKind(code: weather.current.weatherCode),
                 daylight: location.isDaylight
             )
         )
+        self.minutelyView.polylineColor = { _ in color }
+        self.minutelyView.baselineColor = color
+        self.minutelyView.polylineTintColor = .systemBlue
+        
+        let maxIntensity = minutely.precipitationIntensities.max { a, b in a < b } ?? precipitationIntensityHeavy
         self.minutelyView.polylineValues = minutely.precipitationIntensities.map { intensity in
-            min(
-                1.0,
-                intensity / precipitationIntensityHeavy
-            )
+            min(1.0, intensity / maxIntensity)
         }
+        self.minutelyView.polylineDescriptionMapper = { value in
+            let unit = SettingsManager
+                .shared
+                .precipitationIntensityUnit
+            return unit.formatValueWithUnit(value * maxIntensity, unit: getLocalizedText(unit.key))
+        }
+        
         self.minutelyView.beginTime = formateTime(
             timeIntervalSine1970: minutely.beginTime,
+            twelveHour: isTwelveHour()
+        )
+        self.minutelyView.centerTime = formateTime(
+            timeIntervalSine1970: (minutely.beginTime + minutely.endTime) / 2.0,
             twelveHour: isTwelveHour()
         )
         self.minutelyView.endTime = formateTime(

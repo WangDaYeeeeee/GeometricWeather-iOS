@@ -48,13 +48,12 @@ struct CurrentWidgetEntryView : View {
                     )
                 }
                 
-                Image.getWeatherIcon(
+                UIImage.getWeatherIcon(
                     weatherCode: self.entry.location.weather!.current.weatherCode,
                     daylight: self.entry.location.isDaylight
-                )?.resizable()
-                    .antialiased(true)
-                    .scaledToFit()
-                    .frame(width: elementSize, height: elementSize)
+                )?.resize(
+                    to: CGSize(width: elementSize, height: elementSize)
+                )?.toImage()
                     .offset(x: elementOffsetX, y: -elementOffsetY)
                 Spacer()
             }.padding()

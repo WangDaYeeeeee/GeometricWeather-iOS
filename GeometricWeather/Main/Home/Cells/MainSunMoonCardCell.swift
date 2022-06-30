@@ -204,22 +204,19 @@ class MainSunMoonCardCell: MainTableViewCell {
     override func staggeredScrollIntoScreen(atFirstTime: Bool) {
         if atFirstTime {
             var sunProgress = -1.0
-            var moonProgress = -1.0
-            if let riseTime = self.location?.weather?.dailyForecasts[0].sun.riseTime,
-               let setTime = self.location?.weather?.dailyForecasts[0].sun.setTime {
-                sunProgress = getPathProgress(
-                    riseTime: riseTime,
-                    setTime: setTime,
-                    timezone: self.location?.timezone ?? .current
-                )
+            if self.location?.weather?.dailyForecasts.get(0)?.sun.isValid() == true {
+                sunProgress = Astro.getRiseProgress(
+                    for: self.location?.weather?.dailyForecasts.get(0)?.sun,
+                    in: self.location?.timezone ?? .current
+                ).keepIn(range: 0...1)
             }
-            if let riseTime = self.location?.weather?.dailyForecasts[0].moon.riseTime,
-               let setTime = self.location?.weather?.dailyForecasts[0].moon.setTime {
-                moonProgress = getPathProgress(
-                    riseTime: riseTime,
-                    setTime: setTime,
-                    timezone: self.location?.timezone ?? .current
-                )
+            
+            var moonProgress = -1.0
+            if self.location?.weather?.dailyForecasts.get(0)?.moon.isValid() == true {
+                moonProgress = Astro.getRiseProgress(
+                    for: self.location?.weather?.dailyForecasts.get(0)?.moon,
+                    in: self.location?.timezone ?? .current
+                ).keepIn(range: 0...1)
             }
             
             self.sunMoonPathView.setProgress(
@@ -231,24 +228,4 @@ class MainSunMoonCardCell: MainTableViewCell {
             )
         }
     }
-}
-
-// MARK: - ui.
-
-private func getPathProgress(
-    riseTime: TimeInterval,
-    setTime: TimeInterval,
-    timezone: TimeZone
-) -> Double {
-    let currentTime = Date(
-        timeIntervalSince1970: Date().timeIntervalSince1970 + Double(
-            timezone.secondsFromGMT() - TimeZone.current.secondsFromGMT()
-        )
-    ).timeIntervalSince1970
-
-    var progress = (currentTime - riseTime) / (setTime - riseTime)
-
-    progress = max(0.0, progress);
-    progress = min(1.0, progress);
-    return progress;
 }

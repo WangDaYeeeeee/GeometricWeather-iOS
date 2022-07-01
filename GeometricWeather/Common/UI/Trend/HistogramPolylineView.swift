@@ -25,7 +25,8 @@ private let highlightProgressDeltaY = 3.0
 
 private struct PolylineElement {
     let shape: CAShapeLayer
-    let top: CGPoint
+    let layoutTopPoint: CGPoint
+    let value: Double
 }
 
 class HistogramPolylineView: UIView {
@@ -114,7 +115,7 @@ class HistogramPolylineView: UIView {
     
     // gesture.
         
-    private var isTouching = false
+    private var needToTrackTouching: Bool? = nil
     private var isDragging = false
     private var isHorizontalDragging = false
     
@@ -136,7 +137,7 @@ class HistogramPolylineView: UIView {
     
     // MARK: - reactor.
     
-    private let dragSwitchImpactor = UIImpactFeedbackGenerator(style: .soft)
+    private let dragSwitchImpactor = UISelectionFeedbackGenerator()
     
     // MARK: - init.
     
@@ -274,7 +275,6 @@ class HistogramPolylineView: UIView {
                     continue
                 }
                 
-                let top = CGPoint(x: x, y: y)
                 let color = self.polylineColor(y)
                 
                 let shape = CAShapeLayer()
@@ -288,7 +288,21 @@ class HistogramPolylineView: UIView {
                 shape.shadowOpacity = 0.5
                 shape.shadowColor = color.cgColor
                 
-                shape.path = self.getPolylinePath(by: top).cgPath
+                let path = UIBezierPath()
+                path.move(
+                    to: CGPoint(
+                        x: self.getLayoutRtlX(x),
+                        y: self.getLayoutY(0)
+                    )
+                )
+                path.addLine(
+                    to: CGPoint(
+                        x: self.getLayoutRtlX(x),
+                        y: self.getLayoutY(y)
+                    )
+                )
+                
+                shape.path = path.cgPath
                 shape.shadowPath = shape.path?.copy(
                     strokingWithWidth: shape.lineWidth,
                     lineCap: .round,
@@ -297,7 +311,14 @@ class HistogramPolylineView: UIView {
                 )
                                 
                 self.polylineElements.append(
-                    PolylineElement(shape: shape, top: top)
+                    PolylineElement(
+                        shape: shape,
+                        layoutTopPoint: CGPoint(
+                            x: self.getLayoutRtlX(x),
+                            y: self.getLayoutY(y)
+                        ),
+                        value: y
+                    )
                 )
                 self.layer.addSublayer(shape)
             }
@@ -350,23 +371,6 @@ class HistogramPolylineView: UIView {
         )
     }
     
-    private func getPolylinePath(by top: CGPoint) -> UIBezierPath {
-        let path = UIBezierPath()
-        path.move(
-            to: CGPoint(
-                x: self.getLayoutRtlX(top.x),
-                y: self.getLayoutY(0)
-            )
-        )
-        path.addLine(
-            to: CGPoint(
-                x: self.getLayoutRtlX(top.x),
-                y: self.getLayoutY(top.y)
-            )
-        )
-        return path
-    }
-    
     private func getLayoutRtlX(_ x: CGFloat) -> CGFloat {
         let len = (self.frame.width - 2 * paddingHorizontal) * x
         
@@ -386,14 +390,14 @@ class HistogramPolylineView: UIView {
     // MARK: - gesture.
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return paddingTop < point.y && point.y < self.frame.height - trendPaddingBottom
+        return paddingTop < point.y
     }
     
     override func gestureRecognizerShouldBegin(
         _ gestureRecognizer: UIGestureRecognizer
     ) -> Bool {
         // return true if user is we are not tracking user's touching.
-        if !self.isTouching {
+        if self.needToTrackTouching == false {
             return true
         }
         // return false if we have already detected that user is dragging horizontally.
@@ -426,15 +430,15 @@ class HistogramPolylineView: UIView {
             let touchPoint = touch.location(in: self)
             
             // we won't to track user's touching if the first touch is not on a polyline.
-            self.isTouching = self.indexPolyline(by: touchPoint) != nil
-            if self.isTouching {
+            self.needToTrackTouching = self.indexPolyline(by: touchPoint) != nil
+            if self.needToTrackTouching == true {
                 self.highlightPolyline(to: touchPoint)
             }
         }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !self.isTouching {
+        if self.needToTrackTouching != true {
             super.touchesMoved(touches, with: event)
             return
         }
@@ -466,8 +470,9 @@ class HistogramPolylineView: UIView {
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !self.isTouching {
+        if self.needToTrackTouching != true {
             
+            self.needToTrackTouching = nil
             self.isDragging = false
             self.isHorizontalDragging = false
             
@@ -480,18 +485,19 @@ class HistogramPolylineView: UIView {
         }
         self.highlightPolyline(to: nil)
         
-        self.isTouching = false
+        self.needToTrackTouching = nil
         self.isDragging = false
         self.isHorizontalDragging = false
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !self.isTouching {
+        if self.needToTrackTouching != true {
             
+            self.needToTrackTouching = nil
             self.isDragging = false
             self.isHorizontalDragging = false
             
-            super.touchesCancelled(touches, with: event)
+            super.touchesEnded(touches, with: event)
             return
         }
         
@@ -500,7 +506,7 @@ class HistogramPolylineView: UIView {
         }
         self.highlightPolyline(to: nil)
         
-        self.isTouching = false
+        self.needToTrackTouching = nil
         self.isDragging = false
         self.isHorizontalDragging = false
     }
@@ -512,35 +518,37 @@ class HistogramPolylineView: UIView {
             return
         }
         
-        self.dragSwitchImpactor.impactOccurred()
+        self.dragSwitchImpactor.selectionChanged()
         
         var prevPolylineTopPoint: CGPoint? = nil
         if let prevIndex = prevIndex,
             let element = self.polylineElements.get(prevIndex) {
             
             prevPolylineTopPoint = CGPoint(
-                x: self.getLayoutRtlX(element.top.x),
-                y: self.getLayoutY(element.top.y) - highlightProgressDeltaY
+                x: element.layoutTopPoint.x,
+                y: element.layoutTopPoint.y - highlightProgressDeltaY
             )
-                        
-            let pathEnd = self.getPolylinePath(by: element.top)
-            self.animate(shape: element.shape, to: pathEnd, and: self.polylineColor(element.top.y))
+            
+            let path = UIBezierPath()
+            path.move(to: CGPoint(x: element.layoutTopPoint.x, y: self.getLayoutY(0)))
+            path.addLine(to: element.layoutTopPoint)
+            self.animate(shape: element.shape, to: path, and: self.polylineColor(element.layoutTopPoint.y))
         }
         if let currIndex = currIndex,
             let element = self.polylineElements.get(currIndex) {
             
             let polylineTopPoint = CGPoint(
-                x: self.getLayoutRtlX(element.top.x),
-                y: self.getLayoutY(element.top.y) - highlightProgressDeltaY
+                x: element.layoutTopPoint.x,
+                y: element.layoutTopPoint.y - highlightProgressDeltaY
             )
-                       
-            let pathEnd = self.getPolylinePath(by: element.top)
-            pathEnd.addLine(to: polylineTopPoint)
-            
-            self.animate(shape: element.shape, to: pathEnd, and: self.polylineTintColor)
+                
+            let path = UIBezierPath()
+            path.move(to: CGPoint(x: element.layoutTopPoint.x, y: self.getLayoutY(0)))
+            path.addLine(to: polylineTopPoint)
+            self.animate(shape: element.shape, to: path, and: self.polylineTintColor)
             
             self.dragIndicator.setTitle(
-                self.polylineDescriptionMapper?(element.top.y),
+                self.polylineDescriptionMapper?(element.value),
                 for: .normal
             )
             self.dragIndicator.frame.size = self.dragIndicator.intrinsicContentSize
@@ -553,36 +561,15 @@ class HistogramPolylineView: UIView {
     }
     
     private func indexPolyline(by layoutPoint: CGPoint) -> Int? {
-        let triggerX = (self.frame.width - 2.0 * paddingHorizontal)
-        / Double(self.expectedValueCount)
+        let triggerX = 0.5 * (self.frame.width - 2.0 * paddingHorizontal) / Double(self.expectedValueCount - 1)
         
         for (i, element) in self.polylineElements.enumerated() {
-            let deltaX = self.getLayoutRtlX(element.top.x) - layoutPoint.x
+            let deltaX = element.layoutTopPoint.x - layoutPoint.x
             if abs(deltaX) <= triggerX {
                 return i
             }
         }
         return nil
-    }
-    
-    private func getTopX(_ layoutX: CGFloat) -> CGFloat {
-        if self.isRtl {
-            return (
-                self.frame.width - paddingHorizontal - layoutX
-            ) / (
-                self.frame.width - 2 * paddingHorizontal
-            )
-        }
-        
-        return (layoutX - paddingHorizontal) / (self.frame.width - 2 * paddingHorizontal)
-    }
-    
-    private func getTopY(_ layoutY: CGFloat) -> CGFloat {
-        return (
-            self.frame.height - trendPaddingBottom - layoutY
-        ) / (
-            self.frame.height - paddingTop - trendPaddingBottom
-        )
     }
     
     private func animate(shape: CAShapeLayer, to path: UIBezierPath, and color: UIColor) {
@@ -622,14 +609,14 @@ class HistogramPolylineView: UIView {
             let endCenterPoint = self.getIndicatorCenter(by: layoutAnchor!)
             centerAnimation.fromValue = CGPoint(
                 x: endCenterPoint.x,
-                y: endCenterPoint.y + highlightProgressDeltaY * 2.0
+                y: endCenterPoint.y + highlightProgressDeltaY * 0.5
             )
         }
         if layoutAnchor == nil {
             let endCenterPoint = self.getIndicatorCenter(by: prevLayoutAnchor!)
             centerAnimation.toValue = CGPoint(
                 x: endCenterPoint.x,
-                y: endCenterPoint.y + highlightProgressDeltaY * 2.0
+                y: endCenterPoint.y + highlightProgressDeltaY * 0.5
             )
         } else {
             centerAnimation.toValue = self.getIndicatorCenter(by: layoutAnchor!)
@@ -639,7 +626,7 @@ class HistogramPolylineView: UIView {
         alphaAnimation.toValue = layoutAnchor == nil ? 0.0 : 1.0
         
         let animationGroup = CAAnimationGroup()
-        animationGroup.duration = highlightAnimationDuration
+        animationGroup.duration = highlightAnimationDuration * 0.5
         animationGroup.fillMode = .forwards
         animationGroup.isRemovedOnCompletion = false
         animationGroup.timingFunction = CAMediaTimingFunction(name: .easeOut)

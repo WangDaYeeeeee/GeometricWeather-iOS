@@ -23,7 +23,13 @@ class SearchResultController: GeoViewController<Bool>,
     
     // controllers.
     
-    private let weatherApi = getWeatherApi(SettingsManager.shared.weatherSource)
+    private let weatherApiDict = WeatherSource.all.reduce(
+        [WeatherSource: WeatherApi]()
+    ) { result, weatherSource in
+        var result = result
+        result[weatherSource] = getWeatherApi(weatherSource)
+        return result
+    }
         
     // inner data.
     
@@ -107,9 +113,11 @@ class SearchResultController: GeoViewController<Bool>,
         self.cancelRequest()
         self.requesting.value = true
         
-        self.weatherApi.getLocation(
-            text
-        ) { [weak self] locations in
+        let query = self.decodeSearchQuery(text)
+        let api = self.weatherApiDict[query.weatherSource]
+        ?? self.weatherApiDict.first!.value
+        
+        api.getLocation(query.query) { [weak self] locations in
             guard let strongSelf = self else {
                 return
             }
@@ -128,8 +136,49 @@ class SearchResultController: GeoViewController<Bool>,
         }
     }
     
+    private func decodeSearchQuery(
+        _ text: String
+    ) -> (query: String, weatherSource: WeatherSource) {
+        // for example: $accu$   South of market --> South of market in accuweather.com
+        let pattern = "^\\$.*\\$"
+        let range = NSRange(location: 0, length: text.count)
+        
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            if let sourceCompareResult = regex.firstMatch(in: text, range: range),
+                let sourceRange = Range(sourceCompareResult.range, in: text){
+                return (
+                    query: String(
+                        regex.stringByReplacingMatches(
+                            in: text,
+                            range: range,
+                            withTemplate: ""
+                        ).trimmingCharacters(in: .whitespaces)
+                    ),
+                    weatherSource: WeatherSource[
+                        text[sourceRange].trimmingCharacters(
+                            in: CharacterSet(charactersIn: "$")
+                        )
+                    ]
+                )
+            }
+        } catch {
+            printLog(
+                keyword: "search",
+                content: "Build regular expression failed with an error: \(error)"
+            )
+        }
+        
+        return (
+            query: text,
+            weatherSource: SettingsManager.shared.weatherSource
+        )
+    }
+    
     private func cancelRequest() {
-        self.weatherApi.cancel()
+        self.weatherApiDict.forEach { key, api in
+            api.cancel()
+        }
     }
     
     func resetList() {

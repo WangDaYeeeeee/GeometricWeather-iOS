@@ -559,11 +559,11 @@ struct AccuMinutelyResult: Codable {
 struct AccuInterval: Codable {
     let startEpochDateTime: Int
     let minute: Int
-    let dbz: Int
-    let shortPhrase: ShortPhrase
+    let dbz: Double
+    let shortPhrase: String
     let iconCode: Int
-    let cloudCover: Int
-    let lightningRate: Int
+    let cloudCover: Double
+    let lightningRate: Double
 
     enum CodingKeys: String, CodingKey {
         case startEpochDateTime = "StartEpochDateTime"
@@ -574,10 +574,6 @@ struct AccuInterval: Codable {
         case cloudCover = "CloudCover"
         case lightningRate = "LightningRate"
     }
-}
-
-enum ShortPhrase: String, Codable {
-    case noPrecipitation = "No Precipitation"
 }
 
 // MARK: - AccuMinutelySummaryElement

@@ -19,6 +19,10 @@ struct DailyTrendCellTapAction {
     let index: Int
 }
 
+struct DailyTrendManuallyScrollEvent {
+    let targetDayOfYear: Int
+}
+
 class MainDailyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout,
@@ -36,6 +40,10 @@ class MainDailyCardCell: MainTableViewCell,
     // MARK: - data.
     
     private var validTrendGenerators = [MainTrendGeneratorProtocol]()
+    
+    private var isChangingDailyCollectionViewScrollOffsetManually = false
+    private var isDraggingDailyCollectionView = false
+    private var currentScrollDayOfYear = -1
     
     // MARK: - life cycle.
     
@@ -128,7 +136,7 @@ class MainDailyCardCell: MainTableViewCell,
             && self.dailyCollectionView.numberOfItems(inSection: 0) != 0 {
             self.dailyCollectionView.scrollToItem(
                 at: IndexPath(row: 0, section: 0),
-                at: .left,
+                at: .start,
                 animated: false
             )
         }
@@ -146,6 +154,22 @@ class MainDailyCardCell: MainTableViewCell,
     @objc private func onDeviceOrientationChanged() {
         if !self.dailyCollectionView.indexPathsForVisibleItems.isEmpty {
             self.dailyCollectionView.reloadData()
+        }
+    }
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        self.window?
+            .windowScene?
+            .eventBus
+            .unregister(self, for: HourlyTrendManuallyScrollEvent.self)
+    }
+    
+    override func didMoveToWindow() {
+        self.window?.windowScene?.eventBus.register(
+            self,
+            for: HourlyTrendManuallyScrollEvent.self
+        ) { [weak self] event in
+            self?.respondSynchronizeScrolling(for: event)
         }
     }
     
@@ -170,6 +194,78 @@ class MainDailyCardCell: MainTableViewCell,
             item.isValid
         }
         return (total: total, valid: valid)
+    }
+    
+    // MARK: - scroll view delegate.
+    
+    private func respondSynchronizeScrolling(
+        for event: HourlyTrendManuallyScrollEvent
+    ) {
+        if self.isDraggingDailyCollectionView {
+            return
+        }
+        guard let index = self.location?.weather?.dailyForecasts.firstIndex(where: { item in
+            Calendar.current.ordinality(
+                of: .day,
+                in: .year,
+                for: Date(timeIntervalSince1970: item.time)
+            ) == event.targetDayOfYear
+        }) else {
+            return
+        }
+        
+        self.dailyCollectionView.scrollAligmentlyToScrollBar(
+            at: IndexPath(row: index, section: 0),
+            animated: true
+        )
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !SettingsManager.shared.trendSyncEnabled {
+            return
+        }
+        if !self.isChangingDailyCollectionViewScrollOffsetManually {
+            return
+        }
+        guard let scrollView = scrollView as? MainTrendShaderCollectionView else {
+            return
+        }
+        guard let daily = self.location?.weather?.dailyForecasts.get(
+            scrollView.highlightIndex
+        ) else {
+            return
+        }
+        guard let dayOfYear = Calendar.current.ordinality(
+            of: .day,
+            in: .year,
+            for: Date(timeIntervalSince1970: daily.time)
+        ) else {
+            return
+        }
+        
+        if self.currentScrollDayOfYear != dayOfYear {
+            self.currentScrollDayOfYear = dayOfYear
+            
+            self.window?.windowScene?.eventBus.post(
+                DailyTrendManuallyScrollEvent(targetDayOfYear: dayOfYear)
+            )
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.isChangingDailyCollectionViewScrollOffsetManually = true
+        self.isDraggingDailyCollectionView = true
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.isChangingDailyCollectionViewScrollOffsetManually = false
+        }
+        self.isDraggingDailyCollectionView = false
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.isChangingDailyCollectionViewScrollOffsetManually = false
     }
     
     // MARK: - collection view delegate.
@@ -296,5 +392,26 @@ class MainDailyCardCell: MainTableViewCell,
         ].bindCellBackground(
             to: self.dailyBackgroundView
         )
+    }
+    
+    func onSelectedRepeatly(currentSelectedIndex: Int) {
+        if self.dailyCollectionView.indexPathsForVisibleItems.first != nil {
+            self.dailyCollectionView.scrollToItem(
+                at: IndexPath(row: 0, section: 0),
+                at: .start,
+                animated: true
+            )
+        }
+        if let daily = self.location?.weather?.dailyForecasts.first,
+           let dayOfYear = Calendar.current.ordinality(
+            of: .day,
+            in: .year,
+            for: Date(timeIntervalSince1970: daily.time)
+           ) {
+            self.currentScrollDayOfYear = dayOfYear
+            self.window?.windowScene?.eventBus.post(
+                DailyTrendManuallyScrollEvent(targetDayOfYear: dayOfYear)
+            )
+        }
     }
 }

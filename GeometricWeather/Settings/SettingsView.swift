@@ -43,6 +43,11 @@ struct SettingsView: View {
                     keys: DarkMode.allKey,
                     selectedIndex: self.$model.darkModeIndex
                 )
+                SettingsSummaryToggleCellView(
+                    titleKey: "settings_title_trend_sync",
+                    summaryKey: "settings_summary_trend_sync",
+                    toggleOn: self.$model.trendSyncEnabled
+                )
             }
             
             Section(
@@ -109,6 +114,8 @@ struct SettingsView: View {
             SettingsManager.shared.precipitationAlertEnabled = newValue
         }.onChange(of: self.model.darkModeIndex) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
+        }.onChange(of: self.model.trendSyncEnabled) { newValue in
+            SettingsManager.shared.trendSyncEnabled = newValue
         }.onChange(of: self.model.temperatureUnitIndex) { newValue in
             SettingsManager.shared.temperatureUnit = TemperatureUnit[
                 newValue

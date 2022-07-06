@@ -258,7 +258,7 @@ class DailyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrend
         
         self.weekLabel.text = daily.isToday(timezone: timezone)
         ? getLocalizedText("today")
-        : getWeekText(week: daily.getWeek(timezone: timezone))
+        : getWeekText(daily)
         
         self.dateLabel.text = daily.getDate(
             format: getLocalizedText("date_format_short")

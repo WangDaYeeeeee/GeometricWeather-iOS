@@ -63,9 +63,7 @@ struct DailyItemView: View {
     ) {
         self.weekText = weather.dailyForecasts[index].isToday(timezone: timezone)
         ? getLocalizedText("today")
-        : getWeekText(
-            week: weather.dailyForecasts[index].getWeek(timezone: timezone)
-        )
+        : getWeekText(weather.dailyForecasts[index])
         
         self.dayWeatherCode = weather.dailyForecasts[index].day.weatherCode
         self.dayTemperature = weather.dailyForecasts[index].day.temperature.temperature
@@ -206,12 +204,7 @@ struct HourlyItemView: View {
         timezone: TimeZone,
         index: Int
     ) {
-        self.hourText = getHourText(
-            hour: weather.hourlyForecasts[index].getHour(
-                isTwelveHour(),
-                timezone: timezone
-            )
-        )
+        self.hourText = getHourText(weather.hourlyForecasts[index])
         self.weatherCode = weather.hourlyForecasts[index].weatherCode
         self.daylight = weather.hourlyForecasts[index].daylight
         self.temperature = weather.hourlyForecasts[index].temperature.temperature

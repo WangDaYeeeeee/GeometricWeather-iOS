@@ -67,12 +67,9 @@ class HourlyAirQualityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProt
            let cell = cell as? HourlyAirQualityCollectionViewCell {
             
             var useAccentColorForDate = indexPath.row == 0
-            if weather.hourlyForecasts[
-                indexPath.row
-            ].getHour(
-                false,
-                timezone: self.location.timezone
-            ) == 0 {
+            if weather
+               .hourlyForecasts[indexPath.row]
+                .getHour(inTwelveHourFormat: false) == 0 {
                 useAccentColorForDate = true
             }
             
@@ -194,19 +191,17 @@ class HourlyAirQualityCollectionViewCell: MainTrendCollectionViewCell, MainTrend
         timezone: TimeZone,
         useAccentColorForDate: Bool
     ) {
-        self.hourLabel.text = getHourText(
-            hour: hourly.getHour(
-                isTwelveHour(),
-                timezone: timezone
-            )
-        )
+        self.hourLabel.text = getHourText(hourly)
         
         self.dateLabel.text = hourly.formatDate(
             format: getLocalizedText("date_format_short")
         )
         self.dateLabel.textColor = useAccentColorForDate
-        ? .secondaryLabel
+        ? .label
         : .tertiaryLabel
+        self.dateLabel.font = useAccentColorForDate
+        ? .systemFont(ofSize: miniCaptionFont.pointSize, weight: .bold)
+        : miniCaptionFont
         
         if maxAqiIndex > 0 {
             self.histogramView.highValue = Double(

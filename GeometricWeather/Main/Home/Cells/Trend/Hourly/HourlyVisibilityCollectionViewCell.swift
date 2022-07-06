@@ -67,12 +67,9 @@ class HourlyVisibilityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProt
            let cell = cell as? HourlyVisibilityCollectionViewCell {
             
             var useAccentColorForDate = indexPath.row == 0
-            if weather.hourlyForecasts[
-                indexPath.row
-            ].getHour(
-                false,
-                timezone: self.location.timezone
-            ) == 0 {
+            if weather
+               .hourlyForecasts[indexPath.row]
+                .getHour(inTwelveHourFormat: false) == 0 {
                 useAccentColorForDate = true
             }
             
@@ -181,19 +178,17 @@ class HourlyVisibilityCollectionViewCell: MainTrendCollectionViewCell, MainTrend
         maxVisibility: Double,
         useAccentColorForDate: Bool
     ) {
-        self.hourLabel.text = getHourText(
-            hour: hourly.getHour(
-                isTwelveHour(),
-                timezone: timezone
-            )
-        )
+        self.hourLabel.text = getHourText(hourly)
         
         self.dateLabel.text = hourly.formatDate(
             format: getLocalizedText("date_format_short")
         )
         self.dateLabel.textColor = useAccentColorForDate
-        ? .secondaryLabel
+        ? .label
         : .tertiaryLabel
+        self.dateLabel.font = useAccentColorForDate
+        ? .systemFont(ofSize: miniCaptionFont.pointSize, weight: .bold)
+        : miniCaptionFont
         
         let visibility = hourly.visibility ?? 0.0
         

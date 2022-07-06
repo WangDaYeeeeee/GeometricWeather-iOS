@@ -250,7 +250,7 @@ extension CaiYunService: TargetType {
                 parameters: [
                     "lang": language,
                     "dailysteps": 15,
-                    "hourlysteps" : 48,
+                    "hourlysteps" : 360,
                     "alert": "true",
                     "unit": "metric:v2",
                 ],

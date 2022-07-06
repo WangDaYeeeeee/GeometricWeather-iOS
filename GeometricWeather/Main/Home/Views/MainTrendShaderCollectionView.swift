@@ -17,21 +17,33 @@ import GeometricWeatherTheme
 class MainTrendShaderCollectionView: UICollectionView {
     
     private let scrollBar = MainTrendScrollBarView(frame: .zero)
+    private let scrollReactor = UISelectionFeedbackGenerator()
     
     var cellSize: CGSize {
-        get {
-            return CGSize(
-                width: max(
-                    56.0,
-                    CGFloat(
-                        Int(
-                            self.frame.width / CGFloat(getTrenItemDisplayCount())
-                        )
+        return CGSize(
+            width: max(
+                56.0,
+                CGFloat(
+                    // cut width as int value to avoid gaps between 2 contiguous cells.
+                    Int(
+                        self.frame.width / CGFloat(getTrenItemDisplayCount())
                     )
-                ),
-                height: self.frame.height
+                )
+            ),
+            height: self.frame.height
+        )
+    }
+    
+    var highlightIndex: Int {
+        let rtlCenterX = self.isRtl
+        ? (self.contentSize.width - self.scrollBar.center.x)
+        : self.scrollBar.center.x
+        // center positon / step-width, then cut the above value as int value.
+        return Int(
+            rtlCenterX / (
+                self.contentSize.width / Double(self.numberOfItems(inSection: 0))
             )
-        }
+        )
     }
     
     // MARK: - life cycle.
@@ -58,25 +70,40 @@ class MainTrendShaderCollectionView: UICollectionView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if let subview = self.subviews.last {
-            if subview != self.scrollBar {
-                let scrollPercent = self.contentOffset.x / (
-                    self.contentSize.width - self.frame.width
+
+        self.scrollBar.frame = CGRect(
+            x: (self.frame.width - self.cellSize.width)
+            * self.contentOffset.x / (self.contentSize.width - self.frame.width)
+            + self.contentOffset.x,
+            y: 0.0,
+            width: self.cellSize.width,
+            height: self.frame.height
+        )
+    }
+    
+    // MARK: - scrolling.
+    
+    func scrollAligmentlyToScrollBar(at index: IndexPath, animated: Bool) {
+        let percent = (
+            Double(index.row) / Double(
+                max(
+                    1,
+                    self.numberOfItems(inSection: 0) - 1
                 )
-                let scrollBarX = (
-                    self.frame.width - subview.frame.width
-                ) * scrollPercent
-                
-                self.scrollBar.frame = CGRect(
-                    x: scrollBarX + self.contentOffset.x,
-                    y: 0.0,
-                    width: subview.frame.width,
-                    height: self.frame.height
-                )
-                return
-            }
-        }
-        self.scrollBar.frame = .zero
+            )
+        ).keepIn(range: 0...1)
+        let rtlPercent = self.isRtl
+        ? 1 - percent
+        : percent
+        
+        self.setContentOffset(
+            CGPoint(
+                x: rtlPercent * (self.contentSize.width - self.frame.width),
+                y: 0
+            ),
+            animated: animated
+        )
+        self.scrollReactor.selectionChanged()
     }
 }
 
@@ -125,9 +152,9 @@ fileprivate class MainTrendScrollBarView: UICollectionReusableView {
     private func setScrollBarColors() {
         self.foregroundLayer.colors = [
             UIColor.clear.cgColor,
-            UIColor.black.withAlphaComponent(
-                self.traitCollection.userInterfaceStyle == .light ? 0.02 : 0.12
-            ).cgColor,
+            self.traitCollection.userInterfaceStyle == .light
+            ? UIColor.black.withAlphaComponent(0.04).cgColor
+            : UIColor.white.withAlphaComponent(0.08).cgColor,
             UIColor.clear.cgColor,
         ]
     }

@@ -166,7 +166,7 @@ class AllergenCollectionViewCell: UICollectionViewCell {
         )
         self.captionLabel.text = daily.isToday(timezone: timezone)
         ? getLocalizedText("today")
-        : getWeekText(week: daily.getWeek(timezone: timezone))
+        : getWeekText(daily)
         self.indicatorLabel.text = (index + 1).description + "/" + total.description
         
         self.grass.bindData(

@@ -25,7 +25,6 @@ class CornerButton: UIButton {
     
     // MARK: - inner data.
         
-    private var intrinsicContentSizeCache = CGSize.zero
     override var intrinsicContentSize: CGSize {
         get {
             let superSize = super.intrinsicContentSize
@@ -56,6 +55,7 @@ class CornerButton: UIButton {
             return size
         }
     }
+    private var intrinsicContentSizeCache = CGSize.zero
     
     private var isLittleMargins: Bool
     

@@ -22,6 +22,7 @@ protocol MainSelectableTagDelegate: NSObjectProtocol {
     func getUnselectedColor() -> UIColor
     
     func onSelectedChanged(newSelectedIndex: Int)
+    func onSelectedRepeatly(currentSelectedIndex: Int)
 }
 
 class MainSelectableTagView: UICollectionView,
@@ -37,7 +38,7 @@ class MainSelectableTagView: UICollectionView,
                 && self.numberOfItems(inSection: 0) != 0 {
                 self.scrollToItem(
                     at: IndexPath(row: 0, section: 0),
-                    at: .left,
+                    at: .start,
                     animated: false
                 )
             }
@@ -140,7 +141,11 @@ class MainSelectableTagView: UICollectionView,
     
     func onSelectedChanged(cell: UICollectionViewCell) {
         if let indexPath = self.indexPath(for: cell) {
-            self.selectedIndex = indexPath.row
+            if self.selectedIndex != indexPath.row {
+                self.selectedIndex = indexPath.row
+            } else {
+                tagDelegate?.onSelectedRepeatly(currentSelectedIndex: self.selectedIndex)
+            }
         }
     }
 }

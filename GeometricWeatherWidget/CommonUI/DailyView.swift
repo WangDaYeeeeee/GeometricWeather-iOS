@@ -158,9 +158,7 @@ private struct VerticalWeekNameView: View {
         var hours = [String]()
         for i in 0 ..< horizontalItemCount {
             hours.append(
-                getWeekText(
-                    week: weather.dailyForecasts[i].getWeek(timezone: timezone)
-                )
+                getWeekText(weather.dailyForecasts[i])
             )
         }
         self.hours = hours

@@ -309,6 +309,8 @@
 "settings_title_daily_trend_display" = "每日趋势顺序";
 "settings_title_trend_horizontal_line_switch" = "趋势图横线";
 "settings_title_exchange_day_night_temp_switch" = "交换日间夜间温度";
+"settings_title_trend_sync" = "协同滚动";
+"settings_summary_trend_sync" = "在每日趋势和小时趋势之间启用协同滚动";
 "settings_title_unit" = "单位";
 "settings_summary_unit" = "设置天气数据的单位";
 "settings_title_temperature_unit" = "温度单位";

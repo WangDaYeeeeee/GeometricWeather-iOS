@@ -7,7 +7,7 @@
 
 import Foundation
 
-public func formateTime(
+public func formatTime(
     timeIntervalSine1970: TimeInterval,
     twelveHour: Bool
 ) -> String {

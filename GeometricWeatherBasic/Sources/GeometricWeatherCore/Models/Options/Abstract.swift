@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Option: Equatable {
+public protocol Option: Hashable {
     
     associatedtype ImplType: Option
     
@@ -26,6 +26,10 @@ public extension Option {
         return Self.all.map { item in
             item.key
         }
+    }
+
+    func hash(into hasher: inout Hasher) {
+        return self.key.hash(into: &hasher)
     }
     
     static func == (lhs: Self, rhs: Self) -> Bool {

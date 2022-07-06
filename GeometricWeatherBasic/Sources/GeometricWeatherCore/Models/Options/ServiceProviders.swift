@@ -35,7 +35,7 @@ public struct WeatherSource: ReadableOption {
     public static subscript(key: String) -> WeatherSource {
         get {
             for item in WeatherSource.all {
-                if item.key == key {
+                if item.key == key || item.key.contains(key) {
                     return item
                 }
             }

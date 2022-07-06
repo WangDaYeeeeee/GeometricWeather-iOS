@@ -20,6 +20,10 @@ struct HourlyTrendCellTapAction {
     let index: Int
 }
 
+struct HourlyTrendManuallyScrollEvent {
+    let targetDayOfYear: Int
+}
+
 class MainHourlyCardCell: MainTableViewCell,
                             UICollectionViewDataSource,
                             UICollectionViewDelegateFlowLayout,
@@ -50,6 +54,10 @@ class MainHourlyCardCell: MainTableViewCell,
     // MARK: - data.
     
     private var validTrendGenerators = [MainTrendGeneratorProtocol]()
+    
+    private var isChangingHourlyCollectionViewScrollOffsetManually = false
+    private var isDraggingHourlyCollectionView = false
+    private var currentScrollDayOfYear = -1
     
     // MARK: - life cycle.
     
@@ -264,6 +272,22 @@ class MainHourlyCardCell: MainTableViewCell,
         }
     }
     
+    override func willMove(toWindow newWindow: UIWindow?) {
+        self.window?
+            .windowScene?
+            .eventBus
+            .unregister(self, for: DailyTrendManuallyScrollEvent.self)
+    }
+    
+    override func didMoveToWindow() {
+        self.window?.windowScene?.eventBus.register(
+            self,
+            for: DailyTrendManuallyScrollEvent.self
+        ) { [weak self] event in
+            self?.respondSynchronizeScrolling(for: event)
+        }
+    }
+    
     // MARK: - generators.
     
     private func ensureTrendGenerators(
@@ -284,6 +308,78 @@ class MainHourlyCardCell: MainTableViewCell,
             item.isValid
         }
         return (total: total, valid: valid)
+    }
+    
+    // MARK: - scroll view delegate.
+    
+    private func respondSynchronizeScrolling(
+        for event: DailyTrendManuallyScrollEvent
+    ) {
+        if self.isDraggingHourlyCollectionView {
+            return
+        }
+        guard let index = self.location?.weather?.hourlyForecasts.firstIndex(where: { item in
+            Calendar.current.ordinality(
+                of: .day,
+                in: .year,
+                for: Date(timeIntervalSince1970: item.time)
+            ) == event.targetDayOfYear
+        }) else {
+            return
+        }
+        
+        self.hourlyCollectionView.scrollAligmentlyToScrollBar(
+            at: IndexPath(row: index, section: 0),
+            animated: true
+        )
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !SettingsManager.shared.trendSyncEnabled {
+            return
+        }
+        if !self.isChangingHourlyCollectionViewScrollOffsetManually {
+            return
+        }
+        guard let scrollView = scrollView as? MainTrendShaderCollectionView else {
+            return
+        }
+        guard let hourly = self.location?.weather?.hourlyForecasts.get(
+            scrollView.highlightIndex
+        ) else {
+            return
+        }
+        guard let dayOfYear = Calendar.current.ordinality(
+            of: .day,
+            in: .year,
+            for: Date(timeIntervalSince1970: hourly.time)
+        ) else {
+            return
+        }
+        
+        if self.currentScrollDayOfYear != dayOfYear {
+            self.currentScrollDayOfYear = dayOfYear
+            
+            self.window?.windowScene?.eventBus.post(
+                HourlyTrendManuallyScrollEvent(targetDayOfYear: dayOfYear)
+            )
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.isChangingHourlyCollectionViewScrollOffsetManually = true
+        self.isDraggingHourlyCollectionView = true
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.isChangingHourlyCollectionViewScrollOffsetManually = false
+        }
+        self.isDraggingHourlyCollectionView = false
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.isChangingHourlyCollectionViewScrollOffsetManually = false
     }
         
     // MARK: - collection view delegate.
@@ -410,5 +506,26 @@ class MainHourlyCardCell: MainTableViewCell,
         ].bindCellBackground(
             to: self.hourlyBackgroundView
         )
+    }
+    
+    func onSelectedRepeatly(currentSelectedIndex: Int) {
+        if self.hourlyCollectionView.indexPathsForVisibleItems.first != nil {
+            self.hourlyCollectionView.scrollToItem(
+                at: IndexPath(row: 0, section: 0),
+                at: .start,
+                animated: true
+            )
+        }
+        if let hourly = self.location?.weather?.dailyForecasts.first,
+           let dayOfYear = Calendar.current.ordinality(
+            of: .day,
+            in: .year,
+            for: Date(timeIntervalSince1970: hourly.time)
+           ) {
+            self.currentScrollDayOfYear = dayOfYear
+            self.window?.windowScene?.eventBus.post(
+                HourlyTrendManuallyScrollEvent(targetDayOfYear: dayOfYear)
+            )
+        }
     }
 }

@@ -87,7 +87,7 @@ class MainAllergenCardCell: MainTableViewCell,
             && self.allergenCollectionView.numberOfItems(inSection: 0) != 0 {
             self.allergenCollectionView.scrollToItem(
                 at: IndexPath(row: 0, section: 0),
-                at: .left,
+                at: .start,
                 animated: false
             )
         }
@@ -99,7 +99,7 @@ class MainAllergenCardCell: MainTableViewCell,
         if let index = self.allergenCollectionView.indexPathsForVisibleItems.first {
             self.allergenCollectionView.scrollToItem(
                 at: index,
-                at: .left,
+                at: .start,
                 animated: false
             )
             self.allergenCollectionView.reloadData()

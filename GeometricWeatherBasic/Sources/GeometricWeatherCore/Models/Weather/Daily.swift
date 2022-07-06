@@ -32,6 +32,20 @@ public struct Daily: Codable {
     public let visibility: Double?
     public let humidity: Double?
     
+    // 1 - 7.
+    public var week: Int {
+        let weekday = Calendar.current.component(
+            .weekday,
+            from: Date(timeIntervalSince1970: self.time)
+        )
+        switch weekday {
+        case 1:
+            return 7
+        default:
+            return weekday - 1
+        }
+    }
+    
     public init(
         time: TimeInterval,
         day: HalfDay,
@@ -76,20 +90,6 @@ public struct Daily: Codable {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         return formatter.string(from: Date(timeIntervalSince1970: time))
-    }
-
-    // 1 - 7.
-    public func getWeek(timezone: TimeZone) -> Int {
-        let weekday = Calendar.current.component(
-            .weekday,
-            from: Date(timeIntervalSince1970: time)
-        )
-        switch weekday {
-        case 1:
-            return 7
-        default:
-            return weekday - 1
-        }
     }
 
     public func isToday(timezone: TimeZone) -> Bool {

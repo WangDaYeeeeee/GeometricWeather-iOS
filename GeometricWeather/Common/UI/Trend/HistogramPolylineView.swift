@@ -145,6 +145,9 @@ class HistogramPolylineView: UIView {
         super.init(frame: frame)
         self.frame = frame
         
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
+        
         // subviews.
         
         self.beginTimeLabel.textColor = .label
@@ -390,7 +393,9 @@ class HistogramPolylineView: UIView {
     // MARK: - gesture.
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return paddingTop < point.y
+        // make touchable area bigger.
+        let majorRadius = event?.touches(for: self)?.first?.majorRadius ?? 0.0
+        return paddingTop < point.y + majorRadius && point.y - majorRadius < self.frame.height
     }
     
     override func gestureRecognizerShouldBegin(
@@ -403,18 +408,6 @@ class HistogramPolylineView: UIView {
         // return false if we have already detected that user is dragging horizontally.
         if self.isDragging && self.isHorizontalDragging {
             return false
-        }
-        // if user is dragging.
-        if let gesture = gestureRecognizer as? UIPanGestureRecognizer {
-            let translation = gesture.translation(in: self)
-            if abs(translation.x) < abs(translation.y) {
-                // user is dragging vertically, return true to let superview consume scroll event.
-                return true
-            } else {
-                // user is dragging horizontally,
-                // return true if we have already detected that user has dragged vertically,
-                return self.isDragging && !self.isHorizontalDragging
-            }
         }
         // otherwise, return true.
         return true
@@ -580,7 +573,12 @@ class HistogramPolylineView: UIView {
         colorAnimation.toValue = color.cgColor
         
         let shadowPathAnimation = CABasicAnimation(keyPath: "shadowPath")
-        shadowPathAnimation.toValue = path.cgPath
+        shadowPathAnimation.toValue = path.cgPath.copy(
+            strokingWithWidth: shape.lineWidth,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0.0
+        )
         
         let shadowColorAnimation = CABasicAnimation(keyPath: "shadowColor")
         shadowColorAnimation.toValue = color.cgColor

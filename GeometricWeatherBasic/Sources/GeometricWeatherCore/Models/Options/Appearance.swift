@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - main card.
 
-public struct MainCard: Option, Hashable, Identifiable {
+public struct MainCard: Option, Identifiable {
     
     public typealias ImplType = MainCard
     
@@ -68,10 +68,6 @@ public struct MainCard: Option, Hashable, Identifiable {
     public init(key: String, validator: @escaping (Weather) -> Bool) {
         self.key = key
         self.validator = validator
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        return self.key.hash(into: &hasher)
     }
 }
 

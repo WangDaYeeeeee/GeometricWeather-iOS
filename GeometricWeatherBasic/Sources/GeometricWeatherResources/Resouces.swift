@@ -170,12 +170,18 @@ public func getLocationText(location: Location) -> String {
     return String(text[..<deleteBegin])
 }
 
-public func getWeekText(week: Int) -> String {
-    return getLocalizedText("week_\(week)")
+public func getWeekText(_ daily: Daily) -> String {
+    return getLocalizedText("week_\(daily.week)")
 }
 
-public func getHourText(hour: Int) -> String {
-    return "\(hour)\(getLocalizedText("of_clock"))"
+public func getHourText(_ hourly: Hourly) -> String {
+    if isTwelveHour() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h aa"
+        return formatter.string(from: Date(timeIntervalSince1970: hourly.time))
+    } else {
+        return String(hourly.getHour(inTwelveHourFormat: false)) + getLocalizedText("of_clock")
+    }
 }
 
 public func getAirQualityText(level: Int) -> String {

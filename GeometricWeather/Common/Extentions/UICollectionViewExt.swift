@@ -23,3 +23,28 @@ public extension UICollectionView {
         CATransaction.commit()
     }
 }
+
+public extension UICollectionView.ScrollPosition {
+    
+    static var start: UICollectionView.ScrollPosition {
+        return Self.isRtl ? .right : .left
+    }
+    
+    static var end: UICollectionView.ScrollPosition {
+        return Self.isRtl ? .left : .right
+    }
+    
+    static var isRtl: Bool {
+        get {
+            if let language = (
+                UserDefaults.standard.object(
+                    forKey: "AppleLanguages"
+                ) as? [String]
+            )?.first {
+                return language.hasPrefix("ar")
+            }
+            
+            return false
+        }
+    }
+}

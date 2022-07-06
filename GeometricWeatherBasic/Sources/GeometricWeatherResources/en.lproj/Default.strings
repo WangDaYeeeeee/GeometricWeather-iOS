@@ -314,6 +314,8 @@
 "settings_title_trend_horizontal_line_switch" = "Horizontal lines in trend";
 "settings_title_exchange_day_night_temp_switch" = "Exchange day night temperature";
 "settings_title_card_order" = "Card order";
+"settings_title_trend_sync" = "Synergistic scrolling";
+"settings_summary_trend_sync" = "Synergistic scrolling between daily and hourly trends";
 "settings_title_unit" = "Units";
 "settings_summary_unit" = "Set the unit of weather data";
 "settings_title_temperature_unit" = "Temperature unit";

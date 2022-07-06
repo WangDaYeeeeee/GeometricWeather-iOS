@@ -55,6 +55,7 @@ func generateWeather(
     currentResult: AccuCurrentResult,
     dailyResult: AccuDailyResult,
     hourlyResults: [AccuHourlyResult],
+    minutelyResult: AccuMinutelyResult?,
     alertResults: [AccuAlertResult]?,
     airQualityResult: AccuAirQualityResult?,
     units: UnitSet
@@ -113,7 +114,7 @@ func generateWeather(
             cloudCover: currentResult.cloudCover,
             ceiling: Int(Double(currentResult.ceiling.metric?.value ?? 0)),
             dailyForecast: dailyResult.headline.text,
-            hourlyForecast: nil
+            hourlyForecast: minutelyResult?.summary.longPhrase
         ),
         yesterday: History(
             time: TimeInterval(currentResult.epochTime - 24 * 60 * 60),
@@ -126,7 +127,16 @@ func generateWeather(
         ),
         dailyForecasts: getDailies(result: dailyResult, timezone: location.timezone),
         hourlyForecasts: getHourlies(results: hourlyResults, timezone: location.timezone),
-        minutelyForecast: nil,
+        minutelyForecast: minutelyResult == nil ? nil : Minutely(
+            beginTime: Double(minutelyResult!.intervals.first?.startEpochDateTime ?? 0) / 1000.0,
+            endTime: Double(minutelyResult!.intervals.last?.startEpochDateTime ?? 0) / 1000.0,
+            precipitationIntensities: minutelyResult!.intervals.map { item in
+                pow(
+                    pow(10, Double(item.dbz) / 10.0) / 200.0,
+                    5.0 / 8.0
+                )
+            }
+        ),
         alerts: getAlerts(results: alertResults ?? [], timezone: location.timezone)
     )
 }

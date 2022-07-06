@@ -86,12 +86,9 @@ class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorPro
            let cell = cell as? HourlyTemperatureCollectionViewCell {
             
             var useAccentColorForDate = indexPath.row == 0
-            if weather.hourlyForecasts[
-                indexPath.row
-            ].getHour(
-                false,
-                timezone: self.location.timezone
-            ) == 0 {
+            if weather
+               .hourlyForecasts[indexPath.row]
+               .getHour(inTwelveHourFormat: false) == 0 {
                 useAccentColorForDate = true
             }
             
@@ -152,8 +149,6 @@ class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorPro
 
 // MARK: - cell.
 
-// MARK: - cell.
-
 class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTrendPaddingContainer {
     
     // MARK: - cell subviews.
@@ -197,7 +192,6 @@ class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTren
         self.hourLabel.numberOfLines = 1
         self.contentView.addSubview(self.hourLabel)
         
-        self.dateLabel.font = miniCaptionFont
         self.dateLabel.textColor = .secondaryLabel
         self.dateLabel.textAlignment = .center
         self.dateLabel.numberOfLines = 1
@@ -248,19 +242,17 @@ class HourlyTemperatureCollectionViewCell: MainTrendCollectionViewCell, MainTren
     ) {
         self.weatherCode = weatherCode
         
-        self.hourLabel.text = getHourText(
-            hour: hourly.getHour(
-                isTwelveHour(),
-                timezone: timezone
-            )
-        )
+        self.hourLabel.text = getHourText(hourly)
         
         self.dateLabel.text = hourly.formatDate(
             format: getLocalizedText("date_format_short")
         )
         self.dateLabel.textColor = useAccentColorForDate
-        ? .secondaryLabel
+        ? .label
         : .tertiaryLabel
+        self.dateLabel.font = useAccentColorForDate
+        ? .systemFont(ofSize: miniCaptionFont.pointSize, weight: .bold)
+        : miniCaptionFont
         
         self.hourlyIcon.image = UIImage.getWeatherIcon(
             weatherCode: hourly.weatherCode,

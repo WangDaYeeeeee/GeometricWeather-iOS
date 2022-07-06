@@ -163,6 +163,16 @@ public class AccuApi: WeatherApi {
                 failsOnEmptyData: true
             ),
             
+            // minutely.
+            provider.rx.request(
+                .minutely(
+                    apikey: BuildConfig.current.accuWeatherKey,
+                    language: getLanguage(),
+                    details: true,
+                    q: "\(target.latitude),\(target.longitude)"
+                )
+            ).asObservable().filterSuccessfulStatusCodes(),
+            
             // alert.
             provider.rx.request(
                 .alert(
@@ -186,12 +196,15 @@ public class AccuApi: WeatherApi {
                 return
             }
             
-            let alerts = try? results.3.map(
+            let minutely = try? results.3.map(
+                AccuMinutelyResult.self,
+                failsOnEmptyData: false
+            )
+            let alerts = try? results.4.map(
                 [AccuAlertResult].self,
                 failsOnEmptyData: false
             )
-            
-            let aqi = try? results.4.map(
+            let aqi = try? results.5.map(
                 AccuAirQualityResult.self,
                 failsOnEmptyData: false
             )
@@ -202,6 +215,7 @@ public class AccuApi: WeatherApi {
                     currentResult: results.0[0],
                     dailyResult: results.1,
                     hourlyResults: results.2,
+                    minutelyResult: minutely,
                     alertResults: alerts,
                     airQualityResult: aqi,
                     units: units

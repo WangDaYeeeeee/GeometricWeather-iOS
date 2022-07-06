@@ -34,6 +34,33 @@ struct SettingsToggleCellView: View {
     }
 }
 
+struct SettingsSummaryToggleCellView: View {
+    
+    let titleKey: String
+    let summaryKey: String
+    
+    let toggleOn: Binding<Bool>
+    
+    var body: some View {
+        Toggle(isOn: toggleOn) {
+            VStack(alignment: .leading) {
+                SettingsTitleView(key: titleKey)
+                
+                Text(getLocalizedText(summaryKey))
+                    .font(Font(captionFont))
+                    .foregroundColor(Color(UIColor.tertiaryLabel))
+            }
+        }.padding(
+            EdgeInsets(
+                top: littleMargin / 2.0,
+                leading: 0.0,
+                bottom: littleMargin / 2.0,
+                trailing: 0.0
+            )
+        )
+    }
+}
+
 // MARK: - list cell.
 
 struct SettingsListCellView: View {

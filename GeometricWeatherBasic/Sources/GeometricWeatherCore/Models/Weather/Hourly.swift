@@ -56,7 +56,7 @@ public struct Hourly: Codable {
         self.humidity = humidity
     }
 
-    public func getHour(_ twelveHour: Bool, timezone: TimeZone) -> Int {
+    public func getHour(inTwelveHourFormat twelveHour: Bool) -> Int {
         var hour = Calendar.current.component(
             .hour,
             from: Date(timeIntervalSince1970: time)

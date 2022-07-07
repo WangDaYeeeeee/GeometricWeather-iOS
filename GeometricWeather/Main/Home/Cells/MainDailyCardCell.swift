@@ -44,6 +44,7 @@ class MainDailyCardCell: MainTableViewCell,
     private var isChangingDailyCollectionViewScrollOffsetManually = false
     private var isDraggingDailyCollectionView = false
     private var currentScrollDayOfYear = -1
+    private var isSyncScrollingEnabled = false
     
     // MARK: - life cycle.
     
@@ -113,6 +114,7 @@ class MainDailyCardCell: MainTableViewCell,
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
         let firstBind = self.location == nil
         super.bindData(location: location, timeBar: timeBar)
+        self.isSyncScrollingEnabled = SettingsManager.shared.trendSyncEnabled
         
         guard let weather = location.weather else {
             return
@@ -221,17 +223,14 @@ class MainDailyCardCell: MainTableViewCell,
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if !SettingsManager.shared.trendSyncEnabled {
+        if !self.isSyncScrollingEnabled {
             return
         }
         if !self.isChangingDailyCollectionViewScrollOffsetManually {
             return
         }
-        guard let scrollView = scrollView as? MainTrendShaderCollectionView else {
-            return
-        }
         guard let daily = self.location?.weather?.dailyForecasts.get(
-            scrollView.highlightIndex
+            self.dailyCollectionView.highlightIndex
         ) else {
             return
         }
@@ -262,10 +261,25 @@ class MainDailyCardCell: MainTableViewCell,
             self.isChangingDailyCollectionViewScrollOffsetManually = false
         }
         self.isDraggingDailyCollectionView = false
+        
+        if !decelerate && self.isSyncScrollingEnabled {
+            self.dailyCollectionView.scrollAligmentlyToScrollBar(
+                at: IndexPath(row: self.dailyCollectionView.highlightIndex, section: 0),
+                animated: true
+            )
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.isChangingDailyCollectionViewScrollOffsetManually = false
+        
+        if !self.isSyncScrollingEnabled {
+            return
+        }
+        self.dailyCollectionView.scrollAligmentlyToScrollBar(
+            at: IndexPath(row: self.dailyCollectionView.highlightIndex, section: 0),
+            animated: true
+        )
     }
     
     // MARK: - collection view delegate.
@@ -401,6 +415,10 @@ class MainDailyCardCell: MainTableViewCell,
                 at: .start,
                 animated: true
             )
+        }
+        
+        if !self.isSyncScrollingEnabled {
+            return
         }
         if let daily = self.location?.weather?.dailyForecasts.first,
            let dayOfYear = Calendar.current.ordinality(

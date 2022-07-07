@@ -12,6 +12,8 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
+private let littleMargin = 4.0
+
 // MARK: - toggle cell.
 
 struct SettingsToggleCellView: View {
@@ -43,7 +45,7 @@ struct SettingsSummaryToggleCellView: View {
     
     var body: some View {
         Toggle(isOn: toggleOn) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: littleMargin) {
                 SettingsTitleView(key: titleKey)
                 
                 Text(getLocalizedText(summaryKey))
@@ -128,7 +130,7 @@ struct SettingsTimePickerCellView: View {
             selection: self.selectedDate,
             displayedComponents: .hourAndMinute
         ) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: littleMargin) {
                 SettingsTitleView(key: titleKey)
                 
                 Text(
@@ -136,11 +138,8 @@ struct SettingsTimePickerCellView: View {
                         timeIntervalSine1970:self.selectedDate.wrappedValue.timeIntervalSince1970,
                         twelveHour:isTwelveHour()
                     )
-                ).font(
-                    Font(captionFont)
-                ).foregroundColor(
-                    Color(UIColor.tertiaryLabel)
-                )
+                ).font(Font(captionFont))
+                    .foregroundColor(Color(UIColor.tertiaryLabel))
             }
         }.padding(
             EdgeInsets(

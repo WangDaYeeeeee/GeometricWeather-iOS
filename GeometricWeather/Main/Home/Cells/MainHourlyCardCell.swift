@@ -58,6 +58,7 @@ class MainHourlyCardCell: MainTableViewCell,
     private var isChangingHourlyCollectionViewScrollOffsetManually = false
     private var isDraggingHourlyCollectionView = false
     private var currentScrollDayOfYear = -1
+    private var isSyncScrollingEnabled = false
     
     // MARK: - life cycle.
     
@@ -160,6 +161,7 @@ class MainHourlyCardCell: MainTableViewCell,
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
         let firstBind = self.location == nil
         super.bindData(location: location, timeBar: timeBar)
+        self.isSyncScrollingEnabled = SettingsManager.shared.trendSyncEnabled
         
         self.minutelyTitleVibrancyContainer.removeFromSuperview()
         self.minutelyView.removeFromSuperview()
@@ -335,7 +337,7 @@ class MainHourlyCardCell: MainTableViewCell,
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if !SettingsManager.shared.trendSyncEnabled {
+        if !self.isSyncScrollingEnabled {
             return
         }
         if !self.isChangingHourlyCollectionViewScrollOffsetManually {
@@ -376,10 +378,25 @@ class MainHourlyCardCell: MainTableViewCell,
             self.isChangingHourlyCollectionViewScrollOffsetManually = false
         }
         self.isDraggingHourlyCollectionView = false
+        
+        if !decelerate && self.isSyncScrollingEnabled {
+            self.hourlyCollectionView.scrollAligmentlyToScrollBar(
+                at: IndexPath(row: self.hourlyCollectionView.highlightIndex, section: 0),
+                animated: true
+            )
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.isChangingHourlyCollectionViewScrollOffsetManually = false
+        
+        if !self.isSyncScrollingEnabled {
+            return
+        }
+        self.hourlyCollectionView.scrollAligmentlyToScrollBar(
+            at: IndexPath(row: self.hourlyCollectionView.highlightIndex, section: 0),
+            animated: true
+        )
     }
         
     // MARK: - collection view delegate.
@@ -515,6 +532,10 @@ class MainHourlyCardCell: MainTableViewCell,
                 at: .start,
                 animated: true
             )
+        }
+        
+        if !self.isSyncScrollingEnabled {
+            return
         }
         if let hourly = self.location?.weather?.dailyForecasts.first,
            let dayOfYear = Calendar.current.ordinality(

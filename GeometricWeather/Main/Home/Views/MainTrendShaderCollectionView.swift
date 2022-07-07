@@ -154,7 +154,7 @@ fileprivate class MainTrendScrollBarView: UICollectionReusableView {
             UIColor.clear.cgColor,
             self.traitCollection.userInterfaceStyle == .light
             ? UIColor.black.withAlphaComponent(0.04).cgColor
-            : UIColor.white.withAlphaComponent(0.06).cgColor,
+            : UIColor.white.withAlphaComponent(0.04).cgColor,
             UIColor.clear.cgColor,
         ]
     }

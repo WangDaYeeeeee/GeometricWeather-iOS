@@ -273,7 +273,9 @@ class MainDailyCardCell: MainTableViewCell,
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.isChangingDailyCollectionViewScrollOffsetManually = false
         
-        if !self.isSyncScrollingEnabled {
+        if !self.isSyncScrollingEnabled
+            || scrollView.contentOffset.x <= 0
+            || scrollView.contentOffset.x + scrollView.frame.width >= scrollView.contentSize.width {
             return
         }
         self.dailyCollectionView.scrollAligmentlyToScrollBar(

@@ -83,28 +83,31 @@ class BaseManagementController: GeoViewController<MainViewModel>,
             return
         }
         
-        var resortOnly = false
-        if prevItemList.count == nextItemList.count {
-            let prevLocationIdSet = Set(prevItemList.map { item in item.identifier })
-            let currLocationIdSet = Set(nextItemList.map { item in item.identifier })
-            
-            resortOnly = !prevLocationIdSet.contains { id in
-                !currLocationIdSet.contains(id)
-            } && !currLocationIdSet.contains { id in
-                !prevLocationIdSet.contains(id)
-            }
+        let diffResult = DiffResult.diff(at: 0, between: prevItemList, and: nextItemList)
+        
+        if !diffResult.insertedItems.isEmpty
+            || !diffResult.deletedItems.isEmpty {
+            self.tableView.performBatchUpdates({
+                self.itemList = nextItemList
+                
+                self.tableView.deleteRows(at: diffResult.deletedItems, with: .fade)
+                self.tableView.insertRows(at: diffResult.insertedItems, with: .none)
+                self.tableView.reloadRows(at: diffResult.reloadedItems, with: .fade)
+            }, completion: nil)
+            return
         }
         
-        if !resortOnly {
-            self.tableView.reload(
-                section: 0,
-                from: prevItemList,
-                to: nextItemList,
-                by: .fade
-            ) { _ in
-                self.itemList = nextItemList
-            } completion: {
-                // do nothing.
+        self.itemList = nextItemList
+        if diffResult.reloadedItems.isEmpty {
+            return
+        }
+        for item in diffResult.reloadedItems {
+            if let cell = self.tableView.cellForRow(at: item) as? LocationTableViewCell {
+                cell.bindData(
+                    location: self.itemList[item.row].location,
+                    selected: self.itemList[item.row].selected,
+                    withTransparentBackground: self.transparentCell
+                )
             }
         }
     }

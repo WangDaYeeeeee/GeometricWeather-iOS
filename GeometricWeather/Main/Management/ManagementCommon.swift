@@ -19,7 +19,10 @@ struct LocationItem: Diffable, Hashable {
     
     var identifier: String {
         self.location.formattedId
-        + String(self.location.weather?.base.timeStamp ?? 0)
+    }
+    
+    var contentKey: String {
+        String(self.location.weather?.base.timeStamp ?? 0)
         + (self.selected ? "selected" : "unselected")
         + (self.location.residentPosition ? "resident" : "unresident")
     }

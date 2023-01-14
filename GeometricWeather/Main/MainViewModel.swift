@@ -330,11 +330,11 @@ class MainViewModel: NSObject {
         
         self.selectableTotalLocations.value = SelectableLocationArray(
             locations: self.selectableTotalLocations.value.locations,
-            selectedId: formattedId
+            selectedId: location.formattedId
         )
         self.selectableValidLocations.value = SelectableLocationArray(
             locations: self.selectableValidLocations.value.locations,
-            selectedId: formattedId
+            selectedId: location.formattedId
         )
     }
     

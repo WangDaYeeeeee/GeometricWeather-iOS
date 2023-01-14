@@ -214,12 +214,8 @@ public struct Location: Equatable {
         locationArray: Array<Location>
     ) -> Array<Location> {
         
-        var currentLocation: Location? = nil
-        for location in locationArray {
-            if location.currentPosition {
-                currentLocation = location
-                break
-            }
+        var currentLocation = locationArray.first { location in
+            location.currentPosition
         }
             
         var result = [Location]();

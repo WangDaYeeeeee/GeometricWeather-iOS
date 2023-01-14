@@ -12,6 +12,7 @@ import Foundation
 protocol Diffable {
     
     var identifier: String { get }
+    var contentKey: String { get }
     var obj: NSObject { get }
 }
 
@@ -56,25 +57,21 @@ struct DiffResult {
         var insertedItems = [IndexPath]()
         var reloadedItems = [IndexPath]()
         var movedItems = [DiffMoveItem]()
-        
+                
         // build identifer-index map for old items and new items.
         // if there were repeat items in old items or new items, end diff directly.
         
         var oldIdIndexMap = Dictionary<String, Int>()
         var newIdIndexMap = Dictionary<String, Int>()
-        for i in 0 ..< oldItems.count {
-            let item = oldItems[i];
+        for (i, item) in oldItems.enumerated() {
             let id = item.identifier
-            objc_setAssociatedObject(item.obj, &DiffKeys.oldIdentifier, NSString(string: id), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             if oldIdIndexMap[id] != nil {
                 return repeatResult
             }
             oldIdIndexMap[id] = i
         }
-        for i in 0 ..< newItems.count {
-            let item = newItems[i];
+        for (i, item) in newItems.enumerated() {
             let id = item.identifier
-            objc_setAssociatedObject(item.obj, &DiffKeys.newIdentifier, NSString(string: id), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             if newIdIndexMap[id] != nil {
                 return repeatResult
             }
@@ -83,38 +80,30 @@ struct DiffResult {
         
         // select deleted items.
         
-        for i in 0 ..< oldItems.count {
-            let item = oldItems[i]
+        for (i, item) in oldItems.enumerated() {
             let indexPath = IndexPath(item: i, section: section)
             
-            let cachedId = objc_getAssociatedObject(item.obj, &DiffKeys.oldIdentifier) as? NSString ?? NSString()
-            if newIdIndexMap[String(cachedId)] == nil {
+            if newIdIndexMap[item.identifier] == nil {
                 deletedItems.append(indexPath)
             }
         }
         
         // select inserted items.
         
-        for i in 0 ..< newItems.count {
-            let item = newItems[i]
+        for (i, item) in newItems.enumerated() {
             let indexPath = IndexPath(item: i, section: section)
             
-            let cachedId = objc_getAssociatedObject(item.obj, &DiffKeys.newIdentifier) as? NSString ?? NSString()
-            if oldIdIndexMap[String(cachedId)] == nil {
+            if oldIdIndexMap[item.identifier] == nil {
                 insertedItems.append(indexPath)
             }
         }
         
         // select moved items and reloaded items.
         
-        for i in 0 ..< oldItems.count {
-            let item = oldItems[i]
-            
-            guard let oldId = objc_getAssociatedObject(item.obj, &DiffKeys.oldIdentifier) as? NSString else {
-                continue
-            }
+        for (i, item) in oldItems.enumerated() {
+            let oldId = item.identifier
             let oldIndexPath = IndexPath(item: i, section: section)
-            guard let newIndex = newIdIndexMap[String(oldId)] else {
+            guard let newIndex = newIdIndexMap[oldId] else {
                 continue
             }
             
@@ -126,7 +115,7 @@ struct DiffResult {
             }
             
             let newItem = newItems[newIndex]
-            if newItem.identifier != item.identifier {
+            if newItem.contentKey != item.contentKey {
                 reloadedItems.append(oldIndexPath)
             }
         }
@@ -183,9 +172,15 @@ extension UITableView {
         self.performBatchUpdates {
             dataUpdator(newData)
             
-            self.deleteRows(at: diffResult.deletedItems, with: animation)
-            self.insertRows(at: diffResult.insertedItems, with: animation)
-            self.reloadRows(at: diffResult.reloadedItems, with: animation)
+            if !diffResult.deletedItems.isEmpty {
+                self.deleteRows(at: diffResult.deletedItems, with: animation)
+            }
+            if !diffResult.insertedItems.isEmpty {
+                self.insertRows(at: diffResult.insertedItems, with: animation)
+            }
+            if !diffResult.reloadedItems.isEmpty {
+                self.reloadRows(at: diffResult.reloadedItems, with: animation)
+            }
             
             diffResult.movedItems.forEach { item in
                 self.moveRow(at: item.from, to: item.to)

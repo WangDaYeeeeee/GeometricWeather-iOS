@@ -26,17 +26,6 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     // MARK: - inner data.
 
     var itemList = [LocationItem]()
-    lazy var differ: UITableViewDiffableDataSource<ManagementSection, LocationItem> = {
-        let differ = UITableViewDiffableDataSource<ManagementSection, LocationItem>(
-            tableView: self.tableView
-        ) { [weak self] tableView, indexPath, _ in
-            return self?.tableView(tableView, cellForRowAt: indexPath)
-            ?? UITableViewCell(style: .default, reuseIdentifier: nil)
-        }
-        differ.defaultRowAnimation = .fade
-        
-        return differ
-    }()
     var moveBeginIndex: IndexPath?
     
     var transparentCell: Bool {
@@ -87,12 +76,17 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     
     func updateLocationList(_ newList: SelectableLocationArray) {
         let prevItemList = self.itemList
-        self.generateItemList(newList, withoutSelectedState: false)
+        let nextItemList = self.generateItemList(newList, withoutSelectedState: false)
+        if prevItemList.isEmpty {
+            self.itemList = nextItemList;
+            self.tableView.reloadData()
+            return
+        }
         
         var resortOnly = false
-        if prevItemList.count == self.itemList.count {
-            let prevLocationIdSet = Set(prevItemList.map { item in item.id })
-            let currLocationIdSet = Set(self.itemList.map { item in item.id })
+        if prevItemList.count == nextItemList.count {
+            let prevLocationIdSet = Set(prevItemList.map { item in item.identifier })
+            let currLocationIdSet = Set(nextItemList.map { item in item.identifier })
             
             resortOnly = !prevLocationIdSet.contains { id in
                 !currLocationIdSet.contains(id)
@@ -102,18 +96,24 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         }
         
         if !resortOnly {
-            var snapshot = NSDiffableDataSourceSnapshot<ManagementSection, LocationItem>()
-            snapshot.appendSections([.locationItems])
-            snapshot.appendItems(self.itemList)
-            self.differ.apply(snapshot, animatingDifferences: !prevItemList.isEmpty)
+            self.tableView.reload(
+                section: 0,
+                from: prevItemList,
+                to: nextItemList,
+                by: .fade
+            ) { _ in
+                self.itemList = nextItemList
+            } completion: {
+                // do nothing.
+            }
         }
     }
     
     private func generateItemList(
         _ newList: SelectableLocationArray,
         withoutSelectedState: Bool
-    ) {
-        self.itemList = newList.locations.map { location in
+    ) -> [LocationItem] {
+        return newList.locations.map { location in
             return LocationItem(
                 location: location,
                 selected: !withoutSelectedState && location.formattedId == newList.selectedId

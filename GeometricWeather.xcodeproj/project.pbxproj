@@ -34,6 +34,7 @@
 		374BA62426FC89170080B5CA /* WeatherWidgetMediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA61F26FC89170080B5CA /* WeatherWidgetMediumView.swift */; };
 		374BA62526FC89170080B5CA /* WeatherWidgetSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62026FC89170080B5CA /* WeatherWidgetSmallView.swift */; };
 		374BA62F26FC8AC30080B5CA /* WeatherWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */; };
+		375951042972B722002F6B22 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375951032972B722002F6B22 /* Diff.swift */; };
 		376596BB281D2D2A00164CAD /* AirQualityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596B9281D2C3700164CAD /* AirQualityWidget.swift */; };
 		376596BE281D338500164CAD /* ProgressViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596BD281D338500164CAD /* ProgressViews.swift */; };
 		376596C1281D560400164CAD /* CurrentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376596C0281D560400164CAD /* CurrentWidget.swift */; };
@@ -290,6 +291,7 @@
 		374BA62E26FC8AC30080B5CA /* WeatherWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidget.swift; sourceTree = "<group>"; };
 		374BA63526FC8FD90080B5CA /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		374BA64026FC8FD90080B5CA /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		375951032972B722002F6B22 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
 		376596B9281D2C3700164CAD /* AirQualityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirQualityWidget.swift; sourceTree = "<group>"; };
 		376596BD281D338500164CAD /* ProgressViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViews.swift; sourceTree = "<group>"; };
 		376596C0281D560400164CAD /* CurrentWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWidget.swift; sourceTree = "<group>"; };
@@ -908,6 +910,7 @@
 				3741444527DB40C700E55800 /* AnimationCompletionModifier.swift */,
 				37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */,
 				373F760527E35B750005875B /* MiddleUnitLabel.swift */,
+				375951032972B722002F6B22 /* Diff.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1542,6 +1545,7 @@
 				379A8B6327C8C59100083BFF /* SunMoonPathView.swift in Sources */,
 				379A8B2B27C8C59000083BFF /* DailyUVCollectionViewCell.swift in Sources */,
 				37D3B8CA27D6FA5000191C2A /* SettingsComponent.swift in Sources */,
+				375951042972B722002F6B22 /* Diff.swift in Sources */,
 				379A8B6527C8C59100083BFF /* LinearProgressView.swift in Sources */,
 				379A8B2F27C8C59000083BFF /* AllergenCollectionViewCell.swift in Sources */,
 				379341932813978C0046AD88 /* MainTrendBackgroundView.swift in Sources */,

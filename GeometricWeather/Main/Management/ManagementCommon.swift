@@ -12,19 +12,22 @@ import GeometricWeatherSettings
 import GeometricWeatherDB
 import GeometricWeatherTheme
 
-struct LocationItem: Hashable {
+struct LocationItem: Diffable, Hashable {
     
     let location: Location
     let selected: Bool
     
-    var id: String {
+    var identifier: String {
         self.location.formattedId
         + String(self.location.weather?.base.timeStamp ?? 0)
         + (self.selected ? "selected" : "unselected")
+        + (self.location.residentPosition ? "resident" : "unresident")
     }
     
+    let obj = NSObject()
+    
     func hash(into hasher: inout Hasher) {
-        return self.id.hash(into: &hasher)
+        return self.identifier.hash(into: &hasher)
     }
 }
 

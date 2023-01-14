@@ -11,13 +11,18 @@ extension UIRefreshControl {
     
     func beginRefreshingWithOffset() {
         if let scrollView = self.superview as? UIScrollView {
-            scrollView.setContentOffset(
-                CGPoint(
-                    x: 0,
-                    y: scrollView.contentOffset.y - self.frame.height
-                ),
-                animated: false
-            )
+            let contentOffsetY = Int(scrollView.contentOffset.y);
+            let insetsTop = Int(scrollView.adjustedContentInset.top);
+            
+            if (-contentOffsetY == insetsTop) {
+                scrollView.setContentOffset(
+                    CGPoint(
+                        x: 0,
+                        y: scrollView.contentOffset.y - self.frame.height
+                    ),
+                    animated: false
+                )
+            }
         }
         self.beginRefreshing()
     }

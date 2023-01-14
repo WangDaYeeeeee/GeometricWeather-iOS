@@ -16,14 +16,14 @@ private let normalBackgroundColor = UIColor.systemBackground
 private let selectedBackgroundColor = UIColor.secondarySystemBackground
 
 private let transNormalBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
-private let transSelectedBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
+private let transSelectedBackgroundColor = UIColor.systemBackground.withAlphaComponent(0.25)
 
 private let highlightAnimationDuration = 1.0
 private let deHighlightAnimationDuration = 0.25
 
 class LocationTableViewCell: UITableViewCell {
     
-    static let cellHeight = 108.0
+    static let cellHeight = 100.0
     
     // MARK: - subviews.
     
@@ -66,16 +66,16 @@ class LocationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(location: Location, selected: Bool, trans: Bool) {
+    func bindData(location: Location, selected: Bool, withTransparentBackground transparent: Bool) {
         if (selected) {
             UIView.animate(withDuration: 0.2) {
-                self.backgroundColor = trans
+                self.backgroundColor = transparent
                 ? transSelectedBackgroundColor
                 : selectedBackgroundColor
             }
         } else {
             UIView.animate(withDuration: 0.2) {
-                self.backgroundColor = trans
+                self.backgroundColor = transparent
                 ? transNormalBackgroundColor
                 : normalBackgroundColor
             }

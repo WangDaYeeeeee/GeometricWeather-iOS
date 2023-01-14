@@ -26,7 +26,7 @@ public class UpdateHelper {
     
     private let locator = LocationHelper()
     private var api: WeatherApi?
-    
+        
     public init() {
         // do nothing.
     }
@@ -54,58 +54,64 @@ public class UpdateHelper {
             target.currentPosition ? defaultWeatherSource : target.weatherSource
         )
         
-        return await withTaskCancellationHandler {
-            printLog(keyword: "update", content: "begin update for: \(target.formattedId)")
+        printLog(keyword: "update", content: "begin update for: \(target.formattedId)")
+        
+        var result = UpdateResult(location: target, locationSucceed: nil, weatherRequestSucceed: false)
+        if result.location.currentPosition {
+            if Task.isCancelled {
+                return result
+            }
             
-            var result = UpdateResult(location: target, locationSucceed: nil, weatherRequestSucceed: false)
-            if result.location.currentPosition {
-                // location.
-                
-                if let locationResult = await self.locator.requestLocation(inBackground: inBackground) {
-                    result = UpdateResult(
-                        location: result.location.copyOf(
-                            latitude: locationResult.latitude,
-                            longitude: locationResult.longitude
-                        ),
-                        locationSucceed: true,
-                        weatherRequestSucceed: false
-                    )
-                    await DatabaseHelper.shared.asyncWriteLocation(location: result.location)
-                } else {
-                    result = UpdateResult(
-                        location: result.location,
-                        locationSucceed: false,
-                        weatherRequestSucceed: false
-                    )
-                }
-                
-                // get geo position.
-                let geoResult = await self.getGeoPosition(api: self.api!, target: result.location)
+            // location.
+            if let locationResult = await self.locator.requestLocation(inBackground: inBackground) {
                 result = UpdateResult(
-                    location: geoResult.location.copyOf(weatherSource: defaultWeatherSource),
-                    locationSucceed: result.locationSucceed == true && geoResult.isSucceed,
+                    location: result.location.copyOf(
+                        latitude: locationResult.latitude,
+                        longitude: locationResult.longitude
+                    ),
+                    locationSucceed: true,
+                    weatherRequestSucceed: false
+                )
+                await DatabaseHelper.shared.asyncWriteLocation(location: result.location)
+            } else {
+                result = UpdateResult(
+                    location: result.location,
+                    locationSucceed: false,
                     weatherRequestSucceed: false
                 )
             }
             
-            // get weather.
-            let weatherResult = await self.getWeather(
-                api: self.api!,
-                target: result.location,
-                units: units
-            )
-            return UpdateResult(
-                location: weatherResult.location,
-                locationSucceed: result.locationSucceed,
-                weatherRequestSucceed: weatherResult.isSucceed
-            )
-        } onCancel: { [weak self] in
-            printLog(keyword: "update", content: "cancel update for: \(target.formattedId)")
-            self?.cancelRequest()
+            if Task.isCancelled {
+                return result
+            }
+            
+            // get geo position.
+            let geoResult = await self.getGeoPosition(api: self.api!, target: result.location)
+            result = UpdateResult(
+                location: geoResult.location.copyOf(weatherSource: defaultWeatherSource),
+                locationSucceed: result.locationSucceed == true && geoResult.isSucceed,
+                weatherRequestSucceed: false
+            )            
         }
+        
+        if Task.isCancelled {
+            return result
+        }
+        
+        // get weather.
+        let weatherResult = await self.getWeather(
+            api: self.api!,
+            target: result.location,
+            units: units
+        )
+        return UpdateResult(
+            location: weatherResult.location,
+            locationSucceed: result.locationSucceed,
+            weatherRequestSucceed: weatherResult.isSucceed
+        )
     }
     
-    private func cancelRequest() {
+    public func cancelRequest() {
         self.locator.stopRequest()
         self.api?.cancel()
     }

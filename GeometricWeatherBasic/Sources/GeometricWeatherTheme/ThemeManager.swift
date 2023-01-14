@@ -18,14 +18,14 @@ public class ThemeManager {
     #if !os(watchOS)
     
     public init(darkMode: DarkMode) {
-        self.homeOverrideUIStyle = EqualtableLiveData(
+        self.homeOverrideUIStyle = LiveData(
             Self.generateHomeUIUserInterfaceStyle(
                 darkMode: darkMode,
                 daylight: isDaylight()
             )
         )
         
-        self.globalOverrideUIStyle = EqualtableLiveData(
+        self.globalOverrideUIStyle = LiveData(
             Self.generateGlobalUIUserInterfaceStyle(
                 darkMode: darkMode,
                 daylight: isDaylight()
@@ -38,8 +38,8 @@ public class ThemeManager {
     
     // properties.
    
-    public let homeOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
-    public let globalOverrideUIStyle: EqualtableLiveData<UIUserInterfaceStyle>
+    public let homeOverrideUIStyle: LiveData<UIUserInterfaceStyle>
+    public let globalOverrideUIStyle: LiveData<UIUserInterfaceStyle>
     
     private var daylight: Bool
     private var darkMode: DarkMode

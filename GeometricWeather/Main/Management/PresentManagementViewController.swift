@@ -31,7 +31,7 @@ class PresentManagementViewController: BaseManagementController,
     // subviews.
     
     private let blurBackground = UIVisualEffectView(
-        effect: UIBlurEffect(style: .prominent)
+        effect: UIBlurEffect(style: .systemChromeMaterial)
     )
     private let searchBar = UISearchBar(frame: .zero)
     private lazy var searchViewController = {
@@ -172,9 +172,7 @@ class PresentManagementViewController: BaseManagementController,
     }
     
     override func updateLocationList(_ newList: SelectableLocationArray) {
-        
         let oldCount = self.itemList.count
-        
         if self.itemList.isEmpty {
             self.staggeredHelper.reset()
         }

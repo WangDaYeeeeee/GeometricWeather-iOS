@@ -70,10 +70,12 @@ class MainNavigationBarTitleView: UIView {
         self.addSubview(self.currentPositionIcon)
         
         self.titleLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalTo(44)
         }
         self.currentPositionIcon.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(self.titleLabel.snp.centerY)
             make.leading.equalTo(self.titleLabel.snp.trailing).offset(8.0)
             make.trailing.lessThanOrEqualToSuperview().offset(-littleMargin)
             make.size.equalTo(iconSize)
@@ -82,5 +84,11 @@ class MainNavigationBarTitleView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - size.
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 0, height: 44)
     }
 }

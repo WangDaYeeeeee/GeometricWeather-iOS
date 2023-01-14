@@ -41,6 +41,7 @@ class MainDailyCardCell: MainTableViewCell,
     
     private var validTrendGenerators = [MainTrendGeneratorProtocol]()
     
+    private let selectionReactor = UISelectionFeedbackGenerator()
     private var isChangingDailyCollectionViewScrollOffsetManually = false
     private var isDraggingDailyCollectionView = false
     private var currentScrollDayOfYear = -1
@@ -141,6 +142,20 @@ class MainDailyCardCell: MainTableViewCell,
                 at: .start,
                 animated: false
             )
+            
+            if self.isSyncScrollingEnabled {
+                self.currentScrollDayOfYear = Calendar.current.ordinality(
+                    of: .day,
+                    in: .year,
+                    for: Date(
+                        timeIntervalSince1970: location
+                            .weather?
+                            .dailyForecasts
+                            .get(0)?
+                            .time ?? 0.0
+                    )
+                ) ?? -1
+            }
         }
     }
     
@@ -220,6 +235,8 @@ class MainDailyCardCell: MainTableViewCell,
             at: IndexPath(row: index, section: 0),
             animated: true
         )
+        self.currentScrollDayOfYear = event.targetDayOfYear
+        self.selectionReactor.selectionChanged()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

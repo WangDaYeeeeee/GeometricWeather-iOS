@@ -50,17 +50,22 @@ class HomeViewController: UIViewController,
         didSet {
             self.updateNavigationBarTintColor()
             
-            self.navigationBarBackground.layer.removeAllAnimations()
+            self.navigationBarBackground.contentView.layer.removeAllAnimations()
             self.navigationBarBackgroundShadow.layer.removeAllAnimations()
             
             let targetAlpha = self.blurNavigationBar ? 1.0 : 0.0
+            let targetEffect = self.blurNavigationBar
+            ? UIBlurEffect(style: .systemUltraThinMaterial)
+            : nil
             UIView.animate(
-                withDuration: 0.3,
+                withDuration: 0.4,
                 delay: 0,
                 options: [.beginFromCurrentState, .curveEaseInOut]
             ) { [weak self] in
-                self?.navigationBarBackground.alpha = targetAlpha
+                self?.navigationBarBackground.contentView.alpha = targetAlpha
                 self?.navigationBarBackgroundShadow.alpha = targetAlpha
+                
+                self?.navigationBarBackground.effect = targetEffect
             } completion: { _ in
                 // do nothing.
             }
@@ -101,9 +106,7 @@ class HomeViewController: UIViewController,
     let tableView = AutoHideKeyboardTableView(frame: .zero, style: .grouped)
     
     let navigationBarTitleView = MainNavigationBarTitleView(frame: .zero)
-    let navigationBarBackground = UIVisualEffectView(
-        effect: UIBlurEffect(style: .systemUltraThinMaterial)
-    )
+    let navigationBarBackground = UIVisualEffectView(effect: nil)
     let navigationBarBackgroundShadow = UIView(frame: .zero)
     
     let indicator = DotPagerIndicator(frame: .zero)
@@ -156,10 +159,6 @@ class HomeViewController: UIViewController,
             self?.updateTableView()
         }
         self.vm.loading.addObserver(self) { [weak self] newValue in
-            if newValue != self?.vm.loading.value {
-                // this value is not the final state.
-                return
-            }
             if newValue == self?.tableView.refreshControl?.isRefreshing {
                 // this value is equal to current state of UI.
                 return

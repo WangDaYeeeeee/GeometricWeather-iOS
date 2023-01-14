@@ -15,7 +15,7 @@ import UIKit
 
 private let cellReuseId = "ManagementTableViewCell"
 
-enum ManagementSection {
+enum ManagementSection: Hashable {
     case locationItems
 }
 
@@ -26,6 +26,17 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     // MARK: - inner data.
 
     var itemList = [LocationItem]()
+    lazy var differ: UITableViewDiffableDataSource<ManagementSection, LocationItem> = {
+        let differ = UITableViewDiffableDataSource<ManagementSection, LocationItem>(
+            tableView: self.tableView
+        ) { [weak self] tableView, indexPath, _ in
+            return self?.tableView(tableView, cellForRowAt: indexPath)
+            ?? UITableViewCell(style: .default, reuseIdentifier: nil)
+        }
+        differ.defaultRowAnimation = .fade
+        
+        return differ
+    }()
     var moveBeginIndex: IndexPath?
     
     var transparentCell: Bool {
@@ -75,116 +86,37 @@ class BaseManagementController: GeoViewController<MainViewModel>,
     }
     
     func updateLocationList(_ newList: SelectableLocationArray) {
-        // new.
-        if self.itemList.isEmpty {
-            self.generateItemList(newList, withoutSelectedState: false)
-            self.tableView.reloadData()
-            
-            return
-        }
+        let prevItemList = self.itemList
+        self.generateItemList(newList, withoutSelectedState: false)
         
-        let itemCountChanged = self.itemList.count != newList.locations.count
-        
-        if self.itemList.count < newList.locations.count {
-            // add.
-            let oldCount = self.itemList.count
-            let newCount = newList.locations.count
+        var resortOnly = false
+        if prevItemList.count == self.itemList.count {
+            let prevLocationIdSet = Set(prevItemList.map { item in item.id })
+            let currLocationIdSet = Set(self.itemList.map { item in item.id })
             
-            self.generateItemList(newList, withoutSelectedState: true)
-            
-            var indexPaths = [IndexPath]()
-            for i in oldCount ..< newCount {
-                indexPaths.append(
-                    IndexPath(row: i, section: 0)
-                )
-            }
-            
-            self.tableView.insertRows(
-                at: indexPaths,
-                with: .none
-            )
-        } else if self.itemList.count > newList.locations.count {
-            // delete.            
-            var indexPaths = [IndexPath]()
-            
-            var oldIndex = 0
-            var newIndex = 0
-            while oldIndex < self.itemList.count
-                    && newIndex < newList.locations.count {
-                
-                if self.itemList[oldIndex].location.formattedId
-                    == newList.locations[newIndex].formattedId {
-                    oldIndex += 1
-                    newIndex += 1
-                    continue
-                }
-                
-                indexPaths.append(
-                    IndexPath(row: oldIndex, section: 0)
-                )
-                oldIndex += 1
-            }
-            for i in oldIndex ..< self.itemList.count {
-                indexPaths.append(
-                    IndexPath(row: i, section: 0)
-                )
-            }
-            
-            self.generateItemList(newList, withoutSelectedState: true)
-            
-            self.tableView.deleteRows(
-                at: indexPaths,
-                with: self.view.isRtl ? .right : .left
-            )
-        }
-        
-        var locationDict = [String: Location]()
-        for location in newList.locations {
-            locationDict[location.formattedId] = location
-        }
-        
-        // update item.
-        for (i, item) in self.itemList.enumerated() {
-            if let newLocation = locationDict[item.location.formattedId] {
-                let newSelected = item.location.formattedId == newList.selectedId
-                
-                if item.location != newLocation || item.selected != newSelected {
-                    self.itemList[i] = LocationItem(
-                        location: newLocation,
-                        selected: newSelected
-                    )
-                    if let cell = self.tableView.cellForRow(
-                        at: IndexPath(row: i, section: 0)
-                    ) {
-                        (cell as? LocationTableViewCell)?.bindData(
-                            location: newLocation,
-                            selected: newSelected,
-                            trans: self.transparentCell
-                        )
-                    }
-                }
+            resortOnly = !prevLocationIdSet.contains { id in
+                !currLocationIdSet.contains(id)
+            } && !currLocationIdSet.contains { id in
+                !prevLocationIdSet.contains(id)
             }
         }
         
-        if !itemCountChanged {
-            // move.
-            self.generateItemList(newList, withoutSelectedState: false)
-        }        
+        if !resortOnly {
+            var snapshot = NSDiffableDataSourceSnapshot<ManagementSection, LocationItem>()
+            snapshot.appendSections([.locationItems])
+            snapshot.appendItems(self.itemList)
+            self.differ.apply(snapshot, animatingDifferences: !prevItemList.isEmpty)
+        }
     }
     
     private func generateItemList(
         _ newList: SelectableLocationArray,
         withoutSelectedState: Bool
     ) {
-        self.itemList.removeAll()
-        
-        for location in newList.locations {
-            self.itemList.append(
-                LocationItem(
-                    location: location,
-                    selected: !withoutSelectedState
-                    && location.formattedId == newList.selectedId
-                )
+        self.itemList = newList.locations.map { location in
+            return LocationItem(
+                location: location,
+                selected: !withoutSelectedState && location.formattedId == newList.selectedId
             )
         }
     }
@@ -221,7 +153,7 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         (cell as? LocationTableViewCell)?.bindData(
             location: self.itemList[indexPath.row].location,
             selected: self.itemList[indexPath.row].selected,
-            trans: self.transparentCell
+            withTransparentBackground: self.transparentCell
         )
         return cell
     }
@@ -355,7 +287,6 @@ class BaseManagementController: GeoViewController<MainViewModel>,
         willMoveCellAt indexPath: IndexPath!
     ) {
         self.dragBeginImpactor.impactOccurred()
-        
         self.moveBeginIndex = indexPath
     }
     

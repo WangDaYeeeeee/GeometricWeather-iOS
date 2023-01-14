@@ -319,7 +319,7 @@ extension AccuService: TargetType {
             return "forecasts/v1/daily/15day/\(city_key).json"
             
         case .hourly(let city_key, _, _, _):
-            return "forecasts/v1/hourly/24hour/\(city_key).json"
+            return "forecasts/v1/hourly/240hour/\(city_key).json"
             
         case .minutely(_, _, _, _):
             return "forecasts/v1/minute/1minute.json"

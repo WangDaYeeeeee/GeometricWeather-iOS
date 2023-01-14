@@ -215,24 +215,37 @@ class MainViewModel: NSObject {
         self.loading.value = true
         
         let location = self.currentLocation.value.location
-        self.currentUpdateTask = Task(priority: .background) {
-            let result = await self.repository.update(location: location)
+        
+        self.currentUpdateTask = Task(priority: .background) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let result = await withTaskCancellationHandler {
+                await strongSelf.repository.update(location: location)
+            } onCancel: {
+                strongSelf.repository.cancelUpdate()
+            }
             
             await MainActor.run {
-                if !result.weatherRequestSucceed {
-                    self.toastMessage.value = .weatherRequestFailed
-                } else if result.locationSucceed == false {
-                    self.toastMessage.value = .locationFailed
+                if Task.isCancelled {
+                    return
                 }
                 
-                self.updateInnerData(location: result.location)
+                if !result.weatherRequestSucceed {
+                    strongSelf.toastMessage.value = .weatherRequestFailed
+                } else if result.locationSucceed == false {
+                    strongSelf.toastMessage.value = .locationFailed
+                }
                 
-                self.loading.value = false
+                strongSelf.updateInnerData(location: result.location)
+                
+                strongSelf.loading.value = false
                 
                 printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
                 updateAppExtensions(
-                    locations: self.selectableTotalLocations.value.locations,
-                    scene: self.scene
+                    locations: strongSelf.selectableTotalLocations.value.locations,
+                    scene: strongSelf.scene
                 )
             }
         }
@@ -246,6 +259,8 @@ class MainViewModel: NSObject {
     }
     
     func checkToUpdate() {
+        cancelRequest()
+        
         self.currentLocation.value = CurrentLocation(self.currentLocation.value.location)
         self.scene?.themeManager.update(location: self.currentLocation.value.location)
         

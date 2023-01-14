@@ -11,7 +11,7 @@ private var keyPrefix = ""
 
 private let kiCloudSyncNotification = "com.wangdaye.iCloudSyncDidUpdateToLatest"
 
-@available(watchOS, unavailable)
+@available(watchOS 9.0, *)
 class SettingsSync {
     
     @objc static func updateToiCloud(notificationObject: NSNotification) {

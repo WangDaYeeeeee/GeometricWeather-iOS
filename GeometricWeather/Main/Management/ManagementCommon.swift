@@ -17,8 +17,14 @@ struct LocationItem: Hashable {
     let location: Location
     let selected: Bool
     
+    var id: String {
+        self.location.formattedId
+        + String(self.location.weather?.base.timeStamp ?? 0)
+        + (self.selected ? "selected" : "unselected")
+    }
+    
     func hash(into hasher: inout Hasher) {
-        return location.formattedId.hash(into: &hasher)
+        return self.id.hash(into: &hasher)
     }
 }
 

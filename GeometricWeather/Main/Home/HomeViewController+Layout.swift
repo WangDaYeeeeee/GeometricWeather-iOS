@@ -63,7 +63,7 @@ extension HomeViewController {
         }
         self.dragSwitchView.contentView.addSubview(self.tableView)
         
-        self.navigationBarBackground.alpha = 0
+        self.navigationBarBackground.contentView.alpha = 0
         self.view.addSubview(self.navigationBarBackground)
         
         self.navigationBarBackgroundShadow.alpha = 0

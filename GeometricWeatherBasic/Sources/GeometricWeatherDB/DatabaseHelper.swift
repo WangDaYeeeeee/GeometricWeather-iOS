@@ -83,6 +83,7 @@ public class DatabaseHelper {
                 } else {
                     DAOs.updateLocation(context: context, location: location)
                 }
+                try? context.save()
             }
         }
     }
@@ -98,6 +99,7 @@ public class DatabaseHelper {
             context.performAndWait {
                 DAOs.deleteLocations(context: context)
                 DAOs.writeLocations(context: context, locations: locations)
+                try? context.save()
             }
         }
     }
@@ -111,6 +113,7 @@ public class DatabaseHelper {
     public func deleteLocation(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteLocation(context: context, formattedId: formattedId)
+            try? context.save()
         }
     }
     
@@ -185,6 +188,7 @@ public class DatabaseHelper {
                     weather: weather,
                     formattedId: formattedId
                 )
+                try? context.save()
             }
         }
     }
@@ -198,6 +202,7 @@ public class DatabaseHelper {
     public func deleteWeather(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteWeather(context: context, formattedId: formattedId)
+            try? context.save()
         }
     }
     

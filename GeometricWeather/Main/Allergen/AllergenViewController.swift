@@ -28,7 +28,7 @@ class AllergenViewController: GeoViewController<Location>,
       // subviews.
       
     private let blurBackground = UIVisualEffectView(
-        effect: UIBlurEffect(style: .prominent)
+        effect: UIBlurEffect(style: .systemThickMaterial)
     )
     private let titleContainer = UIView(frame: .zero)
     private let titleLabel = UILabel(frame: .zero)

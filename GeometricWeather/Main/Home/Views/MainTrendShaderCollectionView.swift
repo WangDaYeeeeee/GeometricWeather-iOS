@@ -17,7 +17,6 @@ import GeometricWeatherTheme
 class MainTrendShaderCollectionView: UICollectionView {
     
     private let scrollBar = MainTrendScrollBarView(frame: .zero)
-    private let scrollReactor = UISelectionFeedbackGenerator()
     
     var cellSize: CGSize {
         return CGSize(
@@ -70,7 +69,6 @@ class MainTrendShaderCollectionView: UICollectionView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-
         self.scrollBar.frame = CGRect(
             x: (self.frame.width - self.cellSize.width)
             * self.contentOffset.x / (self.contentSize.width - self.frame.width)
@@ -103,7 +101,6 @@ class MainTrendShaderCollectionView: UICollectionView {
             ),
             animated: animated
         )
-        self.scrollReactor.selectionChanged()
     }
 }
 

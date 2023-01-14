@@ -48,15 +48,7 @@ public class LiveData<T> {
             let value = self.innerValue
             
             DispatchQueue.main.async {
-                guard let wrappers = self
-                    .observerCallbackMap
-                    .objectEnumerator()?
-                    .allObjects as? [CallbackWrapper<T>] else {
-                    return
-                }
-                wrappers.forEach { wrapper in
-                    wrapper.callback(value)
-                }
+                self.dispatch(value)
             }
         }
     }
@@ -87,6 +79,20 @@ public class LiveData<T> {
     
     deinit {
         self.observerCallbackMap.removeAllObjects()
+    }
+    
+    // dispatch.
+    
+    fileprivate func dispatch(_ value: T) {
+        guard let wrappers = self
+            .observerCallbackMap
+            .objectEnumerator()?
+            .allObjects as? [CallbackWrapper<T>] else {
+            return
+        }
+        wrappers.forEach { wrapper in
+            wrapper.callback(value)
+        }
     }
     
     // observer.
@@ -153,5 +159,23 @@ public class EqualtableLiveData<T: Equatable>: LiveData<T> {
                 self.innerValue
             }
         }
+    }
+    
+    public let filterUnnecessaryUpdate: Bool
+    
+    public override convenience init(_ value: T) {
+        self.init(value, filterUnnecessaryUpdate: true)
+    }
+    
+    public init(_ value: T, filterUnnecessaryUpdate: Bool) {
+        self.filterUnnecessaryUpdate = filterUnnecessaryUpdate
+        super.init(value)
+    }
+    
+    override func dispatch(_ value: T) {
+        if (value != self.value) {
+            return
+        }
+        super.dispatch(value)
     }
 }

@@ -100,7 +100,10 @@ struct MainRepository {
     }
     
     func update(location: Location) async -> UpdateResult {
-        try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
         return await updator.update(target: location, inBackground: false)
+    }
+    
+    func cancelUpdate() {
+        self.updator.cancelRequest()
     }
 }

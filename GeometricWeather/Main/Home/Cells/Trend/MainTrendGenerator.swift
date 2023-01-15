@@ -13,7 +13,7 @@ import GeometricWeatherResources
 
 class MainTrendGenerator: NSObject {
     
-    var key: String {
+    static var key: String {
         return String(reflecting: Self.self)
     }
 }
@@ -25,7 +25,7 @@ protocol MainTrendGeneratorProtocol: MainTrendGenerator {
     var dispayName: String { get }
     var isValid: Bool { get }
     
-    func registerCellClass(to collectionView: UICollectionView)
+    static func registerCellClass(to collectionView: UICollectionView)
     func bindCellData(
         at indexPath: IndexPath,
         to collectionView: UICollectionView

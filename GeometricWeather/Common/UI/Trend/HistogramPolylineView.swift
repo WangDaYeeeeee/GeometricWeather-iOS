@@ -406,7 +406,7 @@ class HistogramPolylineView: UIView {
             return true
         }
         // return false if we have already detected that user is dragging horizontally.
-        if self.isDragging && self.isHorizontalDragging {
+        if self.needToTrackTouching == true || (self.isDragging && self.isHorizontalDragging) {
             return false
         }
         // otherwise, return true.

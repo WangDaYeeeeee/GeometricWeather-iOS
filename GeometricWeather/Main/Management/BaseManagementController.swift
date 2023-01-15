@@ -189,16 +189,20 @@ class BaseManagementController: GeoViewController<MainViewModel>,
             
             if let location = strongSelf.itemList.get(indexPath.row)?.location {
                 if !location.residentPosition {
+                    let window = strongSelf.view.window
+                    
                     ToastHelper.showToastMessage(
                         getLocalizedText("feedback_resident_location"),
                         inWindowOf: strongSelf.view,
                         WithAction: getLocalizedText("learn_more"),
                         andDuration: longToastInterval
                     ) {
-                        StatementDialog(
-                            title: getLocalizedText("feedback_resident_location"),
-                            content: getLocalizedText("feedback_resident_location_description")
-                        ).showSelf(inWindowOf: strongSelf.view)
+                        if let window = window {
+                            StatementDialog(
+                                title: getLocalizedText("feedback_resident_location"),
+                                content: getLocalizedText("feedback_resident_location_description")
+                            ).showOn(window)
+                        }
                     } completion: { didTap in
                         // do nothing.
                     }

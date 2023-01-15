@@ -97,10 +97,10 @@ class DailyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorPr
     
     // interfaces.
     
-    func registerCellClass(to collectionView: UICollectionView) {
+    static func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
             DailyPrecipitationCollectionViewCell.self,
-            forCellWithReuseIdentifier: self.key
+            forCellWithReuseIdentifier: Self.key
         )
     }
     
@@ -109,7 +109,7 @@ class DailyPrecipitationTrendGenerator: MainTrendGenerator, MainTrendGeneratorPr
         to collectionView: UICollectionView
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: self.key,
+            withReuseIdentifier: Self.key,
             for: indexPath
         )
         

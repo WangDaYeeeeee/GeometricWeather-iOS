@@ -66,10 +66,10 @@ class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorPro
     
     // interfaces.
     
-    func registerCellClass(to collectionView: UICollectionView) {
+    static func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
             HourlyTemperatureCollectionViewCell.self,
-            forCellWithReuseIdentifier: self.key
+            forCellWithReuseIdentifier: Self.key
         )
     }
     
@@ -78,7 +78,7 @@ class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorPro
         to collectionView: UICollectionView
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: self.key,
+            withReuseIdentifier: Self.key,
             for: indexPath
         )
         

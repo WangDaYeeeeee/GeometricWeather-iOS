@@ -65,6 +65,9 @@ class MainDailyCardCell: MainTableViewCell,
         
         self.dailyCollectionView.delegate = self
         self.dailyCollectionView.dataSource = self
+        self.getAllTrendGeneratorTypes().forEach { item in
+            item.registerCellClass(to: self.dailyCollectionView)
+        }
         self.cardContainer.contentView.addSubview(self.dailyCollectionView)
         
         self.dailyBackgroundView.isUserInteractionEnabled = false
@@ -113,7 +116,6 @@ class MainDailyCardCell: MainTableViewCell,
     }
     
     override func bindData(location: Location, timeBar: MainTimeBarView?) {
-        let firstBind = self.location == nil
         super.bindData(location: location, timeBar: timeBar)
         self.isSyncScrollingEnabled = SettingsManager.shared.trendSyncEnabled
         
@@ -124,12 +126,6 @@ class MainDailyCardCell: MainTableViewCell,
         self.summaryLabel.text = weather.current.dailyForecast
         
         let generators = self.ensureTrendGenerators(for: location)
-        if firstBind {
-            generators.total.forEach { item in
-                item.registerCellClass(to: self.dailyCollectionView)
-            }
-        }
-        
         self.validTrendGenerators = generators.valid
         self.dailyTagView.tagList = generators.valid.map { item in
             item.dispayName
@@ -198,19 +194,25 @@ class MainDailyCardCell: MainTableViewCell,
         total: [MainTrendGeneratorProtocol],
         valid: [MainTrendGeneratorProtocol]
     ) {
-        let total: [MainTrendGeneratorProtocol] = [
-            DailyTemperatureTrendGenerator(location),
-            DailyWindTrendGenerator(location),
-            DailyAirQualityTrendGenerator(location),
-            DailyUVTrendGenerator(location),
-            DailyPrecipitationTrendGenerator(location),
-            DailyHumidityTrendGenerator(location),
-            DailyVisibilityTrendGenerator(location),
-        ]
+        let total = self.getAllTrendGeneratorTypes().map { item in
+            item.init(location)
+        }
         let valid = total.filter { item in
             item.isValid
         }
         return (total: total, valid: valid)
+    }
+    
+    private func getAllTrendGeneratorTypes() -> [MainTrendGeneratorProtocol.Type] {
+        return [
+            DailyTemperatureTrendGenerator.self,
+            DailyWindTrendGenerator.self,
+            DailyAirQualityTrendGenerator.self,
+            DailyUVTrendGenerator.self,
+            DailyPrecipitationTrendGenerator.self,
+            DailyHumidityTrendGenerator.self,
+            DailyVisibilityTrendGenerator.self,
+        ]
     }
     
     // MARK: - scroll view delegate.

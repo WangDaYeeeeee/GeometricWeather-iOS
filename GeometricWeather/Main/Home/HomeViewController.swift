@@ -50,22 +50,18 @@ class HomeViewController: UIViewController,
         didSet {
             self.updateNavigationBarTintColor()
             
-            self.navigationBarBackground.contentView.layer.removeAllAnimations()
             self.navigationBarBackgroundShadow.layer.removeAllAnimations()
+            self.navigationBarBackground.layer.removeAllAnimations()
             
-            let targetAlpha = self.blurNavigationBar ? 1.0 : 0.0
-            let targetEffect = self.blurNavigationBar
-            ? UIBlurEffect(style: .systemUltraThinMaterial)
-            : nil
             UIView.animate(
-                withDuration: 0.4,
+                withDuration: 0.3,
                 delay: 0,
                 options: [.beginFromCurrentState, .curveEaseInOut]
             ) { [weak self] in
-                self?.navigationBarBackground.contentView.alpha = targetAlpha
-                self?.navigationBarBackgroundShadow.alpha = targetAlpha
-                
-                self?.navigationBarBackground.effect = targetEffect
+                if let self = self {
+                    self.navigationBarBackgroundShadow.alpha = self.blurNavigationBar ? 1.0 : 0.0
+                    self.navigationBarBackground.alpha = self.blurNavigationBar ? 1.0 : 0.0
+                }
             } completion: { _ in
                 // do nothing.
             }
@@ -106,7 +102,9 @@ class HomeViewController: UIViewController,
     let tableView = AutoHideKeyboardTableView(frame: .zero, style: .grouped)
     
     let navigationBarTitleView = MainNavigationBarTitleView(frame: .zero)
-    let navigationBarBackground = UIVisualEffectView(effect: nil)
+    let navigationBarBackground = UIVisualEffectView(
+        effect: UIBlurEffect(style: .systemUltraThinMaterial)
+    )
     let navigationBarBackgroundShadow = UIView(frame: .zero)
     
     let indicator = DotPagerIndicator(frame: .zero)

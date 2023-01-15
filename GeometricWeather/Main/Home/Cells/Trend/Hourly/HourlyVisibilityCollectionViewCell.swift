@@ -47,10 +47,10 @@ class HourlyVisibilityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProt
     
     // interfaces.
     
-    func registerCellClass(to collectionView: UICollectionView) {
+    static func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
             HourlyVisibilityCollectionViewCell.self,
-            forCellWithReuseIdentifier: self.key
+            forCellWithReuseIdentifier: Self.key
         )
     }
     
@@ -59,7 +59,7 @@ class HourlyVisibilityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProt
         to collectionView: UICollectionView
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: self.key,
+            withReuseIdentifier: Self.key,
             for: indexPath
         )
         

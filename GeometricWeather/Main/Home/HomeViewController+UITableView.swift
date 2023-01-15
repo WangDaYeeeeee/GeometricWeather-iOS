@@ -224,9 +224,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             )
         ).height ?? 0.0
         
-        self.cellHeightCache[
-            cellKeyList[indexPath.row]
-        ] = height
+        self.cellHeightCache[cellKeyList[indexPath.row]] = height
         
         return height
     }
@@ -235,9 +233,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         estimatedHeightForRowAt indexPath: IndexPath
     ) -> CGFloat {
-        if let cache = self.cellHeightCache[
-            cellKeyList[indexPath.row]
-        ] {
+        if let cache = self.cellHeightCache[cellKeyList[indexPath.row]] {
             if cache > 0 {
                 return cache
             }
@@ -254,9 +250,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             )
         ).height ?? 0.0
         
-        self.cellHeightCache[
-            cellKeyList[indexPath.row]
-        ] = height
+        self.cellHeightCache[cellKeyList[indexPath.row]] = height
         
         return height
     }

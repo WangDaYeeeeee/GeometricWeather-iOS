@@ -47,10 +47,10 @@ class HourlyHumidityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtoc
     
     // interfaces.
     
-    func registerCellClass(to collectionView: UICollectionView) {
+    static func registerCellClass(to collectionView: UICollectionView) {
         collectionView.register(
             HourlyHumidityCollectionViewCell.self,
-            forCellWithReuseIdentifier: self.key
+            forCellWithReuseIdentifier: Self.key
         )
     }
     
@@ -59,7 +59,7 @@ class HourlyHumidityTrendGenerator: MainTrendGenerator, MainTrendGeneratorProtoc
         to collectionView: UICollectionView
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: self.key,
+            withReuseIdentifier: Self.key,
             for: indexPath
         )
         

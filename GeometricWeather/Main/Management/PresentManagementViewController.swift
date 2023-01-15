@@ -30,7 +30,9 @@ class PresentManagementViewController: BaseManagementController,
         
     // subviews.
     
-    private let blurBackground = UIVisualEffectView(effect: nil)
+    private let blurBackground = UIVisualEffectView(
+        effect: UIBlurEffect(style: .systemChromeMaterial)
+    )
     private let searchBar = UISearchBar(frame: .zero)
     private lazy var searchViewController = {
         return SearchResultController(param: false, in: self.scene)
@@ -153,14 +155,6 @@ class PresentManagementViewController: BaseManagementController,
             UIView.animate(withDuration: 0.3) {
                 strongSelf.searchViewController.view.alpha = newValue ? 1.0 : 0.0
             }
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        UIView.animate(withDuration: 0.4, delay: 0) {
-            self.blurBackground.effect = UIBlurEffect(style: .systemChromeMaterial)
         }
     }
     

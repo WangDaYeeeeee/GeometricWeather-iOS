@@ -30,16 +30,14 @@ private enum DialogStatus {
 
 class GeoDialog: UIView {
         
-    private let background = UIVisualEffectView(
-        effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
-    )
+    private let background = UIVisualEffectView(effect: nil)
     private var foreground = UIView(frame: .zero)
     
     private var status = DialogStatus.hiding
     private var dragging = false
     
     private var offsetY: CGFloat = 0
-    private var offsetTrigger: CGFloat = 56.0
+    private var offsetTrigger: CGFloat = 72
     
     private var foregroundAnimation: UIViewPropertyAnimator?
     private var backgroundAnimation: UIViewPropertyAnimator?
@@ -52,7 +50,6 @@ class GeoDialog: UIView {
         self.addSubview(self.background)
         self.addSubview(self.foreground)
         
-        self.background.alpha = 0.0
         self.background.addGestureRecognizer(
             UITapGestureRecognizer(
                 target: self,
@@ -160,10 +157,11 @@ class GeoDialog: UIView {
     }
     
     private func dragContentView(_ gesture: UIPanGestureRecognizer) {
+        let prevOffsetY = self.offsetY
+        
         let offset = gesture.translation(in: self).y * (
             self.offsetY > 0 ? 1 : dragUpRatio
         )
-        
         if self.dragging {
             self.offsetY += offset
         } else {
@@ -182,6 +180,16 @@ class GeoDialog: UIView {
             x: 0,
             y: offset
         )
+        
+        if prevOffsetY < self.offsetTrigger && self.offsetY >= self.offsetTrigger {
+            UIView.animate(withDuration: 0.4, delay: 0) {
+                self.background.effect = nil
+            }
+        } else if prevOffsetY >= self.offsetTrigger && self.offsetY < self.offsetTrigger {
+            UIView.animate(withDuration: 0.4, delay: 0) {
+                self.background.effect = UIBlurEffect(style: .systemUltraThinMaterial)
+            }
+        }
         
         gesture.setTranslation(.zero, in: self)
     }
@@ -202,9 +210,9 @@ class GeoDialog: UIView {
     private func resetSelf() {
         let a = UIViewPropertyAnimator(
             duration: resetAnimationDuration,
-            dampingRatio: 0.5
+            dampingRatio: 0.7
         ) { [weak self] in
-            self?.background.alpha = 1.0
+            self?.background.effect = UIBlurEffect(style: .systemUltraThinMaterial)
             
             self?.foreground.alpha = 1.0
             self?.foreground.transform = CGAffineTransform(
@@ -259,7 +267,7 @@ class GeoDialog: UIView {
             duration: showDuration * 0.5,
             curve: .easeInOut
         ) {
-            self.background.alpha = 1.0
+            self.background.effect = UIBlurEffect(style: .systemUltraThinMaterial)
         }
     
         let foregroundAnim = UIViewPropertyAnimator(
@@ -298,7 +306,7 @@ class GeoDialog: UIView {
             duration: hideDuration,
             curve: .easeInOut
         ) {
-            self.background.alpha = 0.0
+            self.background.effect = nil
         }
         backgroundAnim.addCompletion { position in
             if position == .end {

@@ -92,6 +92,16 @@ class MainSelectableTagView: UICollectionView,
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentInset = UIEdgeInsets(
+            top: -self.safeAreaInsets.top,
+            left: -self.safeAreaInsets.left,
+            bottom: -self.safeAreaInsets.bottom,
+            right: -self.safeAreaInsets.right
+        )
+    }
+    
     // MARK: - delegate.
     
     func collectionView(

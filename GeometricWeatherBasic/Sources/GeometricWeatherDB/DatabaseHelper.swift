@@ -28,6 +28,7 @@ public class DatabaseHelper {
     public static let shared = DatabaseHelper()
 
     private init() {
+        // do nothing.
     }
     
     // proterties.
@@ -65,13 +66,11 @@ public class DatabaseHelper {
     
     // location.
     
-    public func asyncWriteLocation(location: Location) async {
+    public func suspendedWriteLocation(location: Location) async {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.writeLocation(location: location))
         }
     }
-    
-    @available(*, deprecated, renamed: "asyncWriteLocation", message: "Prefer to use an alernative async method.")
     public func writeLocation(location: Location) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
@@ -88,12 +87,11 @@ public class DatabaseHelper {
         }
     }
     
-    public func asyncWriteLocations(locations: [Location]) async {
+    public func suspendedWriteLocations(locations: [Location]) async {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.writeLocations(locations: locations))
         }
     }
-    @available(*, deprecated, renamed: "asyncWriteLocations", message: "Prefer to use an alernative async method.")
     public func writeLocations(locations: [Location]) {
         if let context = self.persistentContainer?.viewContext {
             context.performAndWait {
@@ -104,12 +102,11 @@ public class DatabaseHelper {
         }
     }
     
-    public func asyncDeleteLocation(formattedId: String) async {
+    public func suspendedDeleteLocation(formattedId: String) async {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.deleteLocation(formattedId: formattedId))
         }
     }
-    @available(*, deprecated, renamed: "asyncDeleteLocation", message: "Prefer to use an alernative async method.")
     public func deleteLocation(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteLocation(context: context, formattedId: formattedId)
@@ -117,12 +114,11 @@ public class DatabaseHelper {
         }
     }
     
-    public func asyncReadLocation(formattedId: String) async -> Location? {
+    public func suspendedReadLocation(formattedId: String) async -> Location? {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.readLocation(formattedId: formattedId))
         }
     }
-    @available(*, deprecated, renamed: "asyncReadLocation", message: "Prefer to use an alernative async method.")
     public func readLocation(formattedId: String) -> Location? {
         if let context = self.persistentContainer?.viewContext {
             return DAOs.readLocations(
@@ -133,14 +129,13 @@ public class DatabaseHelper {
         return nil
     }
     
-    public func asyncReadLocations(defualtWeatherSource: WeatherSource) async -> [Location] {
+    public func suspendedReadLocations(defualtWeatherSource: WeatherSource) async -> [Location] {
         await withCheckedContinuation { continuation in
             continuation.resume(
                 returning: readLocations(defualtWeatherSource: defualtWeatherSource)
             )
         }
     }
-    @available(*, deprecated, renamed: "asyncReadLocations", message: "Prefer to use an alernative async method.")
     public func readLocations(defualtWeatherSource: WeatherSource) -> [Location] {
         var locations = [Location]()
         
@@ -162,7 +157,7 @@ public class DatabaseHelper {
     
     // weather.
     
-    public func asyncWriteWeather(
+    public func suspendedWriteWeather(
         weather: Weather,
         formattedId: String
     ) async {
@@ -172,7 +167,6 @@ public class DatabaseHelper {
             )
         }
     }
-    @available(*, deprecated, renamed: "asyncWriteWeather", message: "Prefer to use an alernative async method.")
     public func writeWeather(
         weather: Weather,
         formattedId: String
@@ -193,12 +187,11 @@ public class DatabaseHelper {
         }
     }
     
-    public func asyncDeleteWeather(formattedId: String) async {
+    public func suspendedDeleteWeather(formattedId: String) async {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.deleteWeather(formattedId: formattedId))
         }
     }
-    @available(*, deprecated, renamed: "asyncDeleteWeather", message: "Prefer to use an alernative async method.")
     public func deleteWeather(formattedId: String) {
         if let context = self.persistentContainer?.viewContext {
             DAOs.deleteWeather(context: context, formattedId: formattedId)
@@ -206,12 +199,11 @@ public class DatabaseHelper {
         }
     }
     
-    public func asyncReadWeather(formattedId: String) async -> Weather? {
+    public func suspendedReadWeather(formattedId: String) async -> Weather? {
         await withCheckedContinuation { continuation in
             continuation.resume(returning: self.readWeather(formattedId: formattedId))
         }
     }
-    @available(*, deprecated, renamed: "asyncReadWeather", message: "Prefer to use an alernative async method.")
     public func readWeather(formattedId: String) -> Weather? {
         if let context = self.persistentContainer?.viewContext {
             return DAOs.readWeather(context: context, formattedId: formattedId)

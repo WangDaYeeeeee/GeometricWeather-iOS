@@ -59,7 +59,7 @@ struct MainRepository {
             }
             
             locations[i] = locations[i].copyOf(
-                weather: await DatabaseHelper.shared.asyncReadWeather(
+                weather: await DatabaseHelper.shared.suspendedReadWeather(
                     formattedId: locations[i].formattedId
                 )
             )
@@ -75,7 +75,7 @@ struct MainRepository {
     }
     
     func writeLocations(locations: [Location]) async {
-        await DatabaseHelper.shared.asyncWriteLocations(locations: locations)
+        await DatabaseHelper.shared.suspendedWriteLocations(locations: locations)
     }
 
     func writeLocations(
@@ -86,7 +86,7 @@ struct MainRepository {
         
         if let i = index {
             if let weather = locations[i].weather {
-                await DatabaseHelper.shared.asyncWriteWeather(
+                await DatabaseHelper.shared.suspendedWriteWeather(
                     weather: weather,
                     formattedId: locations[i].formattedId
                 )
@@ -95,8 +95,8 @@ struct MainRepository {
     }
     
     func deleteLocation(location: Location) async {
-        await DatabaseHelper.shared.asyncDeleteLocation(formattedId: location.formattedId)
-        await DatabaseHelper.shared.asyncDeleteWeather(formattedId: location.formattedId)
+        await DatabaseHelper.shared.suspendedDeleteLocation(formattedId: location.formattedId)
+        await DatabaseHelper.shared.suspendedDeleteWeather(formattedId: location.formattedId)
     }
     
     func update(location: Location) async -> UpdateResult {

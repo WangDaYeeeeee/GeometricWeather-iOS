@@ -142,7 +142,7 @@ class HourlyTemperatureTrendGenerator: MainTrendGenerator, MainTrendGeneratorPro
             )],
             lineColor: mainTrendBackgroundLineColor,
             paddingTop: naturalTrendPaddingTop + naturalBackgroundIconPadding,
-            paddingBottom: temperatureTrendPaddingBottom + naturalBackgroundIconPadding
+            paddingBottom: temperatureTrendPaddingBottom
         )
     }
 }

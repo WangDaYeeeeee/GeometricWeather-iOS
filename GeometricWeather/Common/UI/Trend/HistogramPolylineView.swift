@@ -18,7 +18,7 @@ private let paddingHorizontal = normalMargin
 private let tickMarkCount = 5
 
 private let polylineWidth = trendHistogramWidth / 2.0
-private let polylineMargin = trendHistogramWidth / 8.0
+private let polylineMargin = polylineWidth / 2.0
 
 private let highlightAnimationDuration = 0.3
 private let highlightProgressDeltaY = 3.0
@@ -179,8 +179,8 @@ class HistogramPolylineView: UIView {
         self.baselineShape.lineWidth = trendTimelineWidth
         self.baselineShape.fillColor = UIColor.clear.cgColor
         self.baselineShape.lineDashPattern = [
-            NSNumber(value: 4.0),
-            NSNumber(value: 4.0)
+            NSNumber(value: polylineWidth),
+            NSNumber(value: polylineMargin),
         ]
         self.baselineShape.zPosition = trendTimelineZ
         

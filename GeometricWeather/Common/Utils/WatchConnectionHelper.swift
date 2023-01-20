@@ -98,7 +98,7 @@ class WatchConnectionHelper: NSObject,
     
     // MARK: - watch connectivity session delegate.
     
-    func session(
+    nonisolated func session(
         _ session: WCSession,
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: Error?
@@ -115,11 +115,11 @@ class WatchConnectionHelper: NSObject,
         }
     }
     
-    func sessionDidBecomeInactive(_ session: WCSession) {
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {
         // do nothing.
     }
     
-    func sessionDidDeactivate(_ session: WCSession) {
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
         // do nothing.
     }
 }

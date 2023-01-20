@@ -212,14 +212,9 @@ class MainHourlyCardCell: MainTableViewCell,
         if minutely.precipitationIntensities.count < 2 {
             return
         }
-        var allZero = true
-        for value in minutely.precipitationIntensities {
-            if value >= precipitationIntensityLight {
-                allZero = false
-                break
-            }
-        }
-        if allZero {
+        if !minutely.precipitationIntensities.contains(where: { item in
+            item >= precipitationIntensityLight
+        }) {
             return
         }
         

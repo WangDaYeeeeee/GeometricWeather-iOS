@@ -288,7 +288,7 @@ private struct StarLayer: View {
     let canvasSize: CGFloat
     
     var body: some View {
-        ForEach(0 ..< model.stars.count) { i in
+        ForEach(0 ..< model.stars.count, id: \.self) { i in
             SingleStarLayer(
                 model: model,
                 index: i,
@@ -314,7 +314,7 @@ private struct CloudAndThunderLayer: View {
     let rotation3D: Double
     
     var body: some View {
-        ForEach(0 ..< model.clouds.count) { i in
+        ForEach(0 ..< model.clouds.count, id: \.self) { i in
             CloudLayer(
                 model: model,
                 index: i,

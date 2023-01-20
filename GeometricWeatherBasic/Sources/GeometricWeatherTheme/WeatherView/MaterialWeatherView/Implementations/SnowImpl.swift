@@ -70,7 +70,7 @@ struct SnowForegroundView: View {
         model.checkToInit(daylight: daylight)
         let canvasSize = sqrt(width * width + height * height)
         
-        return ForEach(0 ..< model.snowflakes.count) { i in
+        return ForEach(0 ..< model.snowflakes.count, id: \.self) { i in
             SnowflakeLayer(
                 model: model,
                 index: i,

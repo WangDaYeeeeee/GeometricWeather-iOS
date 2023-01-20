@@ -72,7 +72,7 @@ public class UpdateHelper {
                     locationSucceed: true,
                     weatherRequestSucceed: false
                 )
-                await DatabaseHelper.shared.asyncWriteLocation(location: result.location)
+                await DatabaseHelper.shared.suspendedWriteLocation(location: result.location)
             } else {
                 result = UpdateResult(
                     location: result.location,
@@ -134,7 +134,7 @@ public class UpdateHelper {
             api.getGeoPosition(target: target) { location in
                 Task(priority: .background) {
                     if let result = location {
-                        await DatabaseHelper.shared.asyncWriteLocation(location: result)
+                        await DatabaseHelper.shared.suspendedWriteLocation(location: result)
                         continuation.resume(
                             returning: _UpdateResult(location: result, isSucceed: true)
                         )
@@ -144,7 +144,7 @@ public class UpdateHelper {
                     continuation.resume(
                         returning: _UpdateResult(
                             location: target.copyOf(
-                                weather: await DatabaseHelper.shared.asyncReadWeather(
+                                weather: await DatabaseHelper.shared.suspendedReadWeather(
                                     formattedId: target.formattedId
                                 )
                             ),
@@ -169,7 +169,7 @@ public class UpdateHelper {
             api.getWeather(target: target, units: units) { weather in
                 Task(priority: .background) {
                     if let result = weather {
-                        await DatabaseHelper.shared.asyncWriteWeather(
+                        await DatabaseHelper.shared.suspendedWriteWeather(
                             weather: result,
                             formattedId: target.formattedId
                         )
@@ -185,7 +185,7 @@ public class UpdateHelper {
                     continuation.resume(
                         returning: _UpdateResult(
                             location: target.copyOf(
-                                weather: await DatabaseHelper.shared.asyncReadWeather(
+                                weather: await DatabaseHelper.shared.suspendedReadWeather(
                                     formattedId: target.formattedId
                                 )
                             ),

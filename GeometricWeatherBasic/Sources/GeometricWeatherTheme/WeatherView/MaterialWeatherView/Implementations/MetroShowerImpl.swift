@@ -50,7 +50,7 @@ struct MetroShowerForegroundView: View {
         
         return Group {
             // stars.
-            ForEach(0 ..< model.stars.count) { i in
+            ForEach(0 ..< model.stars.count, id: \.self) { i in
                 StarLayer(
                     model: model,
                     index: i,
@@ -65,7 +65,7 @@ struct MetroShowerForegroundView: View {
             )
             
             // shooting stars.
-            ForEach(0 ..< model.shootingStars.count) { i in
+            ForEach(0 ..< model.shootingStars.count, id: \.self) { i in
                 ShootingStarLayer(
                     model: model,
                     index: i,

@@ -51,6 +51,11 @@ public class SettingsManager {
         defaultValue: false
     ) public var precipitationAlertEnabled
     
+    @UserDefaultValueWrapper<Bool, DynamicIslandEnabledChanged>(
+        key: "dynamic_island_enabled",
+        defaultValue: true
+    ) public var dynamicIslandEnabled
+    
     public let updateInterval = UpdateInterval.twoHour
     
     // MARK: - appearance.

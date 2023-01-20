@@ -46,6 +46,11 @@ func updateAppExtensions(
         // app shortcut items.
         updateAppShortcutItems(locations: locations)
         
+        // live activity.
+        if #available(iOS 16.2, *) {
+            updateLiveActivity(locations: locations)
+        }
+        
         // multi-scene compat.
         EventBus.shared.post(
             LocationListUpdateEvent(locations: locations, scene: scene)

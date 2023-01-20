@@ -12,11 +12,10 @@ import GeometricWeatherSettings
 
 extension DatabaseHelper {
     
-    func asyncReadLocations() async -> [Location] {
-        return await self.asyncReadLocations(defualtWeatherSource: SettingsManager.shared.weatherSource)
+    func suspendedReadLocations() async -> [Location] {
+        return await self.suspendedReadLocations(defualtWeatherSource: SettingsManager.shared.weatherSource)
     }
     
-    @available(*, deprecated, renamed: "asyncReadLocations", message: "Prefer to use an alernative async method.")
     func readLocations() -> [Location] {
         return self.readLocations(defualtWeatherSource: SettingsManager.shared.weatherSource)
     }

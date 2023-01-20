@@ -174,27 +174,34 @@ public struct Location: Equatable {
         )
     }
     
+    public func copyWithNilWeather() -> Location {
+        return Location(
+            cityId: self.cityId,
+            latitude: self.latitude,
+            longitude: self.longitude,
+            timezone: self.timezone,
+            country: self.country,
+            province: self.province,
+            city: self.city,
+            district: self.district,
+            weather: nil,
+            weatherSource: self.weatherSource,
+            currentPosition: self.currentPosition,
+            residentPosition: self.residentPosition
+        )
+    }
+    
     // MARK: - methods.
     
+    private var identifier: String {
+        self.formattedId
+        + (self.residentPosition ? "resident" : "unresident")
+        + self.weatherSource.key
+        + String(self.weather?.base.timeStamp ?? 0)
+    }
+    
     public static func == (left: Location, right: Location) -> Bool {
-        
-        if left.formattedId != right.formattedId {
-            return false
-        }
-        
-        if left.residentPosition != right.residentPosition {
-            return false
-        }
-        
-        if left.weatherSource != right.weatherSource {
-            return false
-        }
-        
-        if left.weather != nil && right.weather != nil {
-            return left.weather! == right.weather!
-        }
-        
-        return left.weather == nil && right.weather == nil
+        return left.identifier == right.identifier
     }
     
     public func toString() -> String {
@@ -214,7 +221,7 @@ public struct Location: Equatable {
         locationArray: Array<Location>
     ) -> Array<Location> {
         
-        var currentLocation = locationArray.first { location in
+        let currentLocation = locationArray.first { location in
             location.currentPosition
         }
             

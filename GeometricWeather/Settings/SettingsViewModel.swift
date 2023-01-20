@@ -16,6 +16,8 @@ class SettingsViewModel: ObservableObject {
     @Published var alertEnabled = SettingsManager.shared.alertEnabled
     
     @Published var precipitationAlertEnabled = SettingsManager.shared.precipitationAlertEnabled
+    
+    @Published var dynamicIslandEnabled = SettingsManager.shared.dynamicIslandEnabled
         
     // MARK: - appearance.
     

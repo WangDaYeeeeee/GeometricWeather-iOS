@@ -31,6 +31,11 @@ struct SettingsView: View {
                     titleKey: "settings_title_precipitation_notification_switch",
                     toggleOn: self.$model.precipitationAlertEnabled
                 )
+                SettingsSummaryToggleCellView(
+                    titleKey: "settings_title_dynamic_island_switch",
+                    summaryKey: "settings_summary_dynamic_island_switch",
+                    toggleOn: self.$model.dynamicIslandEnabled
+                )
             }
             
             Section(
@@ -112,6 +117,8 @@ struct SettingsView: View {
             SettingsManager.shared.alertEnabled = newValue
         }.onChange(of: self.model.precipitationAlertEnabled) { newValue in
             SettingsManager.shared.precipitationAlertEnabled = newValue
+        }.onChange(of: self.model.dynamicIslandEnabled) { newValue in
+            SettingsManager.shared.dynamicIslandEnabled = newValue
         }.onChange(of: self.model.darkModeIndex) { newValue in
             SettingsManager.shared.darkMode = DarkMode[newValue]
         }.onChange(of: self.model.trendSyncEnabled) { newValue in
@@ -152,8 +159,8 @@ struct SettingsView: View {
 
 private func resetTodayForecastPendingIntentInTask() {
     Task(priority: .high) {
-        if let weather = await DatabaseHelper.shared.asyncReadWeather(
-            formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
+        if let weather = await DatabaseHelper.shared.suspendedReadWeather(
+            formattedId: await DatabaseHelper.shared.suspendedReadLocations()[0].formattedId
         ) {
             await resetTodayForecastPendingNotification(weather: weather)
         }
@@ -162,8 +169,8 @@ private func resetTodayForecastPendingIntentInTask() {
 
 private func resetTomorrowForecastPendingIntentInTask() {
     Task(priority: .high) {
-        if let weather = await DatabaseHelper.shared.asyncReadWeather(
-            formattedId: await DatabaseHelper.shared.asyncReadLocations()[0].formattedId
+        if let weather = await DatabaseHelper.shared.suspendedReadWeather(
+            formattedId: await DatabaseHelper.shared.suspendedReadLocations()[0].formattedId
         ) {
             await resetTomorrowForecastPendingNotification(weather: weather)
         }

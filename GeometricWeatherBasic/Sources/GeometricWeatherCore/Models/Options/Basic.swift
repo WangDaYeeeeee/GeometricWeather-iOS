@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - update interval.
+
 public struct UpdateInterval: Option {
     
     public typealias ImplType = UpdateInterval

@@ -84,9 +84,9 @@ private func polling(onTask task: BGTask) {
 private func polling() async -> (locations: [Location], succeed: Bool) {
     printLog(keyword: "polling", content: "read locations")
     // read weather cache for default weather for alert comparison.
-    var locations = await DatabaseHelper.shared.asyncReadLocations()
+    var locations = await DatabaseHelper.shared.suspendedReadLocations()
     locations[0] = locations[0].copyOf(
-        weather: await DatabaseHelper.shared.asyncReadWeather(
+        weather: await DatabaseHelper.shared.suspendedReadWeather(
             formattedId: locations[0].formattedId
         )
     )

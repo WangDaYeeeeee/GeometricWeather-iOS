@@ -56,7 +56,7 @@ struct WindForegroundView: View {
         model.checkToInit(daylight: self.daylight)
         let canvasSize = sqrt(width * width + height * height)
         
-        return ForEach(0 ..< model.winds.count) { i in
+        return ForEach(0 ..< model.winds.count, id: \.self) { i in
             WindLayer(
                 model: model,
                 index: i,

@@ -54,7 +54,7 @@ struct HailForegroundView: View {
         
         return Group {
             // snow flakes.
-            ForEach(0 ..< model.hails.count) { i in
+            ForEach(0 ..< model.hails.count, id: \.self) { i in
                 HailLayer(
                     model: model,
                     index: i,

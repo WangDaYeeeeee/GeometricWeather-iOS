@@ -307,6 +307,8 @@
 "settings_title_dark_mode" = "Dark mode";
 "settings_title_ui_style" = "Interface style";
 "settings_title_icon_provider" = "Icon pack";
+"settings_title_dynamic_island_switch" = "Dynamic island";
+"settings_summary_dynamic_island_switch" = "Display precipitation trends in dynamic island";
 "settings_title_appearance" = "Appearance";
 "settings_summary_appearance" = "Interface style, card order, language…";
 "settings_title_card_display" = "Displayed cards";

@@ -299,6 +299,8 @@
 "settings_title_service_provider" = "数据提供商";
 "settings_summary_service_provider" = "选择天气数据及位置信息的数据提供商";
 "settings_title_weather_source" = "天气源";
+"settings_summary_dynamic_island_switch" = "在灵动岛中显示降水趋势";
+"settings_title_dynamic_island_switch" = "灵动岛";
 "settings_title_dark_mode" = "暗色模式";
 "settings_title_appearance" = "外观";
 "settings_summary_appearance" = "UI风格，卡片顺序，语言等…";

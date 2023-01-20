@@ -33,7 +33,11 @@ extension HomeViewController {
             self,
             for: SettingsChangedEvent.self
         ) { [weak self] _ in
-            self?.updateTableView()
+            guard let self = self else {
+                return
+            }
+            self.updateTableView()
+            self.vm.updateAppExtensions()
         }
         
         // MARK: - scene enter foreground.

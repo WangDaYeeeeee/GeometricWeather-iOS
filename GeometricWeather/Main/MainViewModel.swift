@@ -97,14 +97,16 @@ class MainViewModel: NSObject {
             await MainActor.run { [weak self] in
                 // received location list update event.
                 // init already completed.
-                if self?.initCompleted == true {
+                guard let self = self else {
                     return
                 }
                 
-                self?.initCompleted = true
-                self?.updateInnerData(total: locations)
-                
-                updateAppExtensions(locations: locations, scene: self?.scene)
+                if self.initCompleted {
+                    return
+                }
+                self.initCompleted = true
+                self.updateInnerData(total: locations)
+                self.updateAppExtensions()
             }
         }
     }
@@ -217,14 +219,14 @@ class MainViewModel: NSObject {
         let location = self.currentLocation.value.location
         
         self.currentUpdateTask = Task(priority: .background) { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
             
             let result = await withTaskCancellationHandler {
-                await strongSelf.repository.update(location: location)
+                await self.repository.update(location: location)
             } onCancel: {
-                strongSelf.repository.cancelUpdate()
+                self.repository.cancelUpdate()
             }
             
             await MainActor.run {
@@ -233,20 +235,17 @@ class MainViewModel: NSObject {
                 }
                 
                 if !result.weatherRequestSucceed {
-                    strongSelf.toastMessage.value = .weatherRequestFailed
+                    self.toastMessage.value = .weatherRequestFailed
                 } else if result.locationSucceed == false {
-                    strongSelf.toastMessage.value = .locationFailed
+                    self.toastMessage.value = .locationFailed
                 }
                 
-                strongSelf.updateInnerData(location: result.location)
+                self.updateInnerData(location: result.location)
                 
-                strongSelf.loading.value = false
+                self.loading.value = false
                 
                 printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-                updateAppExtensions(
-                    locations: strongSelf.selectableTotalLocations.value.locations,
-                    scene: strongSelf.scene
-                )
+                self.updateAppExtensions()
             }
         }
     }
@@ -277,15 +276,17 @@ class MainViewModel: NSObject {
             await MainActor.run { [weak self] in
                 // received location list update event.
                 // init already completed.
-                if self?.initCompleted == true {
+                guard let self = self else {
                     return
                 }
                 
-                self?.initCompleted = true
-                self?.loading.value = false
-                self?.updateInnerData(total: locations)
-                
-                updateAppExtensions(locations: locations, scene: self?.scene)
+                if self.initCompleted {
+                    return
+                }
+                self.initCompleted = true
+                self.loading.value = false
+                self.updateInnerData(total: locations)
+                self.updateAppExtensions()
             }
         }
     }
@@ -304,6 +305,13 @@ class MainViewModel: NSObject {
             self.cancelRequest()
         }
         self.updateInnerData(location: location)
+    }
+    
+    public func updateAppExtensions() {
+        GeometricWeather.updateAppExtensions(
+            locations: self.selectableValidLocations.value.locations,
+            scene: self.scene
+        )
     }
     
     // MARK: - set location.
@@ -406,7 +414,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total, scene: self.scene)
+        self.updateAppExtensions()
         
         return true
     }
@@ -426,7 +434,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total, scene: self.scene)
+        self.updateAppExtensions()
     }
     
     func updateLocation(location: Location) {
@@ -438,7 +446,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total, scene: self.scene)
+        self.updateAppExtensions()
     }
     
     func deleteLocation(position: Int) {
@@ -451,7 +459,7 @@ class MainViewModel: NSObject {
         }
         
         printLog(keyword: "widget", content: "update app extensions cause updated in main interface")
-        updateAppExtensions(locations: total, scene: self.scene)
+        self.updateAppExtensions()
     }
     
     // MARK: - getter.

@@ -31,6 +31,7 @@ public class AlertEnabledChanged: SettingsValueEvent<Bool> {}
 public class PrecipitationAlertEnabledChanged: SettingsValueEvent<Bool> {}
 public class UpdateIntervalChanged: SettingsValueEvent<UpdateInterval> {}
 public class TrendSyncEnabledChanged: SettingsValueEvent<Bool> {}
+public class DynamicIslandEnabledChanged: SettingsValueEvent<Bool> {}
 
 // MARK: - appearance.
 

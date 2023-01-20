@@ -132,7 +132,7 @@ struct RainForegroundView: View {
             }
             
             // raindrops.
-            ForEach(0 ..< model.raindrops.count) { i in
+            ForEach(0 ..< model.raindrops.count, id: \.self) { i in
                 RaindropLayer(
                     model: model,
                     index: i,

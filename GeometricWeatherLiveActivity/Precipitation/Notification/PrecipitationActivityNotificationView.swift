@@ -45,8 +45,8 @@ struct PrecipitationActivityNotificationView: View {
             .background(
                 LinearGradient(
                     colors: [
-                        (self.colorScheme == .light ? Color.white : Color.black).opacity(0.4),
-                        (self.colorScheme == .light ? Color.white : Color.black).opacity(0.1)
+                        (self.colorScheme == .light ? Color.white : Color.black).opacity(0.7),
+                        (self.colorScheme == .light ? Color.white : Color.black).opacity(0.3)
                     ],
                     startPoint: .top,
                     endPoint: .bottom

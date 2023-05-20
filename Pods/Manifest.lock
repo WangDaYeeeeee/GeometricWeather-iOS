@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.5.0)
+  - Alamofire (5.7.1)
   - JXMovableCellTableView (0.0.3)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
@@ -38,7 +38,7 @@ SPEC REPOS:
     - UICountingLabel
 
 SPEC CHECKSUMS:
-  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
   JXMovableCellTableView: 1493d1c8be055638a6e11464aa85026d09116f7e
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   NeedleFoundation: 36cfaea9ae9eb527a796f5c1df19296c722666b8
@@ -47,6 +47,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   UICountingLabel: faf890b505d96312e324a86718f031fafffb0ccb
 
-PODFILE CHECKSUM: 1100de9bd7f5b06f8a851a96c9d5a254f2f9ed43
+PODFILE CHECKSUM: e87555c0add3af8adc46b9d0fd0b41dd23b465aa
 
 COCOAPODS: 1.11.2

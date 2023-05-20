@@ -263,18 +263,14 @@ class HistogramPolylineView: UIView {
         // polyline.
         if self.polylineValues.count > 1 {
             self.expectedValueCount = Int(
-                (
-                    self.frame.width - 2 * paddingHorizontal
-                ) / (
-                    polylineWidth + 2 * polylineMargin
-                )
+                (self.frame.width + polylineMargin) / (polylineWidth + polylineMargin)
             )
             for i in 0 ..< self.expectedValueCount {
                 let x = Double(i) / Double(self.expectedValueCount - 1)
                 let y = self.polylineValues[
                     Int(x * Double(self.polylineValues.count - 1))
                 ]
-                if y == 0 {
+                if y <= 0 {
                     continue
                 }
                 

@@ -170,7 +170,7 @@
 		37F34B622818BD2B008C2CF3 /* LocationWeatherItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F34B612818BD2B008C2CF3 /* LocationWeatherItemView.swift */; };
 		37F34B642818BD55008C2CF3 /* EmptyLocationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F34B632818BD55008C2CF3 /* EmptyLocationItemView.swift */; };
 		37FE8C7427E16C8800807B6B /* ResizeableShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */; };
-		3D9FE47FE8BF19E7F6ED37E8 /* Pods_GeometricWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B7E1ABEEC93CD7289CEFAA /* Pods_GeometricWeather.framework */; };
+		C71C9FCF58CD5CA71E3777A4 /* Pods_GeometricWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB304B8484E35DE60FDB3299 /* Pods_GeometricWeather.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -279,8 +279,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		163D6BAD297332B0482148F0 /* Pods-GeometricWeatherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeatherTests.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeatherTests/Pods-GeometricWeatherTests.release.xcconfig"; sourceTree = "<group>"; };
-		35B094CC11C74840BC5975D2 /* Pods-GeometricWeather.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.beta.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.beta.xcconfig"; sourceTree = "<group>"; };
 		370BA594269C398D006BB1CE /* GeometricWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeometricWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370BA59E269C398F006BB1CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		370BA5A0269C398F006BB1CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -545,16 +543,9 @@
 		37F34B612818BD2B008C2CF3 /* LocationWeatherItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationWeatherItemView.swift; sourceTree = "<group>"; };
 		37F34B632818BD55008C2CF3 /* EmptyLocationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyLocationItemView.swift; sourceTree = "<group>"; };
 		37FE8C7327E16C8800807B6B /* ResizeableShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeableShadowView.swift; sourceTree = "<group>"; };
-		3A39A93881252F8AA87E38FA /* Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather-GeometricWeatherUITests/Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		418034B0112D37C8CAAC7A7F /* Pods-GeometricWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.release.xcconfig"; sourceTree = "<group>"; };
-		47728BD299AE1595DB9F332D /* Pods-GeometricWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.debug.xcconfig"; sourceTree = "<group>"; };
-		6CDCF93D957465982924B177 /* Pods-GeometricWeather-GeometricWeatherUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather-GeometricWeatherUITests.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeather-GeometricWeatherUITests/Pods-GeometricWeather-GeometricWeatherUITests.release.xcconfig"; sourceTree = "<group>"; };
-		96B7E1ABEEC93CD7289CEFAA /* Pods_GeometricWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeometricWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D47B008C7AB77981A364E40 /* Pods-GeometricWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.release.xcconfig"; sourceTree = "<group>"; };
-		ACBA27C7A920E0BA2AEF1DDD /* Pods_GeometricWeather_GeometricWeatherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeometricWeather_GeometricWeatherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2C37F9B9641FD1A1C08D17F /* Pods-GeometricWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.debug.xcconfig"; sourceTree = "<group>"; };
-		F526D4494628467CADF97C9C /* Pods-GeometricWeatherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeatherTests.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeatherTests/Pods-GeometricWeatherTests.debug.xcconfig"; sourceTree = "<group>"; };
-		FD44FCFCA031AEA4D0CFB4B1 /* Pods_GeometricWeatherTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeometricWeatherTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		79E1492BD7AC678FF151E4BD /* Pods-GeometricWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.debug.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.debug.xcconfig"; sourceTree = "<group>"; };
+		AB304B8484E35DE60FDB3299 /* Pods_GeometricWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeometricWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B12EC51E7E25FF4A276860CC /* Pods-GeometricWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeometricWeather.release.xcconfig"; path = "Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -563,7 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3771D87C2822A29000AEB8C1 /* GeometricWeatherBasic in Frameworks */,
-				3D9FE47FE8BF19E7F6ED37E8 /* Pods_GeometricWeather.framework in Frameworks */,
+				C71C9FCF58CD5CA71E3777A4 /* Pods_GeometricWeather.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1128,9 +1119,7 @@
 				37A35F6426F4B45300431565 /* SwiftUI.framework */,
 				374BA63526FC8FD90080B5CA /* Intents.framework */,
 				374BA64026FC8FD90080B5CA /* IntentsUI.framework */,
-				96B7E1ABEEC93CD7289CEFAA /* Pods_GeometricWeather.framework */,
-				ACBA27C7A920E0BA2AEF1DDD /* Pods_GeometricWeather_GeometricWeatherUITests.framework */,
-				FD44FCFCA031AEA4D0CFB4B1 /* Pods_GeometricWeatherTests.framework */,
+				AB304B8484E35DE60FDB3299 /* Pods_GeometricWeather.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1141,9 +1130,8 @@
 				37C4DFBA27D21D4200430086 /* Pods.xcodeproj */,
 				37C4E09D27D21D4200430086 /* Target Support Files */,
 				37C4E0F427D21D4200430086 /* Manifest.lock */,
-				B2C37F9B9641FD1A1C08D17F /* Pods-GeometricWeather.debug.xcconfig */,
-				418034B0112D37C8CAAC7A7F /* Pods-GeometricWeather.release.xcconfig */,
-				35B094CC11C74840BC5975D2 /* Pods-GeometricWeather.beta.xcconfig */,
+				79E1492BD7AC678FF151E4BD /* Pods-GeometricWeather.debug.xcconfig */,
+				B12EC51E7E25FF4A276860CC /* Pods-GeometricWeather.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1373,12 +1361,6 @@
 		F813B36BFD806899701C0E6D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				47728BD299AE1595DB9F332D /* Pods-GeometricWeather.debug.xcconfig */,
-				9D47B008C7AB77981A364E40 /* Pods-GeometricWeather.release.xcconfig */,
-				3A39A93881252F8AA87E38FA /* Pods-GeometricWeather-GeometricWeatherUITests.debug.xcconfig */,
-				6CDCF93D957465982924B177 /* Pods-GeometricWeather-GeometricWeatherUITests.release.xcconfig */,
-				F526D4494628467CADF97C9C /* Pods-GeometricWeatherTests.debug.xcconfig */,
-				163D6BAD297332B0482148F0 /* Pods-GeometricWeatherTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1390,14 +1372,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 370BA5B9269C3990006BB1CE /* Build configuration list for PBXNativeTarget "GeometricWeather" */;
 			buildPhases = (
-				5D5C71DD0FE87735A63DFF03 /* [CP] Check Pods Manifest.lock */,
+				D82C65F02B58CFE655287409 /* [CP] Check Pods Manifest.lock */,
 				370BA590269C398D006BB1CE /* Sources */,
 				370BA591269C398D006BB1CE /* Frameworks */,
 				370BA592269C398D006BB1CE /* Resources */,
 				37A35F7626F4B45400431565 /* Embed App Extensions */,
-				324C8A959646DF0F8ABDEB33 /* [CP] Embed Pods Frameworks */,
 				37D3B8B827D6D64600191C2A /* Needle */,
 				376596E7281FA50D00164CAD /* Embed Watch Content */,
+				3B7D60976E16AA5E2EAC2EC2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1607,23 +1589,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		324C8A959646DF0F8ABDEB33 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		37D3B8B827D6D64600191C2A /* Needle */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1642,7 +1607,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export SOURCEKIT_LOGGING=0 && needle generate $SRCROOT/$TARGETNAME/NeedleGenerated.swift $SRCROOT/$TARGETNAME\n";
 		};
-		5D5C71DD0FE87735A63DFF03 /* [CP] Check Pods Manifest.lock */ = {
+		3B7D60976E16AA5E2EAC2EC2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GeometricWeather/Pods-GeometricWeather-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D82C65F02B58CFE655287409 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1990,7 +1972,7 @@
 		};
 		370BA5BA269C3990006BB1CE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C37F9B9641FD1A1C08D17F /* Pods-GeometricWeather.debug.xcconfig */;
+			baseConfigurationReference = 79E1492BD7AC678FF151E4BD /* Pods-GeometricWeather.debug.xcconfig */;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -2002,7 +1984,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2013,7 +1995,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2030,7 +2012,7 @@
 		};
 		370BA5BB269C3990006BB1CE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 418034B0112D37C8CAAC7A7F /* Pods-GeometricWeather.release.xcconfig */;
+			baseConfigurationReference = B12EC51E7E25FF4A276860CC /* Pods-GeometricWeather.release.xcconfig */;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -2042,7 +2024,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_ASSET_PATHS = "\"GeometricWeather/Preview Content\"";
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				ENABLE_PREVIEWS = YES;
@@ -2053,7 +2035,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.2;
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2077,7 +2059,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeometricWeatherWidget/Info.plist;
@@ -2089,7 +2071,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.GeometricWeatherWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2108,7 +2090,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = GeometricWeatherWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeometricWeatherWidget/Info.plist;
@@ -2120,7 +2102,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.GeometricWeatherWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2141,7 +2123,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeometricWeatherLiveActivity/Info.plist;
@@ -2153,7 +2135,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.GeometricWeatherLiveActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2174,7 +2156,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1784;
+				CURRENT_PROJECT_VERSION = 1789;
 				DEVELOPMENT_TEAM = 73CBTMT92C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GeometricWeatherLiveActivity/Info.plist;
@@ -2186,7 +2168,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.7.84;
+				MARKETING_VERSION = 1.7.89;
 				PRODUCT_BUNDLE_IDENTIFIER = wangdaye.com.GeometricWeather.GeometricWeatherLiveActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

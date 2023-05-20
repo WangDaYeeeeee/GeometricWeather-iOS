@@ -36,7 +36,7 @@ struct PrecipitationActivityNotificationView: View {
                     weatherKind: weatherCodeToWeatherKind(
                         code: self.context.attributes.weatherCode
                     ),
-                    daylight: self.context.attributes.isDaylight
+                    daylight: self.colorScheme == .light
                 ),
                 primaryColor: .primary,
                 secondaryColor: .secondary

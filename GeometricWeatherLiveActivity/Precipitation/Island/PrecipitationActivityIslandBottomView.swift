@@ -13,7 +13,7 @@ import GeometricWeatherSettings
 import GeometricWeatherTheme
 
 private let trendItemWidth = 4.0
-private let trendItemMargin = 2.0
+private let trendItemMargin = trendItemWidth / 2.0
 private let trendItemMaxHeight = 16.0
 
 // MARK: - bottom view.
@@ -113,14 +113,16 @@ struct PrecipitationActivityTrendItemView: View {
         let x = 0.5 * trendItemWidth + Double(self.index) * (trendItemWidth + trendItemMargin)
         
         Path { path in
-            path.move(to: CGPoint(x: x, y: self.trendItemBottom))
-            path.addLine(
-                to: CGPoint(
-                    x: x,
-                    y: self.trendItemBottom
-                    - trendItemMaxHeight * self.percent.keepIn(range: 0...1)
+            if (self.percent > 0) {
+                path.move(to: CGPoint(x: x, y: self.trendItemBottom))
+                path.addLine(
+                    to: CGPoint(
+                        x: x,
+                        y: self.trendItemBottom
+                        - trendItemMaxHeight * self.percent.keepIn(range: 0...1)
+                    )
                 )
-            )
+            }
         }.stroke(
             self.percent > 0 ? self.themeColor : self.themeColor.opacity(0.0),
             style: StrokeStyle(lineWidth: trendItemWidth, lineCap: .round)

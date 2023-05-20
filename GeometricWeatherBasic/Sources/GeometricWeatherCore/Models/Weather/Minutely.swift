@@ -30,4 +30,16 @@ public struct Minutely: Codable {
         self.endTime = endTime
         self.precipitationIntensityInPercentage = precipitationIntensities
     }
+    
+    public var isValid: Bool {
+        if self.precipitationIntensities.count < 2 {
+            return false
+        }
+        if !self.precipitationIntensities.contains(where: { item in
+            item >= precipitationIntensityLight
+        }) {
+            return false
+        }
+        return true
+    }
 }

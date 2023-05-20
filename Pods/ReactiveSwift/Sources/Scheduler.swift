@@ -98,7 +98,7 @@ public final class UIScheduler: Scheduler {
 	}()
 
 	#if os(Linux)
-	private var queueLength: Synchronized<Int32> = Atomic(0)
+	private var queueLength: Atomic<Int32> = Atomic(0)
 	#else
 	// `inout` references do not guarantee atomicity. Use `UnsafeMutablePointer`
 	// instead.

@@ -45,7 +45,7 @@ private func updateLiveActivity(for location: Location) async throws {
         else {
             return
         }
-        if (minutely.precipitationIntensities.max() ?? 0.0) <= 0.0 {
+        if !minutely.isValid {
             return
         }
         

@@ -209,12 +209,7 @@ class MainHourlyCardCell: MainTableViewCell,
         guard let minutely = weather.minutelyForecast else {
             return
         }
-        if minutely.precipitationIntensities.count < 2 {
-            return
-        }
-        if !minutely.precipitationIntensities.contains(where: { item in
-            item >= precipitationIntensityLight
-        }) {
+        if !minutely.isValid {
             return
         }
         
